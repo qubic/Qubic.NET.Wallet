@@ -2,12 +2,18 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PROJECT="$SCRIPT_DIR/Qubic.Net.Wallet.csproj"
 PUBLISH_DIR="$SCRIPT_DIR/publish"
 
 RIDS=("win-x64" "osx-x64" "osx-arm64" "linux-x64")
 BINARY_NAME="Qubic.Net.Wallet"
+
+# Extract version from csproj
+VERSION=$(dotnet msbuild "$PROJECT" -getProperty:Version 2>/dev/null)
+if [[ -z "$VERSION" ]]; then
+    VERSION=$(dotnet msbuild "$PROJECT" -getProperty:AssemblyVersion 2>/dev/null | cut -d. -f1-3)
+fi
+echo "Version: $VERSION"
 
 rm -rf "$PUBLISH_DIR"
 mkdir -p "$PUBLISH_DIR"
@@ -35,9 +41,9 @@ for rid in "${RIDS[@]}"; do
         bin="$BINARY_NAME"
     fi
 
-    zip_name="$BINARY_NAME-$rid.zip"
+    zip_name="$BINARY_NAME-$VERSION-$rid.zip"
     bin_hash_name="$bin.sha256"
-    zip_hash_name="$BINARY_NAME-$rid.zip.sha256"
+    zip_hash_name="$BINARY_NAME-$VERSION-$rid.zip.sha256"
 
     # SHA-256 hash of the binary
     sha256sum "$PUBLISH_DIR/$rid/$bin" | awk -v f="$bin" '{print $1, f}' > "$PUBLISH_DIR/$rid/$bin_hash_name"
@@ -49,7 +55,7 @@ for rid in "${RIDS[@]}"; do
     rm -rf "$PUBLISH_DIR/$rid"/wwwroot
 
     # Move files into a named folder so the zip extracts cleanly
-    folder_name="$BINARY_NAME-$rid"
+    folder_name="$BINARY_NAME-$VERSION-$rid"
     mkdir -p "$PUBLISH_DIR/$folder_name"
     mv "$PUBLISH_DIR/$rid"/* "$PUBLISH_DIR/$folder_name/"
     rm -rf "$PUBLISH_DIR/$rid"
