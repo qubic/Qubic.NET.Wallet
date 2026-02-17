@@ -1,0 +1,713 @@
+@page "/voting"
+@using System.Buffers.Binary
+@using Qubic.Core
+@using Qubic.Core.Entities
+@using Qubic.Core.Payloads
+@using Qubic.Core.Contracts.Qutil
+@inject QubicBackendService Backend
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject TransactionTrackerService TxTracker
+@inject QubicSettingsService Settings
+
+<h4>Community Voting</h4>
+<p class="text-muted">Browse, vote on, and create community polls via the QUtil contract.</p>
+
+<ul class="nav nav-tabs mb-3">
+    @foreach (var tab in _tabs)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@tab</a>
+        </li>
+    }
+</ul>
+
+<div class="row"><div class="col-md-8">
+    @switch (_activeTab)
+    {
+        case "Browse":
+            <div class="card"><div class="card-header d-flex justify-content-between align-items-center">
+                <span>Active Polls</span>
+                <button class="btn btn-sm btn-outline-primary" @onclick="LoadActivePolls" disabled="@_browseLoading">
+                    @(_browseLoading ? "Loading..." : _browsePolls == null ? "Load" : "Refresh")
+                </button>
+            </div><div class="card-body">
+                @if (_browseLoading)
+                {
+                    <div class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading active polls...</div>
+                }
+                else if (_browsePolls != null && _browsePolls.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Creator</th>
+                                    <th>Link</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var poll in _browsePolls)
+                                {
+                                    var p = poll;
+                                    <tr style="cursor:pointer" @onclick="() => TogglePollDetails(p.Id)">
+                                        <td class="mono">@p.Id</td>
+                                        <td>@p.Name</td>
+                                        <td>
+                                            @if (p.PollType == 1)
+                                            {
+                                                <span class="badge bg-primary">QU</span>
+                                            }
+                                            else if (p.PollType == 2)
+                                            {
+                                                <span class="badge bg-info text-dark">Asset</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@p.PollType</span>
+                                            }
+                                        </td>
+                                        <td><AddressDisplay Address="@p.Creator" TruncateChars="6" ShowCopy="false" /></td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(p.GithubLink))
+                                            {
+                                                <a href="@p.GithubLink" target="_blank" rel="noopener" @onclick:stopPropagation>Link</a>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">--</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (p.IsActive)
+                                            {
+                                                <span class="badge bg-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Closed</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    @if (_expandedPollId == p.Id)
+                                    {
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="p-2 small bg-light rounded">
+                                                    <div><strong>Min Amount:</strong> <span class="mono">@p.MinAmount.ToString("N0")</span></div>
+                                                    @if (p.PollType == 2 && p.NumAssets > 0)
+                                                    {
+                                                        <div class="mt-1"><strong>Allowed Assets:</strong> @p.NumAssets asset type(s)</div>
+                                                    }
+                                                    <div class="mt-1"><strong>Creator:</strong> <AddressDisplay Address="@p.Creator" /></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="small text-muted mt-2">@_browsePolls.Count poll(s) found. Click a row to expand details.</div>
+                }
+                else if (_browsePolls != null)
+                {
+                    <div class="text-muted">No active polls found.</div>
+                }
+                else
+                {
+                    <div class="text-muted small">Click <strong>Load</strong> to fetch active community polls from the QUtil contract.</div>
+                }
+            </div></div>
+            break;
+
+        case "Vote":
+            @if (!Seed.HasSeed)
+            {
+                <div class="alert alert-warning">Enter your seed in the top bar to enable voting.</div>
+            }
+            else
+            {
+                <div class="card"><div class="card-header">Cast a Vote</div><div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label-sm">Poll ID</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control form-control-sm" min="0" @bind="_votePollId" />
+                            <button class="btn btn-outline-primary" @onclick="LoadVotePoll" disabled="@_voteLoading">
+                                @(_voteLoading ? "Loading..." : "Load Poll")
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (_votePoll != null)
+                    {
+                        <div class="card mb-3 bg-light">
+                            <div class="card-body p-2 small">
+                                <div><strong>@_votePoll.Name</strong></div>
+                                <div>Type: @(_votePoll.PollType == 1 ? "QU-based" : _votePoll.PollType == 2 ? "Asset-based" : $"Type {_votePoll.PollType}")</div>
+                                <div>Min Amount: <span class="mono">@_votePoll.MinAmount.ToString("N0")</span></div>
+                                <div>Creator: <AddressDisplay Address="@_votePoll.Creator" TruncateChars="8" ShowCopy="false" /></div>
+                                @if (!string.IsNullOrEmpty(_votePoll.GithubLink))
+                                {
+                                    <div>Link: <a href="@_votePoll.GithubLink" target="_blank" rel="noopener">@_votePoll.GithubLink</a></div>
+                                }
+                                @if (!_votePoll.IsActive)
+                                {
+                                    <div class="text-danger mt-1">This poll is closed.</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label-sm">Chosen Option</label>
+                            <select class="form-select form-select-sm" @bind="_voteOption">
+                                @for (int i = 0; i < 64; i++)
+                                {
+                                    <option value="@i">Option @i@(i == 0 ? " (No change)" : "")</option>
+                                }
+                            </select>
+                            <div class="form-text">Voting power is auto-calculated by the contract based on your balance.</div>
+                        </div>
+
+                        @if (!_voteConfirming)
+                        {
+                            <button class="btn btn-primary" @onclick="() => _voteConfirming = true" disabled="@(!_votePoll.IsActive)">
+                                Preview Vote
+                            </button>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info small">
+                                <strong>Confirm Vote</strong><br/>
+                                Poll: @_votePoll.Name (ID: @_votePollId)<br/>
+                                Option: @_voteOption@(_voteOption == 0 ? " (No change)" : "")<br/>
+                                Fee: @VoteFee.ToString("N0") QU
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary" @onclick="SubmitVote" disabled="@_sending">
+                                    @if (_sending) { <span class="spinner-border spinner-border-sm me-1"></span> } Confirm Vote
+                                </button>
+                                <button class="btn btn-outline-secondary" @onclick="() => _voteConfirming = false" disabled="@_sending">Cancel</button>
+                            </div>
+                        }
+                    }
+                </div></div>
+            }
+            break;
+
+        case "Results":
+            <div class="card"><div class="card-header">Poll Results</div><div class="card-body">
+                <div class="mb-2">
+                    <label class="form-label-sm">Poll ID</label>
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control form-control-sm" min="0" @bind="_resultsPollId" />
+                        <button class="btn btn-outline-primary" @onclick="LoadResults" disabled="@_resultsLoading">
+                            @(_resultsLoading ? "Loading..." : "Load Results")
+                        </button>
+                    </div>
+                </div>
+
+                @if (_resultsData != null)
+                {
+                    <div class="mb-2">
+                        @if (_resultsIsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Closed</span>
+                        }
+                    </div>
+
+                    @if (_resultsTotalPower > 0)
+                    {
+                        <div class="small text-muted mb-2">Total voting power: <strong>@_resultsTotalPower.ToString("N0")</strong></div>
+                    }
+
+                    @for (int i = 0; i < 64; i++)
+                    {
+                        var idx = i;
+                        if (_resultsData[idx] > 0 || _resultsVoterCount[idx] > 0)
+                        {
+                            var pct = _resultsTotalPower > 0
+                                ? (double)_resultsData[idx] / _resultsTotalPower * 100.0
+                                : 0.0;
+                            <div class="d-flex align-items-center gap-2 mb-1 small">
+                                <span style="width:80px">Option @idx</span>
+                                <div class="progress flex-grow-1" style="height:20px">
+                                    <div class="progress-bar" style="width:@(pct.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%">
+                                        @_resultsData[idx].ToString("N0") (@pct.ToString("F1")%)
+                                    </div>
+                                </div>
+                                <span class="text-muted" style="width:100px">@_resultsVoterCount[idx] voter(s)</span>
+                            </div>
+                        }
+                    }
+
+                    @if (_resultsTotalPower == 0 && _resultsVoterCount.All(v => v == 0))
+                    {
+                        <div class="text-muted">No votes have been cast on this poll yet.</div>
+                    }
+                }
+            </div></div>
+            break;
+
+        case "Create":
+            @if (!Seed.HasSeed)
+            {
+                <div class="alert alert-warning">Enter your seed in the top bar to enable poll creation.</div>
+            }
+            else
+            {
+                <div class="card"><div class="card-header">Create a New Poll</div><div class="card-body">
+                    <div class="alert alert-warning">Creating a poll costs <strong>@PollCreationFee.ToString("N0") QU</strong> (burned).</div>
+
+                    <div class="mb-2">
+                        <label class="form-label-sm">Poll Name (max 32 chars)</label>
+                        <input class="form-control form-control-sm" maxlength="32" @bind="_pollName" placeholder="My Poll..." />
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label-sm">Poll Type</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pollType" id="pollTypeQu"
+                                       checked="@(_pollType == 1)" @onchange="() => _pollType = 1" />
+                                <label class="form-check-label" for="pollTypeQu">QU-based (1)</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="pollType" id="pollTypeAsset"
+                                       checked="@(_pollType == 2)" @onchange="() => _pollType = 2" />
+                                <label class="form-check-label" for="pollTypeAsset">Asset-based (2)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label-sm">Min Amount</label>
+                        <input type="number" class="form-control form-control-sm" min="0" @bind="_minAmount" />
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label-sm">GitHub Link (max 256 chars)</label>
+                        <input class="form-control form-control-sm" maxlength="256" @bind="_githubLink"
+                               placeholder="https://github.com/..." />
+                        <div class="form-text">Must start with https://github.com/</div>
+                    </div>
+
+                    @if (_pollType == 2)
+                    {
+                        <div class="mb-2">
+                            <label class="form-label-sm">Allowed Assets (up to 16)</label>
+                            @for (int idx = 0; idx < _assetCount; idx++)
+                            {
+                                var i = idx;
+                                <div class="row g-1 mb-1">
+                                    <div class="col-7">
+                                        <input class="form-control form-control-sm mono"
+                                               value="@_assetIssuers[i]"
+                                               @onchange="(e) => _assetIssuers[i] = e.Value?.ToString() ?? string.Empty"
+                                               placeholder="Issuer identity (60 chars)" />
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="form-control form-control-sm"
+                                               value="@_assetNames[i]"
+                                               @onchange="(e) => _assetNames[i] = e.Value?.ToString() ?? string.Empty"
+                                               maxlength="7" placeholder="Asset name" />
+                                    </div>
+                                    <div class="col-1">
+                                        @if (_assetCount > 1)
+                                        {
+                                            <button class="btn btn-outline-danger btn-sm" @onclick="() => RemoveAsset(i)">&times;</button>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            @if (_assetCount < 16)
+                            {
+                                <button class="btn btn-outline-secondary btn-sm mt-1" @onclick="AddAsset">+ Add Asset</button>
+                            }
+                        </div>
+                    }
+
+                    @if (!_createConfirming)
+                    {
+                        <button class="btn btn-primary" @onclick="PreviewCreate">Preview</button>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info small">
+                            <strong>Confirm Poll Creation</strong><br/>
+                            Name: @_pollName<br/>
+                            Type: @(_pollType == 1 ? "QU-based" : "Asset-based")<br/>
+                            Min Amount: @_minAmount.ToString("N0")<br/>
+                            Link: @(string.IsNullOrEmpty(_githubLink) ? "(none)" : _githubLink)<br/>
+                            @if (_pollType == 2)
+                            {
+                                <span>Assets: @_assetCount</span><br/>
+                            }
+                            Fee: <strong>@PollCreationFee.ToString("N0") QU</strong> (burned)
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" @onclick="SubmitCreate" disabled="@_sending">
+                                @if (_sending) { <span class="spinner-border spinner-border-sm me-1"></span> } Create Poll
+                            </button>
+                            <button class="btn btn-outline-secondary" @onclick="() => _createConfirming = false" disabled="@_sending">Cancel</button>
+                        </div>
+                    }
+                </div></div>
+            }
+            break;
+    }
+
+    @if (_result != null)
+    {
+        <div class="alert alert-success mt-3">
+            Transaction broadcast! Tx ID: <span class="mono">@_result</span>
+            <div class="mt-1">
+                <a href="https://explorer.qubic.org/network/tx/@_result" target="_blank" rel="noopener" class="me-3">View on Explorer</a>
+                <a href="/history">Transaction History</a>
+            </div>
+            @if (_activeTab == "Vote")
+            {
+                <div class="mt-1 small text-muted">Your vote has been cast. Check the Results tab for aggregated totals.</div>
+            }
+        </div>
+    }
+    @if (_error != null) { <div class="alert alert-danger mt-2">@_error</div> }
+</div></div>
+
+@code {
+    static readonly string[] _tabs = ["Browse", "Vote", "Results", "Create"];
+    string _activeTab = "Browse";
+    bool _sending;
+    string? _result;
+    string? _error;
+
+    const uint QutilContractIndex = 4;
+    const long VoteFee = 100;
+    const long PollCreationFee = 10_000_000;
+
+    void SetTab(string tab) { _activeTab = tab; _error = null; _result = null; }
+
+    // ── Helpers ──
+
+    static byte[] PollIdToBytes(ulong pollId)
+    {
+        var bytes = new byte[8];
+        BinaryPrimitives.WriteUInt64LittleEndian(bytes, pollId);
+        return bytes;
+    }
+
+    static string ParsePollName(ReadOnlySpan<byte> data)
+    {
+        return System.Text.Encoding.ASCII.GetString(data).TrimEnd('\0');
+    }
+
+    static string SafeIdentityFromPk(byte[] pk)
+    {
+        try { return QubicIdentity.FromPublicKey(pk).ToString(); }
+        catch { return Convert.ToHexString(pk)[..16] + "..."; }
+    }
+
+    async Task<uint> GetTick() => TickMonitor.IsConnected
+        ? TickMonitor.Tick + (uint)Settings.TickOffset
+        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+
+    async Task Broadcast(long amount, uint tick, ITransactionPayload payload, string desc)
+    {
+        var dest = QubicIdentity.FromPublicKey(QubicContracts.GetContractPublicKey((int)QutilContractIndex));
+        var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
+        var result = await Backend.BroadcastTransactionAsync(tx);
+        _result = result.TransactionId;
+        TxTracker.Track(new TrackedTransaction
+        {
+            Hash = result.TransactionId,
+            Source = Seed.Identity?.ToString() ?? "",
+            Destination = dest.ToString(),
+            Amount = amount,
+            TargetTick = tick,
+            InputType = payload.InputType,
+            PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
+            Description = desc,
+            RawData = Convert.ToHexString(tx.GetRawBytes())
+        });
+    }
+
+    // ── Browse Tab ──
+
+    record ParsedPoll(ulong Id, string Name, ulong PollType, ulong MinAmount, bool IsActive, string Creator, string GithubLink, int NumAssets);
+
+    bool _browseLoading;
+    List<ParsedPoll>? _browsePolls;
+    ulong? _expandedPollId;
+
+    void TogglePollDetails(ulong pollId)
+    {
+        _expandedPollId = _expandedPollId == pollId ? null : pollId;
+    }
+
+    async Task LoadActivePolls()
+    {
+        _browseLoading = true;
+        _browsePolls = null;
+        _error = null;
+        StateHasChanged();
+        try
+        {
+            // Query GetCurrentPollId (function 5)
+            var pollIdData = await Backend.QuerySmartContractAsync(QutilContractIndex, 5, Array.Empty<byte>());
+            if (pollIdData.Length < 528)
+            {
+                _error = $"Unexpected response size ({pollIdData.Length} bytes, expected 528).";
+                return;
+            }
+
+            // Parse: current_poll_id (u64 @ 0), active_poll_ids (64 x u64 @ 8), active_count (u64 @ 520)
+            var activeCount = (int)BinaryPrimitives.ReadUInt64LittleEndian(pollIdData.AsSpan(520));
+            if (activeCount > 64) activeCount = 64;
+
+            var activePollIds = new ulong[activeCount];
+            for (int i = 0; i < activeCount; i++)
+                activePollIds[i] = BinaryPrimitives.ReadUInt64LittleEndian(pollIdData.AsSpan(8 + i * 8));
+
+            // Query each active poll's info
+            var polls = new List<ParsedPoll>();
+            foreach (var pollId in activePollIds)
+            {
+                try
+                {
+                    var poll = await QueryPollInfo(pollId);
+                    if (poll != null)
+                        polls.Add(poll);
+                }
+                catch { /* skip polls that fail to load */ }
+            }
+
+            _browsePolls = polls;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _browseLoading = false; }
+    }
+
+    async Task<ParsedPoll?> QueryPollInfo(ulong pollId)
+    {
+        var pollData = await Backend.QuerySmartContractAsync(QutilContractIndex, 6, PollIdToBytes(pollId));
+        if (pollData.Length < 1000)
+            return null;
+
+        var found = BinaryPrimitives.ReadUInt64LittleEndian(pollData.AsSpan(0));
+        if (found == 0)
+            return null;
+
+        // QUTILPoll struct at offset 8 (736 bytes):
+        var pollSpan = pollData.AsSpan(8);
+        var name = ParsePollName(pollSpan.Slice(0, 32));
+        var pollType = BinaryPrimitives.ReadUInt64LittleEndian(pollSpan.Slice(32));
+        var minAmount = BinaryPrimitives.ReadUInt64LittleEndian(pollSpan.Slice(40));
+        var isActive = BinaryPrimitives.ReadUInt64LittleEndian(pollSpan.Slice(48)) != 0;
+        var creatorPk = pollSpan.Slice(56, 32).ToArray();
+        var creator = SafeIdentityFromPk(creatorPk);
+        var numAssets = (int)BinaryPrimitives.ReadUInt64LittleEndian(pollSpan.Slice(728));
+
+        // poll_link: 256 bytes at offset 744 in the full output
+        var linkSpan = pollData.AsSpan(744, 256);
+        var githubLink = System.Text.Encoding.ASCII.GetString(linkSpan).TrimEnd('\0');
+
+        return new ParsedPoll(pollId, name, pollType, minAmount, isActive, creator, githubLink, numAssets);
+    }
+
+    // ── Vote Tab ──
+
+    ulong _votePollId;
+    ParsedPoll? _votePoll;
+    bool _voteLoading;
+    int _voteOption;
+    bool _voteConfirming;
+
+    async Task LoadVotePoll()
+    {
+        _voteLoading = true;
+        _votePoll = null;
+        _voteConfirming = false;
+        _error = null;
+        try
+        {
+            _votePoll = await QueryPollInfo(_votePollId);
+            if (_votePoll == null)
+                _error = $"Poll {_votePollId} not found.";
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _voteLoading = false; }
+    }
+
+    async Task SubmitVote()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            if (_votePoll == null) { _error = "Load a poll first."; return; }
+            if (!_votePoll.IsActive) { _error = "This poll is closed."; return; }
+
+            var tick = await GetTick();
+            var payload = new VotePayload
+            {
+                Poll_id = _votePollId,
+                Address = Seed.GetPublicKey(),
+                Amount = ulong.MaxValue,
+                Chosen_option = (ulong)_voteOption
+            };
+            await Broadcast(VoteFee, tick, payload, $"Vote on poll {_votePollId}: option {_voteOption}");
+            _voteConfirming = false;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    // ── Results Tab ──
+
+    ulong _resultsPollId;
+    bool _resultsLoading;
+    ulong[]? _resultsData;
+    ulong[] _resultsVoterCount = Array.Empty<ulong>();
+    bool _resultsIsActive;
+    ulong _resultsTotalPower;
+
+    async Task LoadResults()
+    {
+        _resultsLoading = true;
+        _resultsData = null;
+        _error = null;
+        StateHasChanged();
+        try
+        {
+            var data = await Backend.QuerySmartContractAsync(QutilContractIndex, 3, PollIdToBytes(_resultsPollId));
+            if (data.Length < 1032)
+            {
+                _error = $"Unexpected response size ({data.Length} bytes, expected 1032).";
+                return;
+            }
+
+            // result[64] (64 x u64 @ 0), voter_count[64] (64 x u64 @ 512), is_active (u64 @ 1024)
+            _resultsData = new ulong[64];
+            _resultsVoterCount = new ulong[64];
+            for (int i = 0; i < 64; i++)
+            {
+                _resultsData[i] = BinaryPrimitives.ReadUInt64LittleEndian(data.AsSpan(i * 8));
+                _resultsVoterCount[i] = BinaryPrimitives.ReadUInt64LittleEndian(data.AsSpan(512 + i * 8));
+            }
+            _resultsIsActive = BinaryPrimitives.ReadUInt64LittleEndian(data.AsSpan(1024)) != 0;
+            _resultsTotalPower = 0;
+            for (int i = 0; i < 64; i++)
+                _resultsTotalPower += _resultsData[i];
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _resultsLoading = false; }
+    }
+
+    // ── Create Tab ──
+
+    string _pollName = "";
+    ulong _pollType = 1;
+    ulong _minAmount;
+    string _githubLink = "";
+    int _assetCount = 1;
+    string[] _assetIssuers = new string[16];
+    string[] _assetNames = new string[16];
+    bool _createConfirming;
+
+    protected override void OnInitialized()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            _assetIssuers[i] = "";
+            _assetNames[i] = "";
+        }
+    }
+
+    void AddAsset()
+    {
+        if (_assetCount < 16) _assetCount++;
+    }
+
+    void RemoveAsset(int index)
+    {
+        if (_assetCount <= 1) return;
+        for (int i = index; i < _assetCount - 1; i++)
+        {
+            _assetIssuers[i] = _assetIssuers[i + 1];
+            _assetNames[i] = _assetNames[i + 1];
+        }
+        _assetIssuers[_assetCount - 1] = "";
+        _assetNames[_assetCount - 1] = "";
+        _assetCount--;
+    }
+
+    void PreviewCreate()
+    {
+        _error = null;
+        if (string.IsNullOrWhiteSpace(_pollName)) { _error = "Poll name is required."; return; }
+        if (_pollName.Trim().Length > 32) { _error = "Poll name must be at most 32 characters."; return; }
+        if (!string.IsNullOrEmpty(_githubLink) && !_githubLink.Trim().StartsWith("https://github.com/"))
+        { _error = "GitHub link must start with https://github.com/"; return; }
+        if (_githubLink.Trim().Length > 256) { _error = "GitHub link must be at most 256 characters."; return; }
+
+        if (_pollType == 2)
+        {
+            for (int i = 0; i < _assetCount; i++)
+            {
+                if (string.IsNullOrWhiteSpace(_assetIssuers[i]))
+                { _error = $"Asset #{i + 1}: Issuer identity is required."; return; }
+                var err = IdentityValidation.Validate(_assetIssuers[i]);
+                if (err != null) { _error = $"Asset #{i + 1} Issuer: {err}"; return; }
+                if (string.IsNullOrWhiteSpace(_assetNames[i]))
+                { _error = $"Asset #{i + 1}: Asset name is required."; return; }
+            }
+        }
+
+        _createConfirming = true;
+    }
+
+    async Task SubmitCreate()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            var data = new byte[952];
+            // poll_name: 32 bytes at offset 0 (ASCII encoded, zero-padded)
+            var nameBytes = System.Text.Encoding.ASCII.GetBytes(_pollName.Trim());
+            Array.Copy(nameBytes, data, Math.Min(nameBytes.Length, 32));
+            // poll_type: u64 at offset 32
+            BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(32), _pollType);
+            // min_amount: u64 at offset 40
+            BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(40), _minAmount);
+            // github_link: 256 bytes at offset 48 (ASCII encoded)
+            var linkBytes = System.Text.Encoding.ASCII.GetBytes(_githubLink.Trim());
+            Array.Copy(linkBytes, 0, data, 48, Math.Min(linkBytes.Length, 256));
+            // allowed_assets: 16 x 40 bytes at offset 304
+            for (int i = 0; i < _assetCount && i < 16; i++)
+            {
+                if (QubicIdentity.TryParse(_assetIssuers[i], out var issuerIdentity))
+                    issuerIdentity.PublicKey.CopyTo(data.AsSpan(304 + i * 40));
+                var assetNameBytes = System.Text.Encoding.ASCII.GetBytes(_assetNames[i].PadRight(8, '\0')[..8]);
+                // Convert 8-char name to uint64
+                BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(304 + i * 40 + 32), BitConverter.ToUInt64(assetNameBytes));
+            }
+            // num_assets: u64 at offset 944
+            BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(944), (ulong)_assetCount);
+
+            var tick = await GetTick();
+            var payload = new GenericContractPayload((ushort)QutilContract.Procedures.CreatePoll, data);
+            await Broadcast(PollCreationFee, tick, payload,
+                $"Create Poll: \"{_pollName.Trim()}\" (type={_pollType})");
+            _createConfirming = false;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+}

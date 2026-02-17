@@ -1,4 +1,3 @@
-@inject QubicBackendService Backend
 @inject SeedSessionService Seed
 @inject NavigationManager Nav
 @implements IDisposable
@@ -56,6 +55,12 @@
         <NavLink class="nav-link" href="/msvault">
             <i class="bi bi-safe me-2"></i>MSVault
         </NavLink>
+        <NavLink class="nav-link" href="/sc-auctions">
+            <i class="bi bi-graph-up-arrow me-2"></i>SC Auctions
+        </NavLink>
+        <NavLink class="nav-link" href="/voting">
+            <i class="bi bi-chat-square-dots me-2"></i>Voting
+        </NavLink>
 
         @* ── HISTORY ── *@
         <div class="nav-section-header mt-2">
@@ -67,13 +72,6 @@
         <NavLink class="nav-link" href="/logs">
             <i class="bi bi-journal-text me-2"></i>Log Events
         </NavLink>
-        @if (Backend.ActiveBackend == QueryBackend.Bob)
-        {
-            <NavLink class="nav-link" href="/transfers">
-                <i class="bi bi-clock-history me-2"></i>Transfers
-            </NavLink>
-        }
-
         @* ── TOOLS ── *@
         <div class="nav-section-header mt-2">
             <span class="nav-section-label">TOOLS</span>

@@ -1,0 +1,409 @@
+@page "/sc-auctions"
+@using System.Buffers.Binary
+@using Qubic.Core
+@using Qubic.Core.Entities
+@using Qubic.Core.Payloads
+@inject QubicBackendService Backend
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject TransactionTrackerService TxTracker
+@inject QubicSettingsService Settings
+
+<h4>SC Auctions</h4>
+<p class="text-muted">Browse active contract share auctions, check bid status, and place bids.</p>
+<div class="alert alert-info small py-2">This feature is in preview and may change in future updates.</div>
+
+<ul class="nav nav-tabs mb-3">
+    @foreach (var tab in _tabs)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@tab</a>
+        </li>
+    }
+</ul>
+
+<div class="row"><div class="col-md-8">
+    @switch (_activeTab)
+    {
+        case "Browse":
+            <div class="card"><div class="card-header">Active Auctions</div><div class="card-body">
+                @if (_browseLoading)
+                {
+                    <div class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading active auctions...</div>
+                }
+                else if (_activeIpos != null && _activeIpos.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Contract Index</th>
+                                    <th>Asset Name</th>
+                                    <th>Contract Identity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ipo in _activeIpos)
+                                {
+                                    <tr>
+                                        <td class="mono">@ipo.ContractIndex</td>
+                                        <td class="mono">@ipo.AssetName</td>
+                                        <td><AddressDisplay Address="@QubicContracts.GetContractIdentity((int)ipo.ContractIndex).ToString()" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else if (_activeIpos != null)
+                {
+                    <div class="text-muted">No active auctions found.</div>
+                }
+            </div></div>
+            break;
+
+        case "Status":
+            <div class="card"><div class="card-header">Auction Status</div><div class="card-body">
+                <div class="mb-2">
+                    <label class="form-label-sm">Contract</label>
+                    @if (_activeIpos is { Count: > 0 })
+                    {
+                        <select class="form-select form-select-sm mb-1" @bind="_statusContractIndex">
+                            @foreach (var ipo in _activeIpos)
+                            {
+                                <option value="@ipo.ContractIndex">@ipo.ContractIndex — @ipo.AssetName</option>
+                            }
+                        </select>
+                    }
+                    <input type="number" class="form-control form-control-sm" min="1" max="23" @bind="_statusContractIndex"
+                           placeholder="Or enter contract index (1-23)" />
+                </div>
+                <button class="btn btn-primary" @onclick="LookupStatus" disabled="@_statusLoading">
+                    @(_statusLoading ? "Looking up..." : "Lookup")
+                </button>
+
+                @if (Backend.ActiveBackend != QueryBackend.DirectNetwork)
+                {
+                    <div class="alert alert-warning mt-2">This feature requires the DirectNetwork backend.</div>
+                }
+
+                @if (_ipoStatus != null)
+                {
+                    <div class="card mt-3 border-info">
+                        <div class="card-header card-header-accent">Summary — Contract @_statusContractIndex</div>
+                        <div class="card-body">
+                            <table class="table table-sm table-bordered mb-0">
+                                <tbody>
+                                    <tr><th class="text-muted" style="width:40%">Filled Slots</th><td class="mono">@_filledSlots / 676</td></tr>
+                                    <tr><th class="text-muted">Min Bid</th><td class="mono">@(_filledSlots > 0 ? _minBid.ToString("N0") + " QU" : "—")</td></tr>
+                                    <tr><th class="text-muted">Max Bid</th><td class="mono">@(_filledSlots > 0 ? _maxBid.ToString("N0") + " QU" : "—")</td></tr>
+                                    <tr><th class="text-muted">Average Bid</th><td class="mono">@(_filledSlots > 0 ? _avgBid.ToString("N0") + " QU" : "—")</td></tr>
+                                    <tr><th class="text-muted">Total QU Bid</th><td class="mono">@(_filledSlots > 0 ? _totalBid.ToString("N0") + " QU" : "—")</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    @if (Seed.HasSeed && _mySlots.Count > 0)
+                    {
+                        <div class="card mt-3 border-primary">
+                            <div class="card-header card-header-accent">My Bids</div>
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <strong>@_mySlots.Count</strong> slot@(_mySlots.Count != 1 ? "s" : "") held
+                                    <span class="ms-2">|</span>
+                                    <span class="ms-2">Total committed: <strong class="mono">@_mySlots.Sum(s => s.Price).ToString("N0") QU</strong></span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead><tr><th>Slot #</th><th>Bid Amount</th></tr></thead>
+                                        <tbody>
+                                            @foreach (var slot in _mySlots)
+                                            {
+                                                <tr>
+                                                    <td class="mono">@slot.Index</td>
+                                                    <td class="mono">@slot.Price.ToString("N0") QU</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (Seed.HasSeed)
+                    {
+                        <div class="small text-muted mt-2">You have no bids in this auction.</div>
+                    }
+
+                    <div class="card mt-3">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>All Bids (@_filledSlots)</span>
+                        </div>
+                        <div class="card-body">
+                            @if (_filledSlots > 0)
+                            {
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-sm table-hover mb-0">
+                                        <thead><tr><th>Slot #</th><th>Identity</th><th>Bid Amount</th></tr></thead>
+                                        <tbody>
+                                            @foreach (var slot in _allSlots)
+                                            {
+                                                <tr>
+                                                    <td class="mono">@slot.Index</td>
+                                                    <td><AddressDisplay Address="@slot.Identity" /></td>
+                                                    <td class="mono">@slot.Price.ToString("N0") QU</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted">No bids placed yet.</div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div></div>
+            break;
+
+        case "Bid":
+            <div class="card"><div class="card-header">Place Auction Bid</div><div class="card-body">
+                @if (!Seed.HasSeed)
+                {
+                    <div class="alert alert-warning mb-0">Enter your seed in the top bar to place a bid.</div>
+                }
+                else
+                {
+                    <div class="mb-2">
+                        <label class="form-label-sm">Contract</label>
+                        @if (_activeIpos is { Count: > 0 })
+                        {
+                            <select class="form-select form-select-sm mb-1" @bind="_bidContractIndex">
+                                @foreach (var ipo in _activeIpos)
+                                {
+                                    <option value="@ipo.ContractIndex">@ipo.ContractIndex — @ipo.AssetName</option>
+                                }
+                            </select>
+                        }
+                        <input type="number" class="form-control form-control-sm" min="1" max="23" @bind="_bidContractIndex"
+                               placeholder="Or enter contract index (1-23)" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label-sm">Price per Share (QU)</label>
+                        <input type="number" class="form-control form-control-sm" min="1" @bind="_bidPrice" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label-sm">Number of Shares (1-676)</label>
+                        <input type="number" class="form-control form-control-sm" min="1" max="676" @bind="_bidQuantity" />
+                    </div>
+                    @if (_bidPrice > 0 && _bidQuantity > 0)
+                    {
+                        <div class="small text-muted mb-2">Total cost: <strong>@((_bidPrice * _bidQuantity).ToString("N0")) QU</strong></div>
+                    }
+
+                    @if (!_bidConfirmed)
+                    {
+                        <button class="btn btn-primary" @onclick="PreviewBid" disabled="@(_sending || _bidPrice <= 0 || _bidQuantity <= 0)">
+                            Preview Bid
+                        </button>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <strong>Confirm:</strong> Bid <strong>@_bidQuantity</strong> share@(_bidQuantity != 1 ? "s" : "")
+                            at <strong>@_bidPrice.ToString("N0") QU</strong> each
+                            for contract <strong>@_bidContractIndex</strong>
+                            (total: <strong>@((_bidPrice * _bidQuantity).ToString("N0")) QU</strong>)
+                            at tick <strong>@_bidResolvedTick.ToString("N0")</strong>
+                        </div>
+                        <button class="btn btn-success me-2" @onclick="SubmitBid" disabled="@_sending">
+                            @(_sending ? "Sending..." : "Sign & Broadcast")
+                        </button>
+                        <button class="btn btn-outline-secondary" @onclick="() => _bidConfirmed = false">Cancel</button>
+                    }
+                }
+            </div></div>
+            break;
+    }
+
+    @if (_result != null)
+    {
+        <div class="alert alert-success mt-3">
+            Transaction broadcast! Tx ID: <span class="mono">@_result</span>
+            <div class="mt-1">
+                <a href="https://explorer.qubic.org/network/tx/@_result" target="_blank" rel="noopener" class="me-3">View on Explorer</a>
+                <a href="/history">Transaction History</a>
+            </div>
+        </div>
+    }
+    @if (_error != null)
+    {
+        <div class="alert alert-danger mt-2">@_error</div>
+    }
+</div></div>
+
+@code {
+    private static readonly string[] _tabs = ["Browse", "Status", "Bid"];
+    private string _activeTab = "Browse";
+    private bool _sending;
+    private string? _error;
+    private string? _result;
+
+    private void SetTab(string tab) { _activeTab = tab; _error = null; _result = null; }
+
+    // ── Browse ──
+    private bool _browseLoading;
+    private IReadOnlyList<Qubic.Rpc.Models.IpoInfo>? _activeIpos;
+
+    // ── Status ──
+    private uint _statusContractIndex = 1;
+    private bool _statusLoading;
+    private ContractIpo? _ipoStatus;
+    private int _filledSlots;
+    private long _minBid;
+    private long _maxBid;
+    private long _avgBid;
+    private long _totalBid;
+    private List<(int Index, long Price)> _mySlots = [];
+    private List<(int Index, string Identity, long Price)> _allSlots = [];
+
+    // ── Bid ──
+    private uint _bidContractIndex = 1;
+    private long _bidPrice;
+    private int _bidQuantity = 1;
+    private bool _bidConfirmed;
+    private uint _bidResolvedTick;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _browseLoading = true;
+        try
+        {
+            _activeIpos = await Backend.GetActiveIposAsync();
+            if (_activeIpos is { Count: > 0 })
+            {
+                _statusContractIndex = _activeIpos[0].ContractIndex;
+                _bidContractIndex = _activeIpos[0].ContractIndex;
+            }
+        }
+        catch { }
+        finally { _browseLoading = false; }
+    }
+
+    private async Task<uint> GetTick() => TickMonitor.IsConnected
+        ? TickMonitor.Tick + (uint)Settings.TickOffset
+        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+
+    // ── Status Logic ──
+
+    private async Task LookupStatus()
+    {
+        _statusLoading = true; _error = null; _ipoStatus = null;
+        _mySlots = []; _allSlots = [];
+        _filledSlots = 0; _minBid = 0; _maxBid = 0; _avgBid = 0; _totalBid = 0;
+        try
+        {
+            if (_statusContractIndex < 1 || _statusContractIndex > 23)
+            { _error = "Contract index must be between 1 and 23."; return; }
+
+            if (Backend.ActiveBackend != QueryBackend.DirectNetwork)
+            { _error = "This feature requires the DirectNetwork backend. Switch to DirectNetwork in Settings."; return; }
+
+            _ipoStatus = await Backend.GetIpoStatusAsync(_statusContractIndex);
+            ComputeStatusSummary();
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _statusLoading = false; }
+    }
+
+    private void ComputeStatusSummary()
+    {
+        if (_ipoStatus == null) return;
+
+        var filled = new List<(int Index, string Identity, long Price)>();
+        byte[]? myPk = Seed.HasSeed ? Seed.GetPublicKey() : null;
+        _mySlots = [];
+
+        for (int i = 0; i < QubicConstants.NumberOfComputors; i++)
+        {
+            var identity = _ipoStatus.GetParticipantIdentity(i);
+            if (identity == null) continue;
+
+            var price = _ipoStatus.Prices[i];
+            filled.Add((i, identity.Value.ToString(), price));
+
+            if (myPk != null && _ipoStatus.PublicKeys[i].AsSpan().SequenceEqual(myPk))
+                _mySlots.Add((i, price));
+        }
+
+        _filledSlots = filled.Count;
+        if (filled.Count > 0)
+        {
+            _minBid = filled.Min(s => s.Price);
+            _maxBid = filled.Max(s => s.Price);
+            _totalBid = filled.Sum(s => s.Price);
+            _avgBid = _totalBid / filled.Count;
+        }
+
+        _allSlots = filled.OrderByDescending(s => s.Price).ToList();
+    }
+
+    // ── Bid Logic ──
+
+    private async Task PreviewBid()
+    {
+        _error = null; _result = null;
+        if (_bidContractIndex < 1 || _bidContractIndex > 23)
+        { _error = "Contract index must be between 1 and 23."; return; }
+        if (_bidPrice <= 0) { _error = "Price per share must be positive."; return; }
+        if (_bidQuantity < 1 || _bidQuantity > 676) { _error = "Number of shares must be 1-676."; return; }
+
+        try
+        {
+            _bidResolvedTick = await GetTick();
+            _bidConfirmed = true;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    private async Task SubmitBid()
+    {
+        _sending = true; _error = null;
+        try
+        {
+            // Re-resolve tick to ensure freshness
+            _bidResolvedTick = await GetTick();
+
+            // Build the 16-byte IPO bid payload
+            var data = new byte[16];
+            BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(0), _bidPrice);
+            BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(8), (ushort)_bidQuantity);
+            // bytes 10-15 remain zero (padding)
+
+            var dest = QubicContracts.GetContractIdentity((int)_bidContractIndex);
+            var payload = new GenericContractPayload(0, data);
+            var tx = Seed.CreateAndSignTransaction(dest, 0, _bidResolvedTick, payload);
+            var result = await Backend.BroadcastTransactionAsync(tx);
+            _result = result.TransactionId;
+            _bidConfirmed = false;
+
+            TxTracker.Track(new TrackedTransaction
+            {
+                Hash = result.TransactionId,
+                Source = Seed.Identity?.ToString() ?? "",
+                Destination = dest.ToString(),
+                Amount = 0,
+                TargetTick = _bidResolvedTick,
+                InputType = payload.InputType,
+                PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
+                Description = $"SC Auction Bid: contract {_bidContractIndex}, {_bidQuantity} share(s) @ {_bidPrice:N0} QU",
+                RawData = Convert.ToHexString(tx.GetRawBytes())
+            });
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+}
