@@ -14,10 +14,26 @@ else
 {
     <div class="d-flex align-items-center gap-2 mb-2 small">
         @{ var logSync = WalletStorage.Sync; }
-        @if (logSync.BobLogStatus is Qubic.Services.Storage.StreamStatus.Connecting or Qubic.Services.Storage.StreamStatus.CatchingUp)
+        @if (logSync.BobLogStatus == Qubic.Services.Storage.StreamStatus.Connecting)
         {
             <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
-            <span>@(logSync.BobLogStatusMessage ?? "Syncing...")</span>
+            <span>Connecting...</span>
+        }
+        else if (logSync.BobLogStatus == Qubic.Services.Storage.StreamStatus.CatchingUp)
+        {
+            <div class="w-100">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                    <span>@(logSync.BobLogStatusMessage ?? "Catching up...")</span>
+                </div>
+                @if (logSync.BobLogCatchUpPercent.HasValue)
+                {
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: @(logSync.BobLogCatchUpPercent.Value.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                    </div>
+                }
+            </div>
         }
         else if (logSync.BobLogStatus == Qubic.Services.Storage.StreamStatus.Error)
         {
