@@ -1,0 +1,88 @@
+1
+00:00:00,100 --> 00:00:07,362
+In this episode, we'll cover the DeFi features — QSwap, QEarn staking, and MSVault multi-signature.
+
+2
+00:00:07,312 --> 00:00:10,812
+QSwap is the automated market maker on Qubic.
+
+3
+00:00:10,812 --> 00:00:16,075
+You can create liquidity pools, add or remove liquidity, and swap tokens.
+
+4
+00:00:16,075 --> 00:00:23,637
+The tabs let you issue new pool tokens, transfer them, create pools, manage liquidity, and perform swaps.
+
+5
+00:00:23,637 --> 00:00:28,925
+Select an asset, choose your swap direction, enter amounts, and click Swap.
+
+6
+00:00:28,925 --> 00:00:32,225
+The interface handles the contract calls for you.
+
+7
+00:00:32,225 --> 00:00:35,337
+Next is QEarn — the staking feature.
+
+8
+00:00:35,337 --> 00:00:40,550
+QEarn lets you lock QU for staking rewards over a 52-week period.
+
+9
+00:00:40,550 --> 00:00:49,712
+The staking summary shows all your active locks — the epoch, amount, current week, estimated reward, and an early unlock option for each.
+
+10
+00:00:49,712 --> 00:00:54,325
+To stake, go to the Lock tab, enter an amount, and click Lock.
+
+11
+00:00:54,325 --> 00:00:58,912
+Your QU is locked for 52 weeks, earning yield each week.
+
+12
+00:00:58,912 --> 00:01:02,462
+You can unlock early, but the reward is reduced.
+
+13
+00:01:02,462 --> 00:01:12,225
+The Query tab lets you explore staking data — lock info per epoch, your lock status as a visual 52-week bitmask, global stats, and more.
+
+14
+00:01:12,225 --> 00:01:16,737
+Finally, MSVault provides multi-signature vaults on Qubic.
+
+15
+00:01:16,737 --> 00:01:23,562
+Multiple owners must approve before funds can be released — making it ideal for teams and organizations.
+
+16
+00:01:23,562 --> 00:01:29,225
+The top panel shows your vaults with balances, owner counts, and required approvals.
+
+17
+00:01:29,225 --> 00:01:32,850
+Pending releases show who has approved and who hasn't.
+
+18
+00:01:32,850 --> 00:01:36,125
+To create a vault, go to the Register tab.
+
+19
+00:01:36,125 --> 00:01:41,950
+Enter a name, add owner addresses, set the number of required approvals, and register.
+
+20
+00:01:41,950 --> 00:01:47,112
+Use the Deposit tab to fund the vault, and the Release tab to propose a withdrawal.
+
+21
+00:01:47,112 --> 00:01:50,575
+Other owners approve releases from their own wallets.
+
+22
+00:01:50,575 --> 00:01:54,125
+Once the threshold is met, the funds are released.
+

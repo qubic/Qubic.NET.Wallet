@@ -1,0 +1,80 @@
+1
+00:00:00,100 --> 00:00:06,300
+In this episode, we'll explore the Assets page and QX — Qubic's decentralized exchange.
+
+2
+00:00:06,250 --> 00:00:10,062
+The Assets page shows all tokens owned by an identity.
+
+3
+00:00:10,062 --> 00:00:13,912
+Enter any identity address and click Lookup Assets.
+
+4
+00:00:13,912 --> 00:00:19,600
+You'll see three categories: Owned assets, Possessed assets, and Issued assets.
+
+5
+00:00:19,600 --> 00:00:30,212
+For your own assets, you can directly place sell or buy orders, transfer to another address, view the order book, or manage rights — all from action buttons on each row.
+
+6
+00:00:30,212 --> 00:00:34,062
+Click Orders to view the live order book for any asset.
+
+7
+00:00:34,062 --> 00:00:37,200
+The asks and bids are shown side by side.
+
+8
+00:00:37,200 --> 00:00:39,750
+Click a row to pre-fill a trade.
+
+9
+00:00:39,750 --> 00:00:42,312
+Now let's move to QX Trading.
+
+10
+00:00:42,312 --> 00:00:47,750
+QX is the Qubic decentralized exchange, and this page gives you full access.
+
+11
+00:00:47,750 --> 00:00:52,112
+At the top, you see your open orders with cancel buttons for each.
+
+12
+00:00:52,112 --> 00:00:54,800
+The tabs give you everything you need.
+
+13
+00:00:54,800 --> 00:01:00,187
+Issue lets you create a new asset with a name, supply, and decimal places.
+
+14
+00:01:00,187 --> 00:01:03,825
+Transfer lets you send assets to another address.
+
+15
+00:01:03,825 --> 00:01:07,187
+Ask lets you place a sell order at your price.
+
+16
+00:01:07,187 --> 00:01:09,650
+Bid lets you place a buy order.
+
+17
+00:01:09,650 --> 00:01:13,050
+The total cost is calculated automatically.
+
+18
+00:01:13,050 --> 00:01:17,800
+And Rights lets you transfer asset management rights to a smart contract.
+
+19
+00:01:17,800 --> 00:01:25,975
+Below the tabs is the Market Overview — a table showing every traded asset with the best ask, best bid, depth, and spread.
+
+20
+00:01:25,975 --> 00:01:28,275
+Click Load to refresh it.
+

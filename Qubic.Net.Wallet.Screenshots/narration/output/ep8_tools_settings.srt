@@ -1,0 +1,108 @@
+1
+00:00:00,100 --> 00:00:05,525
+In this final episode, we'll cover the Sign and Verify tool and the wallet settings.
+
+2
+00:00:05,475 --> 00:00:11,937
+Sign and Verify lets you cryptographically sign messages with your seed and verify signatures from others.
+
+3
+00:00:11,937 --> 00:00:14,375
+Type a message and click Sign.
+
+4
+00:00:14,375 --> 00:00:20,825
+The wallet produces a JSON object containing your identity, the message, and the digital signature.
+
+5
+00:00:20,825 --> 00:00:26,237
+Share this to prove you control the identity — useful for authentication or agreements.
+
+6
+00:00:26,237 --> 00:00:31,512
+To verify someone else's signature, paste the signed JSON and click Verify.
+
+7
+00:00:31,512 --> 00:00:36,100
+The wallet checks the cryptographic signature and tells you whether it's valid.
+
+8
+00:00:36,100 --> 00:00:38,537
+Now let's explore Settings.
+
+9
+00:00:38,537 --> 00:00:41,400
+Settings is organized into tabs.
+
+10
+00:00:41,400 --> 00:00:44,862
+General lets you switch between Light and Dark theme.
+
+11
+00:00:44,862 --> 00:00:53,375
+Connection lets you configure your default backend — RPC, Bob, or Direct — along with the server URLs and direct node address.
+
+12
+00:00:53,375 --> 00:00:59,625
+Transactions lets you adjust the auto-tick offset and enable auto-resend for failed transactions.
+
+13
+00:00:59,625 --> 00:01:04,750
+This is useful if your transactions often expire before being processed.
+
+14
+00:01:04,750 --> 00:01:14,800
+Labels lets you toggle remote label resolution, which shows human-readable names for known addresses like exchanges and contracts instead of raw 60-character identities.
+
+15
+00:01:14,800 --> 00:01:18,537
+Data lets you export or import your wallet database.
+
+16
+00:01:18,537 --> 00:01:24,625
+The database is encrypted with SQLCipher, keyed to your seed, so only you can read it.
+
+17
+00:01:24,625 --> 00:01:33,125
+And the Vault tab lets you manage your encrypted vault file — change its location, update the password, or disconnect from the vault entirely.
+
+18
+00:01:33,125 --> 00:01:36,362
+A few important security notes to close with.
+
+19
+00:01:36,362 --> 00:01:39,775
+Your seed is held in memory only during the session.
+
+20
+00:01:39,775 --> 00:01:42,625
+It is never written to disk unencrypted.
+
+21
+00:01:42,625 --> 00:01:49,050
+The encrypted vault uses AES-256-GCM with Argon2id key derivation.
+
+22
+00:01:49,050 --> 00:01:53,800
+And in server mode, access is protected by a one-time session token.
+
+23
+00:01:53,800 --> 00:01:56,762
+But prefer desktop mode when possible.
+
+24
+00:01:56,762 --> 00:01:58,875
+Never share your seed.
+
+25
+00:01:58,875 --> 00:02:01,400
+Qubic will never ask for it.
+
+26
+00:02:01,400 --> 00:02:04,900
+Anyone with your seed has full control of your funds.
+
+27
+00:02:04,900 --> 00:02:08,062
+Thanks for watching, and welcome to Qubic.
+

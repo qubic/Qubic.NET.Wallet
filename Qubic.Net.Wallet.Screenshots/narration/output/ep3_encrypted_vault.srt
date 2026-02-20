@@ -1,0 +1,96 @@
+1
+00:00:00,100 --> 00:00:05,287
+The encrypted vault is one of the most important features in the Qubic dot Net Wallet.
+
+2
+00:00:05,237 --> 00:00:12,512
+It lets you store multiple seeds and an address book in a single encrypted file, protected by a password you choose.
+
+3
+00:00:12,512 --> 00:00:14,587
+Let's create a vault.
+
+4
+00:00:14,587 --> 00:00:17,450
+Enter a file path for the vault file.
+
+5
+00:00:17,450 --> 00:00:23,550
+Then enter the seed you want to store, give it a label like Main Wallet, and set a strong password.
+
+6
+00:00:23,550 --> 00:00:25,575
+Click Create Vault.
+
+7
+00:00:25,575 --> 00:00:32,900
+The wallet creates an AES-256-GCM encrypted file using Argon2id for key derivation.
+
+8
+00:00:32,900 --> 00:00:36,587
+This is the gold standard for password-based encryption.
+
+9
+00:00:36,587 --> 00:00:39,400
+Your vault can hold multiple seeds.
+
+10
+00:00:39,400 --> 00:00:41,525
+Let's add a second one.
+
+11
+00:00:41,525 --> 00:00:48,462
+Click Generate to create a fresh seed, give it a label — for example, Trading — and click Add Entry.
+
+12
+00:00:48,462 --> 00:00:51,262
+The vault now holds two identities.
+
+13
+00:00:51,262 --> 00:00:56,950
+You can switch between them instantly from the top bar dropdown — no need to re-enter seeds.
+
+14
+00:00:56,950 --> 00:01:00,262
+Now let's add some contacts to the address book.
+
+15
+00:01:00,262 --> 00:01:04,887
+Enter a label and an identity address, then click Add Contact.
+
+16
+00:01:04,887 --> 00:01:14,650
+Saved contacts appear as autocomplete suggestions in every address field across the app — Send, Send to Many, Assets, QX Trading, everywhere.
+
+17
+00:01:14,650 --> 00:01:17,662
+You can also save addresses on the fly.
+
+18
+00:01:17,662 --> 00:01:23,575
+After a successful transaction, the wallet offers to save the destination as a contact.
+
+19
+00:01:23,575 --> 00:01:27,237
+To secure your vault, click Lock in the top bar.
+
+20
+00:01:27,237 --> 00:01:29,825
+All seeds are cleared from memory.
+
+21
+00:01:29,825 --> 00:01:33,850
+To resume, enter your vault password and click Unlock.
+
+22
+00:01:33,850 --> 00:01:39,175
+If you enter a seed directly without a vault, the top bar shows a Save to Vault button.
+
+23
+00:01:39,175 --> 00:01:45,175
+Click it to create a new vault file or add the seed to an existing vault — right from the top bar.
+
+24
+00:01:45,175 --> 00:01:49,825
+You can also change your vault password at any time from the Settings page.
+

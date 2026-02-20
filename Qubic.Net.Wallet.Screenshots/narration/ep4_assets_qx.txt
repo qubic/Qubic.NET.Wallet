@@ -1,0 +1,25 @@
+In this episode, we'll explore the Assets page and QX — Qubic's decentralized exchange.
+
+The Assets page shows all tokens owned by an identity. Enter any identity address and click Lookup Assets.
+
+You'll see three categories: Owned assets, Possessed assets, and Issued assets.
+
+For your own assets, you can directly place sell or buy orders, transfer to another address, view the order book, or manage rights — all from action buttons on each row.
+
+Click Orders to view the live order book for any asset. The asks and bids are shown side by side. Click a row to pre-fill a trade.
+
+Now let's move to QX Trading. QX is the Qubic decentralized exchange, and this page gives you full access.
+
+At the top, you see your open orders with cancel buttons for each.
+
+The tabs give you everything you need. Issue lets you create a new asset with a name, supply, and decimal places.
+
+Transfer lets you send assets to another address.
+
+Ask lets you place a sell order at your price.
+
+Bid lets you place a buy order. The total cost is calculated automatically.
+
+And Rights lets you transfer asset management rights to a smart contract.
+
+Below the tabs is the Market Overview — a table showing every traded asset with the best ask, best bid, depth, and spread. Click Load to refresh it.

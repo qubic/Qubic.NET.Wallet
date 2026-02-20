@@ -1,0 +1,60 @@
+1
+00:00:00,100 --> 00:00:04,775
+In this episode, we'll look at governance and smart contract auctions.
+
+2
+00:00:04,725 --> 00:00:09,837
+The Voting page lets you participate in community governance on the Qubic network.
+
+3
+00:00:09,837 --> 00:00:13,375
+Browse active proposals to see what's being voted on.
+
+4
+00:00:13,375 --> 00:00:17,150
+The Browse tab lists all current and past proposals.
+
+5
+00:00:17,150 --> 00:00:22,075
+Cast your vote on the Vote tab by selecting a proposal and choosing your option.
+
+6
+00:00:22,075 --> 00:00:27,387
+View results with progress bars on the Results tab — see how the community is leaning.
+
+7
+00:00:27,387 --> 00:00:30,825
+You can also create a new poll from the Create tab.
+
+8
+00:00:30,825 --> 00:00:35,412
+Set a question, define the options, and submit it to the network.
+
+9
+00:00:35,412 --> 00:00:38,562
+Now let's look at Smart Contract Auctions.
+
+10
+00:00:38,562 --> 00:00:43,475
+SC Auctions shows available smart contract slots on the Qubic network.
+
+11
+00:00:43,475 --> 00:00:48,587
+The Browse tab lists active auctions with their current bid status and time remaining.
+
+12
+00:00:48,587 --> 00:00:52,787
+The Status tab lets you check the status of a specific auction.
+
+13
+00:00:52,787 --> 00:00:57,287
+And the Bid tab lets you place bids to secure a smart contract slot.
+
+14
+00:00:57,287 --> 00:01:01,337
+Enter the auction details and your bid amount, then submit.
+
+15
+00:01:01,337 --> 00:01:09,637
+These governance features give you a direct voice in the Qubic ecosystem — from voting on proposals to securing smart contract capacity.
+

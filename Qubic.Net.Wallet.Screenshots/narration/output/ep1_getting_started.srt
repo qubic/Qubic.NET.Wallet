@@ -1,0 +1,136 @@
+1
+00:00:00,100 --> 00:00:02,937
+Welcome to the Qubic dot Net Wallet.
+
+2
+00:00:02,887 --> 00:00:11,000
+In this episode, we'll set up a new wallet from scratch — generating a seed, connecting to the network, and exploring the dashboard.
+
+3
+00:00:11,000 --> 00:00:17,812
+The Qubic dot Net Wallet runs as a native desktop application on Windows, macOS, and Linux.
+
+4
+00:00:17,812 --> 00:00:21,212
+It can also run in your browser using server mode.
+
+5
+00:00:21,212 --> 00:00:23,562
+This is the main interface.
+
+6
+00:00:23,562 --> 00:00:27,975
+On the left you have the navigation sidebar with links to every feature.
+
+7
+00:00:27,975 --> 00:00:32,537
+At the top is the seed bar — where you'll enter or unlock your identity.
+
+8
+00:00:32,537 --> 00:00:34,750
+Let's create a new wallet.
+
+9
+00:00:34,750 --> 00:00:39,762
+On the Home page, you'll see a Get Started panel and a Create New Wallet panel.
+
+10
+00:00:39,762 --> 00:00:42,025
+Click Generate New Seed.
+
+11
+00:00:42,025 --> 00:00:46,275
+The wallet creates a random 55-character lowercase seed.
+
+12
+00:00:46,275 --> 00:00:51,362
+This seed is your master key — it controls your identity and all your funds.
+
+13
+00:00:51,362 --> 00:00:56,662
+Click the eye icon to reveal the seed, and the copy button to copy it to your clipboard.
+
+14
+00:00:56,662 --> 00:01:01,175
+Important: Write down your seed on paper and store it somewhere safe.
+
+15
+00:01:01,175 --> 00:01:04,712
+If you lose your seed, your funds are gone forever.
+
+16
+00:01:04,712 --> 00:01:06,975
+Never share it with anyone.
+
+17
+00:01:06,975 --> 00:01:10,437
+Check the confirmation box and click Use This Seed.
+
+18
+00:01:10,437 --> 00:01:14,600
+Your identity is now active — you can see it in the top bar.
+
+19
+00:01:14,600 --> 00:01:18,187
+The truncated identity address is shown as a badge.
+
+20
+00:01:18,187 --> 00:01:21,700
+Click it to copy the full 60-character address.
+
+21
+00:01:21,700 --> 00:01:24,625
+Now let's connect to the Qubic network.
+
+22
+00:01:24,625 --> 00:01:27,375
+The wallet supports three backends.
+
+23
+00:01:27,375 --> 00:01:33,712
+RPC connects to a Qubic RPC server — this is the default and recommended for most users.
+
+24
+00:01:33,712 --> 00:01:37,025
+Bob connects to a Bob JSON-RPC node.
+
+25
+00:01:37,025 --> 00:01:42,650
+And Direct connects to a Qubic node via TCP — the most decentralized option.
+
+26
+00:01:42,650 --> 00:01:45,925
+Select your preferred backend and click Connect.
+
+27
+00:01:45,925 --> 00:01:50,562
+The current epoch and tick appear in the top bar, confirming you're connected.
+
+28
+00:01:50,562 --> 00:01:55,362
+Once connected with an active seed, the Home page becomes your dashboard.
+
+29
+00:01:55,362 --> 00:01:59,162
+At the top you see your full identity and QU balance.
+
+30
+00:01:59,162 --> 00:02:01,887
+Click Load Balance to refresh it.
+
+31
+00:02:01,887 --> 00:02:08,275
+Below that are Quick Action buttons for Send, Receive, Assets, QX Trading, and History.
+
+32
+00:02:08,275 --> 00:02:16,850
+The dashboard also shows your owned assets and any open orders on the QX exchange — giving you a snapshot of your portfolio at a glance.
+
+33
+00:02:16,850 --> 00:02:19,087
+That's it for getting started.
+
+34
+00:02:19,087 --> 00:02:24,025
+You now have a wallet with an active identity, connected to the Qubic network.
+
