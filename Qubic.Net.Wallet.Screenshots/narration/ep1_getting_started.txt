@@ -1,0 +1,27 @@
+Welcome to the Qubic dot Net Wallet. In this episode, we'll set up a new wallet from scratch — generating a seed, connecting to the network, and exploring the dashboard.
+
+The Qubic dot Net Wallet runs as a native desktop application on Windows, macOS, and Linux. It can also run in your browser using server mode.
+
+This is the main interface. On the left you have the navigation sidebar with links to every feature. At the top is the seed bar — where you'll enter or unlock your identity.
+
+Let's create a new wallet. On the Home page, you'll see a Get Started panel and a Create New Wallet panel. Click Generate New Seed.
+
+The wallet creates a random 55-character lowercase seed. This seed is your master key — it controls your identity and all your funds.
+
+Click the eye icon to reveal the seed, and the copy button to copy it to your clipboard.
+
+Important: Write down your seed on paper and store it somewhere safe. If you lose your seed, your funds are gone forever. Never share it with anyone.
+
+Check the confirmation box and click Use This Seed. Your identity is now active — you can see it in the top bar. The truncated identity address is shown as a badge. Click it to copy the full 60-character address.
+
+Now let's connect to the Qubic network. The wallet supports three backends. RPC connects to a Qubic RPC server — this is the default and recommended for most users. Bob connects to a Bob JSON-RPC node. And Direct connects to a Qubic node via TCP — the most decentralized option.
+
+Select your preferred backend and click Connect. The current epoch and tick appear in the top bar, confirming you're connected.
+
+Once connected with an active seed, the Home page becomes your dashboard. At the top you see your full identity and QU balance. Click Load Balance to refresh it.
+
+Below that are Quick Action buttons for Send, Receive, Assets, QX Trading, and History.
+
+The dashboard also shows your owned assets and any open orders on the QX exchange — giving you a snapshot of your portfolio at a glance.
+
+That's it for getting started. You now have a wallet with an active identity, connected to the Qubic network.

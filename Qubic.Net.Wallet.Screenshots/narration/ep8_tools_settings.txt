@@ -1,0 +1,27 @@
+In this final episode, we'll cover the Sign and Verify tool and the wallet settings.
+
+Sign and Verify lets you cryptographically sign messages with your seed and verify signatures from others.
+
+Type a message and click Sign. The wallet produces a JSON object containing your identity, the message, and the digital signature. Share this to prove you control the identity — useful for authentication or agreements.
+
+To verify someone else's signature, paste the signed JSON and click Verify. The wallet checks the cryptographic signature and tells you whether it's valid.
+
+Now let's explore Settings. Settings is organized into tabs.
+
+General lets you switch between Light and Dark theme.
+
+Connection lets you configure your default backend — RPC, Bob, or Direct — along with the server URLs and direct node address.
+
+Transactions lets you adjust the auto-tick offset and enable auto-resend for failed transactions. This is useful if your transactions often expire before being processed.
+
+Labels lets you toggle remote label resolution, which shows human-readable names for known addresses like exchanges and contracts instead of raw 60-character identities.
+
+Data lets you export or import your wallet database. The database is encrypted with SQLCipher, keyed to your seed, so only you can read it.
+
+And the Vault tab lets you manage your encrypted vault file — change its location, update the password, or disconnect from the vault entirely.
+
+A few important security notes to close with. Your seed is held in memory only during the session. It is never written to disk unencrypted. The encrypted vault uses AES-256-GCM with Argon2id key derivation. And in server mode, access is protected by a one-time session token. But prefer desktop mode when possible.
+
+Never share your seed. Qubic will never ask for it. Anyone with your seed has full control of your funds.
+
+Thanks for watching, and welcome to Qubic.

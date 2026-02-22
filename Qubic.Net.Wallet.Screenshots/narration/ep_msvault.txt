@@ -1,0 +1,44 @@
+[SCENE: overview]
+Welcome to MSVault — the multi-signature vault on the Qubic network. MSVault lets multiple owners share control of funds, requiring a minimum number of approvals before anything can be released. It's ideal for teams, treasuries, or any scenario where you want shared custody.
+
+[SCENE: vault_summary]
+If you already have vaults, they appear at the top. Each card shows the vault ID, name, QU balance, any held assets, the number of owners, and the required approvals. Quick-action buttons let you deposit, release, or reset directly from here.
+
+[SCENE: pending_release]
+When a release is pending, you'll see it highlighted with an approval counter — showing who has approved and who hasn't. If your wallet is one of the owners, an Approve button appears so you can sign off.
+
+[SCENE: tab_register]
+Let's create a new vault. On the Register tab, enter a vault name, then add owner identities — between 2 and 16 addresses. Use the plus button to add more owners, or the X to remove one. The address fields support autocomplete from your address book.
+
+[SCENE: register_filled]
+Set the required approvals — this is the threshold of owners who must agree before funds can be released. For example, 2-of-3 means any two out of three owners must approve. Click Register Vault to submit.
+
+[SCENE: tab_deposit]
+Once a vault exists, anyone can deposit QU into it. On the Deposit tab, select your vault from the dropdown or enter a vault ID manually, enter the amount, and click Deposit. Deposits don't require approval from other owners.
+
+[SCENE: tab_release]
+The Release tab handles both releases and resets. To propose a withdrawal, select Release To, choose the vault, enter the destination and amount, then click Release. This creates a pending release that other owners must approve.
+
+[SCENE: release_reset]
+To cancel a pending release, switch to Reset Release mode. Enter the vault ID and click Reset. This clears all accumulated approvals and lets you start over with a new request.
+
+[SCENE: tab_assets]
+The Assets tab manages token deposits and releases — not just QU. Select whether you want to deposit or release, choose the vault, enter the asset issuer and name, and the amount. Asset releases follow the same approval flow as QU releases.
+
+[SCENE: tab_vote_fee]
+The Vote Fee tab lets owners vote on changing the vault's operational fees. Enter the vault ID, the new fee amount, and click Vote. The fee change takes effect once enough owners vote for the same value.
+
+[SCENE: tab_query]
+The Query tab lets you inspect any vault's state without submitting a transaction. Choose a query function — Get Vaults by owner, Get Balance, Get Vault Name, Get Owners, Get Release Status, or Get Fees — enter the vault ID or identity, and click Query. Results appear in a formatted table below.
+
+[SCENE: query_result]
+For example, querying the vault balance shows the current QU held. Querying owners lists every identity. This is useful for verifying a vault's configuration before approving a release.
+
+[SCENE: tab_history]
+The History tab shows a timeline of all MSVault operations — registrations, deposits, releases, approvals, and resets. Each row shows the time, tick, operation type, vault ID, status, amount, destination, and initiator. You can filter by vault ID for a focused view.
+
+[SCENE: history_table]
+Color coding helps you spot issues at a glance. Failed operations appear in red, pending ones in yellow, and successful operations are unmarked. Use the pagination controls to browse through older events.
+
+[SCENE: outro]
+That covers MSVault. Multiple owners, threshold-based approvals, support for both QU and assets, full query and history — all managed on-chain through the Qubic network.

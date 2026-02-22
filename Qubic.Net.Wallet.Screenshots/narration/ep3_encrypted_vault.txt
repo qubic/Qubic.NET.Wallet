@@ -1,0 +1,21 @@
+The encrypted vault is one of the most important features in the Qubic dot Net Wallet. It lets you store multiple seeds and an address book in a single encrypted file, protected by a password you choose.
+
+Let's create a vault. Enter a file path for the vault file. Then enter the seed you want to store, give it a label like Main Wallet, and set a strong password.
+
+Click Create Vault. The wallet creates an AES-256-GCM encrypted file using Argon2id for key derivation. This is the gold standard for password-based encryption.
+
+Your vault can hold multiple seeds. Let's add a second one. Click Generate to create a fresh seed, give it a label — for example, Trading — and click Add Entry.
+
+The vault now holds two identities. You can switch between them instantly from the top bar dropdown — no need to re-enter seeds.
+
+Now let's add some contacts to the address book. Enter a label and an identity address, then click Add Contact.
+
+Saved contacts appear as autocomplete suggestions in every address field across the app — Send, Send to Many, Assets, QX Trading, everywhere.
+
+You can also save addresses on the fly. After a successful transaction, the wallet offers to save the destination as a contact.
+
+To secure your vault, click Lock in the top bar. All seeds are cleared from memory. To resume, enter your vault password and click Unlock.
+
+If you enter a seed directly without a vault, the top bar shows a Save to Vault button. Click it to create a new vault file or add the seed to an existing vault — right from the top bar.
+
+You can also change your vault password at any time from the Settings page.

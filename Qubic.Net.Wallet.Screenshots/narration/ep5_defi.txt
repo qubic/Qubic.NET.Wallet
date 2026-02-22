@@ -1,0 +1,30 @@
+[SCENE: 10_qswap/overview]
+In this episode, we'll cover the DeFi features — QSwap, QEarn staking, and MSVault multi-signature.
+
+QSwap is the automated market maker on Qubic. You can create liquidity pools, add or remove liquidity, and swap tokens.
+
+[SCENE: 10_qswap/tabs]
+The tabs let you issue new pool tokens, transfer them, create pools, manage liquidity, and perform swaps. Select an asset, choose your swap direction, enter amounts, and click Swap. The interface handles the contract calls for you.
+
+[SCENE: 11_qearn/overview]
+Next is QEarn — the staking feature. QEarn lets you lock QU for staking rewards over a 52-week period.
+
+The staking summary shows all your active locks — the epoch, amount, current week, estimated reward, and an early unlock option for each.
+
+[SCENE: 11_qearn/tab_lock]
+To stake, go to the Lock tab, enter an amount, and click Lock. Your QU is locked for 52 weeks, earning yield each week. You can unlock early, but the reward is reduced.
+
+[SCENE: 11_qearn/tab_query]
+The Query tab lets you explore staking data — lock info per epoch, your lock status as a visual 52-week bitmask, global stats, and more.
+
+[SCENE: 12_msvault/overview]
+Finally, MSVault provides multi-signature vaults on Qubic. Multiple owners must approve before funds can be released — making it ideal for teams and organizations.
+
+[SCENE: 12_msvault/vault_summary]
+The top panel shows your vaults with balances, owner counts, and required approvals. Pending releases show who has approved and who hasn't.
+
+[SCENE: 12_msvault/tab_register]
+To create a vault, go to the Register tab. Enter a name, add owner addresses, set the number of required approvals, and register.
+
+[SCENE: 12_msvault/tab_deposit]
+Use the Deposit tab to fund the vault, and the Release tab to propose a withdrawal. Other owners approve releases from their own wallets. Once the threshold is met, the funds are released.

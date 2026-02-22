@@ -1,0 +1,15 @@
+In this episode, we'll explore transaction history and log events — the tools for monitoring your activity on the Qubic network.
+
+Transaction History has two tabs. The Tracked tab shows transactions you've made from this wallet, with live status updates — Pending, Confirmed, or Failed.
+
+Each transaction shows its current status. Pending means the transaction has been broadcast but not yet confirmed. Confirmed means the network has processed it. And Failed means it didn't execute.
+
+Expand any transaction to see full details — the destination, amount, tick, raw transaction data, and a Repeat Transaction button to re-send with the same parameters.
+
+The All Transactions tab shows your complete history synced from the network — both sent and received. You can filter by direction, type, or tick range to find specific transactions.
+
+Now let's look at Log Events. This page shows contract-level events for your identity — detailed logs synced from the Bob backend.
+
+Each event has a type badge, amounts, and raw body data. This is useful for tracking contract interactions like staking rewards, asset transfers, and DEX trades.
+
+Together, Transaction History and Log Events give you full visibility into everything happening with your identity on the Qubic network.

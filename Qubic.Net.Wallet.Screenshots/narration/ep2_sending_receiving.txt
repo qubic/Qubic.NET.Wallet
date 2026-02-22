@@ -1,0 +1,27 @@
+In this episode, we'll cover sending and receiving QU — the native currency of the Qubic network.
+
+Click Send in the sidebar. The From field shows your identity and current balance.
+
+Enter the destination identity — you can type it manually, or select from your address book if you've saved contacts. Enter the amount of QU to send.
+
+The quick-fill buttons let you quickly set 10%, 25%, 50%, or 100% of your balance.
+
+The Target Tick is set automatically. The wallet picks the current tick plus an offset to give the network time to process your transaction.
+
+Click Preview Transaction to review the details — destination, amount, and tick.
+
+Now click Sign and Broadcast. The wallet signs the transaction locally with your seed and sends it to the network. You'll see the transaction ID and a link to track it in your history.
+
+If the destination address isn't in your address book, the wallet offers to save it as a contact.
+
+Next, let's look at Send to Many. This feature lets you send QU to up to 25 recipients in a single transaction, using the QUTIL Send To Many V1 contract.
+
+Add recipients one by one — each with an address and amount. Or click Import from Text to paste a list of addresses and amounts, one per line, separated by commas or tabs.
+
+If you have a vault set up, you can save the current recipient list as a named template. This is handy for recurring payments — load a template, adjust amounts if needed, and send.
+
+Review the total, sign, and broadcast — just like a single send.
+
+Finally, let's visit the Receive page. It displays your identity as a QR code. Anyone can scan this to get your address.
+
+Below the QR code is your full identity in a copyable format. Click Copy Address to copy it, or Copy QR to copy the QR code image to your clipboard — handy for pasting into a chat or document.
