@@ -1,3 +1,48 @@
+# v0.3.1
+
+## New Features
+
+### Tick Drift Detection
+- Monitors all three backends (RPC, Bob, Direct Network) every 60 seconds
+- Displays a warning badge in the navbar when tick drift exceeds the configured threshold
+- Detailed per-backend tick comparison table on the Sync Manager page showing tick, status, and last check time
+- Configurable drift threshold in Settings > Connection (default: 15 ticks)
+
+### Optimized Log Sync with Indexed Fetch
+- Three-step indexed log catch-up replaces full epoch scan: `findLogIds` > `getTickLogRanges` > `getLogsByIdRange`
+- Catches up logs from current epoch minus 2 through the previous epoch before subscribing for live updates
+- Snapshot-based watermark ensures subscription starts near real-time after indexed fetch
+- Progress bar with percentage shown on the Log Events page during catch-up
+
+### Tx Hash Display Component
+- Reusable component with clickable explorer link and copy button
+- Applied consistently across all pages: Send, Transaction History, Log Events, Assets, QX Trading, Qswap, Qearn, SC Auctions, MSVault, Voting, Send to Many
+
+## Improvements
+
+- Addresses in the Log Events table are now copyable
+- Log sync progress bar with catch-up percentage and epoch indicator
+- Bob log subscription catch-up progress from server is now visualized
+
+## Bug Fixes
+
+- Fixed initial sync being skipped for user-entered seeds; skip-sync policy now only applies to freshly generated seeds
+- Fixed `qubic_getLogsByIdRange` parameter handling (3rd param is `endLogId`, not batch size)
+- Fixed epoch info `endTick` returning 0 for past epochs by adding fallback chain
+
+## Downloads
+
+| Platform | File |
+|----------|------|
+| Windows x64 | `Qubic.Net.Wallet-0.3.1-win-x64.zip` |
+| macOS Intel | `Qubic.Net.Wallet-0.3.1-osx-x64.zip` |
+| macOS Apple Silicon | `Qubic.Net.Wallet-0.3.1-osx-arm64.zip` |
+| Linux x64 | `Qubic.Net.Wallet-0.3.1-linux-x64.zip` |
+
+Verify downloads with the `.sha256` files included alongside each zip.
+
+---
+
 # v0.3.0
 
 ## New Features
