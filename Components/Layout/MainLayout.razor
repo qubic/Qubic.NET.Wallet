@@ -3,6 +3,7 @@
 @inject QubicBackendService Backend
 @inject SeedSessionService Seed
 @inject TickMonitorService TickMonitor
+@inject TickDriftService TickDrift
 @inject TransactionTrackerService TxTracker
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject QubicSettingsService Settings
@@ -136,6 +137,12 @@
                     <i class="bi bi-power"></i>
                 </button>
                 <span class="badge-qb-success mono">E@(TickMonitor.Epoch) | T@(TickMonitor.Tick)</span>
+                @if (TickDrift.HasDrift)
+                {
+                    <span class="badge-qb-warning" title="Tick drift detected: @TickDrift.MaxDrift ticks between backends">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Drift @TickDrift.MaxDrift
+                    </span>
+                }
             }
             else
             {
@@ -312,8 +319,10 @@
     protected override async Task OnInitializedAsync()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
+        TickDrift.OnDriftChanged += OnDriftChanged;
         Vault.OnVaultChanged += OnVaultChanged;
         await TickMonitor.StartAsync();
+        TickDrift.Start();
 
         if (Settings.RemoteLabelsEnabled)
             _ = LoadLabelsWithRetry();
@@ -326,6 +335,12 @@
     }
 
     private void OnTickChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private void OnDriftChanged()
     {
         if (_disposed) return;
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
@@ -607,6 +622,7 @@
     {
         _disposed = true;
         TickMonitor.OnTickChanged -= OnTickChanged;
+        TickDrift.OnDriftChanged -= OnDriftChanged;
         Vault.OnVaultChanged -= OnVaultChanged;
     }
 }

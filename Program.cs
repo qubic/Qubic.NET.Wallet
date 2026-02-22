@@ -105,6 +105,7 @@ class Program
         services.AddSingleton<SeedSessionService>();
         services.AddSingleton<VaultService>();
         services.AddSingleton<TickMonitorService>();
+        services.AddSingleton<TickDriftService>();
         services.AddSingleton<WalletDatabase>();
         services.AddSingleton<WalletSyncService>();
         services.AddSingleton<WalletStorageService>();

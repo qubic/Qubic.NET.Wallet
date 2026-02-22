@@ -1,6 +1,7 @@
 @page "/sync"
 @implements IDisposable
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
+@inject TickDriftService TickDrift
 
 <h4>Sync Manager</h4>
 <p class="text-muted">Monitor and control data synchronization from RPC and Bob WebSocket.</p>
@@ -65,6 +66,53 @@ else
                     <p class="mb-0 text-muted">Synced: @Sync.LogEventsSynced log events</p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    @* ── Tick Drift Detection ── *@
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Backend Tick Comparison</span>
+            <span class="badge @(TickDrift.HasDrift ? "bg-warning text-dark" : "bg-success")">
+                @(TickDrift.HasDrift ? $"Drift: {TickDrift.MaxDrift}" : "In sync")
+            </span>
+        </div>
+        <div class="card-body">
+            @if (TickDrift.RpcTick != null || TickDrift.BobTick != null || TickDrift.DirectTick != null)
+            {
+                <table class="table table-sm table-borderless mb-0">
+                    <thead><tr><th>Backend</th><th>Tick</th><th>Status</th><th>Last Check</th></tr></thead>
+                    <tbody>
+                        @foreach (var snap in GetBackendSnapshots())
+                        {
+                            <tr>
+                                <td>@snap.Backend</td>
+                                <td class="mono">@(snap.Reachable ? snap.Tick.ToString("N0") : "---")</td>
+                                <td>
+                                    @if (!snap.Reachable)
+                                    {
+                                        <span class="text-danger" title="@snap.Error">Unreachable</span>
+                                    }
+                                    else if (TickDrift.MaxTick > 0 && TickDrift.MaxTick - snap.Tick > (uint)TickDrift.Threshold)
+                                    {
+                                        <span class="text-warning">Behind by @(TickDrift.MaxTick - snap.Tick)</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-success">OK</span>
+                                    }
+                                </td>
+                                <td class="small text-muted">@snap.CheckedAtUtc.ToLocalTime().ToString("HH:mm:ss")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <span class="text-muted small">Waiting for first check...</span>
+            }
+            <div class="small text-muted mt-1">Threshold: @TickDrift.Threshold ticks. Checked every 60s.</div>
         </div>
     </div>
 
@@ -196,6 +244,7 @@ else
     protected override void OnInitialized()
     {
         WalletStorage.Sync.OnSyncStateChanged += OnSyncChanged;
+        TickDrift.OnDriftChanged += OnDriftChanged;
         if (WalletStorage.IsOpen)
         {
             RefreshData();
@@ -222,6 +271,19 @@ else
             RefreshData();
             StateHasChanged();
         });
+    }
+
+    private void OnDriftChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private IEnumerable<TickDriftService.BackendTickSnapshot> GetBackendSnapshots()
+    {
+        if (TickDrift.RpcTick != null) yield return TickDrift.RpcTick;
+        if (TickDrift.BobTick != null) yield return TickDrift.BobTick;
+        if (TickDrift.DirectTick != null) yield return TickDrift.DirectTick;
     }
 
     private void RefreshData()
@@ -328,5 +390,6 @@ else
         _disposed = true;
         _refreshTimer?.Dispose();
         WalletStorage.Sync.OnSyncStateChanged -= OnSyncChanged;
+        TickDrift.OnDriftChanged -= OnDriftChanged;
     }
 }

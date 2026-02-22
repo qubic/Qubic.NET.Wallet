@@ -509,7 +509,7 @@ else
         try
         {
             Seed.SetSeed(_generatedSeed);
-            WalletStorage.SetSeed(_generatedSeed, Seed.Identity!.Value.ToString(), TickMonitor.Epoch);
+            WalletStorage.SetSeed(_generatedSeed, Seed.Identity!.Value.ToString(), TickMonitor.Epoch, skipInitialSync: true);
             TxTracker.SetEncryptionKey(_generatedSeed);
             _generatedSeed = null;
             _seedSavedConfirmed = false;

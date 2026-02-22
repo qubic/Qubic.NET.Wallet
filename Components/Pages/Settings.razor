@@ -120,6 +120,17 @@ else if (_activeTab == "connection")
             </div>
             <div class="form-text">Current: <code>tcp://@(Backend.NodeHost):@(Backend.NodePort)</code></div>
         </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tick Drift Threshold</label>
+            <input type="number" class="form-control" min="1" max="100"
+                   value="@(Cfg.GetCustom<int?>("tickDriftThreshold") ?? 15)"
+                   @onchange="OnTickDriftThresholdChanged" />
+            <div class="form-text">
+                Maximum tick difference between backends before showing a drift warning.
+                Default: 15 ticks.
+            </div>
+        </div>
     </div></div>
 }
 else if (_activeTab == "transactions")
@@ -687,6 +698,7 @@ else if (_activeTab == "vault")
     private void OnBobPortChanged(ChangeEventArgs e) { Backend.BobPort = int.TryParse(e.Value?.ToString(), out var v) ? v : 443; Backend.ApplySettings(); }
     private void OnNodeHostChanged(ChangeEventArgs e) { Backend.NodeHost = e.Value?.ToString() ?? ""; Backend.ApplySettings(); }
     private void OnNodePortChanged(ChangeEventArgs e) { Backend.NodePort = int.TryParse(e.Value?.ToString(), out var v) ? v : 21841; Backend.ApplySettings(); }
+    private void OnTickDriftThresholdChanged(ChangeEventArgs e) { Cfg.SetCustom("tickDriftThreshold", int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, 1, 100) : 15); }
 
     private async Task OnRemoteLabelsToggled(ChangeEventArgs e)
     {

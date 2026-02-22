@@ -253,6 +253,15 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 0.5rem;
 }
 
+.badge-qb-warning {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.5rem;
+}
+
 /* ── Seed Warning Bar ── */
 .qb-seed-bar {
     background: rgba(255, 222, 161, 0.08);
