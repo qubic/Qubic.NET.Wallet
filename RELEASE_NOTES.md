@@ -1,3 +1,38 @@
+# v0.4.0
+
+## New Features
+
+### Watchlist
+- Dedicated watchlist page for monitoring addresses you don't own
+- Add any 60-character identity with a custom label
+- View QU balance and owned assets for each watched address
+- Compact and extended view modes
+- Accessible from the sidebar navigation
+
+### Light Theme
+- Full light theme support across the entire application
+- Navigation sidebar, navbar, and all cards adapt to the selected theme
+- Dual logo: dark logo for dark theme, monochrome logo for light theme
+- Theme selection is now persisted and applied on app startup (no longer resets to dark)
+
+## Improvements
+
+- **Vault UI restructured** — Consolidated vault settings tab from 7 separate cards to 3: Seeds (with inline add form), Address Book (with inline add form), and Vault Settings (collapsible change password + delete)
+- Improved error boundary handling in layout
+
+## Downloads
+
+| Platform | File |
+|----------|------|
+| Windows x64 | `Qubic.Net.Wallet-0.4.0-win-x64.zip` |
+| macOS Intel | `Qubic.Net.Wallet-0.4.0-osx-x64.zip` |
+| macOS Apple Silicon | `Qubic.Net.Wallet-0.4.0-osx-arm64.zip` |
+| Linux x64 | `Qubic.Net.Wallet-0.4.0-linux-x64.zip` |
+
+Verify downloads with the `.sha256` files included alongside each zip.
+
+---
+
 # v0.3.1
 
 ## New Features
