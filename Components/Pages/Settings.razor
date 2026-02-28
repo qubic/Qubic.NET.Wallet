@@ -8,6 +8,7 @@
 @inject IJSRuntime JS
 @inject VaultService Vault
 @inject TransactionTrackerService TxTracker
+@inject AutoLockService AutoLock
 @inject FileDialogService DialogService
 
 <h4>Settings</h4>
@@ -55,6 +56,19 @@
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
             </select>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header"><i class="bi bi-clock me-1"></i>Auto-Lock</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label small">Lock vault after inactivity (minutes)</label>
+                    <input type="number" class="form-control form-control-sm" min="0" max="480"
+                           value="@AutoLock.TimeoutMinutes"
+                           @onchange="e => { if (int.TryParse(e.Value?.ToString(), out var m)) AutoLock.TimeoutMinutes = m; }" />
+                    <div class="form-text">Set to 0 to disable auto-lock. Default: 15 minutes.</div>
+                </div>
+            </div>
         </div>
     </div></div>
 }

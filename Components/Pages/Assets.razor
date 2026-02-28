@@ -469,7 +469,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
     protected override async Task OnInitializedAsync()
     {
         TxTracker.OnChanged += OnTrackerChanged;
-        _ = LoadQxFees();
+        LoadQxFees().FireAndForget();
         if (Seed.HasSeed)
         {
             _identity = Seed.Identity!.ToString();
@@ -689,15 +689,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                 NumberOfShares = order.NumberOfShares
             };
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(QxContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, 0, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
             var name = Qubic.Core.AssetNameHelper.FromUlong(order.AssetName) ?? "?";
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Cancel Ask {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
-            _pendingCancels[key] = result.TransactionId;
+            var txId = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, tick, payload,
+                $"Cancel Ask {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU");
+            _pendingCancels[key] = txId;
         }
         catch { }
     }
@@ -715,15 +711,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                 NumberOfShares = order.NumberOfShares
             };
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(QxContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, 0, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
             var name = Qubic.Core.AssetNameHelper.FromUlong(order.AssetName) ?? "?";
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Cancel Bid {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
-            _pendingCancels[key] = result.TransactionId;
+            var txId = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, tick, payload,
+                $"Cancel Bid {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU");
+            _pendingCancels[key] = txId;
         }
         catch { }
     }
@@ -754,14 +746,13 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
             }
         }
         if (anyResolved)
-            _ = InvokeAsync(async () => { await LoadOpenOrders(); StateHasChanged(); });
+            InvokeAsync(async () => { await LoadOpenOrders(); StateHasChanged(); }).FireAndForget();
         else
             InvokeAsync(StateHasChanged);
     }
 
-    private async Task<uint> GetTick() => TickMonitor.IsConnected
-        ? TickMonitor.Tick + (uint)Settings.TickOffset
-        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+    private async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     private async Task ExecuteTransfer()
     {
@@ -786,14 +777,9 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(QxContractIndex));
             long txFee = _qxFees?.transfer ?? 0;
-            var tx = Seed.CreateAndSignTransaction(dest, txFee, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _actionResult = result.TransactionId;
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = txFee, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Transfer {_actionAssetName}: {_actionShares:N0} shares",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
+            _actionResult = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, txFee, tick, payload,
+                $"Transfer {_actionAssetName}: {_actionShares:N0} shares");
         }
         catch (Exception ex) { _actionError = ex.Message; }
         finally { _actionSending = false; }
@@ -816,15 +802,10 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(
                 Qubic.Core.QubicContracts.GetContractPublicKey(_actionCurrentManagingContract));
             var txFee = _actionRightsFee ?? 0;
-            var tx = Seed.CreateAndSignTransaction(dest, (long)txFee, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _actionResult = result.TransactionId;
             var contractName = Qubic.Core.QubicContracts.GetContractName(_actionCurrentManagingContract) ?? _actionCurrentManagingContract.ToString();
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Change Rights {_actionAssetName}: {_actionShares:N0} shares → contract {_actionContractIdx} (via {contractName})",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
+            _actionResult = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, (long)txFee, tick, payload,
+                $"Change Rights {_actionAssetName}: {_actionShares:N0} shares → contract {_actionContractIdx} (via {contractName})");
         }
         catch (Exception ex) { _actionError = ex.Message; }
         finally { _actionSending = false; }
@@ -850,14 +831,9 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
             };
 
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(QxContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, 0, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _actionResult = result.TransactionId;
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"QX Ask {_actionAssetName}: {_actionShares:N0} @ {_actionPrice:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
+            _actionResult = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, tick, payload,
+                $"QX Ask {_actionAssetName}: {_actionShares:N0} @ {_actionPrice:N0} QU");
         }
         catch (Exception ex) { _actionError = ex.Message; }
         finally { _actionSending = false; }
@@ -884,14 +860,9 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 
             long amount = _actionPrice * _actionShares;
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(QxContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _actionResult = result.TransactionId;
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = amount, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"QX Bid {_actionAssetName}: {_actionShares:N0} @ {_actionPrice:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
+            _actionResult = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, amount, tick, payload,
+                $"QX Bid {_actionAssetName}: {_actionShares:N0} @ {_actionPrice:N0} QU");
         }
         catch (Exception ex) { _actionError = ex.Message; }
         finally { _actionSending = false; }
@@ -921,7 +892,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
             _possessed = possessedTask.Result;
             _issued = issuedTask.Result;
 
-            _ = LoadQswapPools();
+            LoadQswapPools().FireAndForget();
         }
         catch (Exception ex)
         {

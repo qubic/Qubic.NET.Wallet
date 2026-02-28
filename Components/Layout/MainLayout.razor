@@ -12,6 +12,8 @@
 @inject VaultService Vault
 @inject NavigationManager Nav
 @inject LabelService Labels
+@inject AutoLockService AutoLock
+@inject BalanceService BalanceSvc
 @inject FileDialogService DialogService
 @inject IJSRuntime JS
 
@@ -48,9 +50,9 @@
                         title="Copy full identity">
                     <i class="bi @(_identityCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
                 </button>
-                @if (_navBalance != null)
+                @if (BalanceSvc.Balance != null)
                 {
-                    <span class="badge-qb-cyan mono">@_navBalance.Value.ToString("N0") QU</span>
+                    <span class="badge-qb-cyan mono">@BalanceSvc.Balance.Value.ToString("N0") QU</span>
                 }
                 <button class="btn btn-sm btn-qb-ghost" @onclick="LockVault"
                         title="Lock vault and clear seed">
@@ -86,9 +88,9 @@
                         title="Copy full identity">
                     <i class="bi @(_identityCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
                 </button>
-                @if (_navBalance != null)
+                @if (BalanceSvc.Balance != null)
                 {
-                    <span class="badge-qb-cyan mono">@_navBalance.Value.ToString("N0") QU</span>
+                    <span class="badge-qb-cyan mono">@BalanceSvc.Balance.Value.ToString("N0") QU</span>
                 }
                 @if (!Vault.VaultConfigured)
                 {
@@ -314,8 +316,7 @@
     private bool _reconnecting;
     private bool _disposed;
     private bool _identityCopied;
-    private long? _navBalance;
-    private string? _navBalanceIdentity;
+    private DotNetObjectReference<MainLayout>? _dotNetRef;
 
     // Vault state
     private string? _vaultPassword;
@@ -347,14 +348,18 @@
         TickMonitor.OnTickChanged += OnTickChanged;
         TickDrift.OnDriftChanged += OnDriftChanged;
         Vault.OnVaultChanged += OnVaultChanged;
+        AutoLock.OnAutoLockTriggered += OnAutoLockTriggered;
+        BalanceSvc.OnBalanceChanged += OnBalanceChanged;
+        Nav.LocationChanged += OnLocationChanged;
+        if (Vault.IsUnlocked) AutoLock.Start();
         await TickMonitor.StartAsync();
         TickDrift.Start();
 
         if (Settings.RemoteLabelsEnabled)
-            _ = LoadLabelsWithRetry();
+            LoadLabelsWithRetry().FireAndForget();
 
         // Auto-refresh asset registry if stale (once per day)
-        _ = AssetRegistry.RefreshFromNetworkAsync(Backend);
+        AssetRegistry.RefreshFromNetworkAsync(Backend).FireAndForget();
 
         // Default vault path for save dialog
         _saveVaultPath = Path.Combine(Settings.StorageDirectory, "vault.dat");
@@ -367,15 +372,15 @@
             var saved = Settings.GetCustom<string>("theme");
             if (!string.IsNullOrEmpty(saved) && saved != "dark")
                 await JS.InvokeVoidAsync("setTheme", saved);
+
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("registerActivityTracker", _dotNetRef);
         }
     }
 
     private void OnTickChanged()
     {
         if (_disposed) return;
-        // Refresh balance every ~30 ticks (~30 seconds)
-        if (Seed.HasSeed && TickMonitor.Tick % 30 == 0)
-            _ = RefreshNavBalance();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
@@ -388,23 +393,32 @@
     private void OnVaultChanged()
     {
         if (_disposed) return;
+        if (Vault.IsUnlocked) AutoLock.Start(); else AutoLock.Stop();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
-    // ── Balance ──
-
-    private async Task RefreshNavBalance()
+    private void OnAutoLockTriggered()
     {
-        if (!Seed.HasSeed || Seed.Identity == null) return;
-        var id = Seed.Identity.Value.ToString();
-        try
+        if (_disposed) return;
+        InvokeAsync(() =>
         {
-            var bal = await Backend.GetBalanceAsync(Seed.Identity.Value);
-            _navBalance = bal.Amount;
-            _navBalanceIdentity = id;
-            if (!_disposed) await InvokeAsync(StateHasChanged);
-        }
-        catch { }
+            if (Vault.IsUnlocked) LockVault();
+            StateHasChanged();
+        });
+    }
+
+    private void OnLocationChanged(object? s, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        AutoLock.RecordActivity();
+    }
+
+    [Microsoft.JSInterop.JSInvokable]
+    public void OnUserActivity() { AutoLock.RecordActivity(); }
+
+    private void OnBalanceChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
     // ── Seed (direct entry) ──
@@ -419,7 +433,6 @@
                 WalletStorage.SetSeed(_seedInput, Seed.Identity!.Value.ToString(), TickMonitor.Epoch);
                 TxTracker.SetEncryptionKey(_seedInput);
                 _seedInput = null;
-                _ = RefreshNavBalance();
             }
             catch { }
         }
@@ -431,8 +444,6 @@
         WalletStorage.ClearSeed();
         TxTracker.ClearEncryptionKey();
         _seedInput = null;
-        _navBalance = null;
-        _navBalanceIdentity = null;
         Nav.NavigateTo("/", forceLoad: false);
     }
 
@@ -504,8 +515,6 @@
             TxTracker.SetEncryptionKey(entry.Seed);
             Settings.SetCustom("vault_last_identity", entry.Identity);
             _seedInput = null;
-            _navBalance = null;
-            _ = RefreshNavBalance();
         }
         catch { }
     }
@@ -692,5 +701,9 @@
         TickMonitor.OnTickChanged -= OnTickChanged;
         TickDrift.OnDriftChanged -= OnDriftChanged;
         Vault.OnVaultChanged -= OnVaultChanged;
+        AutoLock.OnAutoLockTriggered -= OnAutoLockTriggered;
+        BalanceSvc.OnBalanceChanged -= OnBalanceChanged;
+        Nav.LocationChanged -= OnLocationChanged;
+        _dotNetRef?.Dispose();
     }
 }

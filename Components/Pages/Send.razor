@@ -6,6 +6,7 @@
 @inject TransactionTrackerService TxTracker
 @inject QubicSettingsService Settings
 @inject VaultService Vault
+@inject BalanceService BalanceSvc
 
 <h4>Send QU</h4>
 
@@ -23,11 +24,11 @@ else
                     <div class="mb-2">
                         <label class="form-label small">From</label>
                         <input class="form-control form-control-sm mono" value="@Seed.Identity" readonly />
-                        @if (_balance != null)
+                        @if (BalanceSvc.Balance != null)
                         {
-                            <div class="small mt-1">Balance: <strong>@FormatQu(_balance.Value)</strong> QU</div>
+                            <div class="small mt-1">Balance: <strong>@FormatQu(BalanceSvc.Balance.Value)</strong> QU</div>
                         }
-                        else if (_balanceLoading)
+                        else if (BalanceSvc.IsLoading)
                         {
                             <div class="small text-muted mt-1">Loading balance...</div>
                         }
@@ -44,7 +45,7 @@ else
                     <div class="mb-2">
                         <label class="form-label small">Amount (QU)</label>
                         <input type="number" class="form-control form-control-sm" min="1" @bind="_amount" />
-                        @if (_balance != null)
+                        @if (BalanceSvc.Balance != null)
                         {
                             <div class="d-flex gap-1 mt-1">
                                 <button class="btn btn-outline-secondary btn-sm" @onclick="() => SetPercent(10)">10%</button>
@@ -131,14 +132,12 @@ else
     private bool _sending;
     private string? _result;
     private string? _error;
-    private long? _balance;
-    private bool _balanceLoading;
     private bool _disposed;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
-        if (Seed.HasSeed) await LoadBalance();
+        BalanceSvc.OnBalanceChanged += OnBalanceChanged;
     }
 
     private void OnTickChanged()
@@ -147,23 +146,17 @@ else
         InvokeAsync(() => { if (!_disposed && _targetTick == 0 && !_confirmed) StateHasChanged(); });
     }
 
-    private async Task LoadBalance()
+    private void OnBalanceChanged()
     {
-        if (!Seed.HasSeed || Seed.Identity == null) return;
-        _balanceLoading = true;
-        try
-        {
-            var bal = await Backend.GetBalanceAsync(Seed.Identity.Value);
-            _balance = bal.Amount;
-        }
-        catch { _balance = null; }
-        finally { _balanceLoading = false; }
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
     private void SetPercent(int pct)
     {
-        if (_balance == null || _balance.Value <= 0) return;
-        _amount = _balance.Value * pct / 100;
+        var bal = BalanceSvc.Balance;
+        if (bal == null || bal.Value <= 0) return;
+        _amount = bal.Value * pct / 100;
         if (_amount <= 0) _amount = 1;
     }
 
@@ -173,19 +166,17 @@ else
         if (string.IsNullOrWhiteSpace(_destination) || _destination.Trim().Length != 60)
         { _error = "Destination must be a 60-character identity."; return; }
         if (_amount <= 0) { _error = "Amount must be positive."; return; }
-        if (_balance != null && _amount > _balance.Value)
-        { _error = $"Insufficient balance ({FormatQu(_balance.Value)} QU)."; return; }
+        if (BalanceSvc.Balance != null && _amount > BalanceSvc.Balance.Value)
+        { _error = $"Insufficient balance ({FormatQu(BalanceSvc.Balance.Value)} QU)."; return; }
 
         _loading = true;
         try
         {
-            await LoadBalance();
-            if (_balance != null && _amount > _balance.Value)
-            { _error = $"Insufficient balance ({FormatQu(_balance.Value)} QU)."; return; }
+            await BalanceSvc.RefreshAsync();
+            if (BalanceSvc.Balance != null && _amount > BalanceSvc.Balance.Value)
+            { _error = $"Insufficient balance ({FormatQu(BalanceSvc.Balance.Value)} QU)."; return; }
 
-            _resolvedTick = _targetTick == 0
-                ? (TickMonitor.IsConnected ? TickMonitor.Tick : (await Backend.GetTickInfoAsync()).Tick) + (uint)Settings.TickOffset
-                : _targetTick;
+            _resolvedTick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
             _confirmed = true;
         }
         catch (Exception ex) { _error = ex.Message; }
@@ -198,26 +189,16 @@ else
         try
         {
             if (IdentityValidation.Validate(_destination) != null) { _error = "Invalid destination."; return; }
-            if (_targetTick == 0)
-                _resolvedTick = (TickMonitor.IsConnected ? TickMonitor.Tick : (await Backend.GetTickInfoAsync()).Tick) + (uint)Settings.TickOffset;
+            _resolvedTick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
 
             var dest = Qubic.Core.Entities.QubicIdentity.FromIdentity(_destination!.Trim());
             var tx = Seed.CreateAndSignTransfer(dest, _amount, _resolvedTick);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _result = result.TransactionId;
+            _result = await TransactionHelper.BroadcastAndTrackAsync(
+                Backend, TxTracker, Seed, tx,
+                dest.ToString(), _amount, _resolvedTick,
+                $"Send {FormatQu(_amount)} QU");
             _confirmed = false;
-
-            TxTracker.Track(new TrackedTransaction
-            {
-                Hash = result.TransactionId,
-                Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(),
-                Amount = _amount,
-                TargetTick = _resolvedTick,
-                Description = $"Send {FormatQu(_amount)} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes())
-            });
-            _ = LoadBalance();
+            BalanceSvc.RequestRefresh();
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }
@@ -241,5 +222,6 @@ else
     {
         _disposed = true;
         TickMonitor.OnTickChanged -= OnTickChanged;
+        BalanceSvc.OnBalanceChanged -= OnBalanceChanged;
     }
 }

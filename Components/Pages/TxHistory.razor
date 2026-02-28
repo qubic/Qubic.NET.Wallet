@@ -93,7 +93,7 @@
         </button>
         @if (TxTracker.Transactions.Count > 0)
         {
-            <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="ClearAll">Clear All</button>
+            <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => _confirmClear = true">Clear All</button>
         }
     </div>
 
@@ -375,10 +375,18 @@ else
     }
 }
 
+<ConfirmModal Visible="_confirmClear"
+             Title="Clear All"
+             Message="Remove all tracked transactions?"
+             ConfirmText="Clear All"
+             OnConfirm="() => { TxTracker.Clear(); _confirmClear = false; _expandedHash = null; }"
+             OnCancel="() => _confirmClear = false" />
+
 @code {
     private enum Tab { Tracked, All }
     private Tab _activeTab = Tab.Tracked;
     private bool _showSyncDetails;
+    private bool _confirmClear;
 
     // Tracked tab state
     private string? _expandedHash;
@@ -544,12 +552,6 @@ else
         {
             _repeating = null;
         }
-    }
-
-    private void ClearAll()
-    {
-        TxTracker.Clear();
-        _expandedHash = null;
     }
 
     private static string StreamIconClass(Qubic.Services.Storage.StreamStatus status) => status switch

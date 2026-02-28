@@ -114,6 +114,8 @@ class Program
         services.AddSingleton<PeerAutoDiscoverService>();
         services.AddSingleton<QubicStaticService>();
         services.AddSingleton<LabelService>();
+        services.AddSingleton<AutoLockService>();
+        services.AddSingleton<BalanceService>();
         services.AddSingleton(new FileDialogService());
         services.AddLocalization();
     }

@@ -3,6 +3,7 @@
 @inject SeedSessionService Seed
 @inject QubicBackendService Backend
 @inject TickMonitorService TickMonitor
+@inject BalanceService BalanceSvc
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject TransactionTrackerService TxTracker
 @inject IJSRuntime JS
@@ -128,21 +129,21 @@ else
                 </div>
                 <div class="col-md-4 mb-2 mb-md-0">
                     <div class="small text-muted mb-1">Balance</div>
-                    @if (_balanceLoading)
+                    @if (BalanceSvc.IsLoading && BalanceSvc.Balance == null)
                     {
                         <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading...</span>
                     }
-                    else if (_balance != null)
+                    else if (BalanceSvc.Balance != null)
                     {
-                        <h3 class="mb-0">@_balance.Value.ToString("N0") <small class="text-muted">QU</small></h3>
+                        <h3 class="mb-0">@BalanceSvc.Balance.Value.ToString("N0") <small class="text-muted">QU</small></h3>
                     }
-                    else if (_balanceError != null)
+                    else if (BalanceSvc.Error != null)
                     {
-                        <span class="text-danger small">@_balanceError</span>
+                        <span class="text-danger small">@BalanceSvc.Error</span>
                     }
                     else
                     {
-                        <button class="btn btn-sm btn-outline-primary" @onclick="LoadBalance">Load Balance</button>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="BalanceSvc.RequestRefresh">Load Balance</button>
                     }
                 </div>
                 <div class="col-md-3 text-md-end">
@@ -304,9 +305,6 @@ else
 }
 
 @code {
-    private long? _balance;
-    private bool _balanceLoading;
-    private string? _balanceError;
     private bool _disposed;
 
     // Seed generation
@@ -331,13 +329,14 @@ else
         TickMonitor.OnTickChanged += OnTickChanged;
         Seed.OnSeedChanged += OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged += OnSyncChanged;
+        BalanceSvc.OnBalanceChanged += OnBalanceChanged;
 
         if (Seed.HasSeed)
         {
-            var balanceTask = LoadBalance();
+            BalanceSvc.RequestRefresh();
             var assetsTask = LoadAssets();
             var ordersTask = LoadOrders();
-            await Task.WhenAll(balanceTask, assetsTask, ordersTask);
+            await Task.WhenAll(assetsTask, ordersTask);
         }
     }
 
@@ -359,8 +358,6 @@ else
         InvokeAsync(async () =>
         {
             if (_disposed) return;
-            _balance = null;
-            _balanceError = null;
             _ownedAssets = null;
             _assetsError = null;
             _askOrders = null;
@@ -368,34 +365,18 @@ else
             _ordersError = null;
             if (Seed.HasSeed)
             {
-                var t1 = LoadBalance();
-                var t2 = LoadAssets();
-                var t3 = LoadOrders();
-                await Task.WhenAll(t1, t2, t3);
+                var t1 = LoadAssets();
+                var t2 = LoadOrders();
+                await Task.WhenAll(t1, t2);
             }
             StateHasChanged();
         });
     }
 
-    private async Task LoadBalance()
+    private void OnBalanceChanged()
     {
-        if (!Seed.HasSeed || Seed.Identity == null) return;
-        _balanceLoading = true;
-        _balanceError = null;
-        StateHasChanged();
-        try
-        {
-            var bal = await Backend.GetBalanceAsync(Seed.Identity.Value);
-            _balance = bal.Amount;
-        }
-        catch (Exception ex)
-        {
-            _balanceError = ex.Message;
-        }
-        finally
-        {
-            _balanceLoading = false;
-        }
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
     private async Task LoadAssets()
@@ -523,5 +504,6 @@ else
         TickMonitor.OnTickChanged -= OnTickChanged;
         Seed.OnSeedChanged -= OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged -= OnSyncChanged;
+        BalanceSvc.OnBalanceChanged -= OnBalanceChanged;
     }
 }

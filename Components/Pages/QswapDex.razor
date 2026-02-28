@@ -202,20 +202,13 @@ else
         catch { }
     }
 
-    private async Task<uint> GetTick() => TickMonitor.IsConnected
-        ? TickMonitor.Tick + (uint)Settings.TickOffset
-        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+    private async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     private async Task Broadcast(long amount, uint tick, Qubic.Core.Payloads.ITransactionPayload payload, string desc)
     {
         var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(ContractIndex));
-        var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
-        var result = await Backend.BroadcastTransactionAsync(tx);
-        _result = result.TransactionId;
-        TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-            Destination = dest.ToString(), Amount = amount, TargetTick = tick,
-            InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()), Description = desc,
-            RawData = Convert.ToHexString(tx.GetRawBytes()) });
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, desc);
     }
 
     private byte[] ParseIssuer(string? issuer)
@@ -276,7 +269,6 @@ else
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qswap.CreatePoolPayload
             {
-                AssetIssuer = ParseIssuer(_poolIssuer),
                 AssetName = AssetNameHelper.ToUlong(_poolName.Trim())
             };
             await Broadcast(0, tick, payload, $"QSwap Create Pool: {_poolName.Trim()}");

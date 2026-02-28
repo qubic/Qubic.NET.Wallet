@@ -6,6 +6,7 @@
 @inject QubicSettingsService Settings
 @inject IJSRuntime JS
 @inject VaultService Vault
+@inject BalanceService BalanceSvc
 
 <h4>QEarn Staking</h4>
 <p class="text-muted">Lock QU to earn rewards, unlock, and query staking information.</p>
@@ -138,7 +139,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                     <label class="form-label-sm">Amount to lock (QU)</label>
                     <input type="text" inputmode="numeric" class="form-control form-control-sm"
                            value="@FormatQu(_lockAmount)" @onchange="e => _lockAmount = ParseQu(e.Value?.ToString())" />
-                    @if (_balance != null)
+                    @if (BalanceSvc.Balance != null)
                     {
                         <div class="d-flex gap-1 mt-1">
                             <button class="btn btn-outline-secondary btn-sm" @onclick="() => SetLockPercent(25)">25%</button>
@@ -261,9 +262,6 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
     private record ActiveLock(uint Epoch, ulong Amount, int Week, int Remaining, ulong Yield, ulong EstReward,
         ulong EpochTotalLocked, ulong EpochCurrentLocked, ulong EpochBonusAmount);
 
-    // Balance
-    private long? _balance;
-
     // Lock
     private long _lockAmount;
     // Unlock (from summary)
@@ -286,7 +284,6 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
 
         if (Seed.HasSeed)
         {
-            _ = LoadBalance();
             _autoLoading = true;
             try
             {
@@ -387,37 +384,19 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
         }
     }
 
-    private async Task<uint> GetTick() => TickMonitor.IsConnected
-        ? TickMonitor.Tick + (uint)Settings.TickOffset
-        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+    private async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     private async Task Broadcast(long amount, uint tick, Qubic.Core.Payloads.ITransactionPayload payload, string desc)
     {
         var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(ContractIndex));
-        var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
-        var result = await Backend.BroadcastTransactionAsync(tx);
-        _result = result.TransactionId;
-        TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-            Destination = dest.ToString(), Amount = amount, TargetTick = tick,
-            InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()), Description = desc,
-            RawData = Convert.ToHexString(tx.GetRawBytes()) });
-    }
-
-    private async Task LoadBalance()
-    {
-        if (!Seed.HasSeed || Seed.Identity == null) return;
-        try
-        {
-            var bal = await Backend.GetBalanceAsync(Seed.Identity.Value);
-            _balance = bal.Amount;
-        }
-        catch { _balance = null; }
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, desc);
     }
 
     private void SetLockPercent(int pct)
     {
-        if (_balance == null || _balance.Value <= 0) return;
-        _lockAmount = _balance.Value * pct / 100;
+        if (BalanceSvc.Balance == null || BalanceSvc.Balance.Value <= 0) return;
+        _lockAmount = BalanceSvc.Balance.Value * pct / 100;
         if (_lockAmount <= 0) _lockAmount = 1;
     }
 

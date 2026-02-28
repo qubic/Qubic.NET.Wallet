@@ -292,9 +292,8 @@
         finally { _browseLoading = false; }
     }
 
-    private async Task<uint> GetTick() => TickMonitor.IsConnected
-        ? TickMonitor.Tick + (uint)Settings.TickOffset
-        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+    private async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     // ── Status Logic ──
 
@@ -384,23 +383,10 @@
 
             var dest = QubicContracts.GetContractIdentity((int)_bidContractIndex);
             var payload = new GenericContractPayload(0, data);
-            var tx = Seed.CreateAndSignTransaction(dest, 0, _bidResolvedTick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _result = result.TransactionId;
+            _result = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, _bidResolvedTick, payload,
+                $"SC Auction Bid: contract {_bidContractIndex}, {_bidQuantity} share(s) @ {_bidPrice:N0} QU");
             _bidConfirmed = false;
-
-            TxTracker.Track(new TrackedTransaction
-            {
-                Hash = result.TransactionId,
-                Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(),
-                Amount = 0,
-                TargetTick = _bidResolvedTick,
-                InputType = payload.InputType,
-                PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"SC Auction Bid: contract {_bidContractIndex}, {_bidQuantity} share(s) @ {_bidPrice:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes())
-            });
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }

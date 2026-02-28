@@ -353,7 +353,7 @@ else
             Vault.AddWatchlistEntry(_addLabel, _addAddress!.Trim());
             var addr = _addAddress!.Trim().ToUpperInvariant();
             _addLabel = null; _addAddress = null;
-            _ = FetchData(addr);
+            FetchData(addr).FireAndForget();
         }
         catch (Exception ex) { _addError = ex.Message; }
     }

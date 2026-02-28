@@ -414,28 +414,13 @@
         catch { return Convert.ToHexString(pk)[..16] + "..."; }
     }
 
-    async Task<uint> GetTick() => TickMonitor.IsConnected
-        ? TickMonitor.Tick + (uint)Settings.TickOffset
-        : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
+    async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     async Task Broadcast(long amount, uint tick, ITransactionPayload payload, string desc)
     {
         var dest = QubicIdentity.FromPublicKey(QubicContracts.GetContractPublicKey((int)QutilContractIndex));
-        var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
-        var result = await Backend.BroadcastTransactionAsync(tx);
-        _result = result.TransactionId;
-        TxTracker.Track(new TrackedTransaction
-        {
-            Hash = result.TransactionId,
-            Source = Seed.Identity?.ToString() ?? "",
-            Destination = dest.ToString(),
-            Amount = amount,
-            TargetTick = tick,
-            InputType = payload.InputType,
-            PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-            Description = desc,
-            RawData = Convert.ToHexString(tx.GetRawBytes())
-        });
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, desc);
     }
 
     // ── Browse Tab ──

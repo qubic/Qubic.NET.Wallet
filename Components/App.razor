@@ -15,7 +15,7 @@
 </head>
 <body>
     <Routes @rendermode="RenderMode.InteractiveServer" />
-    <script src="/_framework/blazor.web.js"></script>
+    <script src="_framework/blazor.web.js"></script>
     <script>
         window.downloadFile = (filename, contentType, base64) => {
             const link = document.createElement('a');
@@ -44,6 +44,18 @@
         };
         window.getTheme = () => {
             return document.documentElement.getAttribute('data-bs-theme') || 'light';
+        };
+        window.registerActivityTracker = function(dotNetRef) {
+            let lastNotify = 0;
+            function notify() {
+                const now = Date.now();
+                if (now - lastNotify > 10000) {
+                    lastNotify = now;
+                    dotNetRef.invokeMethodAsync('OnUserActivity');
+                }
+            }
+            ['mousemove','mousedown','keydown','touchstart','scroll'].forEach(
+                e => document.addEventListener(e, notify, {passive:true}));
         };
         window.copyQrAsImage = async (containerId) => {
             const el = document.getElementById(containerId);

@@ -2,6 +2,9 @@
 bin/
 obj/
 
+## Build-time generated (blazor.web.js copied from NuGet for server mode)
+wwwroot/_framework/
+
 ## Publish output
 publish/
 

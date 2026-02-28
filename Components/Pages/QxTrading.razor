@@ -422,15 +422,11 @@ else
                 Price = order.Price, NumberOfShares = order.NumberOfShares
             };
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(ContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, 0, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
             var name = Qubic.Core.AssetNameHelper.FromUlong(order.AssetName) ?? "?";
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Cancel Ask {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
-            _pendingCancels[key] = result.TransactionId;
+            var txId = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, tick, payload,
+                $"Cancel Ask {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU");
+            _pendingCancels[key] = txId;
         }
         catch { }
     }
@@ -446,15 +442,11 @@ else
                 Price = order.Price, NumberOfShares = order.NumberOfShares
             };
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(ContractIndex));
-            var tx = Seed.CreateAndSignTransaction(dest, 0, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
             var name = Qubic.Core.AssetNameHelper.FromUlong(order.AssetName) ?? "?";
-            TxTracker.Track(new TrackedTransaction { Hash = result.TransactionId, Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(), Amount = 0, TargetTick = tick,
-                InputType = payload.InputType, PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"Cancel Bid {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU",
-                RawData = Convert.ToHexString(tx.GetRawBytes()) });
-            _pendingCancels[key] = result.TransactionId;
+            var txId = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, 0, tick, payload,
+                $"Cancel Bid {name}: {order.NumberOfShares:N0} @ {order.Price:N0} QU");
+            _pendingCancels[key] = txId;
         }
         catch { }
     }
@@ -484,7 +476,7 @@ else
             }
         }
         if (anyResolved)
-            _ = InvokeAsync(async () => { await LoadOpenOrders(); StateHasChanged(); });
+            InvokeAsync(async () => { await LoadOpenOrders(); StateHasChanged(); }).FireAndForget();
         else
             InvokeAsync(StateHasChanged);
     }
@@ -618,12 +610,8 @@ else
         finally { _sending = false; }
     }
 
-    private async Task<uint> GetTick()
-    {
-        return TickMonitor.IsConnected
-            ? TickMonitor.Tick + (uint)Settings.TickOffset
-            : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
-    }
+    private async Task<uint> GetTick() =>
+        await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
 
     private static string FormatTradeFee(uint billionths)
     {
@@ -634,22 +622,7 @@ else
     private async Task BroadcastAndTrack(long amount, uint tick, Qubic.Core.Payloads.ITransactionPayload payload, ushort inputType, string description)
     {
         var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(ContractIndex));
-        var tx = Seed.CreateAndSignTransaction(dest, amount, tick, payload);
-        var result = await Backend.BroadcastTransactionAsync(tx);
-        _result = result.TransactionId;
-
-        TxTracker.Track(new TrackedTransaction
-        {
-            Hash = result.TransactionId,
-            Source = Seed.Identity?.ToString() ?? "",
-            Destination = dest.ToString(),
-            Amount = amount,
-            TargetTick = tick,
-            InputType = inputType,
-            PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-            Description = description,
-            RawData = Convert.ToHexString(tx.GetRawBytes())
-        });
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, description);
     }
 
     private async Task LoadMarketOverview()

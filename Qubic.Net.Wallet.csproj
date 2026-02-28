@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyName>Qubic.Net.Wallet</AssemblyName>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
+    <!-- Resolve the Internal.Assets package so blazor.web.js is available for server fallback mode -->
+    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
   </PropertyGroup>
 
   <!-- ASP.NET Core global usings (not included by Razor SDK unlike Web SDK) -->
@@ -57,6 +59,17 @@
       <LogicalName>icon.ico</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
+
+  <!-- Copy blazor.web.js into wwwroot so server fallback mode can serve it.
+       The Internal.Assets package only adds this for Sdk.Web + OutputType=Exe;
+       our Sdk.Razor + WinExe hybrid needs it copied manually. -->
+  <Target Name="CopyBlazorWebJs" BeforeTargets="EmbedWwwrootZip"
+          Condition="'$(BlazorFrameworkStaticWebAssetRoot)' != ''">
+    <MakeDir Directories="$(MSBuildProjectDirectory)/wwwroot/_framework" />
+    <Copy SourceFiles="$(BlazorFrameworkStaticWebAssetRoot)/blazor.web.js"
+          DestinationFolder="$(MSBuildProjectDirectory)/wwwroot/_framework"
+          SkipUnchangedFiles="true" />
+  </Target>
 
   <!-- Embed wwwroot as a zip for single-file publish support -->
   <Target Name="EmbedWwwrootZip" BeforeTargets="PrepareForBuild">

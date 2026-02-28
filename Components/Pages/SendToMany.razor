@@ -71,7 +71,7 @@ else
                                 </select>
                                 <button class="btn btn-sm btn-outline-primary" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="LoadTemplate">Load</button>
                                 <button class="btn btn-sm btn-outline-secondary" disabled="@(string.IsNullOrEmpty(_selectedTemplate) || RecipientsWithAddress.Count() == 0)" @onclick="OverwriteTemplate">Overwrite</button>
-                                <button class="btn btn-sm btn-outline-danger" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="DeleteTemplate">Delete</button>
+                                <button class="btn btn-sm btn-outline-danger" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="() => _confirmDeleteTemplate = _selectedTemplate">Delete</button>
                             }
                             @if (!_showSaveAs)
                             {
@@ -187,8 +187,16 @@ else
     </div>
 }
 
+<ConfirmModal Visible="@(_confirmDeleteTemplate != null)"
+             Title="Delete Template"
+             Message="@($"Delete template \"{_confirmDeleteTemplate}\"?")"
+             ConfirmText="Delete"
+             OnConfirm="ConfirmDeleteTemplate"
+             OnCancel="() => _confirmDeleteTemplate = null" />
+
 @code {
     private class Recipient { public string Identity { get; set; } = ""; public long Amount { get; set; } }
+    private string? _confirmDeleteTemplate;
 
     private readonly List<Recipient> _recipients = [new()];
     private uint _targetTick;
@@ -277,6 +285,19 @@ else
             _selectedTemplate = null;
         }
         catch (Exception ex) { _templateError = ex.Message; }
+    }
+
+    private void ConfirmDeleteTemplate()
+    {
+        _templateError = null;
+        if (string.IsNullOrEmpty(_confirmDeleteTemplate)) return;
+        try
+        {
+            Vault.RemoveTemplate(_confirmDeleteTemplate);
+            if (_selectedTemplate == _confirmDeleteTemplate) _selectedTemplate = null;
+        }
+        catch (Exception ex) { _templateError = ex.Message; }
+        _confirmDeleteTemplate = null;
     }
 
     private void OnSaveAsKey(KeyboardEventArgs e)
@@ -393,19 +414,13 @@ else
                 payload.AddTransfer(Qubic.Core.Entities.QubicIdentity.FromIdentity(r.Identity.Trim()), r.Amount);
             }
 
-            uint tick = _targetTick;
-            if (tick == 0)
-            {
-                tick = TickMonitor.IsConnected
-                    ? TickMonitor.Tick + (uint)Settings.TickOffset
-                    : (await Backend.GetTickInfoAsync()).Tick + (uint)Settings.TickOffset;
-            }
+            var tick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
 
             var dest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey(Qubic.Core.QubicContracts.Qutil));
             var totalAmount = payload.TotalAmount + (_fee ?? 0);
-            var tx = Seed.CreateAndSignTransaction(dest, totalAmount, tick, payload);
-            var result = await Backend.BroadcastTransactionAsync(tx);
-            _result = result.TransactionId;
+            _result = await TransactionHelper.BroadcastContractCallAsync(
+                Backend, TxTracker, Seed, dest, totalAmount, tick, payload,
+                $"SendToMany: {payload.Transfers.Count} recipients, {payload.TotalAmount:N0} QU + {(_fee ?? 0):N0} fee");
 
             // Collect unknown recipients for address book prompt
             _unknownRecipients.Clear();
@@ -414,19 +429,6 @@ else
                 foreach (var r in valid.Where(r => !Vault.IsKnownAddress(r.Identity.Trim())))
                     _unknownRecipients.Add(new UnknownRecipient { Identity = r.Identity.Trim() });
             }
-
-            TxTracker.Track(new TrackedTransaction
-            {
-                Hash = result.TransactionId,
-                Source = Seed.Identity?.ToString() ?? "",
-                Destination = dest.ToString(),
-                Amount = totalAmount,
-                TargetTick = tick,
-                InputType = 1, // QUTIL SendToManyV1
-                PayloadHex = Convert.ToHexString(payload.GetPayloadBytes()),
-                Description = $"SendToMany: {payload.Transfers.Count} recipients, {payload.TotalAmount:N0} QU + {(_fee ?? 0):N0} fee",
-                RawData = Convert.ToHexString(tx.GetRawBytes())
-            });
         }
         catch (Exception ex)
         {
