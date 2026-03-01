@@ -1,3 +1,30 @@
+# v0.5.0
+
+## Upgrade
+- Upgraded to **.NET 10** runtime and SDK
+- Synced Qubic.Net library to latest upstream (v1.279.0.3 core, contract codegen updates)
+
+## Fixes
+- Fixed **blazor.web.js 404** in server fallback mode (added `RequiresAspNetWebAssets` and build-time copy target)
+- Fixed **CSS not loading** in server mode (removed `MapStaticAssets` interference)
+- Fixed deprecated `Rfc2898DeriveBytes` constructor (SYSLIB0060) — now uses static `Pbkdf2()` method
+
+## Improvements
+- **Central BalanceService** — header and home page always show the same balance, auto-refreshes every 30 ticks and on identity switch
+
+## Downloads
+
+| Platform | File |
+|----------|------|
+| Windows x64 | `Qubic.Net.Wallet-0.5.0-win-x64.zip` |
+| macOS Intel | `Qubic.Net.Wallet-0.5.0-osx-x64.zip` |
+| macOS Apple Silicon | `Qubic.Net.Wallet-0.5.0-osx-arm64.zip` |
+| Linux x64 | `Qubic.Net.Wallet-0.5.0-linux-x64.zip` |
+
+Verify downloads with the `.sha256` files included alongside each zip.
+
+---
+
 # v0.4.0
 
 ## New Features
