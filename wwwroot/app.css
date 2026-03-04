@@ -78,6 +78,15 @@
     --bs-link-color: var(--qb-accent-cyan);
     --bs-link-hover-color: var(--qb-accent-cyan-muted);
     --bs-emphasis-color: var(--qb-text-primary);
+    --bs-modal-bg: var(--qb-bg-card);
+    --bs-modal-color: var(--qb-text-primary);
+    --bs-modal-border-color: var(--qb-border-strong);
+    --bs-modal-header-border-color: var(--qb-border);
+    --bs-modal-footer-border-color: var(--qb-border);
+}
+
+[data-bs-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
 }
 
 /* ── Base ── */
@@ -699,6 +708,46 @@ main {
 [data-bs-theme="light"] .form-select:focus {
     border-color: var(--qb-accent-cyan);
     box-shadow: 0 0 0 2px var(--qb-accent-cyan-dim);
+}
+
+/* ── Blazor Reconnect Modal ── */
+.qb-reconnect-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qb-reconnect-dialog {
+    background: var(--qb-bg-card);
+    color: var(--qb-text-primary);
+    border: 1px solid var(--qb-border-strong);
+    border-radius: 0.5rem;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.qb-reconnect-dialog h5 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+#components-reconnect-modal .components-reconnect-show,
+#components-reconnect-modal .components-reconnect-failed,
+#components-reconnect-modal .components-reconnect-rejected {
+    display: none;
+}
+
+#components-reconnect-modal.components-reconnect-show .components-reconnect-show,
+#components-reconnect-modal.components-reconnect-failed .components-reconnect-failed,
+#components-reconnect-modal.components-reconnect-rejected .components-reconnect-rejected {
+    display: block;
 }
 
 /* ── Responsive ── */

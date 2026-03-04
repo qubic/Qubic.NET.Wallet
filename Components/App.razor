@@ -15,6 +15,17 @@
 </head>
 <body>
     <Routes @rendermode="RenderMode.InteractiveServer" />
+
+    <div id="components-reconnect-modal" class="qb-reconnect-modal" style="display:none">
+        <div class="qb-reconnect-dialog">
+            <h5 class="components-reconnect-show">Reconnecting to the server...</h5>
+            <h5 class="components-reconnect-failed">Reconnection failed. Reload the page to try again.</h5>
+            <h5 class="components-reconnect-rejected">Could not resume the session. Please reload.</h5>
+            <a href="/" class="components-reconnect-failed btn btn-sm btn-primary mt-2">Reload</a>
+            <a href="/" class="components-reconnect-rejected btn btn-sm btn-primary mt-2">Reload</a>
+        </div>
+    </div>
+
     <script src="_framework/blazor.web.js"></script>
     <script>
         window.downloadFile = (filename, contentType, base64) => {
