@@ -355,7 +355,8 @@ else
             else if (line.Contains('\t')) parts = line.Split('\t', 2, StringSplitOptions.TrimEntries);
             else parts = line.Split(' ', 2, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-            if (parts.Length != 2 || !long.TryParse(parts[1], out var amount))
+            var amountStr = parts.Length == 2 ? parts[1].Replace("'", "").Replace(".", "").Replace(",", "") : "";
+            if (parts.Length != 2 || !long.TryParse(amountStr, out var amount))
             {
                 _importError = $"Line {i + 1}: Invalid format. Expected 'IDENTITY,AMOUNT'.";
                 return;
