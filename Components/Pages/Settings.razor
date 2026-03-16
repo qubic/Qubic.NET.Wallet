@@ -500,6 +500,11 @@ else if (_activeTab == "vault")
                                         <td>
                                             @if (_renamingIdentity != entry.Identity)
                                             {
+                                                <button class="btn btn-outline-secondary btn-sm me-1"
+                                                        @onclick="() => ToggleRevealSeed(entry.Identity)"
+                                                        title="@(_revealedSeedIdentity == entry.Identity ? "Hide seed" : "Reveal seed")">
+                                                    <i class="bi @(_revealedSeedIdentity == entry.Identity ? "bi-eye-slash" : "bi-eye")"></i>
+                                                </button>
                                                 <button class="btn btn-outline-secondary btn-sm me-1" @onclick="() => StartRename(entry)"
                                                         title="Rename">
                                                     <i class="bi bi-pencil"></i>
@@ -511,6 +516,40 @@ else if (_activeTab == "vault")
                                             }
                                         </td>
                                     </tr>
+                                    @if (_confirmRevealIdentity == entry.Identity && _revealedSeedIdentity != entry.Identity)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="py-1 px-3" style="background:var(--qb-bg-alt,#1a1a2e)">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="small text-warning">
+                                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                                        Anyone who sees your seed can steal your funds. Make sure no one is watching your screen.
+                                                    </span>
+                                                    <button class="btn btn-outline-warning btn-sm" @onclick="() => ConfirmRevealSeed(entry.Identity)">
+                                                        Reveal
+                                                    </button>
+                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="CancelRevealSeed">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (_revealedSeedIdentity == entry.Identity)
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="py-1 px-3" style="background:var(--qb-bg-alt,#1a1a2e)">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text small">Seed</span>
+                                                    <input type="text" class="form-control form-control-sm mono" value="@entry.Seed" readonly />
+                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="() => CopyRevealedSeed(entry.Seed)"
+                                                            title="Copy to clipboard">
+                                                        <i class="bi @(_revealedSeedCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -858,6 +897,10 @@ else if (_activeTab == "vault")
     private bool _vaultAddSeedRevealed;
     private bool _vaultAddSeedGenerated;
 
+    private string? _confirmRevealIdentity;
+    private string? _revealedSeedIdentity;
+    private bool _revealedSeedCopied;
+
     private bool _showVaultAddContact;
     private bool _showVaultChangePassword;
 
@@ -977,6 +1020,44 @@ else if (_activeTab == "vault")
         catch (Exception ex) { _vaultAddError = ex.Message; }
     }
 
+    private void ToggleRevealSeed(string identity)
+    {
+        if (_revealedSeedIdentity == identity || _confirmRevealIdentity == identity)
+        {
+            _confirmRevealIdentity = null;
+            _revealedSeedIdentity = null;
+            _revealedSeedCopied = false;
+        }
+        else
+        {
+            _confirmRevealIdentity = identity;
+            _revealedSeedIdentity = null;
+            _revealedSeedCopied = false;
+        }
+    }
+
+    private void ConfirmRevealSeed(string identity)
+    {
+        _revealedSeedIdentity = identity;
+    }
+
+    private void CancelRevealSeed()
+    {
+        _confirmRevealIdentity = null;
+        _revealedSeedIdentity = null;
+        _revealedSeedCopied = false;
+    }
+
+    private async Task CopyRevealedSeed(string seed)
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", seed);
+        _revealedSeedCopied = true;
+        StateHasChanged();
+        await Task.Delay(2000);
+        _revealedSeedCopied = false;
+        StateHasChanged();
+    }
+
     private void RemoveVaultEntry(VaultEntry entry)
     {
         if (Seed.HasSeed && Seed.Identity?.ToString() == entry.Identity)
@@ -984,6 +1065,11 @@ else if (_activeTab == "vault")
             Seed.ClearSeed();
             WalletStorage.ClearSeed();
             TxTracker.ClearEncryptionKey();
+        }
+        if (_revealedSeedIdentity == entry.Identity || _confirmRevealIdentity == entry.Identity)
+        {
+            _revealedSeedIdentity = null;
+            _confirmRevealIdentity = null;
         }
         Vault.RemoveEntry(entry.Identity);
     }
