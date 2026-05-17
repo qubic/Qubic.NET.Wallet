@@ -269,6 +269,7 @@ else
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qswap.CreatePoolPayload
             {
+                AssetIssuer = ParseIssuer(_poolIssuer),
                 AssetName = AssetNameHelper.ToUlong(_poolName.Trim())
             };
             await Broadcast(0, tick, payload, $"QSwap Create Pool: {_poolName.Trim()}");
