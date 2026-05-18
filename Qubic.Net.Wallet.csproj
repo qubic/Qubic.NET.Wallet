@@ -35,14 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="deps/Qubic.Net/src/Qubic.Services/Qubic.Services.csproj" />
+    <PackageReference Include="Qubic.Services" Version="1.4.1" />
   </ItemGroup>
 
-  <!-- Exclude submodule and Screenshots tool files from Razor/Compile auto-discovery -->
+  <!-- Exclude Screenshots tool files from Razor/Compile auto-discovery -->
   <ItemGroup>
-    <Compile Remove="deps/**" />
-    <Content Remove="deps/**" />
-    <None Remove="deps/**" />
     <Compile Remove="Qubic.Net.Wallet.Screenshots/**" />
     <Content Remove="Qubic.Net.Wallet.Screenshots/**" />
     <None Remove="Qubic.Net.Wallet.Screenshots/**" />

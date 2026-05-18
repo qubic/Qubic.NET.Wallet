@@ -1,4 +1,0 @@
-[submodule "deps/Qubic.Net"]
-	path = deps/Qubic.Net
-	url = https://github.com/qubic/Qubic.Net.git
-	ignore = dirty
