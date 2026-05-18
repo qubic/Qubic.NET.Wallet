@@ -322,6 +322,12 @@ h1, h2, h3, h4, h5, h6 {
     overflow-y: auto;
 }
 
+.qb-sidebar-version {
+    font-size: 0.7rem;
+    border-top: 1px solid var(--qb-border);
+    color: var(--qb-text-muted, #6c757d);
+}
+
 .qb-sidebar .nav-link {
     padding: 0.4rem 0.75rem;
     font-size: 0.85rem;
