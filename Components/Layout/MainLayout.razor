@@ -239,12 +239,8 @@
                         <label class="form-label small">Vault Password</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_saveVaultPassword" @bind:event="oninput" />
-                        @{ var pwHint = VaultService.ValidatePassword(_saveVaultPassword); }
-                        @if (!string.IsNullOrEmpty(_saveVaultPassword) && pwHint != null)
-                        {
-                            <div class="text-warning small mt-1">@pwHint</div>
-                        }
-                        <div class="form-text">Min 12 chars, uppercase, lowercase, digit, and special character.</div>
+                        <PasswordStrengthMeter Password="@_saveVaultPassword" />
+                        <div class="form-text">Min 12 characters. Longer passphrases beat complex ones — a string of unrelated words is easier to remember and harder to crack.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small">Confirm Password</label>

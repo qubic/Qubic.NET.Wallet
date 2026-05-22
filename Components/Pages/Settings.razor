@@ -345,12 +345,8 @@ else if (_activeTab == "vault")
                         <label class="form-label small">Password</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_vaultCreatePassword" @bind:event="oninput" />
-                        @{ var cpwHint = VaultService.ValidatePassword(_vaultCreatePassword); }
-                        @if (!string.IsNullOrEmpty(_vaultCreatePassword) && cpwHint != null)
-                        {
-                            <div class="text-warning small mt-1">@cpwHint</div>
-                        }
-                        <div class="form-text">Min 12 chars, uppercase, lowercase, digit, and special character.</div>
+                        <PasswordStrengthMeter Password="@_vaultCreatePassword" />
+                        <div class="form-text">Min 12 characters. Longer passphrases beat complex ones — a string of unrelated words is easier to remember and harder to crack.</div>
                     </div>
                     <div class="mb-2">
                         <label class="form-label small">Confirm Password</label>
@@ -673,7 +669,8 @@ else if (_activeTab == "vault")
                             <div class="mb-2">
                                 <label class="form-label small mb-1">New Password</label>
                                 <input type="password" class="form-control form-control-sm"
-                                       @bind="_vaultNewPassword" />
+                                       @bind="_vaultNewPassword" @bind:event="oninput" />
+                                <PasswordStrengthMeter Password="@_vaultNewPassword" />
                             </div>
                             <div class="mb-2">
                                 <label class="form-label small mb-1">Confirm New Password</label>

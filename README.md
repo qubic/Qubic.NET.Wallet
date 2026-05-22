@@ -138,7 +138,7 @@ Produces zip archives with SHA-256 hashes for:
 ## Security
 
 - Your 55-character seed is held **in memory only** for the current session — it is never written to disk unencrypted
-- **Vault encryption**: Seeds and contacts are stored in an AES-256-GCM encrypted vault file, protected by a user-chosen password with Argon2id key derivation
+- **Vault encryption**: Seeds and contacts are stored in an AES-256-GCM encrypted vault file, protected by a user-chosen password with Argon2id key derivation (`m=64 MiB, t=3, p=1`). Vaults written by older versions of this wallet used PBKDF2-HMAC-SHA256 (600 000 iterations) and are read transparently — they re-encrypt to Argon2id automatically on the next save
 - The local database is encrypted with [SQLCipher](https://www.zetetic.net/sqlcipher/) using a key derived from your seed
 - In server mode, access is protected by a one-time session token (HttpOnly cookie, localhost only)
 - The database and vault files are useless without the respective passwords/seeds

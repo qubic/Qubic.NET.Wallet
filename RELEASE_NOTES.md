@@ -1,3 +1,18 @@
+# v0.6.1
+
+## Security
+- **Vault key derivation upgraded to Argon2id** (`m=64 MiB, t=3, p=1`). Existing vaults written with PBKDF2-HMAC-SHA256 (600 000 iterations) continue to open and silently re-encrypt to Argon2id on the next save (add seed, rename, change password, etc.).
+- **New vault file format (v2)** carries an explicit `Version`, `Kdf`, and `KdfParams` in the envelope so future KDF/parameter changes can be rolled out without breaking existing files. Legacy v1 envelopes (no `Version` field) remain readable.
+- **Password validator replaced with [zxcvbn](https://github.com/dropbox/zxcvbn) strength estimation.** The old "12 chars + 1 upper + 1 lower + 1 digit + 1 special" recipe pushed users toward predictable patterns (`Password1234!`). The new check requires length ≥ 12 **and** zxcvbn score ≥ 3.
+- Fixed README and earlier release notes that incorrectly claimed Argon2id was already in use — those versions were PBKDF2.
+
+## UI
+- **Live password-strength meter** on all vault password fields (create vault, change password). Color-coded progress bar, strength label (Very weak → Strong), zxcvbn warning, and concrete improvement suggestions appear as you type. An estimated crack time ("offline slow hashing, 10⁴ guesses/sec") is shown for fair-and-above passwords so the trade-off is visible.
+
+> ⚠️ Vaults saved by v0.6.1 cannot be opened by v0.5.x or earlier (the older builds don't know the Argon2id KDF). Keep a backup of `vault.dat` until you've confirmed the upgrade is working for you.
+
+---
+
 # v0.5.0
 
 ## Upgrade
@@ -111,7 +126,7 @@ Verify downloads with the `.sha256` files included alongside each zip.
 
 ### Encrypted Vault
 - Password-protected vault file stores multiple seeds and an address book
-- AES-256-GCM encryption with Argon2id key derivation
+- AES-256-GCM encryption with PBKDF2-HMAC-SHA256 (600 000 iterations) key derivation; later versions migrated this to Argon2id
 - Create, unlock, lock, and delete vault from the top bar
 - Switch between stored seeds without re-entering them
 
