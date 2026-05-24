@@ -34,9 +34,9 @@ else
                         }
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Destination (60-char identity)</label>
-                        <AddressInput @bind-Value="_destination" Placeholder="BAAAAA..." />
-                        @{ var destErr = IdentityValidation.Validate(_destination); }
+                        <label class="form-label small">Destination</label>
+                        <AddressInput @bind-Value="_destination" Placeholder="BAAAAA... or contract index" AllowContractIndex="true" />
+                        @{ var destErr = IdentityValidation.ValidateDestination(_destination); }
                         @if (destErr != null)
                         {
                             <div class="small text-danger mt-1">@destErr</div>
@@ -163,8 +163,8 @@ else
     private async Task Preview()
     {
         _error = null; _result = null;
-        if (string.IsNullOrWhiteSpace(_destination) || _destination.Trim().Length != 60)
-        { _error = "Destination must be a 60-character identity."; return; }
+        if (IdentityValidation.ValidateDestination(_destination) != null)
+        { _error = "Destination must be a valid 60-character identity or contract index (1-1023)."; return; }
         if (_amount <= 0) { _error = "Amount must be positive."; return; }
         if (BalanceSvc.Balance != null && _amount > BalanceSvc.Balance.Value)
         { _error = $"Insufficient balance ({FormatQu(BalanceSvc.Balance.Value)} QU)."; return; }
@@ -188,10 +188,10 @@ else
         _sending = true; _error = null;
         try
         {
-            if (IdentityValidation.Validate(_destination) != null) { _error = "Invalid destination."; return; }
+            if (IdentityValidation.ValidateDestination(_destination) != null) { _error = "Invalid destination."; return; }
             _resolvedTick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
 
-            var dest = Qubic.Core.Entities.QubicIdentity.FromIdentity(_destination!.Trim());
+            var dest = IdentityValidation.ResolveIdentity(_destination!);
             var tx = Seed.CreateAndSignTransfer(dest, _amount, _resolvedTick);
             _result = await TransactionHelper.BroadcastAndTrackAsync(
                 Backend, TxTracker, Seed, tx,
