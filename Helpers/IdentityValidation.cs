@@ -23,7 +23,7 @@ public static class IdentityValidation
     }
 
     /// <summary>
-    /// Validates a destination that can be either a 60-char identity or a contract index (0-23).
+    /// Validates a destination that can be either a 60-char identity or a contract index (1-1023).
     /// Returns null if valid, error message if invalid.
     /// </summary>
     public static string? ValidateDestination(string? value)
@@ -31,7 +31,7 @@ public static class IdentityValidation
         if (string.IsNullOrWhiteSpace(value)) return null;
         var v = value.Trim();
         if (int.TryParse(v, out var idx))
-            return idx is >= 0 and <= 23 ? null : "Contract index must be 0-23";
+            return idx is >= 1 and <= 1023 ? null : "Contract index must be 1-1023";
         return Validate(v);
     }
 
