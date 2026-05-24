@@ -1,3 +1,4 @@
+using Qubic.Core;
 using Qubic.Core.Entities;
 
 namespace Qubic.Net.Wallet.Helpers;
@@ -33,6 +34,19 @@ public static class IdentityValidation
         if (int.TryParse(v, out var idx))
             return idx is >= 1 and <= 1023 ? null : "Contract index must be 1-1023";
         return Validate(v);
+    }
+
+    /// <summary>
+    /// Resolves a destination string to a <see cref="QubicIdentity"/>.
+    /// Accepts either a 60-character identity or a contract index (1-1023).
+    /// Throws <see cref="ArgumentException"/> if the value is invalid.
+    /// </summary>
+    public static QubicIdentity ResolveIdentity(string value)
+    {
+        var v = value.Trim();
+        if (int.TryParse(v, out var idx))
+            return QubicIdentity.FromPublicKey(QubicContracts.GetContractPublicKey(idx));
+        return QubicIdentity.FromIdentity(v);
     }
 
     /// <summary>
