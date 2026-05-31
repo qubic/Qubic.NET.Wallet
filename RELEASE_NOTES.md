@@ -1,3 +1,10 @@
+# v0.6.2
+
+## Security
+- **FourQ signature canonicalisation (CVE-class fix).** The verify path used to admit any scalar `S < 2^246`, but the curve order `N` is also less than `2^246`. Attackers could replay a valid signature `S` as its twin `S' = S + N` — same `(R, pubkey, message)`, so verify still succeeded, but the on-chain tx hash differed, bypassing dedup and enabling **double-execution of the same intent**. Patched in `Qubic.Crypto 1.5.1` (mirrors qubic/core commit `05f7348`) and pulled in transitively via `Qubic.Services 1.5.1`. No vault or on-disk format changes — pure verify-side hardening.
+
+---
+
 # v0.6.1
 
 ## Security
