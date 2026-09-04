@@ -1,3 +1,19 @@
+# v0.6.4
+
+## Features
+- **Switch vault files from the header bar.** The lock screen now lists recently used vault files next to the password box — pick one and the wallet re-points at it, still locked, ready for that vault's password. A folder button opens any other vault file. Previously this meant going to Settings, disconnecting the vault, and opening the other file by path.
+- With no vault connected, an "Open vault..." dropdown offers the vault files used before, so you can get back into one without going through Settings.
+- Vault files that share a file name are disambiguated by their containing folder in the list.
+- Switching always clears the session first (vault locked, seed cleared), so nothing from the previous vault stays active behind the new lock screen.
+
+## Fixes
+- A vault created from Settings left the wallet with the vault unlocked, no identity active and no way to lock it short of restarting. The header now shows a Lock button in that state.
+
+## Notes
+- The list of recently used vault files is stored in the wallet's settings file (`vault_recent_paths`) as plain file paths. It holds up to 8 entries, drops paths whose file no longer exists, and is removed for a vault you delete. No vault or on-disk vault format changes.
+
+---
+
 # v0.6.3
 
 ## Security — please update immediately

@@ -62,6 +62,31 @@
             else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput)
             {
                 @* ── Vault configured, locked ── *@
+                @if (_vaultFiles.Count > 1)
+                {
+                    <select @key="_vaultSelectVersion" class="form-select form-select-sm"
+                            style="width:auto;max-width:180px"
+                            value="@Vault.VaultPath" @onchange="OnVaultFileSelected"
+                            title="@Vault.VaultPath">
+                        @foreach (var path in _vaultFiles)
+                        {
+                            <option value="@path">@VaultLabel(path)</option>
+                        }
+                    </select>
+                }
+                else if (_vaultFiles.Count == 1)
+                {
+                    <span class="badge-qb-cyan" title="@Vault.VaultPath">
+                        <i class="bi bi-safe me-1"></i>@VaultLabel(_vaultFiles[0])
+                    </span>
+                }
+                @if (DialogService.IsAvailable)
+                {
+                    <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="BrowseForVaultFile"
+                            title="Open another vault file">
+                        <i class="bi bi-folder2-open"></i>
+                    </button>
+                }
                 <input type="password" class="form-control form-control-sm"
                        style="width:220px" placeholder="Vault password..."
                        @bind="_vaultPassword" @bind:event="oninput"
@@ -111,6 +136,27 @@
             else
             {
                 @* ── No seed ── *@
+                @if (!_showDirectSeedInput && _vaultFiles.Count > 0)
+                {
+                    @* Vault files used before — reopen one without going through settings *@
+                    <select @key="_vaultSelectVersion" class="form-select form-select-sm"
+                            style="width:auto;max-width:180px" value=""
+                            @onchange="OnVaultFileSelected">
+                        <option value="">Open vault...</option>
+                        @foreach (var path in _vaultFiles)
+                        {
+                            <option value="@path">@VaultLabel(path)</option>
+                        }
+                    </select>
+                }
+                @if (Vault.IsUnlocked)
+                {
+                    @* Vault open but no identity active (e.g. just created from settings) *@
+                    <button class="btn btn-sm btn-qb-ghost" @onclick="LockVault"
+                            title="Lock vault">
+                        <i class="bi bi-lock me-1"></i>Lock
+                    </button>
+                }
                 <input type="password" class="form-control form-control-sm"
                        style="width:280px" placeholder="Enter 55-char seed to enable signing..."
                        @bind="_seedInput" @bind:event="oninput" />
@@ -319,6 +365,11 @@
     private string? _vaultError;
     private bool _showDirectSeedInput;
 
+    // Vault file switcher (recently used vault files, current one first)
+    private List<string> _vaultFiles = [];
+    private Dictionary<string, string> _vaultLabels = [];
+    private int _vaultSelectVersion;
+
     // Save-to-vault modal (new vault)
     private bool _showSaveToVault;
     private string _saveVaultPath = "";
@@ -359,6 +410,10 @@
 
         // Default vault path for save dialog
         _saveVaultPath = Path.Combine(Settings.StorageDirectory, "vault.dat");
+
+        // Make the configured vault known to the switcher on first run
+        if (Vault.VaultConfigured) VaultFileHistory.Add(Settings, Vault.VaultPath);
+        RefreshVaultFiles();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -390,6 +445,7 @@
     {
         if (_disposed) return;
         if (Vault.IsUnlocked) AutoLock.Start(); else AutoLock.Stop();
+        RefreshVaultFiles();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
@@ -464,6 +520,8 @@
         }
 
         _vaultPassword = null;
+        VaultFileHistory.Add(Settings, Vault.VaultPath);
+        RefreshVaultFiles();
 
         // Auto-activate
         var entries = Vault.Entries;
@@ -492,6 +550,73 @@
     {
         ClearSeed();
         Vault.LockVault();
+    }
+
+    // ── Vault file switcher ──
+
+    /// <summary>Current vault first, then the other recently used vault files.</summary>
+    private void RefreshVaultFiles()
+    {
+        var files = VaultFileHistory.Get(Settings);
+        var current = Vault.VaultPath;
+        if (!string.IsNullOrWhiteSpace(current))
+        {
+            files.RemoveAll(p => VaultFileHistory.IsSame(p, current));
+            files.Insert(0, current);
+        }
+        _vaultFiles = files;
+        _vaultLabels = VaultFileHistory.DisplayNames(files);
+        _vaultSelectVersion++;
+    }
+
+    private string VaultLabel(string path) =>
+        _vaultLabels.TryGetValue(path, out var label) ? label : VaultFileHistory.DisplayName(path);
+
+    private void OnVaultFileSelected(ChangeEventArgs e)
+    {
+        var path = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(path)) SwitchVaultFile(path);
+    }
+
+    private async Task BrowseForVaultFile()
+    {
+        var start = Vault.VaultPath ?? Path.Combine(Settings.StorageDirectory, "vault.dat");
+        var path = await DialogService.ShowOpenFileAsync("Open Vault File", start,
+            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
+        if (!string.IsNullOrEmpty(path)) SwitchVaultFile(path);
+    }
+
+    /// <summary>
+    /// Points the wallet at another vault file. The session is cleared first so no
+    /// seed from the previous vault stays active behind the new lock screen.
+    /// </summary>
+    private void SwitchVaultFile(string path)
+    {
+        if (VaultFileHistory.IsSame(path, Vault.VaultPath))
+        {
+            RefreshVaultFiles(); // reset the dropdown to the current vault
+            return;
+        }
+
+        _vaultError = null;
+        _vaultPassword = null;
+        try
+        {
+            if (Vault.IsUnlocked || Seed.HasSeed) LockVault();
+            Vault.SetVaultPath(path);
+            VaultFileHistory.Add(Settings, path);
+            _showDirectSeedInput = false;
+        }
+        catch (FileNotFoundException)
+        {
+            _vaultError = "Vault file not found.";
+            VaultFileHistory.Remove(Settings, path);
+        }
+        catch (Exception ex)
+        {
+            _vaultError = ex.Message;
+        }
+        RefreshVaultFiles();
     }
 
     private void OnIdentitySwitched(ChangeEventArgs e)
@@ -551,6 +676,8 @@
                 new() { Label = _saveVaultLabel, Seed = seed }
             };
             Vault.CreateVault(_saveVaultPath, _saveVaultPassword, entries);
+            VaultFileHistory.Add(Settings, Vault.VaultPath);
+            RefreshVaultFiles();
 
             // Re-activate through vault path
             Seed.SetSeed(seed, _saveVaultLabel);

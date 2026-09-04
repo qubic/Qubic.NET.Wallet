@@ -10,6 +10,7 @@ Cross-platform desktop wallet for the [Qubic](https://qubic.org) network. Runs a
 - **Dashboard** — identity, QU balance, network status, owned assets, and open orders at a glance
 - **Send / Receive** — single transfers with QR code support, batch "Send to Many" with reusable templates
 - **Encrypted Vault** — password-protected vault stores multiple seeds and an address book, encrypted with AES-256-GCM
+- **Vault switching** — pick a recently used vault file (or browse to another one) straight from the header bar, without going through settings
 - **Address Book** — save contacts and quickly select them from any address input with autocomplete
 - **Assets** — view and transfer QX-listed tokens
 - **QX Trading** — place and cancel asset orders on the Qubic DEX

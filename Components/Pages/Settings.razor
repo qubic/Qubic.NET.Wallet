@@ -940,7 +940,10 @@ else if (_activeTab == "vault")
         if (path == null) return;
         try
         {
+            var oldPath = Vault.VaultPath;
             Vault.MoveVault(path);
+            VaultFileHistory.Remove(Cfg, oldPath);
+            VaultFileHistory.Add(Cfg, Vault.VaultPath);
         }
         catch (Exception ex) { _moveVaultError = ex.Message; }
     }
@@ -966,6 +969,7 @@ else if (_activeTab == "vault")
         {
             var entries = new List<VaultEntry> { new() { Label = _vaultCreateLabel, Seed = _vaultCreateSeed } };
             Vault.CreateVault(_vaultCreatePath, _vaultCreatePassword!, entries);
+            VaultFileHistory.Add(Cfg, Vault.VaultPath);
             _vaultCreateSeed = null; _vaultCreateLabel = null;
             _vaultCreatePassword = null; _vaultCreatePasswordConfirm = null;
         }
@@ -979,6 +983,7 @@ else if (_activeTab == "vault")
         try
         {
             Vault.SetVaultPath(_vaultOpenPath);
+            VaultFileHistory.Add(Cfg, Vault.VaultPath);
         }
         catch (Exception ex) { _vaultOpenError = ex.Message; }
     }
@@ -1108,7 +1113,9 @@ else if (_activeTab == "vault")
         Seed.ClearSeed();
         WalletStorage.ClearSeed();
         TxTracker.ClearEncryptionKey();
+        var deletedPath = Vault.VaultPath;
         Vault.DeleteVault();
+        VaultFileHistory.Remove(Cfg, deletedPath);
         _confirmDeleteVault = false;
     }
 
