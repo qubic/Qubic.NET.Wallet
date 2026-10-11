@@ -7,6 +7,9 @@
 - Switching always clears the session first (vault locked, seed cleared), so nothing from the previous vault stays active behind the new lock screen.
 
 ## Fixes
+- **Locking could leave the vault unlocked.** Lock (manual and auto-lock) cleared the seed session *before* locking the vault: it stopped the sync service and closed the encrypted database first, which can block for seconds or throw, and when it threw the vault was never locked. The result was a wallet that looked locked but wasn't — the vault's labels and identities stayed listed on the home screen and could be activated again without a password. The vault is now locked first, the session torn down afterwards, and each teardown step is isolated so one failure cannot skip the rest. Applies equally to Disconnect Vault and Delete Vault in Settings.
+- The locked state is now rendered before the session teardown runs, so Lock reacts immediately instead of appearing to do nothing while the sync service shuts down.
+- Picking the vault that is already open (from the header dropdown) now takes you to its password prompt and ends the current session, instead of doing nothing.
 - A vault created from Settings left the wallet with the vault unlocked, no identity active and no way to lock it short of restarting. The header now shows a Lock button in that state.
 
 ## Notes

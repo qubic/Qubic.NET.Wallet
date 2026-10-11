@@ -452,9 +452,10 @@
     private void OnAutoLockTriggered()
     {
         if (_disposed) return;
-        InvokeAsync(() =>
+        InvokeAsync(async () =>
         {
-            if (Vault.IsUnlocked) LockVault();
+            if (Vault.IsUnlocked) await LockVault();
+            else ClearSeed();
             StateHasChanged();
         });
     }
@@ -490,11 +491,16 @@
         }
     }
 
+    /// <summary>
+    /// Drops the in-memory seed, then tears down the wallet database session.
+    /// Every step is isolated: stopping the sync and closing the encrypted database
+    /// can block or throw, and must never prevent the rest of the teardown.
+    /// </summary>
     private void ClearSeed()
     {
-        Seed.ClearSeed();
-        WalletStorage.ClearSeed();
-        TxTracker.ClearEncryptionKey();
+        try { Seed.ClearSeed(); } catch { }
+        try { WalletStorage.ClearSeed(); } catch { }
+        try { TxTracker.ClearEncryptionKey(); } catch { }
         _seedInput = null;
         Nav.NavigateTo("/", forceLoad: false);
     }
@@ -546,10 +552,22 @@
         if (e.Key == "Enter") UnlockVault();
     }
 
-    private void LockVault()
+    /// <summary>
+    /// Locks the vault and ends the session. The vault is locked first: clearing the
+    /// session stops the sync service and closes the database, which can take seconds
+    /// or fail outright, and the vault must not stay open when it does.
+    /// </summary>
+    private async Task LockVault()
     {
-        ClearSeed();
         Vault.LockVault();
+        _vaultPassword = null;
+        _vaultError = null;
+
+        // Show the locked state before the (potentially slow) session teardown
+        StateHasChanged();
+        await Task.Yield();
+
+        ClearSeed();
     }
 
     // ── Vault file switcher ──
@@ -572,10 +590,10 @@
     private string VaultLabel(string path) =>
         _vaultLabels.TryGetValue(path, out var label) ? label : VaultFileHistory.DisplayName(path);
 
-    private void OnVaultFileSelected(ChangeEventArgs e)
+    private async Task OnVaultFileSelected(ChangeEventArgs e)
     {
         var path = e.Value?.ToString();
-        if (!string.IsNullOrEmpty(path)) SwitchVaultFile(path);
+        if (!string.IsNullOrEmpty(path)) await SwitchVaultFile(path);
     }
 
     private async Task BrowseForVaultFile()
@@ -583,38 +601,41 @@
         var start = Vault.VaultPath ?? Path.Combine(Settings.StorageDirectory, "vault.dat");
         var path = await DialogService.ShowOpenFileAsync("Open Vault File", start,
             ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
-        if (!string.IsNullOrEmpty(path)) SwitchVaultFile(path);
+        if (!string.IsNullOrEmpty(path)) await SwitchVaultFile(path);
     }
 
     /// <summary>
-    /// Points the wallet at another vault file. The session is cleared first so no
-    /// seed from the previous vault stays active behind the new lock screen.
+    /// Points the wallet at the chosen vault file and leaves it locked, so picking a
+    /// vault always lands on that vault's password prompt. Any running session is
+    /// locked first — no seed from the previous vault survives behind the new prompt.
     /// </summary>
-    private void SwitchVaultFile(string path)
+    private async Task SwitchVaultFile(string path)
     {
-        if (VaultFileHistory.IsSame(path, Vault.VaultPath))
-        {
-            RefreshVaultFiles(); // reset the dropdown to the current vault
-            return;
-        }
+        var sameVault = VaultFileHistory.IsSame(path, Vault.VaultPath);
+
+        // End the current session either way: picking the open vault means
+        // "take me back to its lock screen", not "do nothing".
+        if (Vault.IsUnlocked || Seed.HasSeed) await LockVault();
 
         _vaultError = null;
         _vaultPassword = null;
-        try
+        if (!sameVault)
         {
-            if (Vault.IsUnlocked || Seed.HasSeed) LockVault();
-            Vault.SetVaultPath(path);
-            VaultFileHistory.Add(Settings, path);
-            _showDirectSeedInput = false;
-        }
-        catch (FileNotFoundException)
-        {
-            _vaultError = "Vault file not found.";
-            VaultFileHistory.Remove(Settings, path);
-        }
-        catch (Exception ex)
-        {
-            _vaultError = ex.Message;
+            try
+            {
+                Vault.SetVaultPath(path);
+                VaultFileHistory.Add(Settings, path);
+                _showDirectSeedInput = false;
+            }
+            catch (FileNotFoundException)
+            {
+                _vaultError = "Vault file not found.";
+                VaultFileHistory.Remove(Settings, path);
+            }
+            catch (Exception ex)
+            {
+                _vaultError = ex.Message;
+            }
         }
         RefreshVaultFiles();
     }

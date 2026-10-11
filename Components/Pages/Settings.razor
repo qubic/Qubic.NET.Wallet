@@ -1064,9 +1064,7 @@ else if (_activeTab == "vault")
     {
         if (Seed.HasSeed && Seed.Identity?.ToString() == entry.Identity)
         {
-            Seed.ClearSeed();
-            WalletStorage.ClearSeed();
-            TxTracker.ClearEncryptionKey();
+            ClearSession();
         }
         if (_revealedSeedIdentity == entry.Identity || _confirmRevealIdentity == entry.Identity)
         {
@@ -1110,22 +1108,29 @@ else if (_activeTab == "vault")
 
     private void DeleteVault()
     {
-        Seed.ClearSeed();
-        WalletStorage.ClearSeed();
-        TxTracker.ClearEncryptionKey();
+        // Delete (which also clears decrypted data) before the session teardown:
+        // stopping the sync and closing the database can throw, and must not leave
+        // the vault contents in memory.
         var deletedPath = Vault.VaultPath;
         Vault.DeleteVault();
         VaultFileHistory.Remove(Cfg, deletedPath);
+        ClearSession();
         _confirmDeleteVault = false;
     }
 
     private void DisconnectVault()
     {
-        Seed.ClearSeed();
-        WalletStorage.ClearSeed();
-        TxTracker.ClearEncryptionKey();
         Vault.LockVault();
         Cfg.RemoveCustom("vault_path");
+        ClearSession();
+    }
+
+    /// <summary>Tears down the seed session; each step isolated so one failure cannot skip the rest.</summary>
+    private void ClearSession()
+    {
+        try { Seed.ClearSeed(); } catch { }
+        try { WalletStorage.ClearSeed(); } catch { }
+        try { TxTracker.ClearEncryptionKey(); } catch { }
     }
 
     // ── Address book ──
