@@ -1,5 +1,10 @@
 # v0.7.0
 
+![Signing review on an AIO devnet](docs/screenshots/0.7.0/05-signing-review.png)
+
+New to local development? Read the [AIO tutorial](docs/guide/aio-tutorial.md). Every new feature is
+described in the [user guide](docs/guide/README.md).
+
 ## Features
 - **Networks.** The single "backend" selector is replaced by network profiles: Mainnet, "AIO (this machine)" and "AIO (remote host)" are built in, and you can add your own. Each network has one or more methods (Bob, Direct, RPC) in priority order; switch networks from the header bar. Every network keeps its own history database, asset list, imported contracts and tick settings.
 - **AIO Qubic Dev Kit support.** The AIO preset talks to the kit's Bob (port 40420), with core-lite's own HTTP API (41841) for what Bob cannot list (assets, IPOs). Direct (31841) is available but off by default.
@@ -14,8 +19,18 @@
 - **Contract Console:** call any contract function or procedure with a typed form. Import your own contract's C++ header to get forms and decoded signing previews for it.
 - **Sign-In with Qubic:** structured login messages are recognised, shown field by field and checked (domain, network, expiry, nonce).
 - **Payment requests:** Receive can create a `qubic:` payment link / QR code with an amount and message. Send accepts pasted payment links and warns if the link is for a different network.
-- **WalletConnect** (opt-in): pair with dApps using the official Qubic method set (`qubic_requestAccounts`, `qubic_sendQubic`, `qubic_signTransaction`, `qubic_sendTransaction`, `qubic_sign`, `qubic_sendAsset`). Requires a free WalletConnect Cloud project id.
+- **WalletConnect** (opt-in): pair with dApps using the official Qubic method set (`qubic_requestAccounts`, `qubic_sendQubic`, `qubic_signTransaction`, `qubic_sendTransaction`, `qubic_sign`, `qubic_sendAsset`). The project id is built into the app.
 - **Local signing endpoint** (opt-in, desktop): JSON-RPC on 127.0.0.1 with a bearer token, for scripts and contract tests. Optional auto-approval applies only to public dev keys on a proven core-lite devnet.
+
+### Screenshots
+
+| | |
+|---|---|
+| ![Features](docs/screenshots/0.7.0/01-features.png) Opt-in features on first start | ![Networks](docs/screenshots/0.7.0/03-networks.png) Networks and method per operation |
+| ![Developer tools](docs/screenshots/0.7.0/04-dev-tools.png) Developer tools | ![Faucet](docs/screenshots/0.7.0/11-faucet-review.png) Faucet transfer in the review |
+| ![Contract Console](docs/screenshots/0.7.0/13-contract-import.png) Contract Console with an imported header | ![Sign-In with Qubic](docs/screenshots/0.7.0/07-sign-in-with-qubic.png) Sign-In with Qubic |
+| ![Payment request](docs/screenshots/0.7.0/08-receive-payment-request.png) Payment request | ![Send from link](docs/screenshots/0.7.0/09-send-from-link.png) Send from a payment link |
+| ![WalletConnect](docs/screenshots/0.7.0/10-walletconnect.png) WalletConnect | ![Local endpoint](docs/screenshots/0.7.0/14-local-endpoint.png) Local signing endpoint |
 
 ## Fixes
 - Balances refreshed only when the tick number was a multiple of 30, so refreshes were skipped whenever polling missed that tick. Balances now refresh every 30 seconds.

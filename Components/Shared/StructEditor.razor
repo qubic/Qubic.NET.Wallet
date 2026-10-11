@@ -65,7 +65,7 @@ else
         {
             <div class="mb-2">
                 <label class="form-label small mb-0">@f.Name <span class="text-muted">@f.CppType</span></label>
-                <input class="form-control form-control-sm mono" placeholder="@Hint(f.CppType)" value="@Get(path)" @onchange="e => Set(path, e)" />
+                <input class="form-control form-control-sm mono" placeholder="@Hint(f.CppType, f.Name)" value="@Get(path)" @onchange="e => Set(path, e)" />
             </div>
         }
     }
@@ -90,6 +90,31 @@ else
         if (string.IsNullOrEmpty(value)) Values.Remove(path);
         else Values[path] = value;
         await OnChanged.InvokeAsync();
+    }
+
+    private static string Hint(string type, string name) =>
+        type == "uint64" && IsAssetNameField(name) ? "asset name (e.g. ROCKET) or number" : Hint(type);
+
+    /// <summary>uint64 fields named like "assetName" hold 7 packed ASCII characters.</summary>
+    public static bool IsAssetNameField(string name) => name.Contains("name", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Turns typed asset names ("ROCKET") in uint64 *name fields into their packed number,
+    /// so ContractCodec gets a numeric value.
+    /// </summary>
+    public static Dictionary<string, string> NormalizeAssetNames(StructDef def, Dictionary<string, string> values)
+    {
+        var result = new Dictionary<string, string>(values);
+        foreach (var f in def.Fields.Where(f => !f.IsArray && f.CppType == "uint64" && IsAssetNameField(f.Name)))
+        {
+            if (result.TryGetValue(f.Name, out var v) && !string.IsNullOrWhiteSpace(v) && !ulong.TryParse(v.Trim(), out _))
+            {
+                var text = v.Trim().ToUpperInvariant();
+                if (text.Length is >= 1 and <= 7 && text.All(c => c is >= 'A' and <= 'Z' or >= '0' and <= '9'))
+                    result[f.Name] = AssetNameHelper.ToUlong(text).ToString();
+            }
+        }
+        return result;
     }
 
     private static string Hint(string type) => type switch

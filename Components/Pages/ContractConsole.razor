@@ -318,7 +318,7 @@ else
 
     private byte[] BuildInput()
     {
-        if (CurrentInput is { } def) return ContractCodec.Encode(def, _values);
+        if (CurrentInput is { } def) return ContractCodec.Encode(def, StructEditor.NormalizeAssetNames(def, _values));
         var hex = (_rawHex ?? "").Trim();
         if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase)) hex = hex[2..];
         return string.IsNullOrEmpty(hex) ? [] : Convert.FromHexString(hex);
