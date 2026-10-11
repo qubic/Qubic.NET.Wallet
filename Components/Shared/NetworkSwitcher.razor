@@ -1,0 +1,80 @@
+@using Qubic.Services.Networks
+@inject NetworkProfileService Profiles
+@inject NetworkSwitchService Switcher
+@inject NetworkFingerprintService Fingerprint
+@inject NavigationManager Nav
+@implements IDisposable
+
+@* Active network selector for the top bar. Each network keeps its own history, assets and endpoints. *@
+<div class="qb-network-switcher" title="@Tooltip">
+    <span class="qb-network-dot" style="background:@_active.BadgeColor"></span>
+    <select class="form-select form-select-sm" value="@_active.Id" @onchange="OnChanged"
+            disabled="@Switcher.IsSwitching" aria-label="Network">
+        @foreach (var p in Profiles.Profiles)
+        {
+            <option value="@p.Id">@p.Name</option>
+        }
+        <option value="__manage">Manage networks…</option>
+    </select>
+    @if (Fingerprint.IsMismatch)
+    {
+        <i class="bi bi-exclamation-octagon-fill text-danger ms-1" title="This chain does not match the network's settings"></i>
+    }
+    else if (Fingerprint.Current is { } fp && fp.ProfileId == _active.Id && fp.Kind != NetworkFingerprintKind.Unknown)
+    {
+        <i class="bi bi-shield-check text-success ms-1" title="@fp.Detail"></i>
+    }
+    @if (Switcher.IsSwitching)
+    {
+        <span class="spinner-border spinner-border-sm ms-1" role="status"></span>
+    }
+</div>
+
+@code {
+    private NetworkProfile _active = default!;
+
+    private string Tooltip => $"{_active.Name} ({_active.Kind}) — {string.Join(", ", _active.EnabledMethods.Select(m => Capabilities.MethodName(m.Kind)))}";
+
+    protected override void OnInitialized()
+    {
+        _active = Profiles.Active;
+        Profiles.OnActiveProfileChanged += OnProfileChanged;
+        Profiles.OnProfilesChanged += OnProfilesChanged;
+        Switcher.OnSwitched += OnProfilesChanged;
+        Fingerprint.OnChanged += OnProfilesChanged;
+    }
+
+    private async Task OnChanged(ChangeEventArgs e)
+    {
+        var id = e.Value?.ToString();
+        if (id == "__manage")
+        {
+            Nav.NavigateTo("/settings?tab=networks");
+            _active = Profiles.Active;
+            StateHasChanged();
+            return;
+        }
+        if (string.IsNullOrEmpty(id) || id == _active.Id) return;
+        await Switcher.SwitchAsync(id);
+    }
+
+    private void OnProfileChanged(NetworkProfile _, NetworkProfile n)
+    {
+        _active = n;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnProfilesChanged()
+    {
+        _active = Profiles.Active;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Profiles.OnActiveProfileChanged -= OnProfileChanged;
+        Profiles.OnProfilesChanged -= OnProfilesChanged;
+        Switcher.OnSwitched -= OnProfilesChanged;
+        Fingerprint.OnChanged -= OnProfilesChanged;
+    }
+}

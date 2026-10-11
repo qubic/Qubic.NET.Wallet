@@ -1,0 +1,100 @@
+@using Qubic.WalletConnect
+@using Qubic.Services.Signing
+@inject QubicWalletConnectService WalletConnect
+@inject ExternalRequestService External
+@inject QubicBackendService Backend
+@implements IDisposable
+
+@* Incoming WalletConnect connection requests, shown wherever the user is. *@
+@if (_proposal is { } p)
+{
+    <div class="modal d-block" tabindex="-1" style="background:rgba(0,0,0,0.6)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title"><i class="bi bi-link-45deg me-2"></i>@p.Name wants to connect</h6>
+                </div>
+                <div class="modal-body small">
+                    <div class="mono text-break mb-2">@p.Url</div>
+                    @if (!string.IsNullOrEmpty(p.Description)) { <p>@p.Description</p> }
+                    @if (p.Verification == "Invalid")
+                    {
+                        <div class="alert alert-danger py-1">WalletConnect Verify flagged this site as <strong>not matching</strong> its claimed domain.</div>
+                    }
+                    @if (!p.ChainSupported)
+                    {
+                        <div class="alert alert-warning py-1">
+                            It asks for @string.Join(", ", p.RequestedChains), but the wallet is on <strong>@Backend.Profile.ChainId</strong>
+                            (@Backend.Profile.Name). Switch network first, or reject.
+                        </div>
+                    }
+                    <label class="form-label mb-1">Accounts to share</label>
+                    @if (_accounts.Count == 0)
+                    {
+                        <div class="alert alert-secondary py-1">No account available — unlock your vault or enter a seed first.</div>
+                    }
+                    @foreach (var (identity, label) in _accounts)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="wc-@identity" checked="@_selected.Contains(identity)"
+                                   @onchange="e => Toggle(identity, (bool)(e.Value ?? false))" />
+                            <label class="form-check-label" for="wc-@identity">@label <span class="mono text-muted">@identity[..12]…</span></label>
+                        </div>
+                    }
+                    <div class="text-muted mt-2">The dApp sees these addresses and balances. It can request signatures; every request is shown to you first.</div>
+                    @if (_error != null) { <div class="text-danger mt-2">@_error</div> }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="Reject">Reject</button>
+                    <button class="btn btn-sm btn-primary" @onclick="Approve" disabled="@(_selected.Count == 0 || !p.ChainSupported)">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private WalletConnectProposal? _proposal;
+    private IReadOnlyList<(string Identity, string Label)> _accounts = [];
+    private HashSet<string> _selected = [];
+    private string? _error;
+
+    protected override void OnInitialized() => WalletConnect.OnProposal += OnProposal;
+
+    private void OnProposal(WalletConnectProposal p)
+    {
+        InvokeAsync(() =>
+        {
+            _proposal = p;
+            _accounts = External.SignableAccounts();
+            _selected = _accounts.Take(1).Select(a => a.Identity).ToHashSet();
+            _error = null;
+            StateHasChanged();
+        });
+    }
+
+    private void Toggle(string identity, bool on)
+    {
+        if (on) _selected.Add(identity); else _selected.Remove(identity);
+    }
+
+    private async Task Approve()
+    {
+        if (_proposal == null) return;
+        try
+        {
+            await WalletConnect.ApproveAsync(_proposal.Id, _selected.ToList());
+            _proposal = null;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    private async Task Reject()
+    {
+        if (_proposal == null) return;
+        try { await WalletConnect.RejectAsync(_proposal.Id); } catch { }
+        _proposal = null;
+    }
+
+    public void Dispose() => WalletConnect.OnProposal -= OnProposal;
+}

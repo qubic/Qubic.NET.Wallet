@@ -764,3 +764,28 @@ main {
         max-width: 180px !important;
     }
 }
+
+/* ── Networks ── */
+.qb-network-switcher { display: inline-flex; align-items: center; gap: 0.35rem; }
+.qb-network-switcher .form-select { width: auto; max-width: 200px; }
+.qb-network-dot { display: inline-block; width: 0.65rem; height: 0.65rem; border-radius: 50%; flex: none; box-shadow: 0 0 0 2px var(--qb-border-strong); }
+.qb-network-banner {
+    padding: 0.3rem 1rem;
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+/* ── Signing review ── */
+.qb-message-preview {
+    max-height: 14rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: var(--qb-bg-card-alt);
+    border: 1px solid var(--qb-border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+}
+.qb-decoded td { padding: 0.15rem 0.5rem; border-color: var(--qb-border); }
+.qb-signing-modal .modal-content { border: 1px solid var(--qb-border-strong); }

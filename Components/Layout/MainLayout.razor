@@ -16,6 +16,13 @@
 @inject BalanceService BalanceSvc
 @inject FileDialogService DialogService
 @inject IJSRuntime JS
+@inject Qubic.Services.Networks.NetworkSwitchService NetworkSwitch
+@inject Qubic.Services.Networks.ChainResetService ChainReset
+@inject Qubic.Services.Networks.NetworkFingerprintService Fingerprint
+@inject Qubic.Services.Features.FeatureService Features
+@inject Qubic.Services.Signing.SigningReviewService SigningReview
+@inject Qubic.WalletConnect.QubicWalletConnectService WalletConnectSvc
+@inject Qubic.Net.Wallet.LocalApi.LocalSigningEndpoint LocalEndpoint
 
 <div class="d-flex flex-column vh-100">
     <nav class="qb-navbar">
@@ -59,7 +66,7 @@
                     <i class="bi bi-lock me-1"></i>Lock
                 </button>
             }
-            else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput)
+            else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput && !Seed.HasSeed)
             {
                 @* ── Vault configured, locked ── *@
                 @if (_vaultFiles.Count > 1)
@@ -170,24 +177,7 @@
                 }
             }
             <div class="qb-divider"></div>
-            <select class="form-select form-select-sm" style="width:auto"
-                    @bind="Backend.ActiveBackend" @bind:after="OnBackendChanged">
-                <option value="@QueryBackend.Rpc">RPC</option>
-                <option value="@QueryBackend.Bob">Bob</option>
-                <option value="@QueryBackend.DirectNetwork">Direct</option>
-            </select>
-            @if (Backend.ActiveBackend == QueryBackend.DirectNetwork)
-            {
-                <input class="form-control form-control-sm" style="width:130px"
-                       placeholder="Host" @bind="Backend.NodeHost" @bind:event="oninput" />
-                <input type="number" class="form-control form-control-sm" style="width:70px"
-                       placeholder="Port" @bind="Backend.NodePort" />
-            }
-            else
-            {
-                <input class="form-control form-control-sm" style="width:130px"
-                       placeholder="Host" @bind="CurrentHost" @bind:event="oninput" />
-            }
+            <NetworkSwitcher />
             @if (TickMonitor.IsConnected)
             {
                 <button class="btn btn-sm btn-qb-danger" @onclick="Disconnect">
@@ -196,7 +186,7 @@
                 <span class="badge-qb-success mono">E@(TickMonitor.Epoch) | T@(TickMonitor.Tick)</span>
                 @if (TickDrift.HasDrift)
                 {
-                    <span class="badge-qb-warning" title="Tick drift detected: @TickDrift.MaxDrift ticks between backends">
+                    <span class="badge-qb-warning" title="Tick drift detected: @TickDrift.MaxDrift ticks between this network's methods">
                         <i class="bi bi-exclamation-triangle-fill"></i> Drift @TickDrift.MaxDrift
                     </span>
                 }
@@ -213,6 +203,7 @@
             }
         </div>
     </nav>
+    <NetworkBanner />
     @if (Seed.HasSeed)
     {
         <div class="qb-seed-bar">
@@ -248,6 +239,10 @@
         </main>
     </div>
 </div>
+
+<SigningReviewHost />
+<WalletConnectProposalHost />
+<FeaturesDialog OnSaved="OnFeaturesSaved" />
 
 @* ── Save-to-Vault Modal ── *@
 @if (_showSaveToVault && Seed.HasSeed)
@@ -384,12 +379,6 @@
     private string _addToVaultPassword = "";
     private string? _addToVaultError;
 
-    private string CurrentHost
-    {
-        get => Backend.ActiveBackend == QueryBackend.Rpc ? Backend.RpcHost : Backend.BobHost;
-        set { if (Backend.ActiveBackend == QueryBackend.Rpc) Backend.RpcHost = value; else Backend.BobHost = value; }
-    }
-
     protected override async Task OnInitializedAsync()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
@@ -398,14 +387,30 @@
         AutoLock.OnAutoLockTriggered += OnAutoLockTriggered;
         BalanceSvc.OnBalanceChanged += OnBalanceChanged;
         Nav.LocationChanged += OnLocationChanged;
+        NetworkSwitch.OnSwitched += OnNetworkSwitched;
+        Seed.OnSeedChanged += OnSeedChanged;
+        Qubic.Services.Networks.CoreLiteDevSeeds.Warmup();
+        // Local endpoint + public dev keys on a proven core-lite devnet may sign without a prompt (opt-in).
+        SigningReview.AutoApprovePolicy = req =>
+            req.Context.Origin == Qubic.Services.Signing.SigningOrigin.LocalEndpoint
+            && Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalEndpointAutoApproveDev)
+            && req.SourceIsPublicDevKey
+            && !req.Network.IsMainnet
+            && Fingerprint.IsCoreLiteDevnet
+            && req.Warnings.All(w => w.Level != Qubic.Services.Signing.WarningLevel.Danger);
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
+            WalletConnectSvc.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint))
+            LocalEndpoint.StartAsync().FireAndForget();
         if (Vault.IsUnlocked) AutoLock.Start();
         await TickMonitor.StartAsync();
         TickDrift.Start();
+        Fingerprint.CheckAsync().FireAndForget();
 
-        if (Settings.RemoteLabelsEnabled)
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels) && StaticData.IsApplicable)
             LoadLabelsWithRetry().FireAndForget();
 
-        // Auto-refresh asset registry if stale (once per day)
+        // Auto-refresh asset registry if stale (once per day); no-op on networks without issuance data
         AssetRegistry.RefreshFromNetworkAsync(Backend).FireAndForget();
 
         // Default vault path for save dialog
@@ -432,6 +437,7 @@
     private void OnTickChanged()
     {
         if (_disposed) return;
+        if (TickMonitor.IsConnected) Fingerprint.RetryIfUnidentifiedAsync().FireAndForget();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
@@ -467,6 +473,13 @@
 
     [Microsoft.JSInterop.JSInvokable]
     public void OnUserActivity() { AutoLock.RecordActivity(); }
+
+    // A seed can also be activated outside the header (e.g. Dev Tools "use").
+    private void OnSeedChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
 
     private void OnBalanceChanged()
     {
@@ -805,12 +818,36 @@
         Nav.NavigateTo("/", forceLoad: false);
     }
 
-    // ── Backend ──
+    // ── Network ──
 
-    private async Task OnBackendChanged()
+    private void OnNetworkSwitched()
     {
-        Backend.ResetClients();
-        await TickMonitor.StartAsync();
+        if (_disposed) return;
+        if (!NetworkSwitch.IsSwitching)
+        {
+            if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels) && StaticData.IsApplicable && StaticData.LastFetched == null)
+                LoadLabelsWithRetry().FireAndForget();
+            AssetRegistry.RefreshFromNetworkAsync(Backend).FireAndForget();
+        }
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private void OnFeaturesSaved()
+    {
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
+            WalletConnectSvc.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint))
+            LocalEndpoint.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels))
+        {
+            if (StaticData.IsApplicable && StaticData.LastFetched == null)
+                LoadLabelsWithRetry().FireAndForget();
+        }
+        else
+        {
+            StaticData.Disable();
+        }
+        StateHasChanged();
     }
 
     private async Task Reconnect()
@@ -819,6 +856,7 @@
         StateHasChanged();
         Backend.ResetClients();
         await TickMonitor.StartAsync();
+        Fingerprint.CheckAsync().FireAndForget();
         _reconnecting = false;
     }
 
@@ -844,6 +882,8 @@
         _disposed = true;
         TickMonitor.OnTickChanged -= OnTickChanged;
         TickDrift.OnDriftChanged -= OnDriftChanged;
+        NetworkSwitch.OnSwitched -= OnNetworkSwitched;
+        Seed.OnSeedChanged -= OnSeedChanged;
         Vault.OnVaultChanged -= OnVaultChanged;
         AutoLock.OnAutoLockTriggered -= OnAutoLockTriggered;
         BalanceSvc.OnBalanceChanged -= OnBalanceChanged;

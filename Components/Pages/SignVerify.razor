@@ -2,6 +2,8 @@
 @using Qubic.Crypto
 @inject SeedSessionService Seed
 @inject IJSRuntime JS
+@inject Qubic.Services.Features.FeatureService Features
+@inject QubicBackendService Backend
 
 <h4>Sign / Verify Message</h4>
 <p class="text-muted">Sign a message with your seed or verify a signed message.</p>
@@ -65,6 +67,24 @@
                         </span>
                     </div>
                 }
+                @if (_verifiedSignIn is { } si)
+                {
+                    <div class="card mt-2">
+                        <div class="card-header py-1 small"><i class="bi bi-box-arrow-in-right me-1"></i>Sign-In with Qubic</div>
+                        <div class="card-body py-2 small">
+                            <div><strong>@si.Domain</strong> · @si.Network · nonce <span class="mono">@si.Nonce</span></div>
+                            <div class="text-muted">Issued @si.IssuedAt.ToLocalTime().ToString("g")@(si.ExpirationTime is { } exp ? $", expires {exp.ToLocalTime():g}" : "")</div>
+                            @foreach (var p in _signInProblems)
+                            {
+                                <div class="text-danger"><i class="bi bi-exclamation-triangle me-1"></i>@p</div>
+                            }
+                            @if (_signInProblems.Count == 0)
+                            {
+                                <div class="text-success"><i class="bi bi-check2 me-1"></i>Message is well-formed and currently valid.</div>
+                            }
+                        </div>
+                    </div>
+                }
                 @if (_verifyError != null)
                 {
                     <div class="text-danger small mt-2">@_verifyError</div>
@@ -87,16 +107,24 @@
     private string? _verifyInput;
     private bool? _verifyResult;
     private string? _verifyError;
+    private Qubic.Core.Auth.SignInMessage? _verifiedSignIn;
+    private IReadOnlyList<string> _signInProblems = [];
 
-    private void SignMessage()
+    private async Task SignMessage()
     {
         _signResult = null;
         _signError = null;
         _copied = false;
         try
         {
+            if (Qubic.Core.Auth.SignInMessage.IsSignInMessage(_signMessage)
+                && !Features.IsEnabled(Qubic.Services.Features.WalletFeature.SignInWithQubic))
+            {
+                _signError = "This is a Sign-In with Qubic request. Enable \"Sign-In with Qubic\" in Settings → Features to sign it.";
+                return;
+            }
             var messageBytes = System.Text.Encoding.UTF8.GetBytes(_signMessage ?? "");
-            var signature = Seed.SignRawMessage(messageBytes);
+            var signature = await Seed.SignRawMessageAsync(messageBytes);
             var identity = Seed.Identity!.Value.ToString();
             var signatureEncoded = EncodeSignature(signature);
 
@@ -108,6 +136,7 @@
             };
             _signResult = System.Text.Json.JsonSerializer.Serialize(json, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
         }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _signError = "Signing cancelled."; }
         catch (Exception ex) { _signError = ex.Message; }
     }
 
@@ -115,6 +144,8 @@
     {
         _verifyResult = null;
         _verifyError = null;
+        _verifiedSignIn = null;
+        _signInProblems = [];
         try
         {
             if (string.IsNullOrWhiteSpace(_verifyInput))
@@ -138,6 +169,19 @@
             var signatureBytes = DecodeSignature(signatureStr);
 
             _verifyResult = _crypt.VerifyRaw(pubKey, messageBytes, signatureBytes);
+
+            if (Qubic.Core.Auth.SignInMessage.IsSignInMessage(message))
+            {
+                try
+                {
+                    _verifiedSignIn = Qubic.Core.Auth.SignInMessage.Parse(message);
+                    var problems = _verifiedSignIn.Validate(DateTimeOffset.UtcNow).ToList();
+                    if (_verifiedSignIn.Identity != identity)
+                        problems.Add("The message names a different identity than the signer.");
+                    _signInProblems = problems;
+                }
+                catch (FormatException ex) { _signInProblems = [ex.Message]; }
+            }
         }
         catch (System.Text.Json.JsonException)
         {

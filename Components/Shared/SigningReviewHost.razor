@@ -1,0 +1,222 @@
+@using Qubic.Services.Signing
+@using Qubic.Services.Networks
+@inject SigningReviewService Review
+@implements ISigningPresenter
+@implements IDisposable
+
+@* The review sheet every signature goes through (in-app, dev tools, WalletConnect, local endpoint). *@
+@if (_current is { } item)
+{
+    var r = item.Request;
+    <div class="modal d-block qb-signing-modal" tabindex="-1" style="background:rgba(0,0,0,0.6)">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="border-top:4px solid @r.Network.BadgeColor">
+                    <div>
+                        <h6 class="modal-title mb-1"><i class="bi bi-pen me-2"></i>@r.Title</h6>
+                        <div class="small">
+                            <span class="badge" style="background:@r.Network.BadgeColor">@r.Network.Name</span>
+                            <span class="badge bg-secondary ms-1">@OriginText(r.Context)</span>
+                            @if (_queue.Count > 0)
+                            {
+                                <span class="badge bg-info ms-1">+@_queue.Count more waiting</span>
+                            }
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" @onclick="() => Decide(false)" aria-label="Reject"></button>
+                </div>
+                <div class="modal-body">
+                    @if (!string.IsNullOrEmpty(r.Context.Description))
+                    {
+                        <p class="mb-2">@r.Context.Description</p>
+                    }
+                    @if (r.Context.IsExternal)
+                    {
+                        <div class="alert alert-info py-1 small">
+                            <i class="bi bi-globe me-1"></i>Requested by <strong>@(r.Context.RequesterName ?? "unknown")</strong>
+                            @if (!string.IsNullOrEmpty(r.Context.RequesterUrl))
+                            {
+                                <span class="mono ms-1">@r.Context.RequesterUrl</span>
+                            }
+                        </div>
+                    }
+
+                    @foreach (var w in r.Warnings.OrderByDescending(w => w.Level))
+                    {
+                        <div class="alert @WarningClass(w.Level) py-1 px-2 small mb-2">
+                            <i class="bi @WarningIcon(w.Level) me-1"></i><strong>@w.Title.</strong> @w.Detail
+                        </div>
+                    }
+
+                    <dl class="row small mb-2">
+                        <dt class="col-sm-3">From</dt>
+                        <dd class="col-sm-9">
+                            @if (!string.IsNullOrEmpty(r.SourceLabel)) { <span class="me-1">@r.SourceLabel</span> }
+                            <span class="mono text-break">@r.SourceIdentity</span>
+                            @if (r.SourceIsPublicDevKey) { <span class="badge bg-warning text-dark ms-1">PUBLIC DEV KEY</span> }
+                        </dd>
+
+                        @if (r.Kind == SigningKind.Transaction)
+                        {
+                            <dt class="col-sm-3">To</dt>
+                            <dd class="col-sm-9">
+                                @if (!string.IsNullOrEmpty(r.DestinationLabel)) { <span class="me-1">@r.DestinationLabel</span> }
+                                <span class="mono text-break">@r.Destination</span>
+                            </dd>
+                            <dt class="col-sm-3">Amount</dt>
+                            <dd class="col-sm-9"><strong>@r.Amount.ToString("N0") QU</strong></dd>
+                            <dt class="col-sm-3">Target tick</dt>
+                            <dd class="col-sm-9 mono">
+                                @r.TargetTick.ToString("N0")
+                                @if (r.CurrentTick is { } cur && r.TargetTick > cur)
+                                {
+                                    <span class="text-muted">(+@(r.TargetTick - cur) from @cur.ToString("N0")@(r.EtaSeconds is { } eta ? $", ~{eta:0}s" : ""))</span>
+                                }
+                            </dd>
+                        }
+                    </dl>
+
+                    @if (r.Decoded is { } d)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-header py-1 small">
+                                <i class="bi bi-braces me-1"></i>@d.ContractName (#@d.ContractIndex) ·
+                                @(d.EntryName ?? $"procedure #{d.InputType}") <span class="text-muted">(input type @d.InputType)</span>
+                            </div>
+                            @if (d.Fields.Count > 0)
+                            {
+                                <div class="card-body p-0"><DecodedFieldsView Fields="d.Fields" /></div>
+                            }
+                        </div>
+                    }
+                    else if (r.InputType != 0)
+                    {
+                        <div class="small mb-2">Input type <span class="mono">@r.InputType</span></div>
+                    }
+
+                    @if (r.SignIn is { } si)
+                    {
+                        <div class="card mb-2">
+                            <div class="card-header py-1 small"><i class="bi bi-box-arrow-in-right me-1"></i>Sign-In with Qubic</div>
+                            <div class="card-body py-2 small">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-3">Site</dt><dd class="col-sm-9"><strong>@si.Domain</strong></dd>
+                                    @if (!string.IsNullOrEmpty(si.Statement)) { <dt class="col-sm-3">Statement</dt><dd class="col-sm-9">@si.Statement</dd> }
+                                    <dt class="col-sm-3">URI</dt><dd class="col-sm-9 mono text-break">@si.Uri</dd>
+                                    <dt class="col-sm-3">Network</dt><dd class="col-sm-9">@si.Network</dd>
+                                    <dt class="col-sm-3">Issued</dt><dd class="col-sm-9">@si.IssuedAt.ToLocalTime().ToString("g")</dd>
+                                    @if (si.ExpirationTime is { } exp) { <dt class="col-sm-3">Expires</dt><dd class="col-sm-9">@exp.ToLocalTime().ToString("g")</dd> }
+                                    <dt class="col-sm-3">Nonce</dt><dd class="col-sm-9 mono">@si.Nonce</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    }
+                    else if (r.Kind == SigningKind.Message)
+                    {
+                        <label class="form-label small mb-1">Message</label>
+                        <pre class="qb-message-preview">@(r.MessageText ?? "0x" + Convert.ToHexString(r.MessageBytes ?? []).ToLowerInvariant())</pre>
+                    }
+
+                    @if (r.Payload is { Length: > 0 } payload)
+                    {
+                        <details class="small">
+                            <summary>Raw input (@payload.Length bytes)</summary>
+                            <pre class="qb-message-preview mono">@Convert.ToHexString(payload).ToLowerInvariant()</pre>
+                        </details>
+                    }
+                </div>
+                <div class="modal-footer">
+                    @if (r.RequiresAcknowledgement)
+                    {
+                        <div class="form-check me-auto">
+                            <input class="form-check-input" type="checkbox" id="signAck" @bind="_acknowledged" />
+                            <label class="form-check-label small" for="signAck">I understand the warnings above</label>
+                        </div>
+                    }
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => Decide(false)">Reject</button>
+                    <button class="btn btn-sm btn-primary" @onclick="() => Decide(true)"
+                            disabled="@(r.RequiresAcknowledgement && !_acknowledged)">
+                        <i class="bi bi-pen me-1"></i>Sign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private sealed record Pending(SigningRequest Request, TaskCompletionSource<bool> Decision);
+
+    private readonly Queue<Pending> _queue = new();
+    private Pending? _current;
+    private bool _acknowledged;
+    private readonly object _lock = new();
+
+    protected override void OnInitialized() => Review.Presenter = this;
+
+    public Task<bool> PresentAsync(SigningRequest request, CancellationToken ct)
+    {
+        var pending = new Pending(request, new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously));
+        lock (_lock)
+        {
+            if (_current == null) { _current = pending; _acknowledged = false; }
+            else _queue.Enqueue(pending);
+        }
+        if (ct.CanBeCanceled)
+            ct.Register(() => Resolve(pending, false));
+        InvokeAsync(StateHasChanged);
+        return pending.Decision.Task;
+    }
+
+    private void Decide(bool approve)
+    {
+        if (_current is { } p) Resolve(p, approve);
+    }
+
+    private void Resolve(Pending p, bool approved)
+    {
+        p.Decision.TrySetResult(approved);
+        lock (_lock)
+        {
+            if (_current == p)
+            {
+                _current = _queue.Count > 0 ? _queue.Dequeue() : null;
+                _acknowledged = false;
+            }
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    private static string OriginText(SigningContext c) => c.Origin switch
+    {
+        SigningOrigin.WalletConnect => "WalletConnect",
+        SigningOrigin.LocalEndpoint => "Local endpoint",
+        SigningOrigin.DevTools => "Dev tools",
+        SigningOrigin.Repeat => "Repeat",
+        _ => "This wallet"
+    };
+
+    private static string WarningClass(WarningLevel l) => l switch
+    {
+        WarningLevel.Danger => "alert-danger",
+        WarningLevel.Caution => "alert-warning",
+        _ => "alert-secondary"
+    };
+
+    private static string WarningIcon(WarningLevel l) => l switch
+    {
+        WarningLevel.Danger => "bi-exclamation-octagon-fill",
+        WarningLevel.Caution => "bi-exclamation-triangle-fill",
+        _ => "bi-info-circle"
+    };
+
+    public void Dispose()
+    {
+        if (ReferenceEquals(Review.Presenter, this)) Review.Presenter = null;
+        lock (_lock)
+        {
+            _current?.Decision.TrySetResult(false);
+            while (_queue.Count > 0) _queue.Dequeue().Decision.TrySetResult(false);
+        }
+    }
+}

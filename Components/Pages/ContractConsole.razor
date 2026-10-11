@@ -1,0 +1,417 @@
+@page "/contracts"
+@using Qubic.Core.Contracts.Metadata
+@using Qubic.Services.Contracts
+@using Qubic.Services.Features
+@using Qubic.Services.Networks
+@inject ContractCatalogService Contracts
+@inject FeatureService Features
+@inject QubicBackendService Backend
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject TransactionTrackerService TxTracker
+@inject QubicSettingsService Settings
+@inject NetworkProfileService Profiles
+@implements IDisposable
+
+<h4>Contract Console</h4>
+<p class="text-muted">Call any smart contract function or procedure — including your own contract, imported from its C++ header.</p>
+
+@if (!Features.IsEnabled(WalletFeature.DeveloperTools))
+{
+    <div class="alert alert-secondary">The contract console is part of <strong>Developer tools</strong>. Turn it on in <a href="/settings?tab=features">Settings → Features</a>.</div>
+}
+else
+{
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="card mb-3">
+                <div class="card-header">Call</div>
+                <div class="card-body">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-7">
+                            <label class="form-label small">Contract</label>
+                            <select class="form-select form-select-sm" value="@_contractIndex" @onchange="OnContractChanged">
+                                @foreach (var c in Contracts.Catalog.All)
+                                {
+                                    <option value="@c.ContractIndex">#@c.ContractIndex @c.CSharpName@(Contracts.Catalog.Registered.Any(r => r.ContractIndex == c.ContractIndex) ? " (imported)" : "")</option>
+                                }
+                                @foreach (var c in Contracts.OnChainContracts.Where(o => Contracts.Catalog.Get((int)o.Index) == null))
+                                {
+                                    <option value="@c.Index">#@c.Index @c.Name (no metadata)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small">Kind</label>
+                            <div class="btn-group btn-group-sm w-100">
+                                <button class="btn @(_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(true)">Function (read)</button>
+                                <button class="btn @(!_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(false)">Procedure (tx)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    @{ var contract = Contracts.Catalog.Get(_contractIndex); }
+                    <div class="mb-2">
+                        <label class="form-label small">@(_isFunction ? "Function" : "Procedure")</label>
+                        @if (contract != null && Entries(contract).Any())
+                        {
+                            <select class="form-select form-select-sm" value="@_inputType" @onchange="OnEntryChanged">
+                                @foreach (var (name, id) in Entries(contract))
+                                {
+                                    <option value="@id">@name (input type @id)</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <input type="number" min="1" class="form-control form-control-sm" @bind="_inputType" placeholder="input type" />
+                        }
+                    </div>
+
+                    <div class="mb-2">
+                        @if (CurrentInput is { } input)
+                        {
+                            <label class="form-label small">Input <span class="text-muted">(@ContractLayout.SizeOf(input) bytes)</span></label>
+                            <StructEditor Def="input" Values="_values" OnChanged="StateHasChanged" />
+                        }
+                        else
+                        {
+                            <label class="form-label small">Raw input (hex)</label>
+                            <input class="form-control form-control-sm mono" placeholder="0x…" @bind="_rawHex" />
+                        }
+                    </div>
+
+                    @if (!_isFunction)
+                    {
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-6">
+                                <label class="form-label small">Amount (QU sent with the call)</label>
+                                <input type="number" min="0" class="form-control form-control-sm" @bind="_amount" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">Target tick</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control" @bind="_targetTick" placeholder="auto" />
+                                    @if (_targetTick == 0) { <TickTargetPreview /> }
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (_error != null) { <div class="alert alert-danger py-1 small">@_error</div> }
+
+                    @if (_isFunction)
+                    {
+                        <button class="btn btn-sm btn-primary" @onclick="Query" disabled="@_busy">
+                            <i class="bi bi-search me-1"></i>@(_busy ? "Querying…" : "Query")
+                        </button>
+                    }
+                    else if (!Seed.HasSeed)
+                    {
+                        <div class="alert alert-warning py-1 small mb-0">Unlock a seed to send procedures.</div>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-primary" @onclick="Send" disabled="@_busy">
+                            <i class="bi bi-pen me-1"></i>@(_busy ? "Sending…" : "Review & Sign")
+                        </button>
+                    }
+                </div>
+            </div>
+
+            @if (_queryOutput != null)
+            {
+                <div class="card mb-3">
+                    <div class="card-header small">Result (@_queryOutput.Length bytes)</div>
+                    <div class="card-body p-0">
+                        @if (_decodedOutput != null) { <DecodedFieldsView Fields="_decodedOutput" /> }
+                        <pre class="qb-message-preview mono m-2">@Convert.ToHexString(_queryOutput).ToLowerInvariant()</pre>
+                    </div>
+                </div>
+            }
+
+            @if (_txHash != null)
+            {
+                <div class="card mb-3">
+                    <div class="card-header small d-flex align-items-center">
+                        Transaction <TxHashDisplay Hash="@_txHash" />
+                        <span class="ms-2 text-muted">target tick @_sentTick.ToString("N0")</span>
+                        <button class="btn btn-sm btn-outline-secondary ms-auto" @onclick="CheckResult"
+                                disabled="@(_busy || !Backend.IsAvailable(Capability.TransactionReceipt))">Check result</button>
+                    </div>
+                    @if (_receipt != null)
+                    {
+                        <div class="card-body small">
+                            <div>Status: <strong class="@(_receipt.Status ? "text-success" : "text-danger")">@(_receipt.Status ? "executed" : "failed / not executed")</strong></div>
+                            @if (_receiptNote != null) { <div class="text-muted">@_receiptNote</div> }
+                        </div>
+                    }
+                    else if (_receiptNote != null)
+                    {
+                        <div class="card-body small text-muted">@_receiptNote</div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card mb-3">
+                <div class="card-header"><i class="bi bi-file-earmark-code me-1"></i>Import contract header</div>
+                <div class="card-body">
+                    <p class="small text-muted">
+                        Paste or load your contract's <code>.h</code> (e.g. <code>core-lite/src/contracts/MyContract.h</code>).
+                        Its input/output structs and REGISTER_USER_FUNCTION/PROCEDURE ids become typed forms here and decoded fields in the signing review.
+                        Imports are kept per network (now: <strong>@Profiles.Active.Name</strong>).
+                    </p>
+                    <div class="row g-2 mb-2">
+                        <div class="col-4">
+                            <label class="form-label small">Index</label>
+                            <input type="number" min="1" max="1023" class="form-control form-control-sm" @bind="_importIndex" />
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label small">Name (optional)</label>
+                            <input class="form-control form-control-sm" @bind="_importName" />
+                        </div>
+                    </div>
+                    <InputFile OnChange="LoadHeaderFile" accept=".h,.hpp,.txt" class="form-control form-control-sm mb-2" />
+                    <textarea class="form-control form-control-sm mono mb-2" rows="6" placeholder="struct MYCONTRACT : public ContractBase { … }" @bind="_importSource"></textarea>
+                    <button class="btn btn-sm btn-primary" @onclick="Import" disabled="@string.IsNullOrWhiteSpace(_importSource)">Import</button>
+                    @if (_importResult != null) { <div class="small mt-2 text-success">@_importResult</div> }
+                    @foreach (var w in _importWarnings) { <div class="small text-warning">@w</div> }
+                    @if (_importError != null) { <div class="small mt-2 text-danger">@_importError</div> }
+
+                    @if (Contracts.Imported.Count > 0)
+                    {
+                        <hr />
+                        <div class="small fw-semibold mb-1">Imported on this network</div>
+                        <ul class="list-unstyled small mb-0">
+                            @foreach (var c in Contracts.Imported)
+                            {
+                                <li class="d-flex align-items-center">
+                                    <span>#@c.Index @c.Name <span class="text-muted">(@c.StructName, @c.ImportedUtc.ToLocalTime().ToString("g"))</span></span>
+                                    <button class="btn btn-sm btn-link text-danger ms-auto p-0" @onclick="() => Contracts.Remove(c.Index)">remove</button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+
+            @if (Backend.IsAvailable(Capability.ContractRegistry))
+            {
+                <div class="card">
+                    <div class="card-header small d-flex align-items-center">
+                        Contracts on this node
+                        <button class="btn btn-sm btn-outline-secondary ms-auto" @onclick="RefreshOnChain">Refresh</button>
+                    </div>
+                    @if (Contracts.OnChainContracts.Count > 0)
+                    {
+                        <div class="card-body p-0">
+                            <table class="table table-sm mb-0 small">
+                                <thead><tr><th>#</th><th>Name</th><th>Since epoch</th><th>State</th></tr></thead>
+                                <tbody>
+                                    @foreach (var c in Contracts.OnChainContracts)
+                                    {
+                                        <tr>
+                                            <td>@c.Index</td><td>@c.Name</td><td>@c.ConstructionEpoch</td><td>@c.StateSize.ToString("N0") B</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private int _contractIndex = 1;
+    private bool _isFunction = true;
+    private int _inputType = 1;
+    private Dictionary<string, string> _values = [];
+    private string? _rawHex;
+    private long _amount;
+    private uint _targetTick;
+    private bool _busy;
+    private string? _error;
+
+    private byte[]? _queryOutput;
+    private IReadOnlyList<DecodedField>? _decodedOutput;
+
+    private string? _txHash;
+    private uint _sentTick;
+    private Qubic.Bob.Models.TransactionReceiptResponse? _receipt;
+    private string? _receiptNote;
+
+    private int _importIndex = 30;
+    private string? _importName;
+    private string? _importSource;
+    private string? _importResult;
+    private string? _importError;
+    private IReadOnlyList<string> _importWarnings = [];
+
+    protected override void OnInitialized()
+    {
+        Contracts.OnChanged += Refresh;
+        Profiles.OnActiveProfileChanged += OnProfileChanged;
+        SelectFirstEntry();
+        _ = Contracts.RefreshOnChainAsync();
+    }
+
+    private void OnProfileChanged(NetworkProfile oldProfile, NetworkProfile newProfile)
+    {
+        _ = Contracts.RefreshOnChainAsync();
+        Refresh();
+    }
+
+    private void Refresh() => InvokeAsync(StateHasChanged);
+
+    private IEnumerable<(string Name, int Id)> Entries(ContractDefinition c) => _isFunction
+        ? c.Functions.OrderBy(f => f.InputType).Select(f => (f.Name, f.InputType))
+        : c.Procedures.OrderBy(p => p.InputType).Select(p => (p.Name, p.InputType));
+
+    private StructDef? CurrentInput
+    {
+        get
+        {
+            var c = Contracts.Catalog.Get(_contractIndex);
+            if (c == null) return null;
+            return _isFunction
+                ? c.Functions.FirstOrDefault(f => f.InputType == _inputType)?.Input
+                : c.Procedures.FirstOrDefault(p => p.InputType == _inputType)?.Input;
+        }
+    }
+
+    private void SelectFirstEntry()
+    {
+        var c = Contracts.Catalog.Get(_contractIndex);
+        _inputType = c != null && Entries(c).Any() ? Entries(c).First().Id : 1;
+        _values = [];
+        _rawHex = null;
+        _queryOutput = null;
+        _decodedOutput = null;
+        _error = null;
+    }
+
+    private void OnContractChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var idx)) _contractIndex = idx;
+        SelectFirstEntry();
+    }
+
+    private void OnEntryChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var id)) _inputType = id;
+        _values = [];
+        _queryOutput = null;
+        _decodedOutput = null;
+        _error = null;
+    }
+
+    private void SetKind(bool isFunction)
+    {
+        _isFunction = isFunction;
+        SelectFirstEntry();
+    }
+
+    private byte[] BuildInput()
+    {
+        if (CurrentInput is { } def) return ContractCodec.Encode(def, _values);
+        var hex = (_rawHex ?? "").Trim();
+        if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase)) hex = hex[2..];
+        return string.IsNullOrEmpty(hex) ? [] : Convert.FromHexString(hex);
+    }
+
+    private async Task Query()
+    {
+        _busy = true; _error = null; _queryOutput = null; _decodedOutput = null;
+        try
+        {
+            var input = BuildInput();
+            _queryOutput = await Backend.QuerySmartContractAsync((uint)_contractIndex, (uint)_inputType, input);
+            _decodedOutput = Contracts.Catalog.DecodeFunctionOutput(_contractIndex, _inputType, _queryOutput);
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task Send()
+    {
+        _busy = true; _error = null; _txHash = null; _receipt = null; _receiptNote = null;
+        try
+        {
+            if (_inputType is < 1 or > ushort.MaxValue) throw new FormatException("Input type must be 1-65535.");
+            if (_amount < 0) throw new FormatException("Amount cannot be negative.");
+            var input = BuildInput();
+            var payload = new GenericContractPayload((ushort)_inputType, input);
+            var tick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
+            var name = Contracts.GetName(_contractIndex) ?? $"#{_contractIndex}";
+            var entry = Contracts.Catalog.Get(_contractIndex)?.Procedures.FirstOrDefault(p => p.InputType == _inputType)?.Name ?? $"procedure {_inputType}";
+            _txHash = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed,
+                QubicContracts.GetContractIdentity(_contractIndex), _amount, tick, payload, $"{name}: {entry}");
+            _sentTick = tick;
+            _receiptNote = "Broadcast. Use \"Check result\" once the target tick has passed.";
+        }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task CheckResult()
+    {
+        if (_txHash == null) return;
+        _busy = true; _receiptNote = null;
+        try
+        {
+            if (TickMonitor.Tick <= _sentTick)
+            {
+                _receiptNote = $"Target tick {_sentTick:N0} not reached yet (now {TickMonitor.Tick:N0}).";
+                return;
+            }
+            _receipt = await Backend.GetTransactionReceiptAsync(_txHash);
+            if (_receipt == null) _receiptNote = "No receipt yet — the transaction was not (yet) included.";
+        }
+        catch (Exception ex) { _receiptNote = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task LoadHeaderFile(InputFileChangeEventArgs e)
+    {
+        _importError = null;
+        try
+        {
+            using var reader = new StreamReader(e.File.OpenReadStream(2 * 1024 * 1024));
+            _importSource = await reader.ReadToEndAsync();
+            _importName ??= Path.GetFileNameWithoutExtension(e.File.Name);
+        }
+        catch (Exception ex) { _importError = ex.Message; }
+    }
+
+    private void Import()
+    {
+        _importResult = null; _importError = null; _importWarnings = [];
+        try
+        {
+            var (def, warnings) = Contracts.Import(_importSource!, _importIndex, string.IsNullOrWhiteSpace(_importName) ? null : _importName.Trim());
+            _importWarnings = warnings;
+            _importResult = $"Imported {def.CSharpName} as #{def.ContractIndex}: {def.Functions.Count} functions, {def.Procedures.Count} procedures.";
+            _contractIndex = def.ContractIndex;
+            SelectFirstEntry();
+        }
+        catch (Exception ex) { _importError = ex.Message; }
+    }
+
+    private async Task RefreshOnChain()
+    {
+        if (!await Contracts.RefreshOnChainAsync())
+            _error = "Could not load the node's contract list.";
+    }
+
+    public void Dispose()
+    {
+        Contracts.OnChanged -= Refresh;
+        Profiles.OnActiveProfileChanged -= OnProfileChanged;
+    }
+}

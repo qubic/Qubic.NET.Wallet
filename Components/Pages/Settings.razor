@@ -10,6 +10,8 @@
 @inject TransactionTrackerService TxTracker
 @inject AutoLockService AutoLock
 @inject FileDialogService DialogService
+@inject Qubic.Services.Features.FeatureService Features
+@inject NavigationManager Nav
 
 <h4>Settings</h4>
 <p class="text-muted">Configure Qubic.Net Wallet behavior.</p>
@@ -21,8 +23,12 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(_activeTab == "connection" ? "active" : "")" href="" @onclick="@(() => SetTab("connection"))" @onclick:preventDefault>
-            <i class="bi bi-plug me-1"></i>Connection
+        <a class="nav-link @(_activeTab == "networks" ? "active" : "")" href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>
+            <i class="bi bi-hdd-network me-1"></i>Networks</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(_activeTab == "features" ? "active" : "")" href="" @onclick="@(() => SetTab("features"))" @onclick:preventDefault>
+            <i class="bi bi-toggles me-1"></i>Features
         </a>
     </li>
     <li class="nav-item">
@@ -72,92 +78,24 @@
         </div>
     </div></div>
 }
-else if (_activeTab == "connection")
+else if (_activeTab == "networks")
 {
-    <div class="row"><div class="col-md-8">
-        <div class="mb-3">
-            <label class="form-label">Default Backend</label>
-            <select class="form-select" value="@Backend.ActiveBackend" @onchange="OnBackendChanged">
-                <option value="@QueryBackend.Rpc">RPC</option>
-                <option value="@QueryBackend.Bob">Bob (JSON-RPC)</option>
-                <option value="@QueryBackend.DirectNetwork">Direct Network</option>
-            </select>
-            <div class="form-text">
-                RPC supports most features. Bob provides transfer history.
-                Direct Network connects to a node directly.
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">RPC Connection</label>
-            <div class="input-group">
-                <select class="form-select" style="max-width:100px"
-                        value="@Backend.RpcScheme" @onchange="OnRpcSchemeChanged">
-                    <option value="https">https</option>
-                    <option value="http">http</option>
-                </select>
-                <input type="text" class="form-control" placeholder="Host"
-                       value="@Backend.RpcHost" @onchange="OnRpcHostChanged" />
-                <input type="number" class="form-control" style="max-width:100px"
-                       placeholder="Port" min="1" max="65535"
-                       value="@Backend.RpcPort" @onchange="OnRpcPortChanged" />
-            </div>
-            <div class="form-text">Current URL: <code>@Backend.RpcUrl</code></div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Bob Connection</label>
-            <div class="input-group">
-                <select class="form-select" style="max-width:100px"
-                        value="@Backend.BobScheme" @onchange="OnBobSchemeChanged">
-                    <option value="https">https</option>
-                    <option value="http">http</option>
-                </select>
-                <input type="text" class="form-control" placeholder="Host"
-                       value="@Backend.BobHost" @onchange="OnBobHostChanged" />
-                <input type="number" class="form-control" style="max-width:100px"
-                       placeholder="Port" min="1" max="65535"
-                       value="@Backend.BobPort" @onchange="OnBobPortChanged" />
-            </div>
-            <div class="form-text">Current URL: <code>@Backend.BobUrl</code></div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Node Connection</label>
-            <div class="input-group">
-                <span class="input-group-text" style="min-width:100px;justify-content:center">TCP</span>
-                <input type="text" class="form-control" placeholder="Host"
-                       value="@Backend.NodeHost" @onchange="OnNodeHostChanged" />
-                <input type="number" class="form-control" style="max-width:100px"
-                       placeholder="Port" min="1" max="65535"
-                       value="@Backend.NodePort" @onchange="OnNodePortChanged" />
-            </div>
-            <div class="form-text">Current: <code>tcp://@(Backend.NodeHost):@(Backend.NodePort)</code></div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Tick Drift Threshold</label>
-            <input type="number" class="form-control" min="1" max="100"
-                   value="@(Cfg.GetCustom<int?>("tickDriftThreshold") ?? 15)"
-                   @onchange="OnTickDriftThresholdChanged" />
-            <div class="form-text">
-                Maximum tick difference between backends before showing a drift warning.
-                Default: 15 ticks.
-            </div>
-        </div>
+    <NetworkSettings />
+}
+else if (_activeTab == "features")
+{
+    <div class="row"><div class="col-lg-8">
+        <p class="small text-muted">Optional features are off unless enabled here. Features that are off do not run at all.</p>
+        <FeaturesPanel OnChanged="OnFeatureChanged" />
     </div></div>
 }
 else if (_activeTab == "transactions")
 {
     <div class="row"><div class="col-md-6">
-        <div class="mb-3">
-            <label class="form-label">Auto-Tick Offset</label>
-            <input type="number" class="form-control" min="1" max="100"
-                   value="@Cfg.TickOffset"
-                   @onchange="e => Cfg.TickOffset = int.TryParse(e.Value?.ToString(), out var v) ? v : 5" />
-            <div class="form-text">
-                Number of ticks added to the current tick when using auto-tick.
-            </div>
+        <div class="alert alert-secondary small py-2">
+            <i class="bi bi-info-circle me-1"></i>
+            The target tick (fixed offset or "execute in ~N seconds") is set per network in
+            <a href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>Networks</a>.
         </div>
 
         <div class="mb-3">
@@ -191,7 +129,7 @@ else if (_activeTab == "labels")
         <div class="mb-3">
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="remoteLabels"
-                       checked="@Cfg.RemoteLabelsEnabled"
+                       checked="@Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels)"
                        @onchange="OnRemoteLabelsToggled" />
                 <label class="form-check-label" for="remoteLabels">
                     Load labels from remote registry
@@ -199,6 +137,7 @@ else if (_activeTab == "labels")
             </div>
             <div class="form-text">
                 Fetches known address labels from <code>static.qubic.org</code> on startup.
+                Only used on networks with the Mainnet data bundle enabled.
             </div>
         </div>
 
@@ -765,32 +704,26 @@ else if (_activeTab == "vault")
         await JS.InvokeVoidAsync("setTheme", _theme);
     }
 
-    private void OnBackendChanged(ChangeEventArgs e)
-    {
-        if (Enum.TryParse<QueryBackend>(e.Value?.ToString(), out var b))
-        {
-            Backend.ActiveBackend = b;
-            Backend.ApplySettings();
-        }
-    }
-
-    private void OnRpcSchemeChanged(ChangeEventArgs e) { Backend.RpcScheme = e.Value?.ToString() ?? "https"; Backend.ApplySettings(); }
-    private void OnRpcHostChanged(ChangeEventArgs e) { Backend.RpcHost = e.Value?.ToString() ?? ""; Backend.ApplySettings(); }
-    private void OnRpcPortChanged(ChangeEventArgs e) { Backend.RpcPort = int.TryParse(e.Value?.ToString(), out var v) ? v : 443; Backend.ApplySettings(); }
-    private void OnBobSchemeChanged(ChangeEventArgs e) { Backend.BobScheme = e.Value?.ToString() ?? "https"; Backend.ApplySettings(); }
-    private void OnBobHostChanged(ChangeEventArgs e) { Backend.BobHost = e.Value?.ToString() ?? ""; Backend.ApplySettings(); }
-    private void OnBobPortChanged(ChangeEventArgs e) { Backend.BobPort = int.TryParse(e.Value?.ToString(), out var v) ? v : 443; Backend.ApplySettings(); }
-    private void OnNodeHostChanged(ChangeEventArgs e) { Backend.NodeHost = e.Value?.ToString() ?? ""; Backend.ApplySettings(); }
-    private void OnNodePortChanged(ChangeEventArgs e) { Backend.NodePort = int.TryParse(e.Value?.ToString(), out var v) ? v : 21841; Backend.ApplySettings(); }
-    private void OnTickDriftThresholdChanged(ChangeEventArgs e) { Cfg.SetCustom("tickDriftThreshold", int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, 1, 100) : 15); }
-
     private async Task OnRemoteLabelsToggled(ChangeEventArgs e)
     {
-        Cfg.RemoteLabelsEnabled = (bool)(e.Value ?? false);
-        if (Cfg.RemoteLabelsEnabled)
+        Features.SetEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels, (bool)(e.Value ?? false));
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels))
             await RefreshLabels();
         else
-            StaticData.Clear();
+            StaticData.Disable();
+    }
+
+    private async Task OnFeatureChanged()
+    {
+        // Remote labels need an immediate (un)load; other features react through their services.
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels))
+        {
+            if (StaticData.LastFetched == null) await RefreshLabels();
+        }
+        else
+        {
+            StaticData.Disable();
+        }
     }
 
     private async Task RefreshLabels()
@@ -922,6 +855,9 @@ else if (_activeTab == "vault")
     protected override void OnInitialized()
     {
         _vaultCreatePath = Path.Combine(Cfg.StorageDirectory, "vault.dat");
+        var uri = Nav.ToAbsoluteUri(Nav.Uri);
+        var tab = System.Web.HttpUtility.ParseQueryString(uri.Query)["tab"];
+        if (!string.IsNullOrEmpty(tab)) _activeTab = tab;
     }
 
     private async Task BrowseCreateVaultPath()

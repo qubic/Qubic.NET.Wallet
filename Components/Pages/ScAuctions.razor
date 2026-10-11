@@ -84,11 +84,11 @@
                     @(_statusLoading ? "Looking up..." : "Lookup")
                 </button>
 
-                @if (Backend.ActiveBackend != QueryBackend.DirectNetwork)
+                @if (!Backend.IsAvailable(Qubic.Services.Networks.Capability.IpoStatus))
                 {
                     <div class="alert alert-warning mt-2 d-flex align-items-center justify-content-between">
-                        <span>Requires DirectNetwork backend.</span>
-                        <button class="btn btn-sm btn-warning ms-2" @onclick="SwitchToDirectNetwork">Switch</button>
+                        <span>IPO status needs a Direct (node) method in this network.</span>
+                        <a class="btn btn-sm btn-warning ms-2" href="/settings?tab=networks">Network settings</a>
                     </div>
                 }
 
@@ -280,12 +280,6 @@
 
     private void SetTab(string tab) { _activeTab = tab; _error = null; _result = null; }
 
-    private void SwitchToDirectNetwork()
-    {
-        Backend.ActiveBackend = QueryBackend.DirectNetwork;
-        StateHasChanged();
-    }
-
     private async Task NavigateToStatus(uint contractIndex)
     {
         _statusContractIndex = contractIndex;
@@ -348,8 +342,8 @@
             if (_statusContractIndex < 1 || _statusContractIndex > 1023)
             { _error = "Contract index must be between 1 and 1023."; return; }
 
-            if (Backend.ActiveBackend != QueryBackend.DirectNetwork)
-            { _error = "This feature requires the DirectNetwork backend."; return; }
+            if (!Backend.IsAvailable(Qubic.Services.Networks.Capability.IpoStatus))
+            { _error = "IPO status needs a Direct (node) method in this network."; return; }
 
             _ipoStatus = await Backend.GetIpoStatusAsync(_statusContractIndex);
             ComputeStatusSummary();

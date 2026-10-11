@@ -1,5 +1,6 @@
 @page "/receive"
 @inject SeedSessionService Seed
+@inject QubicBackendService Backend
 @inject IJSRuntime JS
 
 <h4>Receive QU</h4>
@@ -10,12 +11,14 @@
 }
 else
 {
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row g-3">
+        <div class="col-md-7">
             <div class="card">
                 <div class="card-header">Your Identity</div>
                 <div class="card-body text-center py-4">
-                    <p class="text-muted small mb-3">Share this address to receive QU or assets.</p>
+                    <p class="text-muted small mb-3">
+                        @(_isRequest ? "Scan to pay. The QR code contains a payment request (qubic: link)." : "Share this address to receive QU or assets.")
+                    </p>
                     @if (_qrSvg != null)
                     {
                         <div class="mb-3 d-flex justify-content-center">
@@ -25,11 +28,11 @@ else
                         </div>
                     }
                     <div class="p-3 bg-body-tertiary rounded mb-3">
-                        <code class="mono d-block fs-5" style="word-break:break-all; letter-spacing:0.1em">@Seed.Identity</code>
+                        <code class="mono d-block @(_isRequest ? "small" : "fs-5")" style="word-break:break-all; letter-spacing:@(_isRequest ? "0" : "0.1em")">@_qrText</code>
                     </div>
-                    <button class="btn btn-primary" @onclick="CopyAddress">
+                    <button class="btn btn-primary" @onclick="CopyText">
                         <i class="bi @(_copied ? "bi-check-lg" : "bi-clipboard") me-1"></i>
-                        @(_copied ? "Copied!" : "Copy Address")
+                        @(_copied ? "Copied!" : _isRequest ? "Copy Payment Link" : "Copy Address")
                     </button>
                     @if (_qrSvg != null)
                     {
@@ -41,6 +44,27 @@ else
                 </div>
             </div>
         </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header"><i class="bi bi-receipt me-1"></i>Payment request</div>
+                <div class="card-body">
+                    <p class="small text-muted">Optional: ask for a specific amount. Wallets that understand <code>qubic:</code> links pre-fill the payment.</p>
+                    <div class="mb-2">
+                        <label class="form-label small">Amount (QU)</label>
+                        <input type="number" min="1" class="form-control form-control-sm" @bind="_reqAmount" @bind:after="Rebuild" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Message</label>
+                        <input class="form-control form-control-sm" maxlength="120" placeholder="e.g. Invoice 42" @bind="_reqMessage" @bind:after="Rebuild" />
+                    </div>
+                    @if (!Backend.Profile.IsMainnet)
+                    {
+                        <div class="small text-muted mb-2"><i class="bi bi-cone-striped me-1"></i>The link is marked for <code>@Backend.Profile.ChainId</code> (you are on @Backend.Profile.Name).</div>
+                    }
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="Clear" disabled="@(!_isRequest)">Show plain address</button>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -48,22 +72,43 @@ else
     private bool _copied;
     private bool _qrCopied;
     private string? _qrSvg;
+    private string _qrText = "";
+    private bool _isRequest;
+    private long? _reqAmount;
+    private string? _reqMessage;
 
-    protected override void OnParametersSet()
-    {
-        if (Seed.Identity != null)
-        {
-            var gen = new QRCoder.QRCodeGenerator();
-            var data = gen.CreateQrCode(Seed.Identity.Value.ToString(), QRCoder.QRCodeGenerator.ECCLevel.M);
-            var svg = new QRCoder.SvgQRCode(data);
-            _qrSvg = svg.GetGraphic(5);
-        }
-    }
+    protected override void OnParametersSet() => Rebuild();
 
-    private async Task CopyAddress()
+    private void Rebuild()
     {
         if (Seed.Identity == null) return;
-        await JS.InvokeVoidAsync("navigator.clipboard.writeText", Seed.Identity.ToString());
+        var identity = Seed.Identity.Value.ToString();
+        _isRequest = _reqAmount is > 0 || !string.IsNullOrWhiteSpace(_reqMessage) || !Backend.Profile.IsMainnet;
+        _qrText = _isRequest
+            ? new Qubic.Core.Payments.QubicPaymentRequest
+            {
+                Destination = identity,
+                Amount = _reqAmount is > 0 ? _reqAmount : null,
+                Message = string.IsNullOrWhiteSpace(_reqMessage) ? null : _reqMessage.Trim(),
+                Network = Backend.Profile.IsMainnet ? null : "testnet",
+            }.ToUri()
+            : identity;
+
+        var gen = new QRCoder.QRCodeGenerator();
+        var data = gen.CreateQrCode(_qrText, QRCoder.QRCodeGenerator.ECCLevel.M);
+        _qrSvg = new QRCoder.SvgQRCode(data).GetGraphic(5);
+    }
+
+    private void Clear()
+    {
+        _reqAmount = null;
+        _reqMessage = null;
+        Rebuild();
+    }
+
+    private async Task CopyText()
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", _qrText);
         _copied = true;
         StateHasChanged();
         await Task.Delay(2000);

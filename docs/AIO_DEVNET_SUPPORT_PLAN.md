@@ -1,5 +1,9 @@
 # Plan: Qubic.Net Wallet support for the AIO Qubic Dev Kit
 
+> **Status 2026-10-11: implemented (uncommitted).** Qubic.Net libraries, desktop wallet 0.7.0 and the
+> Android wallet build. 437 library tests pass, including the Bob-only "no fallback" acceptance test.
+> See "Implementation notes" at the end for deviations and what still needs a live check.
+
 Status: agreed direction · 2026-10-11 · repos: Qubic.Net (Services/Bob/Core/Crypto), Qubic.Net.Wallet (desktop), Qubic.Net.Wallet.Mobile
 
 ## 1. Goal
@@ -287,3 +291,81 @@ been run on a device or emulator.
 | **3 — Features screen + dev tools** | Feature-flag service, first-run screen, dev accounts, faucet, asset helpers, on-chain contract registry, Contract Console + header import, epoch panel | A fresh AIO user funds a vault seed and calls their own new contract without qubic-cli |
 | **4 — Signing** | S1 review sheet (all flows), S3 SIWQ + spec, S6 URI/QR | Every signature goes through S1. Community Fund verifies a SIWQ login. |
 | **5 — dApp connectivity** | S4 WalletConnect, S5 local endpoint | An `@qubic/react` sample dApp on `qubic:testnet` signs through the wallet against AIO. A test script signs through S5. |
+
+
+## 12. Implementation notes (2026-10-11)
+
+### Where things live
+
+| Area | Code |
+|---|---|
+| Network profiles, presets, migration | `Qubic.Services/Networks/NetworkProfile*.cs`, `NetworkPresets.cs` |
+| Capability routing, no fallback | `Qubic.Services/Networks/Capability.cs`, `QubicBackendService.cs` |
+| Egress guard | `Qubic.Services/Networks/EgressGuard.cs` |
+| Fingerprint (core-lite seeds / arbitrator signature) | `Qubic.Services/Networks/NetworkFingerprintService.cs`, `CoreLiteDevSeeds*.cs` |
+| Chain reset, per-network storage | `ChainResetService.cs`, `NetworkChainState.cs`, `NetworkStorage.cs`, `Storage/WalletStorageService.cs` |
+| Tick targeting (fixed / time-based) | `Networks/TickTargeting.cs`, `TickRateEstimator.cs`, `TransactionHelper.cs` |
+| Feature opt-in | `Qubic.Services/Features/FeatureService.cs` |
+| Signing review, replay tags | `Qubic.Services/Signing/*`, `VaultEntry.SignedOn` |
+| dApp request handling (shared by WalletConnect + local endpoint) | `Qubic.Services/Signing/ExternalRequestService.cs` |
+| Dev accounts, faucet | `Qubic.Services/DevTools/DevToolsService.cs` |
+| Contract metadata, codec, header import | `Qubic.Core/Contracts/Metadata/*` (parser moved from ContractGen), `Qubic.Services/Contracts/ContractCatalogService.cs` |
+| Sign-In with Qubic, message conventions | `Qubic.Core/Auth/*` |
+| Payment URIs | `Qubic.Core/Payments/QubicPaymentRequest.cs` |
+| WalletConnect | new package `Qubic.WalletConnect` (Reown.WalletKit 1.7.1) |
+| Local signing endpoint | desktop `Services/LocalSigningEndpoint.cs` |
+| Bob broadcast / computors, node asset requests | `Qubic.Bob/BobClient.cs`, `Qubic.Network/QubicNodeClient.cs` |
+
+Package versions: Core 1.301.8, Serialization 1.5.3, Network 1.5.3, Rpc 1.4.3, Bob 1.6.0, Services 1.6.0,
+WalletConnect 1.0.0 (new, added to `publish-nuget.sh`). Crypto unchanged.
+
+### Deviations from the plan
+
+- **Bob cannot list assets.** `qubic_getAssets` is a stub in the AIO-pinned core-bob. The AIO preset therefore pairs
+  Bob with core-lite's own HTTP API (same kit, `127.0.0.1:41841`) for asset listings, issuances and IPOs. A Bob-only
+  profile reports these as unavailable. The Direct method can also list assets now (RequestOwned/Possessed/IssuedAssets).
+- **WalletConnect `qubic_sign` uses the official wallet's convention** (`"Qubic Signed Message:\n"` prefix, K12 digest,
+  base64 parts), so dApps verifying against the official wallet keep working. The wallet's own Sign / Verify keeps the
+  raw convention without prefix. Sign-In with Qubic verification accepts both.
+- **WalletConnect results** carry both the official field names and the ones `@qubic.org/react` reads
+  (`transactionId`/`tick` and `txId`/`targetTick`/`txBytesBase64`/`txBytesHex`; `signedData`/`digest`/`signature`
+  and `signatureHex`/`digestHex`).
+- **A session is bound to the chain it was approved on.** Requests are refused after switching to a network with a
+  different chain id.
+- **Android cleartext HTTP** is allowed only to `localhost`, `127.0.0.1` and `10.0.2.2`; physical devices use
+  `adb reverse` or an SSH tunnel.
+- **Send** has a single "Review & Sign" step; the review sheet replaced the page-level confirm.
+
+### Verified
+
+- Library: 437 tests incl. Bob-only acceptance test (fake Bob, egress guard blocking: every routed call stays in the
+  profile, unsupported capabilities report unavailable), fingerprint against the real epoch-234 mainnet computor
+  list (arbitrator signature verifies), contract codec byte-identical to the generated QX payloads.
+- Desktop: server-mode smoke run (all pages render; settings migration), local endpoint over HTTP (401 without
+  token, 403 for browser origins, JSON-RPC errors).
+- Android: emulator run (features screen, networks page, switch to AIO with devnet banner, dev tools gate).
+
+### Live verification (2026-10-11)
+
+- **AIO** (`d3d900d`, lean, remote box, via SSH tunnel), unmodified AIO preset, egress guard in Log mode: fingerprint =
+  core-lite devnet; Bob WebSocket tick stream (~1.19 s/tick); faucet transfer and QX IssueAsset from dev accounts signed
+  through the review (decoded "Qx: IssueAsset"), both receipts OK, balance +1,000,000; issued asset listed via core-lite
+  HTTP; contract registry 29 contracts; **0 egress violations**.
+- **WalletConnect** through the real Reown relay with a C# dApp (Reown.Sign): pairing, session on `qubic:testnet`,
+  requestAccounts, sendQubic (broadcast via Bob), signTransaction, sign (verifies with the official convention),
+  foreign `from` rejected; all requests passed the review.
+
+Bugs found by the live runs (fixed):
+- WalletConnect never connected: `CoreOptions.ConnectionBuilder` must be set (`WebsocketConnectionBuilder`).
+- Bob `qubic_getComputors` returns identities with stray trailing bytes (unterminated `char identity[61]`), which broke
+  the fingerprint. The wallet trims to 60 A-Z chars; the upstream patch zero-initialises the buffer.
+- Upstream: AIO at `d3d900d` does not build — `revenue.h` static_assert needs `EPOCH_TICK_CAPACITY + 3` divisible by 4
+  (default 5184000 is not; core-lite's own default 5184244 neither). Built with `EPOCH_TICK_CAPACITY=5184001`.
+- core-lite's `/query/v1/getTransactionsForIdentity` returned no history for a funded identity; on AIO the history comes
+  from Bob logs (the archive stream finds nothing). Worth checking upstream.
+
+### Still to do
+
+1. Final testing of the Windows build (`publish/Qubic.Net.Wallet-0.7.0-win-x64.zip`), then publish the NuGet packages.
+2. Upstream: `docs/upstream/core-bob-testnet-chainid.patch` (chain id + computor identity buffer; not compiled locally),
+   `docs/upstream/aio-using-a-wallet.md`, and the AIO build break above.

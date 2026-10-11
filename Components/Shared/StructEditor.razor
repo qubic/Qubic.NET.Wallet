@@ -1,0 +1,102 @@
+@using Qubic.Core.Contracts.Metadata
+
+@* Form for a contract input struct. Values are text keyed by field path (a, nested.b, list[3], list[3].c),
+   which ContractCodec.Encode turns into bytes. *@
+@if (Def.Fields.Count == 0)
+{
+    <div class="small text-muted">No input fields.</div>
+}
+else
+{
+    @foreach (var f in Def.Fields)
+    {
+        var path = Prefix + f.Name;
+        var nested = ContractLayout.FindNested(Def, f);
+        @if (f.IsArray && (f.ArrayElementType ?? f.CppType) is "uint8" or "sint8")
+        {
+            <div class="mb-2">
+                <label class="form-label small mb-0">@f.Name <span class="text-muted">uint8[@f.ArrayLength] as hex</span></label>
+                <input class="form-control form-control-sm mono" placeholder="0x…" value="@Get(path)" @onchange="e => Set(path, e)" />
+            </div>
+        }
+        else if (f.IsArray)
+        {
+            var shown = Math.Min(f.ArrayLength, MaxArrayElements);
+            <fieldset class="border rounded p-2 mb-2">
+                <legend class="small float-none w-auto px-1 mb-0">@f.Name <span class="text-muted">@ContractCodec.TypeName(f)</span></legend>
+                @for (int i = 0; i < shown; i++)
+                {
+                    var elemPath = $"{path}[{i}]";
+                    @if (nested != null)
+                    {
+                        <div class="small text-muted">[@i]</div>
+                        <div class="ps-3"><StructEditor Def="nested" Values="Values" Prefix="@(elemPath + ".")" OnChanged="OnChanged" /></div>
+                    }
+                    else
+                    {
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text" style="min-width:4em">[@i]</span>
+                            <input class="form-control mono" placeholder="@Hint(f.ArrayElementType ?? f.CppType)" value="@Get(elemPath)" @onchange="e => Set(elemPath, e)" />
+                        </div>
+                    }
+                }
+                @if (f.ArrayLength > shown)
+                {
+                    <div class="small text-muted">Elements @shown–@(f.ArrayLength - 1) are left zero.</div>
+                }
+            </fieldset>
+        }
+        else if (nested != null && !TypeMapper.IsPrimitive(f.CppType))
+        {
+            <fieldset class="border rounded p-2 mb-2">
+                <legend class="small float-none w-auto px-1 mb-0">@f.Name <span class="text-muted">@nested.CppName</span></legend>
+                <StructEditor Def="nested" Values="Values" Prefix="@(path + ".")" OnChanged="OnChanged" />
+            </fieldset>
+        }
+        else if (f.CppType is "bit" or "bool")
+        {
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="@path" checked="@(Get(path) == "true")"
+                       @onchange="e => SetBool(path, e)" />
+                <label class="form-check-label small" for="@path">@f.Name</label>
+            </div>
+        }
+        else
+        {
+            <div class="mb-2">
+                <label class="form-label small mb-0">@f.Name <span class="text-muted">@f.CppType</span></label>
+                <input class="form-control form-control-sm mono" placeholder="@Hint(f.CppType)" value="@Get(path)" @onchange="e => Set(path, e)" />
+            </div>
+        }
+    }
+}
+
+@code {
+    private const int MaxArrayElements = 16;
+
+    [Parameter, EditorRequired] public StructDef Def { get; set; } = new();
+    [Parameter, EditorRequired] public Dictionary<string, string> Values { get; set; } = [];
+    [Parameter] public string Prefix { get; set; } = "";
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    private string Get(string path) => Values.GetValueOrDefault(path, "");
+
+    private Task Set(string path, ChangeEventArgs e) => Set(path, e.Value?.ToString() ?? "");
+
+    private Task SetBool(string path, ChangeEventArgs e) => Set(path, (bool)(e.Value ?? false) ? "true" : "false");
+
+    private async Task Set(string path, string value)
+    {
+        if (string.IsNullOrEmpty(value)) Values.Remove(path);
+        else Values[path] = value;
+        await OnChanged.InvokeAsync();
+    }
+
+    private static string Hint(string type) => type switch
+    {
+        "id" or "m256i" => "60-char identity or 0x…",
+        "Asset" => "NAME@ISSUER",
+        "bit" or "bool" => "true / false",
+        _ => type
+    };
+}

@@ -1,0 +1,265 @@
+@page "/devtools"
+@using Qubic.Services.DevTools
+@using Qubic.Services.Features
+@using Qubic.Services.Networks
+@inject DevToolsService Dev
+@inject FeatureService Features
+@inject NetworkFingerprintService Fingerprint
+@inject NetworkProfileService Profiles
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject Qubic.Services.Storage.WalletStorageService WalletStorage
+@inject TransactionTrackerService TxTracker
+@inject IJSRuntime JS
+@implements IDisposable
+
+<h4>Developer Tools</h4>
+<p class="text-muted">For local AIO / core-lite testnets: public dev accounts, a faucet, asset issuance and genesis funding.</p>
+
+@if (!Dev.IsAvailable)
+{
+    <div class="alert alert-secondary">
+        <i class="bi bi-info-circle me-1"></i>@Dev.UnavailableReason
+        @if (Features.IsEnabled(WalletFeature.DeveloperTools) && !Profiles.Active.IsMainnet && !Fingerprint.IsCoreLiteDevnet)
+        {
+            <div class="mt-2 d-flex gap-2 align-items-center">
+                <button class="btn btn-sm btn-outline-primary" @onclick="Identify" disabled="@_busy">Identify network</button>
+                <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="forceDev" checked="@Dev.ForcedForActiveProfile"
+                           @onchange="e => { Dev.ForcedForActiveProfile = (bool)(e.Value ?? false); StateHasChanged(); }" />
+                    <label class="form-check-label small" for="forceDev">Enable anyway for "@Profiles.Active.Name" (my own core-lite build with different seeds)</label>
+                </div>
+            </div>
+        }
+        else if (!Features.IsEnabled(WalletFeature.DeveloperTools))
+        {
+            <a class="ms-1" href="/settings?tab=features">Settings → Features</a>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning py-2 small">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        Dev accounts use <strong>publicly known seeds</strong>. They are only for this test network — never send Mainnet funds to them.
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header"><i class="bi bi-droplet me-1"></i>Faucet</div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <label class="form-label small">Fund identity</label>
+                        <AddressInput @bind-Value="_fundTo" Placeholder="Destination identity" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Amount (QU)</label>
+                        <input type="number" min="1" class="form-control form-control-sm" @bind="_fundAmount" />
+                    </div>
+                    <button class="btn btn-sm btn-primary" @onclick="Fund" disabled="@(_busy || string.IsNullOrWhiteSpace(_fundTo))">
+                        <i class="bi bi-droplet-fill me-1"></i>Fund from dev account
+                    </button>
+                    @if (_fundResult != null) { <div class="small mt-2">Sent: <TxHashDisplay Hash="@_fundResult" /></div> }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header"><i class="bi bi-coin me-1"></i>Issue a QX asset from a dev account</div>
+                <div class="card-body">
+                    <div class="row g-2 mb-2">
+                        <div class="col-4">
+                            <label class="form-label small">Dev account #</label>
+                            <input type="number" min="0" max="@(Dev.Accounts.Count - 1)" class="form-control form-control-sm" @bind="_issueAccount" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small">Name</label>
+                            <input class="form-control form-control-sm" maxlength="7" @bind="_issueName" />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label small">Shares</label>
+                            <input type="number" min="1" class="form-control form-control-sm" @bind="_issueShares" />
+                        </div>
+                    </div>
+                    <div class="small text-muted mb-2">Issuer: <span class="mono">@SafeAccount(_issueAccount)?.Identity</span></div>
+                    <button class="btn btn-sm btn-primary" @onclick="Issue" disabled="@_busy">Issue (QX fee from the node)</button>
+                    @if (_issueResult != null) { <div class="small mt-2">Sent: <TxHashDisplay Hash="@_issueResult" /></div> }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header"><i class="bi bi-terminal me-1"></i>Genesis funding (AIO kit)</div>
+                <div class="card-body">
+                    <p class="small text-muted">Balances and assets can also be written into the genesis state files. Run these in the <code>aio-qubic-dev-kit</code> folder — it restarts the chain.</p>
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-12">
+                            <AddressInput @bind-Value="_genesisId" Placeholder="Identity to fund" />
+                        </div>
+                        <div class="col-4"><input type="number" class="form-control form-control-sm" @bind="_genesisAmount" title="QU" /></div>
+                        <div class="col-4"><input class="form-control form-control-sm" maxlength="7" placeholder="asset (opt.)" @bind="_genesisAsset" /></div>
+                        <div class="col-4"><input type="number" class="form-control form-control-sm" placeholder="shares" @bind="_genesisShares" /></div>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(_genesisId))
+                    {
+                        var cmds = string.Join("\n", Dev.GenesisCommands(_genesisId.Trim(), _genesisAmount, _genesisAsset, _genesisShares));
+                        <pre class="qb-message-preview mono small">@cmds</pre>
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Copy(cmds)">Copy commands</button>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header"><i class="bi bi-calendar3 me-1"></i>Epoch</div>
+                <div class="card-body small">
+                    <div>Epoch <strong>@TickMonitor.Epoch</strong> · tick <span class="mono">@TickMonitor.Tick.ToString("N0")</span>
+                        @if (TickMonitor.EstimatedTickDurationMs is { } ms) { <span class="text-muted">· ~@(ms.ToString("0")) ms/tick</span> }
+                    </div>
+                    <div class="text-muted mt-1">
+                        AIO epochs only advance on F7: <code>docker attach $(docker compose ps -q core-lite)</code>, press <kbd>F7</kbd>,
+                        detach with <kbd>Ctrl-P</kbd> <kbd>Ctrl-Q</kbd>. Never send a lone <kbd>Esc</kbd> — it shuts core-lite down.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <i class="bi bi-people me-1"></i>Dev accounts (@Dev.Accounts.Count)
+                    <div class="ms-auto btn-group btn-group-sm">
+                        <button class="btn btn-outline-secondary" @onclick="() => Page(-1)" disabled="@(_skip == 0)"><i class="bi bi-chevron-left"></i></button>
+                        <button class="btn btn-outline-secondary" @onclick="LoadBalances" disabled="@_busy"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button class="btn btn-outline-secondary" @onclick="() => Page(1)" disabled="@(_skip + PageSize >= Dev.Accounts.Count)"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0 small align-middle">
+                        <thead><tr><th>#</th><th>Identity</th><th class="text-end">Balance</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var a in Dev.Accounts.Skip(_skip).Take(PageSize))
+                            {
+                                var bal = _balances.FirstOrDefault(b => b.Account.Index == a.Index);
+                                <tr>
+                                    <td>@a.Index@(a.IsComputor ? "" : "*")</td>
+                                    <td class="mono"><AddressDisplay Address="@a.Identity" /></td>
+                                    <td class="text-end mono">@(bal?.Balance?.ToString("N0") ?? (bal?.Error != null ? "error" : "…"))</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-link p-0" @onclick="() => UseAccount(a)" title="Use as the active identity">use</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="small text-muted p-2">* core-lite custom seed (funded only with PREFILL_QUS).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (_error != null)
+{
+    <div class="alert alert-danger mt-3">@_error</div>
+}
+
+@code {
+    private const int PageSize = 20;
+    private int _skip;
+    private IReadOnlyList<DevAccountBalance> _balances = [];
+    private bool _busy;
+    private string? _error;
+
+    private string? _fundTo;
+    private long _fundAmount = 1_000_000_000;
+    private string? _fundResult;
+
+    private int _issueAccount;
+    private string _issueName = "DEVCOIN";
+    private long _issueShares = 1_000_000;
+    private string? _issueResult;
+
+    private string? _genesisId;
+    private long _genesisAmount = 5_000_000_000;
+    private string? _genesisAsset;
+    private long _genesisShares;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _fundTo = Seed.Identity?.ToString();
+        _genesisId = Seed.Identity?.ToString();
+        Fingerprint.OnChanged += Refresh;
+        Profiles.OnActiveProfileChanged += OnProfileChanged;
+        Features.OnChanged += OnFeature;
+        if (Dev.IsAvailable) await LoadBalances();
+    }
+
+    private void Refresh() => InvokeAsync(StateHasChanged);
+    private void OnProfileChanged(NetworkProfile _, NetworkProfile __) { _balances = []; Refresh(); }
+    private void OnFeature(WalletFeature _) => Refresh();
+
+    private static DevAccount? SafeAccount(int i) => i >= 0 && i < CoreLiteDevSeeds.Accounts.Count ? CoreLiteDevSeeds.Accounts[i] : null;
+
+    private async Task Identify()
+    {
+        _busy = true;
+        try { await Fingerprint.CheckAsync(); if (Dev.IsAvailable) await LoadBalances(); }
+        finally { _busy = false; }
+    }
+
+    private async Task Page(int delta)
+    {
+        _skip = Math.Clamp(_skip + delta * PageSize, 0, Math.Max(0, Dev.Accounts.Count - 1));
+        await LoadBalances();
+    }
+
+    private async Task LoadBalances()
+    {
+        _busy = true; _error = null;
+        try { _balances = await Dev.GetBalancesAsync(_skip, PageSize); }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task Fund()
+    {
+        _busy = true; _error = null; _fundResult = null;
+        try { _fundResult = await Dev.FundAsync(_fundTo!, _fundAmount); }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task Issue()
+    {
+        _busy = true; _error = null; _issueResult = null;
+        try { _issueResult = await Dev.IssueAssetAsync(_issueAccount, _issueName, _issueShares); }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    /// <summary>Makes a dev account the active identity (not stored in the vault).</summary>
+    private void UseAccount(DevAccount a)
+    {
+        _error = null;
+        try
+        {
+            Seed.SetSeed(a.Seed, $"Dev #{a.Index}");
+            WalletStorage.SetSeed(a.Seed, a.Identity, TickMonitor.Epoch);
+            TxTracker.SetEncryptionKey(a.Seed);
+        }
+        catch (Exception ex)
+        {
+            _error = $"Dev account #{a.Index} is active, but its history database could not be opened: {ex.Message}";
+        }
+    }
+
+    private async Task Copy(string text) => await JS.InvokeVoidAsync("navigator.clipboard.writeText", text);
+
+    public void Dispose()
+    {
+        Fingerprint.OnChanged -= Refresh;
+        Profiles.OnActiveProfileChanged -= OnProfileChanged;
+        Features.OnChanged -= OnFeature;
+    }
+}

@@ -1,0 +1,107 @@
+@page "/local-endpoint"
+@using Qubic.Net.Wallet.LocalApi
+@using Qubic.Services.Features
+@inject LocalSigningEndpoint Endpoint
+@inject FeatureService Features
+@inject IJSRuntime JS
+@implements IDisposable
+
+<h4>Local Signing Endpoint</h4>
+<p class="text-muted">A JSON-RPC endpoint on 127.0.0.1 so scripts and contract tests can ask this wallet to sign. Every request is shown for approval.</p>
+
+@if (!Features.IsEnabled(WalletFeature.LocalSigningEndpoint))
+{
+    <div class="alert alert-secondary">The local endpoint is off. Turn it on in <a href="/settings?tab=features">Settings → Features</a>.</div>
+}
+else
+{
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center">
+                    Endpoint
+                    <span class="badge ms-2 @(Endpoint.IsRunning ? "bg-success" : "bg-secondary")">@(Endpoint.IsRunning ? "running" : "stopped")</span>
+                    <span class="ms-auto small text-muted">@Endpoint.RequestCount requests</span>
+                </div>
+                <div class="card-body small">
+                    @if (Endpoint.LastError != null) { <div class="alert alert-danger py-1">@Endpoint.LastError</div> }
+                    <dl class="row mb-2">
+                        <dt class="col-sm-3">URL</dt><dd class="col-sm-9 mono">@(Endpoint.Url ?? "—")</dd>
+                        <dt class="col-sm-3">Token</dt>
+                        <dd class="col-sm-9 mono">
+                            @(_showToken ? Endpoint.Token : new string('•', 24))
+                            <button class="btn btn-sm btn-link p-0 ms-2" @onclick="() => _showToken = !_showToken">@(_showToken ? "hide" : "show")</button>
+                            <button class="btn btn-sm btn-link p-0 ms-2" @onclick="CopyToken">copy</button>
+                        </dd>
+                        <dt class="col-sm-3">Connection file</dt><dd class="col-sm-9 mono text-break">@Endpoint.ConnectionFile</dd>
+                    </dl>
+                    <div class="d-flex gap-2 align-items-end">
+                        <div>
+                            <label class="form-label small mb-0">Port (0 = random)</label>
+                            <input type="number" min="0" max="65535" class="form-control form-control-sm" style="width:120px" @bind="_port" />
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="Restart">Apply & restart</button>
+                        <button class="btn btn-sm btn-outline-danger" @onclick="Regenerate">New token</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header small">Example</div>
+                <div class="card-body">
+<pre class="qb-message-preview mono small mb-0">curl -s @(Endpoint.Url ?? "http://127.0.0.1:PORT")/ \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"qubic_sendTransaction",
+       "params":{"from":"MYID…","to":"CONTRACTID…","amount":0,
+                 "inputType":1,"payload":"&lt;base64&gt;"}}'</pre>
+                    <div class="small text-muted mt-2">
+                        Methods: qubic_status, qubic_requestAccounts, qubic_sendQubic, qubic_signTransaction,
+                        qubic_sendTransaction, qubic_sign (WalletConnect convention), qubic_signRaw (raw convention), qubic_sendAsset.
+                        Requests from browsers (with an <code>Origin</code> header) are refused.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header small">Automated tests on a devnet</div>
+                <div class="card-body small">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoDev"
+                               checked="@Features.IsEnabled(WalletFeature.LocalEndpointAutoApproveDev)"
+                               @onchange="e => Features.SetEnabled(WalletFeature.LocalEndpointAutoApproveDev, (bool)(e.Value ?? false))" />
+                        <label class="form-check-label" for="autoDev">Auto-approve dev accounts</label>
+                    </div>
+                    <div class="text-muted mt-2">With "Auto-approve dev accounts", requests signed by public core-lite dev keys on a proven core-lite devnet are signed without a prompt. Your own seeds always need approval.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _showToken;
+    private int _port;
+
+    protected override void OnInitialized()
+    {
+        _port = Endpoint.Port;
+        Endpoint.OnChanged += Refresh;
+        if (Features.IsEnabled(WalletFeature.LocalSigningEndpoint) && !Endpoint.IsRunning)
+            _ = Endpoint.StartAsync();
+    }
+
+    private void Refresh() => InvokeAsync(StateHasChanged);
+
+    private async Task Restart()
+    {
+        Endpoint.Port = _port;
+        await Endpoint.StopAsync();
+        await Endpoint.StartAsync();
+    }
+
+    private Task Regenerate() => Endpoint.RegenerateTokenAsync();
+
+    private async Task CopyToken() => await JS.InvokeVoidAsync("navigator.clipboard.writeText", Endpoint.Token);
+
+    public void Dispose() => Endpoint.OnChanged -= Refresh;
+}

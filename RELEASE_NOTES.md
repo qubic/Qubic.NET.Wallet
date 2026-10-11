@@ -1,3 +1,33 @@
+# v0.7.0
+
+## Features
+- **Networks.** The single "backend" selector is replaced by network profiles: Mainnet, "AIO (this machine)" and "AIO (remote host)" are built in, and you can add your own. Each network has one or more methods (Bob, Direct, RPC) in priority order; switch networks from the header bar. Every network keeps its own history database, asset list, imported contracts and tick settings.
+- **AIO Qubic Dev Kit support.** The AIO preset talks to the kit's Bob (port 40420), with core-lite's own HTTP API (41841) for what Bob cannot list (assets, IPOs). Direct (31841) is available but off by default.
+- **No silent fallback.** Every operation is served only by a method of the active network. If none can serve it, the page says so ("not available on this network") instead of quietly asking rpc.qubic.org. A connection guard blocks any host that is not part of the active network and shows what it blocked. *Settings → Networks* lists where each operation goes, and lets you pick the method per operation (or leave it on "Auto", the priority order).
+- **Network check.** The wallet identifies the chain it is connected to: a core-lite devnet (its computors are the public dev seeds), or a chain signed by the mainnet arbitrator. A network that contradicts its settings gets a red warning. (Bob's chain id cannot be used for this — it reports "mainnet" on AIO too.)
+- **Chain reset detection.** When an AIO chain is wiped and restarted, the wallet notices that the ticks went backwards and clears that network's cached history.
+- **Target tick by time.** Besides the fixed tick offset, a network can use "execute in ~N seconds", based on the measured tick rate. A target beyond what the network accepts (32 ticks on test networks) shows a warning.
+- **Signing review.** Every signature — in the wallet, from dev tools, WalletConnect or the local endpoint — now goes through one review sheet. It shows the network, the decoded contract call, the target tick with ETA, and warnings. Send no longer has its own separate confirm step.
+- **Replay warnings.** Qubic transactions carry no network id. The wallet records which network class each vault seed has signed on, and warns before the same seed signs on Mainnet and a test network. Public core-lite dev keys used on Mainnet, or funds sent to them, get a red warning.
+- **Optional features, opt-in.** A Features screen on first start (and after updates that add options) lets you choose what to enable: remote labels, developer tools, Sign-In with Qubic, WalletConnect and the local signing endpoint. Features that are off do not run at all.
+- **Developer tools** (devnets only): public dev accounts with balances, a faucet, QX asset issuance from a dev account, and the AIO commands for genesis funding.
+- **Contract Console:** call any contract function or procedure with a typed form. Import your own contract's C++ header to get forms and decoded signing previews for it.
+- **Sign-In with Qubic:** structured login messages are recognised, shown field by field and checked (domain, network, expiry, nonce).
+- **Payment requests:** Receive can create a `qubic:` payment link / QR code with an amount and message. Send accepts pasted payment links and warns if the link is for a different network.
+- **WalletConnect** (opt-in): pair with dApps using the official Qubic method set (`qubic_requestAccounts`, `qubic_sendQubic`, `qubic_signTransaction`, `qubic_sendTransaction`, `qubic_sign`, `qubic_sendAsset`). Requires a free WalletConnect Cloud project id.
+- **Local signing endpoint** (opt-in, desktop): JSON-RPC on 127.0.0.1 with a bearer token, for scripts and contract tests. Optional auto-approval applies only to public dev keys on a proven core-lite devnet.
+
+## Fixes
+- Balances refreshed only when the tick number was a multiple of 30, so refreshes were skipped whenever polling missed that tick. Balances now refresh every 30 seconds.
+- Fresh builds could fail to open the encrypted history database ("e_sqlite3 doesn't support encryption"): a newer plain-SQLite package displaced SQLCipher. Qubic.Services now references `Microsoft.Data.Sqlite.Core` only, so SQLCipher is the sole provider.
+- Transaction tracking marked transactions "Unknown" purely by tick count. It now also waits at least 30 seconds, so fast devnets don't trigger premature resends.
+
+## Notes
+- Existing settings are migrated into the "Mainnet" network on first start; your endpoints, preferred backend and tick offset are kept. Mainnet keeps its existing history database files.
+- Requires `Qubic.Services 1.6.0` and `Qubic.WalletConnect 1.0.0`.
+
+---
+
 # v0.6.4
 
 ## Features

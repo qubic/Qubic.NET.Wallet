@@ -7,6 +7,7 @@
 @inject QubicSettingsService Settings
 @inject VaultService Vault
 @inject BalanceService BalanceSvc
+@inject NavigationManager Nav
 
 <h4>Send QU</h4>
 
@@ -31,6 +32,16 @@ else
                         else if (BalanceSvc.IsLoading)
                         {
                             <div class="small text-muted mt-1">Loading balance...</div>
+                        }
+                    </div>
+                    <div class="mb-2">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control mono" placeholder="Paste a payment request (qubic:…) to fill the form"
+                                   @bind="_paymentRequest" @bind:event="oninput" @bind:after="ApplyPaymentRequest" />
+                        </div>
+                        @if (_paymentNote != null)
+                        {
+                            <div class="small mt-1 @(_paymentNoteIsWarning ? "text-warning" : "text-muted")">@_paymentNote</div>
                         }
                     </div>
                     <div class="mb-2">
@@ -61,9 +72,7 @@ else
                             <input type="number" class="form-control" @bind="_targetTick" />
                             @if (_targetTick == 0 && TickMonitor.IsConnected)
                             {
-                                <span class="input-group-text bg-success text-white">
-                                    Auto: @((TickMonitor.Tick + (uint)Settings.TickOffset).ToString("N0"))
-                                </span>
+                                <TickTargetPreview />
                             }
                             else if (_targetTick > 0)
                             {
@@ -72,25 +81,10 @@ else
                         </div>
                     </div>
 
-                    @if (!_confirmed)
-                    {
-                        <button class="btn btn-primary" @onclick="Preview" disabled="@_loading">
-                            @(_loading ? "Loading..." : "Preview Transaction")
-                        </button>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            <strong>Confirm:</strong> Send <strong>@FormatQu(_amount)</strong> QU
-                            to <span class="mono">@_destination?[..20]...</span>
-                            at tick <strong>@_resolvedTick.ToString("N0")</strong>
-                            <div class="small text-muted mt-1">Network fee: 0 QU (included in amount)</div>
-                        </div>
-                        <button class="btn btn-success me-2" @onclick="SendTransaction" disabled="@_sending">
-                            @(_sending ? "Sending..." : "Sign & Broadcast")
-                        </button>
-                        <button class="btn btn-outline-secondary" @onclick="() => _confirmed = false">Cancel</button>
-                    }
+                    <button class="btn btn-primary" @onclick="SendTransaction" disabled="@(_sending || _loading)">
+                        <i class="bi bi-pen me-1"></i>@(_sending ? "Sending..." : "Review & Sign")
+                    </button>
+                    <div class="small text-muted mt-1">You will see the full transaction before anything is signed.</div>
 
                     @if (_result != null)
                     {
@@ -127,7 +121,6 @@ else
     private long _amount = 1;
     private uint _targetTick;
     private uint _resolvedTick;
-    private bool _confirmed;
     private bool _loading;
     private bool _sending;
     private string? _result;
@@ -143,7 +136,7 @@ else
     private void OnTickChanged()
     {
         if (_disposed) return;
-        InvokeAsync(() => { if (!_disposed && _targetTick == 0 && !_confirmed) StateHasChanged(); });
+        InvokeAsync(() => { if (!_disposed && _targetTick == 0) StateHasChanged(); });
     }
 
     private void OnBalanceChanged()
@@ -160,16 +153,13 @@ else
         if (_amount <= 0) _amount = 1;
     }
 
-    private async Task Preview()
+    private async Task SendTransaction()
     {
         _error = null; _result = null;
-        if (string.IsNullOrWhiteSpace(_destination) || _destination.Trim().Length != 60)
-        { _error = "Destination must be a 60-character identity."; return; }
+        if (IdentityValidation.Validate(_destination) != null) { _error = "Destination must be a valid 60-character identity."; return; }
         if (_amount <= 0) { _error = "Amount must be positive."; return; }
-        if (BalanceSvc.Balance != null && _amount > BalanceSvc.Balance.Value)
-        { _error = $"Insufficient balance ({FormatQu(BalanceSvc.Balance.Value)} QU)."; return; }
 
-        _loading = true;
+        _sending = true;
         try
         {
             await BalanceSvc.RefreshAsync();
@@ -177,31 +167,54 @@ else
             { _error = $"Insufficient balance ({FormatQu(BalanceSvc.Balance.Value)} QU)."; return; }
 
             _resolvedTick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
-            _confirmed = true;
-        }
-        catch (Exception ex) { _error = ex.Message; }
-        finally { _loading = false; }
-    }
-
-    private async Task SendTransaction()
-    {
-        _sending = true; _error = null;
-        try
-        {
-            if (IdentityValidation.Validate(_destination) != null) { _error = "Invalid destination."; return; }
-            _resolvedTick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings, _targetTick);
-
             var dest = Qubic.Core.Entities.QubicIdentity.FromIdentity(_destination!.Trim());
-            var tx = Seed.CreateAndSignTransfer(dest, _amount, _resolvedTick);
+            var description = $"Send {FormatQu(_amount)} QU" + (string.IsNullOrEmpty(_paymentMessage) ? "" : $" — {_paymentMessage}");
+            var tx = await Seed.SignTransferAsync(dest, _amount, _resolvedTick,
+                Qubic.Services.Signing.SigningContext.InApp(description));
             _result = await TransactionHelper.BroadcastAndTrackAsync(
                 Backend, TxTracker, Seed, tx,
-                dest.ToString(), _amount, _resolvedTick,
-                $"Send {FormatQu(_amount)} QU");
-            _confirmed = false;
+                dest.ToString(), _amount, _resolvedTick, description);
             BalanceSvc.RequestRefresh();
         }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }
+    }
+
+    // ── Payment request (qubic: URI) ──
+    private string? _paymentRequest;
+    private string? _paymentNote;
+    private bool _paymentNoteIsWarning;
+    private string? _paymentMessage;
+
+    private void ApplyPaymentRequest()
+    {
+        _paymentNote = null; _paymentNoteIsWarning = false; _paymentMessage = null;
+        if (string.IsNullOrWhiteSpace(_paymentRequest)) return;
+        if (!Qubic.Core.Payments.QubicPaymentRequest.TryParse(_paymentRequest, out var req, out var err) || req == null)
+        {
+            _paymentNote = err; _paymentNoteIsWarning = true;
+            return;
+        }
+        if (req.IsAssetTransfer || req.IsContractCall)
+        {
+            _paymentNote = req.IsAssetTransfer
+                ? $"This requests {req.Amount} {req.AssetName} shares — use the Assets page to transfer assets."
+                : "This request is a contract call — not supported on this page.";
+            _paymentNoteIsWarning = true;
+            return;
+        }
+        _destination = req.Destination;
+        if (req.Amount is { } a) _amount = a;
+        if (req.Tick is { } t) _targetTick = t;
+        _paymentMessage = req.Message ?? req.Label;
+        var notes = new List<string> { "Filled from payment request" + (_paymentMessage != null ? $": {_paymentMessage}" : ".") };
+        if (req.ChainId != Backend.Profile.ChainId)
+        {
+            notes.Add($"It is meant for {req.ChainId}, but you are on \"{Backend.Profile.Name}\".");
+            _paymentNoteIsWarning = true;
+        }
+        _paymentNote = string.Join(" ", notes);
     }
 
     // Save to address book

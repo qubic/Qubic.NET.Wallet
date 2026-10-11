@@ -1,0 +1,36 @@
+@using Qubic.Core.Contracts.Metadata
+
+@* Recursive table of decoded contract struct fields. *@
+<table class="table table-sm mb-0 qb-decoded">
+    <tbody>
+        @foreach (var f in Fields)
+        {
+            <tr>
+                <td class="text-muted text-nowrap" style="width:1%">@f.Name</td>
+                <td>
+                    @if (f.Children is { Count: > 0 } children)
+                    {
+                        @if (!string.IsNullOrEmpty(f.Display))
+                        {
+                            <div class="small text-muted">@f.Display</div>
+                        }
+                        @if (Depth < 3)
+                        {
+                            <DecodedFieldsView Fields="children" Depth="Depth + 1" />
+                        }
+                    }
+                    else
+                    {
+                        <span class="mono small text-break">@f.Display</span>
+                    }
+                    <span class="badge bg-secondary-subtle text-secondary-emphasis ms-1 small">@f.Type</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<DecodedField> Fields { get; set; } = [];
+    [Parameter] public int Depth { get; set; }
+}
