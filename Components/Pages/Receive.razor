@@ -96,7 +96,7 @@ else
 
         var gen = new QRCoder.QRCodeGenerator();
         var data = gen.CreateQrCode(_qrText, QRCoder.QRCodeGenerator.ECCLevel.M);
-        _qrSvg = new QRCoder.SvgQRCode(data).GetGraphic(5);
+        _qrSvg = new QRCoder.SvgQRCode(data).GetGraphic(5, "#000000", "#ffffff", true, QRCoder.SvgQRCode.SizingMode.ViewBoxAttribute);
     }
 
     private void Clear()

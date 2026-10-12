@@ -2,9 +2,25 @@
 @implements IDisposable
 
 <div style="position:relative" @onfocusout="OnFocusOut">
-    <input class="form-control form-control-sm mono @ValidationCss @CssClass"
-           value="@Value" @oninput="OnInput" @onfocus="OnFocus"
-           placeholder="@Placeholder" autocomplete="off" />
+    @if (ShowQrButton)
+    {
+        <div class="input-group input-group-sm">
+            <input class="form-control form-control-sm mono @ValidationCss @CssClass"
+                   value="@Value" @oninput="OnInput" @onfocus="OnFocus"
+                   placeholder="@Placeholder" autocomplete="off" />
+            <QrPasteButton OnDecoded="OnQrDecoded" OnError="e => _qrError = e" />
+        </div>
+    }
+    else
+    {
+        <input class="form-control form-control-sm mono @ValidationCss @CssClass"
+               value="@Value" @oninput="OnInput" @onfocus="OnFocus"
+               placeholder="@Placeholder" autocomplete="off" />
+    }
+    @if (_qrError != null)
+    {
+        <span class="small text-warning d-block">@_qrError</span>
+    }
     @if (MatchedSuggestion is { } match)
     {
         <span class="small text-muted">
@@ -63,6 +79,8 @@
     [Parameter] public string Placeholder { get; set; } = "IDENTITY...";
     [Parameter] public string? CssClass { get; set; }
     [Parameter] public bool AllowContractIndex { get; set; }
+    /// <summary>Shows a button that reads the address from a QR code image (also accepts pasted / dropped images).</summary>
+    [Parameter] public bool ShowQrButton { get; set; } = true;
 
     private record Suggestion(string Label, string Address, bool IsOwn);
 
@@ -72,6 +90,7 @@
     private bool _canSave;
     private bool _savingMode;
     private string? _saveLabel;
+    private string? _qrError;
 
     private Suggestion? MatchedSuggestion => string.IsNullOrWhiteSpace(Value) ? null
         : _allSuggestions.FirstOrDefault(s => s.Address.Equals(Value, StringComparison.OrdinalIgnoreCase));
@@ -104,8 +123,26 @@
             _allSuggestions.Add(new Suggestion(contact.Label, contact.Address, IsOwn: false));
     }
 
+    /// <summary>Accepts a bare identity or a qubic: payment link (its destination is used).</summary>
+    private async Task OnQrDecoded(string text)
+    {
+        _qrError = null;
+        var address = Qubic.Core.Payments.QubicPaymentRequest.TryParse(text, out var request, out _) && request != null
+            ? request.Destination
+            : text.Trim();
+        var problem = AllowContractIndex ? IdentityValidation.ValidateDestination(address) : IdentityValidation.Validate(address);
+        if (problem != null)
+        {
+            _qrError = "The QR code does not contain a Qubic address.";
+            return;
+        }
+        await ValueChanged.InvokeAsync(address);
+        _showDropdown = false;
+    }
+
     private async Task OnInput(ChangeEventArgs e)
     {
+        _qrError = null;
         var val = e.Value?.ToString() ?? "";
         await ValueChanged.InvokeAsync(val);
         Filter(val);

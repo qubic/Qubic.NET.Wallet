@@ -29,10 +29,14 @@ public sealed class LocalSigningEndpoint : IAsyncDisposable
     private readonly NetworkProfileService _profiles;
     private readonly SemaphoreSlim _lifecycle = new(1, 1);
     private WebApplication? _app;
+    private FileStream? _instanceLock;
+    private CancellationTokenSource? _waitForLock;
 
     public string? Url { get; private set; }
     public string? LastError { get; private set; }
     public bool IsRunning => _app != null;
+    /// <summary>Another wallet window on the same data folder runs the endpoint; this one takes over when it stops.</summary>
+    public bool IsInOtherInstance { get; private set; }
     public int RequestCount { get; private set; }
     public DateTime? LastRequestUtc { get; private set; }
 
@@ -86,6 +90,14 @@ public sealed class LocalSigningEndpoint : IAsyncDisposable
         try
         {
             if (_app != null || !_features.IsEnabled(WalletFeature.LocalSigningEndpoint)) return;
+            // One endpoint per data folder: local-endpoint.json can only describe one of them.
+            if (!TryAcquireInstanceLock())
+            {
+                IsInOtherInstance = true;
+                WaitForInstanceLock();
+                return;
+            }
+            IsInOtherInstance = false;
             var builder = WebApplication.CreateSlimBuilder();
             builder.Logging.ClearProviders();
             builder.WebHost.UseUrls($"http://127.0.0.1:{Port}");
@@ -102,6 +114,7 @@ public sealed class LocalSigningEndpoint : IAsyncDisposable
         {
             LastError = ex.Message;
             _app = null;
+            ReleaseInstanceLock();
         }
         finally
         {
@@ -112,6 +125,7 @@ public sealed class LocalSigningEndpoint : IAsyncDisposable
 
     public async Task StopAsync()
     {
+        CancelWaitForLock();
         await _lifecycle.WaitAsync();
         try
         {
@@ -122,13 +136,61 @@ public sealed class LocalSigningEndpoint : IAsyncDisposable
                 _app = null;
             }
             Url = null;
-            try { File.Delete(ConnectionFile); } catch { }
+            IsInOtherInstance = false;
+            // The connection file belongs to whichever window holds the lock.
+            if (_instanceLock != null)
+            {
+                try { File.Delete(ConnectionFile); } catch { }
+                ReleaseInstanceLock();
+            }
         }
         finally
         {
             _lifecycle.Release();
             Raise();
         }
+    }
+
+    private bool TryAcquireInstanceLock()
+    {
+        if (_instanceLock != null) return true;
+        try
+        {
+            Directory.CreateDirectory(_settings.StorageDirectory);
+            _instanceLock = new FileStream(Path.Combine(_settings.StorageDirectory, "local-endpoint.lock"),
+                FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            return true;
+        }
+        catch (IOException) { return false; }
+        catch (UnauthorizedAccessException) { return false; }
+    }
+
+    private void ReleaseInstanceLock()
+    {
+        try { _instanceLock?.Dispose(); } catch { }
+        _instanceLock = null;
+    }
+
+    private void WaitForInstanceLock()
+    {
+        if (_waitForLock != null) return;
+        var cts = _waitForLock = new CancellationTokenSource();
+        _ = Task.Run(async () =>
+        {
+            try { await Task.Delay(TimeSpan.FromSeconds(10), cts.Token); }
+            catch (OperationCanceledException) { return; }
+            if (Interlocked.CompareExchange(ref _waitForLock, null, cts) != cts) return;
+            cts.Dispose();
+            if (IsInOtherInstance && _features.IsEnabled(WalletFeature.LocalSigningEndpoint))
+                await StartAsync();
+        });
+    }
+
+    private void CancelWaitForLock()
+    {
+        var cts = Interlocked.Exchange(ref _waitForLock, null);
+        if (cts == null) return;
+        try { cts.Cancel(); cts.Dispose(); } catch { }
     }
 
     private void WriteConnectionFile()

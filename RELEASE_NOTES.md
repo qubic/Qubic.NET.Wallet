@@ -1,3 +1,17 @@
+# v0.7.1
+
+## Features
+- **Paste QR codes.** Address fields, the payment-request field on Send and WalletConnect pairing accept a QR code image: paste a screenshot (Ctrl+V), drop an image file, or use the QR button next to the field (it reads a copied image, or opens an image file). A WalletConnect QR pairs right away; a payment QR fills the Send form. Decoding runs locally (jsQR); nothing is uploaded.
+
+## Fixes
+- **Two wallet windows no longer conflict.** A second wallet started on the same data folder ran its own WalletConnect client on the same sessions: both windows answered every dApp request, and on Windows the shared `walletconnect.json` caused errors. WalletConnect and the local signing endpoint now run in one window only. The other window shows "running in another window" and takes over automatically when the first one closes. A second window could also delete the first window's `local-endpoint.json`; only the window that owns the endpoint touches it now.
+- The QR code on Receive was cut off at the right and bottom edges (the SVG had no viewBox and was shrunk by CSS), so phones could not scan it. It now scales correctly.
+
+## Notes
+- Requires `Qubic.WalletConnect 1.0.1`.
+
+---
+
 # v0.7.0
 
 ![Signing review on an AIO devnet](docs/screenshots/0.7.0/05-signing-review.png)

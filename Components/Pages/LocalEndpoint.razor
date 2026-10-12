@@ -20,11 +20,15 @@ else
             <div class="card mb-3">
                 <div class="card-header d-flex align-items-center">
                     Endpoint
-                    <span class="badge ms-2 @(Endpoint.IsRunning ? "bg-success" : "bg-secondary")">@(Endpoint.IsRunning ? "running" : "stopped")</span>
+                    <span class="badge ms-2 @(Endpoint.IsRunning ? "bg-success" : "bg-secondary")">@(Endpoint.IsRunning ? "running" : Endpoint.IsInOtherInstance ? "in another window" : "stopped")</span>
                     <span class="ms-auto small text-muted">@Endpoint.RequestCount requests</span>
                 </div>
                 <div class="card-body small">
                     @if (Endpoint.LastError != null) { <div class="alert alert-danger py-1">@Endpoint.LastError</div> }
+                    @if (Endpoint.IsInOtherInstance)
+                    {
+                        <div class="alert alert-info py-1"><i class="bi bi-window-stack me-1"></i>The endpoint is running in another Qubic.Net Wallet window. This window takes over when that one closes or turns the endpoint off.</div>
+                    }
                     <dl class="row mb-2">
                         <dt class="col-sm-3">URL</dt><dd class="col-sm-9 mono">@(Endpoint.Url ?? "—")</dd>
                         <dt class="col-sm-3">Token</dt>
