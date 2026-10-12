@@ -1,0 +1,482 @@
+@using Qubic.Services.Networks
+@inject NetworkProfileService Profiles
+@inject NetworkSwitchService Switcher
+@inject NetworkFingerprintService Fingerprint
+@inject EgressGuard Guard
+@inject QubicSettingsService Cfg
+@implements IDisposable
+
+<div class="row g-3">
+    @* ── Profile list ── *@
+    <div class="col-lg-3">
+        <div class="list-group mb-2">
+            @foreach (var p in Profiles.Profiles)
+            {
+                <button type="button" class="list-group-item list-group-item-action d-flex align-items-center @(p.Id == _edit?.Id ? "active" : "")"
+                        @onclick="() => Select(p.Id)">
+                    <span class="qb-network-dot me-2" style="background:@p.BadgeColor"></span>
+                    <span class="flex-grow-1 text-truncate">@p.Name</span>
+                    @if (p.Id == Profiles.ActiveId)
+                    {
+                        <span class="badge bg-success ms-1">active</span>
+                    }
+                </button>
+            }
+        </div>
+        <div class="dropdown-center d-grid gap-1">
+            <select class="form-select form-select-sm" value="" @onchange="AddFromPreset">
+                <option value="">+ Add network…</option>
+                <option value="@NetworkPresets.AioLocalId">AIO dev kit (this machine)</option>
+                <option value="@NetworkPresets.AioRemoteId">AIO dev kit (remote host)</option>
+                <option value="@NetworkPresets.MainnetId">Mainnet</option>
+                <option value="blank">Empty custom network</option>
+            </select>
+            <button class="btn btn-sm btn-outline-secondary" @onclick="RestorePresets">Restore deleted presets</button>
+        </div>
+    </div>
+
+    @* ── Editor ── *@
+    <div class="col-lg-9">
+        @if (_edit != null)
+        {
+            var isActive = _edit.Id == Profiles.ActiveId;
+            <div class="card mb-3">
+                <div class="card-header d-flex flex-wrap align-items-center gap-2">
+                    <span class="qb-network-dot" style="background:@_edit.BadgeColor"></span>
+                    <strong>@_edit.Name</strong>
+                    <div class="ms-auto d-flex flex-wrap gap-1">
+                        @if (!isActive)
+                        {
+                            <button class="btn btn-sm btn-primary" @onclick="Activate" disabled="@(_dirty || Switcher.IsSwitching)">
+                                <i class="bi bi-plug me-1"></i>Use this network
+                            </button>
+                        }
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="Duplicate" title="Duplicate"><i class="bi bi-files"></i></button>
+                        @if (_edit.PresetId != null)
+                        {
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="ResetPreset" title="Reset to preset defaults"><i class="bi bi-arrow-counterclockwise"></i></button>
+                        }
+                        <button class="btn btn-sm btn-outline-danger" @onclick="Delete" disabled="@isActive" title="Delete"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-5">
+                            <label class="form-label small">Name</label>
+                            <input class="form-control form-control-sm" @bind="_edit.Name" @bind:after="MarkDirty" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">Kind</label>
+                            <select class="form-select form-select-sm" @bind="_edit.Kind" @bind:after="MarkDirty">
+                                <option value="@NetworkKind.Mainnet">Mainnet</option>
+                                <option value="@NetworkKind.Testnet">Testnet</option>
+                                <option value="@NetworkKind.Devnet">Devnet (local / AIO)</option>
+                                <option value="@NetworkKind.Custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small">Badge colour</label>
+                            <input type="color" class="form-control form-control-sm form-control-color w-100"
+                                   value="@_edit.BadgeColor" @onchange="e => { _edit.Color = e.Value?.ToString(); MarkDirty(); }" />
+                        </div>
+                    </div>
+
+                    <label class="form-label small mb-1">Methods <span class="text-muted">(priority order — the first enabled method that supports an operation serves it)</span></label>
+                    <table class="table table-sm align-middle mb-1">
+                        <tbody>
+                            @for (int i = 0; i < _edit.Methods.Count; i++)
+                            {
+                                var idx = i;
+                                var m = _edit.Methods[idx];
+                                <tr class="@(m.Enabled ? "" : "opacity-50")">
+                                    <td style="width:1%">
+                                        <input class="form-check-input" type="checkbox" checked="@m.Enabled"
+                                               @onchange="e => { m.Enabled = (bool)(e.Value ?? false); MarkDirty(); }" title="Enabled" />
+                                    </td>
+                                    <td style="width:1%"><span class="badge bg-secondary">@Capabilities.MethodName(m.Kind)</span></td>
+                                    <td>
+                                        @if (m.Kind == BackendMethodKind.Direct)
+                                        {
+                                            <div class="input-group input-group-sm">
+                                                <input class="form-control" placeholder="host" @bind="m.Host" @bind:after="MarkDirty" />
+                                                <input type="number" class="form-control" style="max-width:100px" placeholder="port"
+                                                       @bind="m.Port" @bind:after="MarkDirty" />
+                                            </div>
+                                            <div class="form-check form-check-inline small mt-1">
+                                                <input class="form-check-input" type="checkbox" id="pd-@idx" checked="@m.PeerDiscovery"
+                                                       @onchange="e => { m.PeerDiscovery = (bool)(e.Value ?? false); MarkDirty(); }" />
+                                                <label class="form-check-label" for="pd-@idx">Peer discovery (switch to better peers automatically)</label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <input class="form-control form-control-sm" placeholder="http(s)://host:port" @bind="m.Url" @bind:after="MarkDirty" />
+                                            @if (m.Kind == BackendMethodKind.Bob)
+                                            {
+                                                <div class="form-check form-check-inline small mt-1">
+                                                    <input class="form-check-input" type="checkbox" id="ws-@idx" checked="@m.UseWebSocket"
+                                                           @onchange="e => { m.UseWebSocket = (bool)(e.Value ?? false); MarkDirty(); }" />
+                                                    <label class="form-check-label" for="ws-@idx">WebSocket (live ticks and log sync)</label>
+                                                </div>
+                                            }
+                                        }
+                                        @if (!string.IsNullOrEmpty(m.Label))
+                                        {
+                                            <div class="small text-muted">@m.Label</div>
+                                        }
+                                    </td>
+                                    <td class="text-nowrap" style="width:1%">
+                                        <button class="btn btn-sm btn-qb-ghost p-0 px-1" disabled="@(idx == 0)" @onclick="() => Move(idx, -1)" title="Higher priority"><i class="bi bi-arrow-up"></i></button>
+                                        <button class="btn btn-sm btn-qb-ghost p-0 px-1" disabled="@(idx == _edit.Methods.Count - 1)" @onclick="() => Move(idx, 1)" title="Lower priority"><i class="bi bi-arrow-down"></i></button>
+                                        <button class="btn btn-sm btn-qb-ghost p-0 px-1 text-danger" @onclick="() => RemoveMethod(idx)" title="Remove"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="d-flex gap-1 mb-3">
+                        @foreach (var kind in Enum.GetValues<BackendMethodKind>().Where(k => _edit.Methods.All(m => m.Kind != k)))
+                        {
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="() => AddMethod(kind)">+ @Capabilities.MethodName(kind)</button>
+                        }
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label small">Explorer link for transactions <span class="text-muted">({hash} placeholder, empty = no links)</span></label>
+                            <input class="form-control form-control-sm mono" @bind="_edit.ExplorerTxUrlTemplate" @bind:after="MarkDirty" />
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="staticBundle" checked="@_edit.UseStaticBundle"
+                                       @onchange="e => { _edit.UseStaticBundle = (bool)(e.Value ?? false); MarkDirty(); }" />
+                                <label class="form-check-label small" for="staticBundle">Use Mainnet data bundle (labels, fees)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label small">Target tick</label>
+                            <select class="form-select form-select-sm" @bind="_edit.TickMode" @bind:after="MarkDirty">
+                                <option value="@TickTargetMode.FixedOffset">Fixed tick offset</option>
+                                <option value="@TickTargetMode.TimeBased">Execute in ~N seconds</option>
+                            </select>
+                        </div>
+                        @if (_edit.TickMode == TickTargetMode.FixedOffset)
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label small">Ticks ahead</label>
+                                <input type="number" min="1" max="100" class="form-control form-control-sm" @bind="_edit.TickOffset" @bind:after="MarkDirty" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                <label class="form-label small">Seconds ahead</label>
+                                <input type="number" min="1" max="600" class="form-control form-control-sm" @bind="_edit.TickTargetSeconds" @bind:after="MarkDirty" />
+                            </div>
+                        }
+                        <div class="col-md-5">
+                            <label class="form-label small">Pending window (ticks) <span class="text-muted">empty = @TickTargeting.PendingWindowTicks(WithoutWindow(_edit))</span></label>
+                            <input type="number" min="1" class="form-control form-control-sm" placeholder="auto"
+                                   value="@_edit.PendingTxWindowTicks"
+                                   @onchange="e => { _edit.PendingTxWindowTicks = int.TryParse(e.Value?.ToString(), out var w) && w > 0 ? w : null; MarkDirty(); }" />
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small">Expected network <span class="text-muted">(checked against the computor list)</span></label>
+                            <select class="form-select form-select-sm" value="@(_edit.ExpectedFingerprint?.ToString() ?? "")"
+                                    @onchange="e => { _edit.ExpectedFingerprint = Enum.TryParse<NetworkFingerprintKind>(e.Value?.ToString(), out var k) ? k : null; MarkDirty(); }">
+                                <option value="">No expectation</option>
+                                <option value="@NetworkFingerprintKind.ArbitratorSigned">Signed by the mainnet arbitrator</option>
+                                <option value="@NetworkFingerprintKind.CoreLiteDevnet">core-lite devnet (public dev computors)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    @if (_error != null)
+                    {
+                        <div class="alert alert-danger py-1 small">@_error</div>
+                    }
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-primary" @onclick="Save" disabled="@(!_dirty)">
+                            <i class="bi bi-save me-1"></i>Save@(isActive ? " and reconnect" : "")
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Select(_edit.Id)" disabled="@(!_dirty)">Discard changes</button>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Routing: method per operation ── *@
+            <div class="card mb-3">
+                <div class="card-header small"><i class="bi bi-signpost-split me-1"></i>Method per operation
+                    <span class="text-muted">— "Auto" follows the priority order above</span></div>
+                <div class="card-body p-0">
+                    <table class="table table-sm mb-0 small align-middle">
+                        <tbody>
+                            @foreach (var cap in Enum.GetValues<Capability>())
+                            {
+                                var capture = cap;
+                                var route = Capabilities.Resolve(_edit, cap);
+                                var choices = Capabilities.SupportedBy(cap).Where(k => _edit.Methods.Any(m => m.Kind == k)).ToList();
+                                var pinned = _edit.Routes != null && _edit.Routes.TryGetValue(cap, out var pk) ? pk : (BackendMethodKind?)null;
+                                <tr>
+                                    <td class="text-nowrap">@Capabilities.DisplayName(cap)</td>
+                                    <td style="width:9.5rem">
+                                        @if (choices.Count > 1 || pinned != null)
+                                        {
+                                            <select class="form-select form-select-sm" value="@(pinned?.ToString() ?? "")"
+                                                    @onchange="e => SetRoute(capture, e.Value?.ToString())">
+                                                <option value="">Auto</option>
+                                                @foreach (var k in choices)
+                                                {
+                                                    <option value="@k">@Capabilities.MethodName(k)@(_edit.HasMethod(k) ? "" : " (off)")</option>
+                                                }
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">@(choices.Count == 1 ? Capabilities.MethodName(choices[0]) + " only" : "—")</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (route != null)
+                                        {
+                                            <span class="badge bg-secondary">@Capabilities.MethodName(route.Kind)</span>
+                                            <span class="mono text-muted ms-1 d-none d-md-inline">@route.Endpoint</span>
+                                        }
+                                        else if (Capabilities.IsPinnedToUnavailableMethod(_edit, cap))
+                                        {
+                                            <span class="text-warning">not available — @Capabilities.MethodName(pinned!.Value) is off</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">not available</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @* ── Active network status ── *@
+        <div class="card mb-3">
+            <div class="card-header small"><i class="bi bi-fingerprint me-1"></i>Active network: @Profiles.Active.Name</div>
+            <div class="card-body small">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <button class="btn btn-sm btn-outline-primary" @onclick="CheckFingerprint" disabled="@_checking">
+                        @(_checking ? "Checking…" : "Identify network")
+                    </button>
+                    @if (Fingerprint.Current is { } fp && fp.ProfileId == Profiles.ActiveId)
+                    {
+                        <span class="@(Fingerprint.IsMismatch ? "text-danger" : "text-success")">
+                            <i class="bi @(Fingerprint.IsMismatch ? "bi-exclamation-octagon" : "bi-shield-check") me-1"></i>
+                            @FingerprintText(fp.Kind) (epoch @fp.Epoch) — @fp.Detail
+                        </span>
+                    }
+                </div>
+                <div class="text-muted mb-1">Allowed hosts: <span class="mono">@string.Join(", ", Guard.AllowedHosts)</span></div>
+                @if (Guard.Violations.Count > 0)
+                {
+                    <div class="mt-2">
+                        <strong>Blocked connections</strong>
+                        <button class="btn btn-sm btn-link p-0 ms-2" @onclick="Guard.ClearViolations">clear</button>
+                        <ul class="mb-0 mono">
+                            @foreach (var v in Guard.Violations.TakeLast(10).Reverse())
+                            {
+                                <li>@v.TimestampUtc.ToLocalTime().ToString("HH:mm:ss") @v.Host@(v.Port is { } port ? ":" + port : "") (@v.Purpose) — @v.ProfileName</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                <div class="mt-3">
+                    <label class="form-label small">Tick drift threshold (ticks between methods of this network)</label>
+                    <input type="number" class="form-control form-control-sm" style="max-width:120px" min="1" max="100"
+                           value="@(Cfg.GetCustom<int?>("tickDriftThreshold") ?? 15)"
+                           @onchange="OnDriftThresholdChanged" />
+                </div>
+            </div>
+        </div>
+
+        <div class="small text-muted">
+            <i class="bi bi-info-circle me-1"></i>
+            AIO dev kit: Bob listens on port 40420, core-lite's HTTP API on 41841 and P2P on 31841. The kit binds 41841/31841
+            to <code>127.0.0.1</code>; for a remote kit, tunnel them, e.g.
+            <code>ssh -L 40420:localhost:40420 -L 41841:localhost:41841 user@@host</code>, and use the "this machine" preset.
+        </div>
+    </div>
+</div>
+
+@code {
+    private NetworkProfile? _edit;
+    private bool _dirty;
+    private string? _error;
+    private bool _checking;
+
+    protected override void OnInitialized()
+    {
+        Select(Profiles.ActiveId);
+        Profiles.OnProfilesChanged += OnExternalChange;
+        Profiles.OnActiveProfileChanged += OnActiveChanged;
+        Fingerprint.OnChanged += OnExternalChange;
+    }
+
+    private void Select(string id)
+    {
+        _edit = Profiles.Get(id);
+        _dirty = false;
+        _error = null;
+    }
+
+    private void MarkDirty()
+    {
+        _dirty = true;
+        _error = null;
+    }
+
+    private void Move(int idx, int delta)
+    {
+        if (_edit == null) return;
+        var m = _edit.Methods[idx];
+        _edit.Methods.RemoveAt(idx);
+        _edit.Methods.Insert(idx + delta, m);
+        MarkDirty();
+    }
+
+    private void SetRoute(Capability cap, string? value)
+    {
+        if (_edit == null) return;
+        if (Enum.TryParse<BackendMethodKind>(value, out var kind))
+        {
+            _edit.Routes ??= [];
+            _edit.Routes[cap] = kind;
+        }
+        else
+        {
+            _edit.Routes?.Remove(cap);
+            if (_edit.Routes is { Count: 0 }) _edit.Routes = null;
+        }
+        MarkDirty();
+    }
+
+    private void RemoveMethod(int idx)
+    {
+        _edit?.Methods.RemoveAt(idx);
+        MarkDirty();
+    }
+
+    private void AddMethod(BackendMethodKind kind)
+    {
+        _edit?.Methods.Add(kind == BackendMethodKind.Direct
+            ? new BackendMethod { Kind = kind, Host = "127.0.0.1", Port = 31841 }
+            : new BackendMethod { Kind = kind, Url = kind == BackendMethodKind.Bob ? "http://127.0.0.1:40420" : "http://127.0.0.1:41841" });
+        MarkDirty();
+    }
+
+    private async Task Save()
+    {
+        if (_edit == null) return;
+        try
+        {
+            NetworkProfileService.Validate(_edit);
+            var wasActive = _edit.Id == Profiles.ActiveId;
+            Profiles.Save(_edit);
+            _dirty = false;
+            if (wasActive) await Switcher.ApplyActiveProfileEditsAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task Activate()
+    {
+        if (_edit == null) return;
+        await Switcher.SwitchAsync(_edit.Id);
+    }
+
+    private void Duplicate()
+    {
+        if (_edit == null) return;
+        Select(Profiles.Duplicate(_edit.Id).Id);
+    }
+
+    private void ResetPreset()
+    {
+        if (_edit == null) return;
+        try { Select(Profiles.ResetToPreset(_edit.Id).Id); }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    private void Delete()
+    {
+        if (_edit == null) return;
+        try
+        {
+            Profiles.Delete(_edit.Id);
+            Select(Profiles.ActiveId);
+        }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    private void AddFromPreset(ChangeEventArgs e)
+    {
+        var key = e.Value?.ToString();
+        if (string.IsNullOrEmpty(key)) return;
+        var p = key == "blank"
+            ? new NetworkProfile { Name = "New network", Kind = NetworkKind.Custom, Methods = [new BackendMethod { Kind = BackendMethodKind.Bob, Url = "http://127.0.0.1:40420" }] }
+            : NetworkPresets.ById(key)!;
+        p.Id = Guid.NewGuid().ToString("N")[..12];
+        if (key != "blank") p.Name += " (new)";
+        Select(Profiles.Save(p).Id);
+    }
+
+    private void RestorePresets() => Profiles.RestoreMissingPresets();
+
+    private void OnDriftThresholdChanged(ChangeEventArgs e) =>
+        Cfg.SetCustom("tickDriftThreshold", int.TryParse(e.Value?.ToString(), out var v) ? Math.Clamp(v, 1, 100) : 15);
+
+    private async Task CheckFingerprint()
+    {
+        _checking = true;
+        try { await Fingerprint.CheckAsync(); }
+        finally { _checking = false; }
+    }
+
+    private static NetworkProfile WithoutWindow(NetworkProfile p)
+    {
+        var c = p.Clone();
+        c.PendingTxWindowTicks = null;
+        return c;
+    }
+
+    private static string FingerprintText(NetworkFingerprintKind k) => k switch
+    {
+        NetworkFingerprintKind.CoreLiteDevnet => "core-lite devnet",
+        NetworkFingerprintKind.ArbitratorSigned => "Arbitrator-signed (Mainnet)",
+        NetworkFingerprintKind.Unrecognized => "Unrecognized network",
+        _ => "Unknown"
+    };
+
+    private void OnExternalChange()
+    {
+        if (!_dirty && _edit != null) _edit = Profiles.Get(_edit.Id) ?? Profiles.Active;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnActiveChanged(NetworkProfile _, NetworkProfile __) => OnExternalChange();
+
+    public void Dispose()
+    {
+        Profiles.OnProfilesChanged -= OnExternalChange;
+        Profiles.OnActiveProfileChanged -= OnActiveChanged;
+        Fingerprint.OnChanged -= OnExternalChange;
+    }
+}

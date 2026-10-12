@@ -1,10 +1,17 @@
 @inject IJSRuntime JS
+@inject QubicBackendService Backend
 
 @if (!string.IsNullOrEmpty(Hash))
 {
     <span class="mono small d-inline-flex align-items-center">
-        <a href="https://explorer.qubic.org/network/tx/@Hash" target="_blank" rel="noopener"
-           title="@Hash">@GetDisplayText()</a>
+        @if (Backend.Profile.GetExplorerTxUrl(Hash) is { } explorerUrl)
+        {
+            <a href="@explorerUrl" target="_blank" rel="noopener" title="@Hash">@GetDisplayText()</a>
+        }
+        else
+        {
+            <span title="@Hash">@GetDisplayText()</span>
+        }
         <button class="btn btn-link btn-sm p-0 ms-1 address-copy-btn"
                 @onclick="CopyHash" @onclick:stopPropagation="true"
                 title="Copy tx hash"><i class="bi @(_copied ? "bi-check-lg text-success" : "bi-clipboard")"></i></button>

@@ -1,5 +1,6 @@
 @inject SeedSessionService Seed
 @inject NavigationManager Nav
+@inject Qubic.Services.Features.FeatureService Features
 @implements IDisposable
 
 <div class="qb-sidebar p-2 d-flex flex-column">
@@ -82,6 +83,31 @@
         <NavLink class="nav-link" href="/sign-verify">
             <i class="bi bi-pen me-2"></i>Sign / Verify
         </NavLink>
+        @if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
+        {
+            <NavLink class="nav-link" href="/walletconnect">
+                <i class="bi bi-link-45deg me-2"></i>WalletConnect
+            </NavLink>
+        }
+        @if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint))
+        {
+            <NavLink class="nav-link" href="/local-endpoint">
+                <i class="bi bi-plug me-2"></i>Local Endpoint
+            </NavLink>
+        }
+
+        @if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.DeveloperTools))
+        {
+            <div class="nav-section-header mt-2">
+                <span class="nav-section-label">DEVELOPER</span>
+            </div>
+            <NavLink class="nav-link" href="/devtools">
+                <i class="bi bi-tools me-2"></i>Dev Tools
+            </NavLink>
+            <NavLink class="nav-link" href="/contracts">
+                <i class="bi bi-braces me-2"></i>Contract Console
+            </NavLink>
+        }
 
         <hr class="my-2" />
         <NavLink class="nav-link" href="/sync">
@@ -104,7 +130,10 @@
     protected override void OnInitialized()
     {
         Seed.OnSeedChanged += OnSeedChanged;
+        Features.OnChanged += OnFeatureChanged;
     }
+
+    private void OnFeatureChanged(Qubic.Services.Features.WalletFeature _) => InvokeAsync(StateHasChanged);
 
     private void OnSeedChanged()
     {
@@ -114,5 +143,6 @@
     public void Dispose()
     {
         Seed.OnSeedChanged -= OnSeedChanged;
+        Features.OnChanged -= OnFeatureChanged;
     }
 }

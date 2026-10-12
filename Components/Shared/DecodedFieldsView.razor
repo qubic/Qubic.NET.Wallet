@@ -1,0 +1,47 @@
+@using Qubic.Core.Contracts.Metadata
+
+@* Recursive table of decoded contract struct fields. *@
+<table class="table table-sm mb-0 qb-decoded">
+    <tbody>
+        @foreach (var f in Fields)
+        {
+            <tr>
+                <td class="text-muted text-nowrap" style="width:1%">@f.Name</td>
+                <td>
+                    @if (f.Children is { Count: > 0 } children)
+                    {
+                        @if (!string.IsNullOrEmpty(f.Display))
+                        {
+                            <div class="small text-muted">@f.Display</div>
+                        }
+                        @if (Depth < 3)
+                        {
+                            <DecodedFieldsView Fields="children" Depth="Depth + 1" />
+                        }
+                    }
+                    else if (AssetNameText(f) is { } assetName)
+                    {
+                        <span class="mono small"><strong>@assetName</strong> <span class="text-muted">(@f.Display)</span></span>
+                    }
+                    else
+                    {
+                        <span class="mono small text-break">@f.Display</span>
+                    }
+                    <span class="badge bg-secondary-subtle text-secondary-emphasis ms-1 small">@f.Type</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<DecodedField> Fields { get; set; } = [];
+    [Parameter] public int Depth { get; set; }
+
+    /// <summary>uint64 fields named like "assetName" hold 7 packed ASCII characters; show them as text.</summary>
+    internal static string? AssetNameText(DecodedField f) =>
+        f.Type == "uint64" && f.Name.Contains("name", StringComparison.OrdinalIgnoreCase)
+        && ulong.TryParse(f.Display, out var v) && v != 0
+            ? AssetNameHelper.FromUlong(v)
+            : null;
+}

@@ -1141,7 +1141,8 @@ else
                                 mgmtContract, asset, (long)amount, ContractIndex);
                             var rightsDest = Qubic.Core.Entities.QubicIdentity.FromPublicKey(
                                 Qubic.Core.QubicContracts.GetContractPublicKey(mgmtContract));
-                            var rightsTx = Seed.CreateAndSignTransaction(rightsDest, (long)mgmtFee, tick, rightsPayload);
+                            var rightsTx = await Seed.SignTransactionAsync(rightsDest, (long)mgmtFee, tick, rightsPayload,
+                                Qubic.Services.Signing.SigningContext.InApp($"Transfer management rights of {name} x{amount} to MSVault"));
                             var rightsResult = await Backend.BroadcastTransactionAsync(rightsTx);
                             TxTracker.Track(new TrackedTransaction
                             {

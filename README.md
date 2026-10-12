@@ -8,8 +8,14 @@ Cross-platform desktop wallet for the [Qubic](https://qubic.org) network. Runs a
 ## Features
 
 - **Dashboard** — identity, QU balance, network status, owned assets, and open orders at a glance
-- **Send / Receive** — single transfers with QR code support, batch "Send to Many" with reusable templates
-- **Encrypted Vault** — password-protected vault stores multiple seeds and an address book, encrypted with AES-256-GCM
+- **Networks** — switch between Mainnet, a local [AIO Dev Kit](docs/guide/aio-tutorial.md) and your own networks from the header; each network uses Bob, RPC and/or direct node connections, with a per-operation choice and no silent fallback to other servers ([guide](docs/guide/networks.md))
+- **Network check** — identifies the connected chain (Mainnet, core-lite devnet) and warns when it does not match the settings; detects chain resets on test networks
+- **Signing review** — every signature, from the wallet, a dApp or a script, goes through one review showing the network, decoded contract call, target tick and warnings ([guide](docs/guide/signing.md))
+- **Replay protection warnings** — warns when a seed signs on both Mainnet and a test network, and when public dev keys meet Mainnet
+- **Target tick by time** — schedule transactions "in ~N seconds" besides the fixed tick offset
+- **Send / Receive** — single transfers with QR code support, `qubic:` payment requests with amount and message, batch "Send to Many" with reusable templates
+- **Encrypted Vault** — password-protected vault stores multiple seeds and an address book, encrypted with AES-256-GCM; any vault works on any network
+- **Vault switching** — pick a recently used vault file (or browse to another one) straight from the header bar, without going through settings
 - **Address Book** — save contacts and quickly select them from any address input with autocomplete
 - **Assets** — view and transfer QX-listed tokens
 - **QX Trading** — place and cancel asset orders on the Qubic DEX
@@ -18,9 +24,19 @@ Cross-platform desktop wallet for the [Qubic](https://qubic.org) network. Runs a
 - **MSVault** — multi-signature vault management (create, deposit, release, approve/deny)
 - **Community Voting** — view active proposals and cast votes
 - **SC Auction** — bid on smart contract slots
-- **Transaction History** — full history with local encrypted storage and sync
+- **Transaction History** — full history with local encrypted storage and sync, kept per network
 - **Sign / Verify** — sign messages with your seed and verify signatures
-- **Settings** — backend selection (RPC / Bob / Direct TCP), peer management, label sources, theme toggle, database import/export
+- **Settings** — networks, optional features, peer management, label sources, theme toggle, database import/export
+
+Optional features, all off until you turn them on ([guide](docs/guide/features.md)):
+
+- **Developer tools** — public dev accounts, faucet, asset issuance and a Contract Console that calls any contract, including your own imported from its C++ header ([guide](docs/guide/developer-tools.md))
+- **Sign-In with Qubic** — structured website logins, checked field by field
+- **WalletConnect** — connect to dApps with the official Qubic method set ([guide](docs/guide/walletconnect.md))
+- **Local signing endpoint** — JSON-RPC on 127.0.0.1 for scripts and contract tests ([guide](docs/guide/local-endpoint.md))
+- **Remote labels** — names and fees from the public Qubic data bundle
+
+**New to local development?** The [AIO tutorial](docs/guide/aio-tutorial.md) sets up a private Qubic testnet and walks through funding, transfers, assets and calling your own contract with the wallet.
 
 <img width="1800" height="1400" alt="wallet-architecture" src="https://github.com/user-attachments/assets/ae1e3f7a-28df-44cc-8f79-4e7cc560b389" />
 
@@ -152,8 +168,19 @@ Produces zip archives with SHA-256 hashes for:
 - **Desktop**: Photino.Blazor (WebView2 on Windows, WebKit on macOS/Linux)
 - **Server fallback**: Blazor Server with auto-launched browser (`--server` flag, or automatic fallback if native libraries are unavailable)
 - **Storage**: SQLCipher-encrypted SQLite per identity
-- **Backends**: RPC, Bob, or direct TCP to Qubic nodes
+- **Backends**: network profiles combining RPC, Bob and direct TCP to Qubic nodes; every request stays inside the active network
 - **Libraries**: [Qubic.Net](https://github.com/qubic/Qubic.Net) included as a git submodule under `deps/`
+
+## Documentation
+
+The [user guide](docs/guide/README.md) covers networks, signing, optional features, developer tools,
+WalletConnect and the local signing endpoint. See [RELEASE_NOTES.md](RELEASE_NOTES.md) for changes per version.
 
 ## Screenshots
 <img width="1182" height="636" alt="image" src="https://github.com/user-attachments/assets/2667aa4a-aeee-4f61-9308-e0790fff6837" />
+
+| | |
+|---|---|
+| ![Networks](docs/screenshots/0.7.0/03-networks.png) Network settings and method per operation | ![Signing review](docs/screenshots/0.7.0/05-signing-review.png) Signing review with a decoded contract call |
+| ![Developer tools](docs/screenshots/0.7.0/04-dev-tools.png) Developer tools on an AIO devnet | ![Contract Console](docs/screenshots/0.7.0/13-contract-import.png) Contract Console with an imported header |
+| ![Payment request](docs/screenshots/0.7.0/08-receive-payment-request.png) Payment request | ![WalletConnect](docs/screenshots/0.7.0/10-walletconnect.png) WalletConnect |

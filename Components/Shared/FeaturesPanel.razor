@@ -1,0 +1,80 @@
+@using Qubic.Services.Features
+@inject FeatureService Features
+
+@* Opt-in feature list. In Review mode choices are collected and saved together (first run / after an update);
+   otherwise each switch applies immediately (Settings → Features). *@
+<div class="list-group">
+    @foreach (var f in Items)
+    {
+        var enabled = IsChecked(f.Feature);
+        var blocked = f.Requires is { } req && !IsChecked(req);
+        <div class="list-group-item @(f.Requires != null ? "ps-5" : "")">
+            <div class="d-flex align-items-start gap-3">
+                <div class="form-check form-switch mt-1">
+                    <input class="form-check-input" type="checkbox" id="feat-@f.Feature"
+                           checked="@enabled" disabled="@blocked"
+                           @onchange="e => Toggle(f.Feature, (bool)(e.Value ?? false))" />
+                </div>
+                <div class="flex-grow-1">
+                    <label class="fw-semibold" for="feat-@f.Feature">@f.Title</label>
+                    @if (Review && f.IntroducedInFeatureSet > 0 && IsNew(f))
+                    {
+                        <span class="badge bg-info ms-1">new</span>
+                    }
+                    <div class="small">@f.Description</div>
+                    <div class="small text-muted mt-1">
+                        <i class="bi bi-hdd-network me-1"></i>Connects to: @f.ConnectsTo
+                    </div>
+                    <div class="small text-muted">
+                        <i class="bi bi-shield-exclamation me-1"></i>@f.Risk
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Collect choices and let the parent save them with <see cref="Save"/>.</summary>
+    [Parameter] public bool Review { get; set; }
+
+    [Parameter] public bool Desktop { get; set; } = true;
+
+    /// <summary>Raised after a switch changed (immediate mode) or a choice changed (review mode).</summary>
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    private readonly Dictionary<WalletFeature, bool> _choices = [];
+    private HashSet<WalletFeature> _new = [];
+
+    private IEnumerable<FeatureInfo> Items => FeatureService.All.Where(f => Desktop || !f.DesktopOnly);
+
+    protected override void OnInitialized()
+    {
+        _new = Features.NewSinceReview(Desktop).Select(f => f.Feature).ToHashSet();
+        foreach (var f in Items)
+            _choices[f.Feature] = Features.IsEnabled(f.Feature);
+    }
+
+    private bool IsNew(FeatureInfo f) => _new.Contains(f.Feature);
+
+    private bool IsChecked(WalletFeature f) => Review ? _choices.GetValueOrDefault(f) : Features.IsEnabled(f);
+
+    private async Task Toggle(WalletFeature feature, bool enabled)
+    {
+        if (Review)
+        {
+            _choices[feature] = enabled;
+            if (!enabled)
+                foreach (var child in FeatureService.All.Where(i => i.Requires == feature))
+                    _choices[child.Feature] = false;
+        }
+        else
+        {
+            Features.SetEnabled(feature, enabled);
+        }
+        await OnChanged.InvokeAsync();
+    }
+
+    /// <summary>Review mode: stores all choices and marks the feature set reviewed.</summary>
+    public void Save() => Features.CompleteReview(_choices);
+}

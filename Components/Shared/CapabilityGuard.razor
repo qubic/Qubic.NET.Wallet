@@ -1,0 +1,40 @@
+@using Qubic.Services.Networks
+@inject QubicBackendService Backend
+@inject NetworkProfileService Profiles
+@implements IDisposable
+
+@* Renders ChildContent only when the active network can serve every required capability;
+   otherwise explains what is missing instead of failing (or silently using another network). *@
+@if (Missing.Count == 0)
+{
+    @ChildContent
+}
+else
+{
+    <div class="alert alert-secondary d-flex align-items-start gap-2">
+        <i class="bi bi-plug fs-4"></i>
+        <div>
+            <strong>@(Title ?? "Not available on this network")</strong>
+            <div class="small mt-1">
+                "@Backend.Profile.Name" has no method that provides
+                @string.Join(", ", Missing.Select(Capabilities.DisplayName)).
+                Add a @string.Join(" / ", Missing.SelectMany(Capabilities.SupportedBy).Distinct().Select(Capabilities.MethodName)) method
+                to this network in <a href="/settings?tab=networks">Settings → Networks</a>.
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Capability[] Requires { get; set; } = [];
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private List<Capability> Missing => Requires.Where(c => !Backend.IsAvailable(c)).ToList();
+
+    protected override void OnInitialized() => Profiles.OnActiveProfileChanged += OnChanged;
+
+    private void OnChanged(NetworkProfile _, NetworkProfile __) => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Profiles.OnActiveProfileChanged -= OnChanged;
+}

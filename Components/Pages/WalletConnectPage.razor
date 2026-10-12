@@ -1,0 +1,116 @@
+@page "/walletconnect"
+@using Qubic.WalletConnect
+@using Qubic.Services.Features
+@inject QubicWalletConnectService WalletConnect
+@inject FeatureService Features
+@inject QubicBackendService Backend
+@implements IDisposable
+
+<h4>WalletConnect</h4>
+<p class="text-muted">Connect dApps (for example ones built with <code>@@qubic.org/react</code>) to this wallet. Every request is shown to you before anything is signed.</p>
+
+@if (!Features.IsEnabled(WalletFeature.WalletConnect))
+{
+    <div class="alert alert-secondary">WalletConnect is off. Turn it on in <a href="/settings?tab=features">Settings → Features</a>.</div>
+}
+else
+{
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header d-flex align-items-center">
+                    Status
+                    <span class="badge ms-2 @StateBadge">@WalletConnect.State</span>
+                    <span class="ms-auto small text-muted">Chain: <code>@Backend.Profile.ChainId</code></span>
+                </div>
+                <div class="card-body">
+                    @if (WalletConnect.State == WalletConnectState.NeedsProjectId)
+                    {
+                        <div class="alert alert-warning py-1 small">This build has no WalletConnect project id configured.</div>
+                    }
+                    @if (WalletConnect.LastError != null) { <div class="alert alert-danger py-1 small">@WalletConnect.LastError</div> }
+
+                    @if (WalletConnect.State == WalletConnectState.Ready)
+                    {
+                        <label class="form-label small mt-2">Pair with a dApp</label>
+                        <div class="input-group input-group-sm">
+                            <input class="form-control mono" @bind="_uri" placeholder="wc:…@@2?relay-protocol=irn&symKey=…" />
+                            <button class="btn btn-primary" @onclick="Pair" disabled="@(string.IsNullOrWhiteSpace(_uri) || _busy)">Pair</button>
+                        </div>
+                        <div class="form-text">Copy the WalletConnect link from the dApp's QR dialog and paste it here.</div>
+                    }
+                    @if (_error != null) { <div class="text-danger small mt-2">@_error</div> }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Connected dApps</div>
+                <div class="card-body p-0">
+                    @if (WalletConnect.Sessions.Count == 0)
+                    {
+                        <div class="p-3 small text-muted">No active sessions.</div>
+                    }
+                    <ul class="list-group list-group-flush">
+                        @foreach (var s in WalletConnect.Sessions)
+                        {
+                            <li class="list-group-item small">
+                                <div class="d-flex align-items-center">
+                                    <strong>@s.Name</strong>
+                                    <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => Disconnect(s.Topic)">Disconnect</button>
+                                </div>
+                                <div class="mono text-muted text-break">@s.Url</div>
+                                <div>@foreach (var a in s.Accounts) { <span class="badge bg-secondary me-1 mono">@a.Split(':')[1]:@a.Split(':').Last()[..8]…</span> }</div>
+                                @if (s.Expiry is { } exp) { <div class="text-muted">expires @exp.ToLocalTime().ToString("g")</div> }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string? _uri;
+    private string? _error;
+    private bool _busy;
+
+    private string StateBadge => WalletConnect.State switch
+    {
+        WalletConnectState.Ready => "bg-success",
+        WalletConnectState.Starting => "bg-info",
+        WalletConnectState.Error => "bg-danger",
+        _ => "bg-secondary"
+    };
+
+    protected override void OnInitialized()
+    {
+        WalletConnect.OnStateChanged += Refresh;
+        if (Features.IsEnabled(WalletFeature.WalletConnect) && WalletConnect.State is WalletConnectState.Off or WalletConnectState.NeedsProjectId)
+            _ = WalletConnect.StartAsync();
+    }
+
+    private void Refresh() => InvokeAsync(StateHasChanged);
+
+    private async Task Pair()
+    {
+        _busy = true; _error = null;
+        try
+        {
+            await WalletConnect.PairAsync(_uri!);
+            _uri = null;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _busy = false; }
+    }
+
+    private async Task Disconnect(string topic)
+    {
+        try { await WalletConnect.DisconnectAsync(topic); }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    public void Dispose() => WalletConnect.OnStateChanged -= Refresh;
+}

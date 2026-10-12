@@ -1,3 +1,67 @@
+# v0.7.0
+
+![Signing review on an AIO devnet](docs/screenshots/0.7.0/05-signing-review.png)
+
+New to local development? Read the [AIO tutorial](docs/guide/aio-tutorial.md). Every new feature is
+described in the [user guide](docs/guide/README.md).
+
+## Features
+- **Networks.** The single "backend" selector is replaced by network profiles: Mainnet, "AIO (this machine)" and "AIO (remote host)" are built in, and you can add your own. Each network has one or more methods (Bob, Direct, RPC) in priority order; switch networks from the header bar. Every network keeps its own history database, asset list, imported contracts and tick settings.
+- **AIO Qubic Dev Kit support.** The AIO preset talks to the kit's Bob (port 40420), with core-lite's own HTTP API (41841) for what Bob cannot list (assets, IPOs). Direct (31841) is available but off by default.
+- **No silent fallback.** Every operation is served only by a method of the active network. If none can serve it, the page says so ("not available on this network") instead of quietly asking rpc.qubic.org. A connection guard blocks any host that is not part of the active network and shows what it blocked. *Settings → Networks* lists where each operation goes, and lets you pick the method per operation (or leave it on "Auto", the priority order).
+- **Network check.** The wallet identifies the chain it is connected to: a core-lite devnet (its computors are the public dev seeds), or a chain signed by the mainnet arbitrator. A network that contradicts its settings gets a red warning. (Bob's chain id cannot be used for this — it reports "mainnet" on AIO too.)
+- **Chain reset detection.** When an AIO chain is wiped and restarted, the wallet notices that the ticks went backwards and clears that network's cached history.
+- **Target tick by time.** Besides the fixed tick offset, a network can use "execute in ~N seconds", based on the measured tick rate. A target beyond what the network accepts (32 ticks on test networks) shows a warning.
+- **Signing review.** Every signature — in the wallet, from dev tools, WalletConnect or the local endpoint — now goes through one review sheet. It shows the network, the decoded contract call, the target tick with ETA, and warnings. Send no longer has its own separate confirm step.
+- **Replay warnings.** Qubic transactions carry no network id. The wallet records which network class each vault seed has signed on, and warns before the same seed signs on Mainnet and a test network. Public core-lite dev keys used on Mainnet, or funds sent to them, get a red warning.
+- **Optional features, opt-in.** A Features screen on first start (and after updates that add options) lets you choose what to enable: remote labels, developer tools, Sign-In with Qubic, WalletConnect and the local signing endpoint. Features that are off do not run at all.
+- **Developer tools** (devnets only): public dev accounts with balances, a faucet, QX asset issuance from a dev account, and the AIO commands for genesis funding.
+- **Contract Console:** call any contract function or procedure with a typed form. Import your own contract's C++ header to get forms and decoded signing previews for it.
+- **Sign-In with Qubic:** structured login messages are recognised, shown field by field and checked (domain, network, expiry, nonce).
+- **Payment requests:** Receive can create a `qubic:` payment link / QR code with an amount and message. Send accepts pasted payment links and warns if the link is for a different network.
+- **WalletConnect** (opt-in): pair with dApps using the official Qubic method set (`qubic_requestAccounts`, `qubic_sendQubic`, `qubic_signTransaction`, `qubic_sendTransaction`, `qubic_sign`, `qubic_sendAsset`). The project id is built into the app.
+- **Local signing endpoint** (opt-in, desktop): JSON-RPC on 127.0.0.1 with a bearer token, for scripts and contract tests. Optional auto-approval applies only to public dev keys on a proven core-lite devnet.
+
+### Screenshots
+
+| | |
+|---|---|
+| ![Features](docs/screenshots/0.7.0/01-features.png) Opt-in features on first start | ![Networks](docs/screenshots/0.7.0/03-networks.png) Networks and method per operation |
+| ![Developer tools](docs/screenshots/0.7.0/04-dev-tools.png) Developer tools | ![Faucet](docs/screenshots/0.7.0/11-faucet-review.png) Faucet transfer in the review |
+| ![Contract Console](docs/screenshots/0.7.0/13-contract-import.png) Contract Console with an imported header | ![Sign-In with Qubic](docs/screenshots/0.7.0/07-sign-in-with-qubic.png) Sign-In with Qubic |
+| ![Payment request](docs/screenshots/0.7.0/08-receive-payment-request.png) Payment request | ![Send from link](docs/screenshots/0.7.0/09-send-from-link.png) Send from a payment link |
+| ![WalletConnect](docs/screenshots/0.7.0/10-walletconnect.png) WalletConnect | ![Local endpoint](docs/screenshots/0.7.0/14-local-endpoint.png) Local signing endpoint |
+
+## Fixes
+- Balances refreshed only when the tick number was a multiple of 30, so refreshes were skipped whenever polling missed that tick. Balances now refresh every 30 seconds.
+- Fresh builds could fail to open the encrypted history database ("e_sqlite3 doesn't support encryption"): a newer plain-SQLite package displaced SQLCipher. Qubic.Services now references `Microsoft.Data.Sqlite.Core` only, so SQLCipher is the sole provider.
+- Transaction tracking marked transactions "Unknown" purely by tick count. It now also waits at least 30 seconds, so fast devnets don't trigger premature resends.
+
+## Notes
+- Existing settings are migrated into the "Mainnet" network on first start; your endpoints, preferred backend and tick offset are kept. Mainnet keeps its existing history database files.
+- Requires `Qubic.Services 1.6.0` and `Qubic.WalletConnect 1.0.0`.
+
+---
+
+# v0.6.4
+
+## Features
+- **Switch vault files from the header bar.** The lock screen now lists recently used vault files next to the password box — pick one and the wallet re-points at it, still locked, ready for that vault's password. A folder button opens any other vault file. Previously this meant going to Settings, disconnecting the vault, and opening the other file by path.
+- With no vault connected, an "Open vault..." dropdown offers the vault files used before, so you can get back into one without going through Settings.
+- Vault files that share a file name are disambiguated by their containing folder in the list.
+- Switching always clears the session first (vault locked, seed cleared), so nothing from the previous vault stays active behind the new lock screen.
+
+## Fixes
+- **Locking could leave the vault unlocked.** Lock (manual and auto-lock) cleared the seed session *before* locking the vault: it stopped the sync service and closed the encrypted database first, which can block for seconds or throw, and when it threw the vault was never locked. The result was a wallet that looked locked but wasn't — the vault's labels and identities stayed listed on the home screen and could be activated again without a password. The vault is now locked first, the session torn down afterwards, and each teardown step is isolated so one failure cannot skip the rest. Applies equally to Disconnect Vault and Delete Vault in Settings.
+- The locked state is now rendered before the session teardown runs, so Lock reacts immediately instead of appearing to do nothing while the sync service shuts down.
+- Picking the vault that is already open (from the header dropdown) now takes you to its password prompt and ends the current session, instead of doing nothing.
+- A vault created from Settings left the wallet with the vault unlocked, no identity active and no way to lock it short of restarting. The header now shows a Lock button in that state.
+
+## Notes
+- The list of recently used vault files is stored in the wallet's settings file (`vault_recent_paths`) as plain file paths. It holds up to 8 entries, drops paths whose file no longer exists, and is removed for a vault you delete. No vault or on-disk vault format changes.
+
+---
+
 # v0.6.3
 
 ## Security — please update immediately

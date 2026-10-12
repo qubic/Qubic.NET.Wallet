@@ -1,0 +1,45 @@
+diff --git a/RESTAPI/QubicRpcMapper.h b/RESTAPI/QubicRpcMapper.h
+index c621009..67e29a1 100644
+--- a/RESTAPI/QubicRpcMapper.h
++++ b/RESTAPI/QubicRpcMapper.h
+@@ -16,6 +16,7 @@ namespace QubicRpc {
+ // qubic:devnet  → 7948451 (0x007948a3)
+ // qubic:simnet  → 3266082397 (0xc2ac765d)
+ constexpr uint64_t CHAIN_ID = 0x2EFC2C96;  // 788278422 - qubic:mainnet
++constexpr uint64_t CHAIN_ID_TESTNET = 0x770E5328;  // 1997427496 - qubic:testnet
+ 
+ // ============================================================================
+ // Hex Encoding/Decoding
+diff --git a/RESTAPI/QubicRpcMethods.cpp b/RESTAPI/QubicRpcMethods.cpp
+index acc0f2e..f3792e9 100644
+--- a/RESTAPI/QubicRpcMethods.cpp
++++ b/RESTAPI/QubicRpcMethods.cpp
+@@ -98,10 +98,16 @@ std::string QubicRpcMethods::identityToHex(const std::string& identity) {
+ // ============================================================================
+ 
+ Json::Value QubicRpcMethods::chainId() {
++    // gIsTestnet is set when the computor list is the unsigned core-lite testnet set
++    // (see connection.cpp), so local testnets such as the AIO dev kit no longer
++    // report themselves as mainnet.
++    const bool testnet = gIsTestnet;
++    const uint64_t id = testnet ? QubicRpc::CHAIN_ID_TESTNET : QubicRpc::CHAIN_ID;
+     Json::Value result(Json::objectValue);
+-    result["chainId"] = QubicRpc::uint64ToHex(QubicRpc::CHAIN_ID);
+-    result["chainIdDecimal"] = Json::UInt64(QubicRpc::CHAIN_ID);
+-    result["network"] = "qubic-mainnet";
++    result["chainId"] = QubicRpc::uint64ToHex(id);
++    result["chainIdDecimal"] = Json::UInt64(id);
++    result["network"] = testnet ? "qubic-testnet" : "qubic-mainnet";
++    result["caip2"] = testnet ? "qubic:testnet" : "qubic:mainnet";
+     return result;
+ }
+ 
+@@ -1318,7 +1324,7 @@ Json::Value QubicRpcMethods::getComputors(uint16_t epoch) {
+     result["epoch"] = comps.epoch;
+ 
+     Json::Value computorsArray(Json::arrayValue);
+-    char identity[61];
++    char identity[61] = {0};  // getIdentityFromPublicKey writes 60 chars and no terminator
+     for (int i = 0; i < NUMBER_OF_COMPUTORS; i++) {
+         getIdentityFromPublicKey(comps.publicKeys[i].m256i_u8, identity, false);
+         computorsArray.append(std::string(identity));

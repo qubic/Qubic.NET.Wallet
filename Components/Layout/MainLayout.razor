@@ -16,6 +16,13 @@
 @inject BalanceService BalanceSvc
 @inject FileDialogService DialogService
 @inject IJSRuntime JS
+@inject Qubic.Services.Networks.NetworkSwitchService NetworkSwitch
+@inject Qubic.Services.Networks.ChainResetService ChainReset
+@inject Qubic.Services.Networks.NetworkFingerprintService Fingerprint
+@inject Qubic.Services.Features.FeatureService Features
+@inject Qubic.Services.Signing.SigningReviewService SigningReview
+@inject Qubic.WalletConnect.QubicWalletConnectService WalletConnectSvc
+@inject Qubic.Net.Wallet.LocalApi.LocalSigningEndpoint LocalEndpoint
 
 <div class="d-flex flex-column vh-100">
     <nav class="qb-navbar">
@@ -59,9 +66,34 @@
                     <i class="bi bi-lock me-1"></i>Lock
                 </button>
             }
-            else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput)
+            else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput && !Seed.HasSeed)
             {
                 @* ── Vault configured, locked ── *@
+                @if (_vaultFiles.Count > 1)
+                {
+                    <select @key="_vaultSelectVersion" class="form-select form-select-sm"
+                            style="width:auto;max-width:180px"
+                            value="@Vault.VaultPath" @onchange="OnVaultFileSelected"
+                            title="@Vault.VaultPath">
+                        @foreach (var path in _vaultFiles)
+                        {
+                            <option value="@path">@VaultLabel(path)</option>
+                        }
+                    </select>
+                }
+                else if (_vaultFiles.Count == 1)
+                {
+                    <span class="badge-qb-cyan" title="@Vault.VaultPath">
+                        <i class="bi bi-safe me-1"></i>@VaultLabel(_vaultFiles[0])
+                    </span>
+                }
+                @if (DialogService.IsAvailable)
+                {
+                    <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="BrowseForVaultFile"
+                            title="Open another vault file">
+                        <i class="bi bi-folder2-open"></i>
+                    </button>
+                }
                 <input type="password" class="form-control form-control-sm"
                        style="width:220px" placeholder="Vault password..."
                        @bind="_vaultPassword" @bind:event="oninput"
@@ -111,6 +143,27 @@
             else
             {
                 @* ── No seed ── *@
+                @if (!_showDirectSeedInput && _vaultFiles.Count > 0)
+                {
+                    @* Vault files used before — reopen one without going through settings *@
+                    <select @key="_vaultSelectVersion" class="form-select form-select-sm"
+                            style="width:auto;max-width:180px" value=""
+                            @onchange="OnVaultFileSelected">
+                        <option value="">Open vault...</option>
+                        @foreach (var path in _vaultFiles)
+                        {
+                            <option value="@path">@VaultLabel(path)</option>
+                        }
+                    </select>
+                }
+                @if (Vault.IsUnlocked)
+                {
+                    @* Vault open but no identity active (e.g. just created from settings) *@
+                    <button class="btn btn-sm btn-qb-ghost" @onclick="LockVault"
+                            title="Lock vault">
+                        <i class="bi bi-lock me-1"></i>Lock
+                    </button>
+                }
                 <input type="password" class="form-control form-control-sm"
                        style="width:280px" placeholder="Enter 55-char seed to enable signing..."
                        @bind="_seedInput" @bind:event="oninput" />
@@ -124,24 +177,7 @@
                 }
             }
             <div class="qb-divider"></div>
-            <select class="form-select form-select-sm" style="width:auto"
-                    @bind="Backend.ActiveBackend" @bind:after="OnBackendChanged">
-                <option value="@QueryBackend.Rpc">RPC</option>
-                <option value="@QueryBackend.Bob">Bob</option>
-                <option value="@QueryBackend.DirectNetwork">Direct</option>
-            </select>
-            @if (Backend.ActiveBackend == QueryBackend.DirectNetwork)
-            {
-                <input class="form-control form-control-sm" style="width:130px"
-                       placeholder="Host" @bind="Backend.NodeHost" @bind:event="oninput" />
-                <input type="number" class="form-control form-control-sm" style="width:70px"
-                       placeholder="Port" @bind="Backend.NodePort" />
-            }
-            else
-            {
-                <input class="form-control form-control-sm" style="width:130px"
-                       placeholder="Host" @bind="CurrentHost" @bind:event="oninput" />
-            }
+            <NetworkSwitcher />
             @if (TickMonitor.IsConnected)
             {
                 <button class="btn btn-sm btn-qb-danger" @onclick="Disconnect">
@@ -150,7 +186,7 @@
                 <span class="badge-qb-success mono">E@(TickMonitor.Epoch) | T@(TickMonitor.Tick)</span>
                 @if (TickDrift.HasDrift)
                 {
-                    <span class="badge-qb-warning" title="Tick drift detected: @TickDrift.MaxDrift ticks between backends">
+                    <span class="badge-qb-warning" title="Tick drift detected: @TickDrift.MaxDrift ticks between this network's methods">
                         <i class="bi bi-exclamation-triangle-fill"></i> Drift @TickDrift.MaxDrift
                     </span>
                 }
@@ -167,6 +203,7 @@
             }
         </div>
     </nav>
+    <NetworkBanner />
     @if (Seed.HasSeed)
     {
         <div class="qb-seed-bar">
@@ -202,6 +239,10 @@
         </main>
     </div>
 </div>
+
+<SigningReviewHost />
+<WalletConnectProposalHost />
+<FeaturesDialog OnSaved="OnFeaturesSaved" />
 
 @* ── Save-to-Vault Modal ── *@
 @if (_showSaveToVault && Seed.HasSeed)
@@ -319,6 +360,11 @@
     private string? _vaultError;
     private bool _showDirectSeedInput;
 
+    // Vault file switcher (recently used vault files, current one first)
+    private List<string> _vaultFiles = [];
+    private Dictionary<string, string> _vaultLabels = [];
+    private int _vaultSelectVersion;
+
     // Save-to-vault modal (new vault)
     private bool _showSaveToVault;
     private string _saveVaultPath = "";
@@ -333,12 +379,6 @@
     private string _addToVaultPassword = "";
     private string? _addToVaultError;
 
-    private string CurrentHost
-    {
-        get => Backend.ActiveBackend == QueryBackend.Rpc ? Backend.RpcHost : Backend.BobHost;
-        set { if (Backend.ActiveBackend == QueryBackend.Rpc) Backend.RpcHost = value; else Backend.BobHost = value; }
-    }
-
     protected override async Task OnInitializedAsync()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
@@ -347,18 +387,38 @@
         AutoLock.OnAutoLockTriggered += OnAutoLockTriggered;
         BalanceSvc.OnBalanceChanged += OnBalanceChanged;
         Nav.LocationChanged += OnLocationChanged;
+        NetworkSwitch.OnSwitched += OnNetworkSwitched;
+        Seed.OnSeedChanged += OnSeedChanged;
+        Qubic.Services.Networks.CoreLiteDevSeeds.Warmup();
+        // Local endpoint + public dev keys on a proven core-lite devnet may sign without a prompt (opt-in).
+        SigningReview.AutoApprovePolicy = req =>
+            req.Context.Origin == Qubic.Services.Signing.SigningOrigin.LocalEndpoint
+            && Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalEndpointAutoApproveDev)
+            && req.SourceIsPublicDevKey
+            && !req.Network.IsMainnet
+            && Fingerprint.IsCoreLiteDevnet
+            && req.Warnings.All(w => w.Level != Qubic.Services.Signing.WarningLevel.Danger);
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
+            WalletConnectSvc.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint))
+            LocalEndpoint.StartAsync().FireAndForget();
         if (Vault.IsUnlocked) AutoLock.Start();
         await TickMonitor.StartAsync();
         TickDrift.Start();
+        Fingerprint.CheckAsync().FireAndForget();
 
-        if (Settings.RemoteLabelsEnabled)
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels) && StaticData.IsApplicable)
             LoadLabelsWithRetry().FireAndForget();
 
-        // Auto-refresh asset registry if stale (once per day)
+        // Auto-refresh asset registry if stale (once per day); no-op on networks without issuance data
         AssetRegistry.RefreshFromNetworkAsync(Backend).FireAndForget();
 
         // Default vault path for save dialog
         _saveVaultPath = Path.Combine(Settings.StorageDirectory, "vault.dat");
+
+        // Make the configured vault known to the switcher on first run
+        if (Vault.VaultConfigured) VaultFileHistory.Add(Settings, Vault.VaultPath);
+        RefreshVaultFiles();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -377,6 +437,7 @@
     private void OnTickChanged()
     {
         if (_disposed) return;
+        if (TickMonitor.IsConnected) Fingerprint.RetryIfUnidentifiedAsync().FireAndForget();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
@@ -390,15 +451,17 @@
     {
         if (_disposed) return;
         if (Vault.IsUnlocked) AutoLock.Start(); else AutoLock.Stop();
+        RefreshVaultFiles();
         InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
     }
 
     private void OnAutoLockTriggered()
     {
         if (_disposed) return;
-        InvokeAsync(() =>
+        InvokeAsync(async () =>
         {
-            if (Vault.IsUnlocked) LockVault();
+            if (Vault.IsUnlocked) await LockVault();
+            else ClearSeed();
             StateHasChanged();
         });
     }
@@ -410,6 +473,13 @@
 
     [Microsoft.JSInterop.JSInvokable]
     public void OnUserActivity() { AutoLock.RecordActivity(); }
+
+    // A seed can also be activated outside the header (e.g. Dev Tools "use").
+    private void OnSeedChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
 
     private void OnBalanceChanged()
     {
@@ -434,11 +504,16 @@
         }
     }
 
+    /// <summary>
+    /// Drops the in-memory seed, then tears down the wallet database session.
+    /// Every step is isolated: stopping the sync and closing the encrypted database
+    /// can block or throw, and must never prevent the rest of the teardown.
+    /// </summary>
     private void ClearSeed()
     {
-        Seed.ClearSeed();
-        WalletStorage.ClearSeed();
-        TxTracker.ClearEncryptionKey();
+        try { Seed.ClearSeed(); } catch { }
+        try { WalletStorage.ClearSeed(); } catch { }
+        try { TxTracker.ClearEncryptionKey(); } catch { }
         _seedInput = null;
         Nav.NavigateTo("/", forceLoad: false);
     }
@@ -464,6 +539,8 @@
         }
 
         _vaultPassword = null;
+        VaultFileHistory.Add(Settings, Vault.VaultPath);
+        RefreshVaultFiles();
 
         // Auto-activate
         var entries = Vault.Entries;
@@ -488,10 +565,92 @@
         if (e.Key == "Enter") UnlockVault();
     }
 
-    private void LockVault()
+    /// <summary>
+    /// Locks the vault and ends the session. The vault is locked first: clearing the
+    /// session stops the sync service and closes the database, which can take seconds
+    /// or fail outright, and the vault must not stay open when it does.
+    /// </summary>
+    private async Task LockVault()
     {
-        ClearSeed();
         Vault.LockVault();
+        _vaultPassword = null;
+        _vaultError = null;
+
+        // Show the locked state before the (potentially slow) session teardown
+        StateHasChanged();
+        await Task.Yield();
+
+        ClearSeed();
+    }
+
+    // ── Vault file switcher ──
+
+    /// <summary>Current vault first, then the other recently used vault files.</summary>
+    private void RefreshVaultFiles()
+    {
+        var files = VaultFileHistory.Get(Settings);
+        var current = Vault.VaultPath;
+        if (!string.IsNullOrWhiteSpace(current))
+        {
+            files.RemoveAll(p => VaultFileHistory.IsSame(p, current));
+            files.Insert(0, current);
+        }
+        _vaultFiles = files;
+        _vaultLabels = VaultFileHistory.DisplayNames(files);
+        _vaultSelectVersion++;
+    }
+
+    private string VaultLabel(string path) =>
+        _vaultLabels.TryGetValue(path, out var label) ? label : VaultFileHistory.DisplayName(path);
+
+    private async Task OnVaultFileSelected(ChangeEventArgs e)
+    {
+        var path = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(path)) await SwitchVaultFile(path);
+    }
+
+    private async Task BrowseForVaultFile()
+    {
+        var start = Vault.VaultPath ?? Path.Combine(Settings.StorageDirectory, "vault.dat");
+        var path = await DialogService.ShowOpenFileAsync("Open Vault File", start,
+            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
+        if (!string.IsNullOrEmpty(path)) await SwitchVaultFile(path);
+    }
+
+    /// <summary>
+    /// Points the wallet at the chosen vault file and leaves it locked, so picking a
+    /// vault always lands on that vault's password prompt. Any running session is
+    /// locked first — no seed from the previous vault survives behind the new prompt.
+    /// </summary>
+    private async Task SwitchVaultFile(string path)
+    {
+        var sameVault = VaultFileHistory.IsSame(path, Vault.VaultPath);
+
+        // End the current session either way: picking the open vault means
+        // "take me back to its lock screen", not "do nothing".
+        if (Vault.IsUnlocked || Seed.HasSeed) await LockVault();
+
+        _vaultError = null;
+        _vaultPassword = null;
+        if (!sameVault)
+        {
+            try
+            {
+                Vault.SetVaultPath(path);
+                VaultFileHistory.Add(Settings, path);
+                _showDirectSeedInput = false;
+            }
+            catch (FileNotFoundException)
+            {
+                _vaultError = "Vault file not found.";
+                VaultFileHistory.Remove(Settings, path);
+            }
+            catch (Exception ex)
+            {
+                _vaultError = ex.Message;
+            }
+        }
+        RefreshVaultFiles();
     }
 
     private void OnIdentitySwitched(ChangeEventArgs e)
@@ -551,6 +710,8 @@
                 new() { Label = _saveVaultLabel, Seed = seed }
             };
             Vault.CreateVault(_saveVaultPath, _saveVaultPassword, entries);
+            VaultFileHistory.Add(Settings, Vault.VaultPath);
+            RefreshVaultFiles();
 
             // Re-activate through vault path
             Seed.SetSeed(seed, _saveVaultLabel);
@@ -657,12 +818,36 @@
         Nav.NavigateTo("/", forceLoad: false);
     }
 
-    // ── Backend ──
+    // ── Network ──
 
-    private async Task OnBackendChanged()
+    private void OnNetworkSwitched()
     {
-        Backend.ResetClients();
-        await TickMonitor.StartAsync();
+        if (_disposed) return;
+        if (!NetworkSwitch.IsSwitching)
+        {
+            if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels) && StaticData.IsApplicable && StaticData.LastFetched == null)
+                LoadLabelsWithRetry().FireAndForget();
+            AssetRegistry.RefreshFromNetworkAsync(Backend).FireAndForget();
+        }
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private void OnFeaturesSaved()
+    {
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
+            WalletConnectSvc.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint))
+            LocalEndpoint.StartAsync().FireAndForget();
+        if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels))
+        {
+            if (StaticData.IsApplicable && StaticData.LastFetched == null)
+                LoadLabelsWithRetry().FireAndForget();
+        }
+        else
+        {
+            StaticData.Disable();
+        }
+        StateHasChanged();
     }
 
     private async Task Reconnect()
@@ -671,6 +856,7 @@
         StateHasChanged();
         Backend.ResetClients();
         await TickMonitor.StartAsync();
+        Fingerprint.CheckAsync().FireAndForget();
         _reconnecting = false;
     }
 
@@ -696,6 +882,8 @@
         _disposed = true;
         TickMonitor.OnTickChanged -= OnTickChanged;
         TickDrift.OnDriftChanged -= OnDriftChanged;
+        NetworkSwitch.OnSwitched -= OnNetworkSwitched;
+        Seed.OnSeedChanged -= OnSeedChanged;
         Vault.OnVaultChanged -= OnVaultChanged;
         AutoLock.OnAutoLockTriggered -= OnAutoLockTriggered;
         BalanceSvc.OnBalanceChanged -= OnBalanceChanged;

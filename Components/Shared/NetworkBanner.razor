@@ -1,0 +1,112 @@
+@using Qubic.Services.Networks
+@inject NetworkProfileService Profiles
+@inject NetworkFingerprintService Fingerprint
+@inject ChainResetService ChainReset
+@inject EgressGuard Guard
+@inject NavigationManager Nav
+@implements IDisposable
+
+@* Always-visible network context: a solid, high-contrast bar on non-mainnet networks plus alerts that matter for safety. *@
+@if (!_profile.IsMainnet)
+{
+    <div class="qb-network-banner" style="background:@_profile.BadgeColor;color:@ContrastText(_profile.BadgeColor)">
+        <i class="bi bi-cone-striped me-1"></i>
+        <strong>@_profile.Name</strong>
+        <span class="ms-1">— @KindText. Not Mainnet.</span>
+        <span class="ms-2 d-none d-lg-inline">Qubic transactions carry no network id: prefer separate seeds for test networks.</span>
+    </div>
+}
+@if (Fingerprint.IsMismatch && Fingerprint.Current is { } fp)
+{
+    <div class="alert alert-danger rounded-0 py-1 px-3 mb-0 small">
+        <i class="bi bi-exclamation-octagon-fill me-1"></i>
+        <strong>Network mismatch:</strong> "@_profile.Name" is set up as @_profile.Kind, but the connected chain is
+        @(fp.Kind == NetworkFingerprintKind.CoreLiteDevnet ? "a core-lite devnet" : fp.Kind == NetworkFingerprintKind.ArbitratorSigned ? "signed by the mainnet arbitrator" : "unrecognized").
+        <a href="/settings?tab=networks" class="alert-link">Check network settings</a>
+    </div>
+}
+@if (_reset != null)
+{
+    <div class="alert alert-warning rounded-0 py-1 px-3 mb-0 small d-flex align-items-center">
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+        <span><strong>Chain reset detected on @_reset.ProfileName:</strong> @_reset.Detail Cached history for this network was cleared.</span>
+        <button class="btn-close btn-close-sm ms-auto" @onclick="() => _reset = null" aria-label="Dismiss"></button>
+    </div>
+}
+@if (_lastBlocked != null)
+{
+    <div class="alert alert-secondary rounded-0 py-1 px-3 mb-0 small d-flex align-items-center">
+        <i class="bi bi-slash-circle me-1"></i>
+        <span>Blocked a connection to <code>@_lastBlocked.Host</code> (@_lastBlocked.Purpose): it is not part of "@_lastBlocked.ProfileName".</span>
+        <button class="btn-close btn-close-sm ms-auto" @onclick="() => _lastBlocked = null" aria-label="Dismiss"></button>
+    </div>
+}
+
+@code {
+    private NetworkProfile _profile = default!;
+    private ChainResetEvent? _reset;
+    private EgressViolation? _lastBlocked;
+
+    /// <summary>
+    /// Black or white text, whichever contrasts more with <paramref name="hex"/> (WCAG relative luminance).
+    /// The badge colour is user-editable, so the text colour is derived rather than fixed.
+    /// </summary>
+    internal static string ContrastText(string hex)
+    {
+        var h = hex.TrimStart('#');
+        if (h.Length == 3) h = string.Concat(h.Select(c => $"{c}{c}"));
+        if (h.Length != 6 || !int.TryParse(h, System.Globalization.NumberStyles.HexNumber, null, out var rgb)) return "#ffffff";
+        static double Lin(int c) { var v = c / 255.0; return v <= 0.03928 ? v / 12.92 : Math.Pow((v + 0.055) / 1.055, 2.4); }
+        var l = 0.2126 * Lin((rgb >> 16) & 0xff) + 0.7152 * Lin((rgb >> 8) & 0xff) + 0.0722 * Lin(rgb & 0xff);
+        var contrastWhite = 1.05 / (l + 0.05);
+        var contrastBlack = (l + 0.05) / 0.05;
+        return contrastWhite >= contrastBlack ? "#ffffff" : "#000000";
+    }
+
+    private string KindText => _profile.Kind switch
+    {
+        NetworkKind.Devnet => "local development network",
+        NetworkKind.Testnet => "test network",
+        _ => "custom network"
+    };
+
+    protected override void OnInitialized()
+    {
+        _profile = Profiles.Active;
+        _reset = ChainReset.LastReset;
+        Profiles.OnActiveProfileChanged += OnProfileChanged;
+        Fingerprint.OnChanged += Refresh;
+        ChainReset.OnChainReset += OnReset;
+        Guard.OnViolation += OnViolation;
+    }
+
+    private void OnProfileChanged(NetworkProfile _, NetworkProfile n)
+    {
+        _profile = n;
+        _reset = null;
+        _lastBlocked = null;
+        Refresh();
+    }
+
+    private void OnReset(ChainResetEvent e)
+    {
+        _reset = e;
+        Refresh();
+    }
+
+    private void OnViolation(EgressViolation v)
+    {
+        _lastBlocked = v;
+        Refresh();
+    }
+
+    private void Refresh() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Profiles.OnActiveProfileChanged -= OnProfileChanged;
+        Fingerprint.OnChanged -= Refresh;
+        ChainReset.OnChainReset -= OnReset;
+        Guard.OnViolation -= OnViolation;
+    }
+}

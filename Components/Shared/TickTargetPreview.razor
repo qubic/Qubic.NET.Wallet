@@ -1,0 +1,26 @@
+@using Qubic.Services.Networks
+@inject QubicBackendService Backend
+@inject TickMonitorService TickMonitor
+@implements IDisposable
+
+@* Shows where an "auto" transaction will land: target tick, offset, ETA, and pending-window warnings. *@
+@if (TransactionHelper.PreviewTickTarget(Backend, TickMonitor) is { } t)
+{
+    <span class="input-group-text @(t.ExceedsPendingWindow ? "bg-warning text-dark" : "bg-success text-white")"
+          title="@(t.Warning ?? ModeText(t))">
+        Auto: @t.TargetTick.ToString("N0")
+        <span class="ms-1 opacity-75">(+@t.Offset@(t.EtaSeconds is { } eta ? $", ~{eta:0}s" : ""))</span>
+    </span>
+}
+
+@code {
+    private static string ModeText(TickTarget t) => t.Mode == TickTargetMode.TimeBased
+        ? "Time-based target (set per network)"
+        : "Fixed tick offset (set per network)";
+
+    protected override void OnInitialized() => TickMonitor.OnTickChanged += OnTick;
+
+    private void OnTick() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => TickMonitor.OnTickChanged -= OnTick;
+}
