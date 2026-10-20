@@ -1,3 +1,20 @@
+# v0.7.1
+
+## Security
+- **One shared seed generator.** New seeds (create wallet, add seed to vault) now come from `QubicSeed.Generate()` in `Qubic.Core`, the same generator the mobile wallet and the Toolkit use. It draws from the operating system's secure random number generator and picks each of the 26 letters with equal probability. The previous code also used secure randomness, but mapped bytes with `% 26`, which made the letters a–v very slightly more likely than w–z (about 0.05 bits less entropy over a whole seed). Seeds created by earlier versions remain safe; there is nothing to do.
+
+## Features
+- **Paste QR codes.** Address fields, the payment-request field on Send and WalletConnect pairing accept a QR code image: paste a screenshot (Ctrl+V), drop an image file, or use the QR button next to the field (it reads a copied image, or opens an image file). A WalletConnect QR pairs right away; a payment QR fills the Send form. Decoding runs locally (jsQR); nothing is uploaded.
+
+## Fixes
+- **Two wallet windows no longer conflict.** A second wallet started on the same data folder ran its own WalletConnect client on the same sessions: both windows answered every dApp request, and on Windows the shared `walletconnect.json` caused errors. WalletConnect and the local signing endpoint now run in one window only. The other window shows "running in another window" and takes over automatically when the first one closes. A second window could also delete the first window's `local-endpoint.json`; only the window that owns the endpoint touches it now.
+- The QR code on Receive was cut off at the right and bottom edges (the SVG had no viewBox and was shrunk by CSS), so phones could not scan it. It now scales correctly.
+
+## Notes
+- Requires `Qubic.Core 1.301.9` and `Qubic.WalletConnect 1.0.1`.
+
+---
+
 # v0.7.0
 
 ![Signing review on an AIO devnet](docs/screenshots/0.7.0/05-signing-review.png)

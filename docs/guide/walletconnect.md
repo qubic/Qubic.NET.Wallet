@@ -9,7 +9,9 @@ wallet, so a dApp that works with the Qubic mobile wallet also works here.
 ## Pairing
 
 1. In the dApp, choose WalletConnect. It shows a QR code and a `wc:` link.
-2. Desktop: copy the link and paste it into *Tools → WalletConnect → Pair with a dApp*.
+2. Desktop: open *Tools → WalletConnect* and either paste the link into *Pair with a dApp*, or take a
+   screenshot of the QR code and paste it (Ctrl+V), drop the image on the field, or click the
+   QR button (it reads a copied image, or lets you open an image file). A QR code is paired right away.
    Android: tap the scan button and scan the QR code.
 3. The wallet shows the dApp's name, URL and the requested network. If WalletConnect Verify flags the
    site, the wallet shows that too. Choose the accounts to share and click **Connect**.
@@ -31,6 +33,12 @@ devnet session or the other way round. *Connected dApps* lists the open sessions
 
 Every request opens the [signing review](signing.md#the-signing-review), which names the dApp it came
 from. A request for an account you did not share is rejected.
+
+## Several wallet windows
+
+WalletConnect runs in one wallet window per data folder. A second window shows *In another window*
+and takes over automatically when the first one closes or turns WalletConnect off. The same applies to
+the [local signing endpoint](local-endpoint.md).
 
 ## Privacy and connections
 

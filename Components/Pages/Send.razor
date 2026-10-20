@@ -36,8 +36,9 @@ else
                     </div>
                     <div class="mb-2">
                         <div class="input-group input-group-sm">
-                            <input class="form-control mono" placeholder="Paste a payment request (qubic:…) to fill the form"
+                            <input class="form-control mono" placeholder="Paste a payment request (qubic:… link or QR image) to fill the form"
                                    @bind="_paymentRequest" @bind:event="oninput" @bind:after="ApplyPaymentRequest" />
+                            <QrPasteButton OnDecoded="OnPaymentQr" OnError="OnPaymentQrError" />
                         </div>
                         @if (_paymentNote != null)
                         {
@@ -186,6 +187,18 @@ else
     private string? _paymentNote;
     private bool _paymentNoteIsWarning;
     private string? _paymentMessage;
+
+    private void OnPaymentQr(string text)
+    {
+        _paymentRequest = text;
+        ApplyPaymentRequest();
+    }
+
+    private void OnPaymentQrError(string message)
+    {
+        _paymentNote = message;
+        _paymentNoteIsWarning = true;
+    }
 
     private void ApplyPaymentRequest()
     {

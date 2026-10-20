@@ -20,7 +20,7 @@ else
             <div class="card mb-3">
                 <div class="card-header d-flex align-items-center">
                     Status
-                    <span class="badge ms-2 @StateBadge">@WalletConnect.State</span>
+                    <span class="badge ms-2 @StateBadge">@(WalletConnect.State == WalletConnectState.OtherInstance ? "In another window" : WalletConnect.State.ToString())</span>
                     <span class="ms-auto small text-muted">Chain: <code>@Backend.Profile.ChainId</code></span>
                 </div>
                 <div class="card-body">
@@ -29,15 +29,20 @@ else
                         <div class="alert alert-warning py-1 small">This build has no WalletConnect project id configured.</div>
                     }
                     @if (WalletConnect.LastError != null) { <div class="alert alert-danger py-1 small">@WalletConnect.LastError</div> }
+                    @if (WalletConnect.State == WalletConnectState.OtherInstance)
+                    {
+                        <div class="alert alert-info py-1 small"><i class="bi bi-window-stack me-1"></i>WalletConnect is running in another Qubic.Net Wallet window. Use that window to connect dApps; this one takes over when it closes.</div>
+                    }
 
                     @if (WalletConnect.State == WalletConnectState.Ready)
                     {
                         <label class="form-label small mt-2">Pair with a dApp</label>
                         <div class="input-group input-group-sm">
                             <input class="form-control mono" @bind="_uri" placeholder="wc:…@@2?relay-protocol=irn&symKey=…" />
+                            <QrPasteButton OnDecoded="OnPairQr" OnError="e => _error = e" />
                             <button class="btn btn-primary" @onclick="Pair" disabled="@(string.IsNullOrWhiteSpace(_uri) || _busy)">Pair</button>
                         </div>
-                        <div class="form-text">Copy the WalletConnect link from the dApp's QR dialog and paste it here.</div>
+                        <div class="form-text">Paste the WalletConnect link from the dApp's QR dialog, or a screenshot of the QR code (Ctrl+V, drop it here, or use the <i class="bi bi-qr-code-scan"></i> button).</div>
                     }
                     @if (_error != null) { <div class="text-danger small mt-2">@_error</div> }
                 </div>
@@ -93,6 +98,18 @@ else
     }
 
     private void Refresh() => InvokeAsync(StateHasChanged);
+
+    private async Task OnPairQr(string text)
+    {
+        _error = null;
+        if (!text.StartsWith("wc:", StringComparison.OrdinalIgnoreCase))
+        {
+            _error = "This QR code is not a WalletConnect link.";
+            return;
+        }
+        _uri = text;
+        await Pair();
+    }
 
     private async Task Pair()
     {

@@ -13,7 +13,7 @@ Cross-platform desktop wallet for the [Qubic](https://qubic.org) network. Runs a
 - **Signing review** — every signature, from the wallet, a dApp or a script, goes through one review showing the network, decoded contract call, target tick and warnings ([guide](docs/guide/signing.md))
 - **Replay protection warnings** — warns when a seed signs on both Mainnet and a test network, and when public dev keys meet Mainnet
 - **Target tick by time** — schedule transactions "in ~N seconds" besides the fixed tick offset
-- **Send / Receive** — single transfers with QR code support, `qubic:` payment requests with amount and message, batch "Send to Many" with reusable templates
+- **Send / Receive** — single transfers with QR code support (paste or drop a QR screenshot into any address field), `qubic:` payment requests with amount and message, batch "Send to Many" with reusable templates
 - **Encrypted Vault** — password-protected vault stores multiple seeds and an address book, encrypted with AES-256-GCM; any vault works on any network
 - **Vault switching** — pick a recently used vault file (or browse to another one) straight from the header bar, without going through settings
 - **Address Book** — save contacts and quickly select them from any address input with autocomplete
@@ -124,7 +124,7 @@ If desktop mode is not supported on your system, the app automatically falls bac
 
 ## Running From Source
 
-Requires [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+Requires [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 ```bash
 git clone --recursive https://github.com/qubic/Qubic.Net.Wallet.git

@@ -90,7 +90,8 @@ qubic:BAAAA…AAAA?amount=100&network=testnet
 On a network that is not Mainnet, the link is marked `network=testnet`.
 
 On *Send*, paste a payment link into the field at the top. The wallet fills in the destination, amount
-and message. If the link is for a different network than the active one, it shows a warning.
+and message. On desktop you can also paste a screenshot of the QR code (Ctrl+V), drop the image on the
+field, or use the QR button next to it. If the link is for a different network than the active one, it shows a warning.
 
 ![Send from a payment link](../screenshots/0.7.0/09-send-from-link.png)
 

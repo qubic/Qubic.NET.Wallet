@@ -451,12 +451,7 @@ else
 
     private void GenerateSeed()
     {
-        var chars = new char[55];
-        Span<byte> random = stackalloc byte[55];
-        System.Security.Cryptography.RandomNumberGenerator.Fill(random);
-        for (int i = 0; i < 55; i++)
-            chars[i] = (char)('a' + (random[i] % 26));
-        _generatedSeed = new string(chars);
+        _generatedSeed = Qubic.Core.QubicSeed.Generate();
         _seedRevealed = false;
         _seedCopied = false;
         _seedSavedConfirmed = false;

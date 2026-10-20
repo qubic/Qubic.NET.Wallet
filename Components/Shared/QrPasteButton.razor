@@ -1,0 +1,73 @@
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@* Reads a QR code from an image: click to use the clipboard image (or pick a file),
+   or paste / drop an image into the surrounding field group. Place it inside an input-group. *@
+<button type="button" class="btn btn-outline-secondary @CssClass" @ref="_button" @onclick="FromClipboard"
+        disabled="@_busy" title="Read a QR code: click to use a copied image or open one, or paste (Ctrl+V) / drop an image into the field">
+    @if (_busy) { <span class="spinner-border spinner-border-sm"></span> }
+    else { <i class="bi bi-qr-code-scan"></i> }
+</button>
+
+@code {
+    /// <summary>Called with the text of the decoded QR code.</summary>
+    [Parameter] public EventCallback<string> OnDecoded { get; set; }
+    /// <summary>Called with a short message when no QR code could be read.</summary>
+    [Parameter] public EventCallback<string> OnError { get; set; }
+    [Parameter] public string? CssClass { get; set; }
+
+    private ElementReference _button;
+    private DotNetObjectReference<QrPasteButton>? _ref;
+    private bool _busy;
+
+    private sealed record QrResult(string Status, string? Text);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _ref = DotNetObjectReference.Create(this);
+        try { await JS.InvokeVoidAsync("qbQr.attach", _button, _ref); }
+        catch (JSException) { /* script missing: the button still opens files */ }
+    }
+
+    [JSInvokable]
+    public Task OnImageDecoded(string? text) => InvokeAsync(() => Deliver(text, "No QR code found in the pasted image."));
+
+    private async Task FromClipboard()
+    {
+        _busy = true;
+        try
+        {
+            var r = await JS.InvokeAsync<QrResult>("qbQr.fromClipboard");
+            // No image on the clipboard (or no clipboard access): let the user pick an image file.
+            if (r.Status is "noimage" or "unsupported")
+                r = await JS.InvokeAsync<QrResult>("qbQr.fromFile");
+            if (r.Status == "cancelled") return;
+            await Deliver(r.Text, r.Status == "noqr" ? "No QR code found in the image." : "Could not read the image.");
+        }
+        catch (JSException ex)
+        {
+            await OnError.InvokeAsync("Could not read the image: " + ex.Message);
+        }
+        finally
+        {
+            _busy = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Deliver(string? text, string error)
+    {
+        if (string.IsNullOrWhiteSpace(text)) await OnError.InvokeAsync(error);
+        else await OnDecoded.InvokeAsync(text.Trim());
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try { await JS.InvokeVoidAsync("qbQr.detach", _button); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { /* prerendering / circuit gone */ }
+        _ref?.Dispose();
+    }
+}

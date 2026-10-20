@@ -926,11 +926,7 @@ else if (_activeTab == "vault")
 
     private void GenerateVaultAddSeed()
     {
-        var bytes = System.Security.Cryptography.RandomNumberGenerator.GetBytes(55);
-        var chars = new char[55];
-        for (var i = 0; i < 55; i++)
-            chars[i] = (char)('a' + bytes[i] % 26);
-        _vaultAddSeed = new string(chars);
+        _vaultAddSeed = Qubic.Core.QubicSeed.Generate();
         _vaultAddSeedGenerated = true;
         _vaultAddError = null;
     }
