@@ -1,3 +1,13 @@
+# v0.8.0 (in progress)
+
+## Features
+- **Vault Overview.** A new page (*Vault Overview*, under Home) lists every identity in the unlocked vault with its full address, QU balance and assets, plus the total balance. Balances come from the active network and refresh every 30 seconds; no seed needs to be active. Activate any identity with one click.
+
+## Internals
+- Activating a vault identity now goes through one shared service (`VaultActivationService`) instead of separate copies in Home and the header.
+
+---
+
 # v0.7.1
 
 ## Security

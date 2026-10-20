@@ -1,4 +1,5 @@
 @inject SeedSessionService Seed
+@inject VaultService Vault
 @inject NavigationManager Nav
 @inject Qubic.Services.Features.FeatureService Features
 @implements IDisposable
@@ -8,6 +9,12 @@
         <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
             <i class="bi bi-house me-2"></i>Home
         </NavLink>
+        @if (Vault.IsUnlocked)
+        {
+            <NavLink class="nav-link" href="/accounts">
+                <i class="bi bi-wallet2 me-2"></i>Vault Overview
+            </NavLink>
+        }
 
         @* ── SEND & RECEIVE ── *@
         <div class="nav-section-header mt-2">
@@ -131,7 +138,10 @@
     {
         Seed.OnSeedChanged += OnSeedChanged;
         Features.OnChanged += OnFeatureChanged;
+        Vault.OnVaultChanged += OnVaultChanged;
     }
+
+    private void OnVaultChanged() => InvokeAsync(StateHasChanged);
 
     private void OnFeatureChanged(Qubic.Services.Features.WalletFeature _) => InvokeAsync(StateHasChanged);
 
@@ -144,5 +154,6 @@
     {
         Seed.OnSeedChanged -= OnSeedChanged;
         Features.OnChanged -= OnFeatureChanged;
+        Vault.OnVaultChanged -= OnVaultChanged;
     }
 }

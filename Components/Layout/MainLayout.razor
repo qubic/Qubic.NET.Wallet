@@ -10,6 +10,7 @@
 @inject QubicStaticService StaticData
 @inject AssetRegistryService AssetRegistry
 @inject VaultService Vault
+@inject Qubic.Net.Wallet.Services.VaultActivationService VaultActivation
 @inject NavigationManager Nav
 @inject LabelService Labels
 @inject AutoLockService AutoLock
@@ -553,7 +554,7 @@
         }
         else
         {
-            var lastIdentity = Settings.GetCustom<string>("vault_last_identity");
+            var lastIdentity = Settings.GetCustom<string>(Qubic.Net.Wallet.Services.VaultActivationService.LastIdentityKey);
             toActivate = entries.FirstOrDefault(e => e.Identity == lastIdentity) ?? entries[0];
         }
 
@@ -665,10 +666,7 @@
     {
         try
         {
-            Seed.SetSeed(entry.Seed, entry.Label);
-            WalletStorage.SetSeed(entry.Seed, entry.Identity, TickMonitor.Epoch);
-            TxTracker.SetEncryptionKey(entry.Seed);
-            Settings.SetCustom("vault_last_identity", entry.Identity);
+            VaultActivation.Activate(entry);
             _seedInput = null;
         }
         catch { }

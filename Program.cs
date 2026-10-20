@@ -131,6 +131,7 @@ class Program
         services.AddSingleton<Qubic.WalletConnect.QubicWalletConnectService>();
         services.AddSingleton<Qubic.Net.Wallet.LocalApi.LocalSigningEndpoint>();
         services.AddSingleton<VaultService>();
+        services.AddSingleton<Qubic.Net.Wallet.Services.VaultActivationService>();
         services.AddSingleton<TickMonitorService>();
         services.AddSingleton<TickDriftService>();
         services.AddSingleton<WalletDatabase>();

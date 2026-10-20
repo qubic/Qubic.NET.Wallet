@@ -9,6 +9,7 @@
 @inject IJSRuntime JS
 @inject VaultService Vault
 @inject QubicSettingsService Settings
+@inject Qubic.Net.Wallet.Services.VaultActivationService VaultActivation
 
 <h4>Welcome to Qubic.Net Wallet</h4>
 
@@ -17,7 +18,10 @@
     <div class="row">
         <div class="col-12">
             <h5>Select an Identity</h5>
-            <p class="text-muted">Your vault is unlocked. Choose an identity to activate.</p>
+            <p class="text-muted">
+                Your vault is unlocked. Choose an identity to activate, or see all identities with their balances in the
+                <a href="/accounts">Vault Overview</a>.
+            </p>
         </div>
         @foreach (var entry in Vault.Entries)
         {
@@ -469,13 +473,7 @@ else
 
     private void ActivateFromHome(VaultEntry entry)
     {
-        try
-        {
-            Seed.SetSeed(entry.Seed, entry.Label);
-            WalletStorage.SetSeed(entry.Seed, entry.Identity, TickMonitor.Epoch);
-            TxTracker.SetEncryptionKey(entry.Seed);
-            Settings.SetCustom("vault_last_identity", entry.Identity);
-        }
+        try { VaultActivation.Activate(entry); }
         catch { }
     }
 
