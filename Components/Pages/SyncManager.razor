@@ -2,20 +2,21 @@
 @implements IDisposable
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject TickDriftService TickDrift
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Sync Manager</h4>
-<p class="text-muted">Monitor and control data synchronization from RPC and Bob WebSocket.</p>
+<h4>@Loc["SM_Title"]</h4>
+<p class="text-muted">@Loc["SM_Subtitle"]</p>
 
 @if (!WalletStorage.IsOpen)
 {
-    <div class="alert alert-info">Enter your seed to open the wallet database and start syncing.</div>
+    <div class="alert alert-info">@Loc["SM_NeedSeed"]</div>
 }
 else
 {
     @* ── Connection Info ── *@
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Connection</span>
+            <span>@Loc["SM_Connection"]</span>
             <div class="d-flex gap-2">
                 <button class="btn btn-sm btn-outline-primary" @onclick="RestartSync">
                     <i class="bi bi-arrow-clockwise me-1"></i>Restart Sync
@@ -27,8 +28,8 @@ else
                 <tr><td class="text-muted" style="width:140px">Identity</td><td class="mono small" style="word-break:break-all">@Sync.CurrentIdentity</td></tr>
                 <tr><td class="text-muted">RPC URL</td><td class="mono small">@Sync.CurrentRpcUrl</td></tr>
                 <tr><td class="text-muted">Bob URL</td><td class="mono small">@Sync.CurrentBobUrl</td></tr>
-                <tr><td class="text-muted">Overall State</td><td>@Sync.State</td></tr>
-                <tr><td class="text-muted">Initial Sync</td><td>@(Sync.InitialSyncComplete ? "Complete" : "In progress...")</td></tr>
+                <tr><td class="text-muted">@Loc["SM_OverallState"]</td><td>@Sync.State</td></tr>
+                <tr><td class="text-muted">@Loc["SM_InitialSync"]</td><td>@(Sync.InitialSyncComplete ? Loc["SM_Complete"] : Loc["SM_InProgress"])</td></tr>
             </table>
         </div>
     </div>
@@ -72,7 +73,7 @@ else
     @* ── Tick Drift Detection ── *@
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Backend Tick Comparison</span>
+            <span>@Loc["SM_BackendTick"]</span>
             <span class="badge @(TickDrift.HasDrift ? "bg-warning text-dark" : "bg-success")">
                 @(TickDrift.HasDrift ? $"Drift: {TickDrift.MaxDrift}" : "In sync")
             </span>
@@ -81,7 +82,7 @@ else
             @if (TickDrift.RpcTick != null || TickDrift.BobTick != null || TickDrift.DirectTick != null)
             {
                 <table class="table table-sm table-borderless mb-0">
-                    <thead><tr><th>Backend</th><th>Tick</th><th>Status</th><th>Last Check</th></tr></thead>
+                    <thead><tr><th>@Loc["SM_Backend"]</th><th>@Loc["Common_Tick"]</th><th>@Loc["Common_Status"]</th><th>@Loc["SM_LastCheck"]</th></tr></thead>
                     <tbody>
                         @foreach (var snap in GetBackendSnapshots())
                         {
@@ -118,7 +119,7 @@ else
 
     @* ── Database Stats ── *@
     <div class="card mb-3">
-        <div class="card-header">Database</div>
+        <div class="card-header">@Loc["SM_Database"]</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">

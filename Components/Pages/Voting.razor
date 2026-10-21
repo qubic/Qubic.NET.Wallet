@@ -10,15 +10,16 @@
 @inject TransactionTrackerService TxTracker
 @inject QubicSettingsService Settings
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Community Voting</h4>
-<p class="text-muted">Browse, vote on, and create community polls via the QUtil contract.</p>
+<h4>@Loc["VOT_Title"]</h4>
+<p class="text-muted">@Loc["VOT_Subtitle"]</p>
 
 <ul class="nav nav-tabs mb-3">
     @foreach (var tab in _tabs)
     {
         <li class="nav-item">
-            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@tab</a>
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@Loc[$"VOT_Tab_{tab}"]</a>
         </li>
     }
 </ul>
@@ -28,7 +29,7 @@
     {
         case "Browse":
             <div class="card"><div class="card-header d-flex justify-content-between align-items-center">
-                <span>Active Polls</span>
+                <span>@Loc["VOT_ActivePolls"]</span>
                 <button class="btn btn-sm btn-outline-primary" @onclick="LoadActivePolls" disabled="@_browseLoading">
                     @(_browseLoading ? "Loading..." : _browsePolls == null ? "Load" : "Refresh")
                 </button>
@@ -43,12 +44,12 @@
                         <table class="table table-sm table-hover mb-0">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Creator</th>
-                                    <th>Link</th>
-                                    <th>Status</th>
+                                    <th>@Loc["Common_Id"]</th>
+                                    <th>@Loc["Common_Name"]</th>
+                                    <th>@Loc["Common_Type"]</th>
+                                    <th>@Loc["VOT_Creator"]</th>
+                                    <th>@Loc["Common_Link"]</th>
+                                    <th>@Loc["Common_Status"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,7 +66,7 @@
                                             }
                                             else if (p.PollType == 2)
                                             {
-                                                <span class="badge bg-info text-dark">Asset</span>
+                                                <span class="badge bg-info text-dark">@Loc["VOT_BadgeAsset"]</span>
                                             }
                                             else
                                             {
@@ -86,11 +87,11 @@
                                         <td>
                                             @if (p.IsActive)
                                             {
-                                                <span class="badge bg-success">Active</span>
+                                                <span class="badge bg-success">@Loc["VOT_Active"]</span>
                                             }
                                             else
                                             {
-                                                <span class="badge bg-secondary">Closed</span>
+                                                <span class="badge bg-secondary">@Loc["VOT_Closed"]</span>
                                             }
                                         </td>
                                     </tr>
@@ -102,9 +103,9 @@
                                                     <div><strong>Min Amount:</strong> <span class="mono">@p.MinAmount.ToString("N0")</span></div>
                                                     @if (p.PollType == 2 && p.NumAssets > 0)
                                                     {
-                                                        <div class="mt-1"><strong>Allowed Assets:</strong> @p.NumAssets asset type(s)</div>
+                                                        <div class="mt-1"><strong>@Loc["VOT_AllowedAssets"]</strong> @p.NumAssets</div>
                                                     }
-                                                    <div class="mt-1"><strong>Creator:</strong> <AddressDisplay Address="@p.Creator" /></div>
+                                                    <div class="mt-1"><strong>@Loc["VOT_CreatorLabel"]</strong> <AddressDisplay Address="@p.Creator" /></div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -117,11 +118,11 @@
                 }
                 else if (_browsePolls != null)
                 {
-                    <div class="text-muted">No active polls found.</div>
+                    <div class="text-muted">@Loc["VOT_NoPolls"]</div>
                 }
                 else
                 {
-                    <div class="text-muted small">Click <strong>Load</strong> to fetch active community polls from the QUtil contract.</div>
+                    <div class="text-muted small">@Loc["VOT_ClickLoadPre"] <strong>@Loc["Common_Load"]</strong> @Loc["VOT_ClickLoadPost"]</div>
                 }
             </div></div>
             break;
@@ -129,17 +130,17 @@
         case "Vote":
             @if (!Seed.HasSeed)
             {
-                <div class="alert alert-warning">Enter your seed in the top bar to enable voting.</div>
+                <div class="alert alert-warning">@Loc["VOT_NeedSeed"]</div>
             }
             else
             {
                 <div class="card"><div class="card-header">Cast a Vote</div><div class="card-body">
                     <div class="mb-2">
-                        <label class="form-label-sm">Poll ID</label>
+                        <label class="form-label-sm">@Loc["VOT_PollId"]</label>
                         <div class="input-group input-group-sm">
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_votePollId" />
                             <button class="btn btn-outline-primary" @onclick="LoadVotePoll" disabled="@_voteLoading">
-                                @(_voteLoading ? "Loading..." : "Load Poll")
+                                @(_voteLoading ? Loc["Common_Loading"] : Loc["VOT_LoadPoll"])
                             </button>
                         </div>
                     </div>
@@ -158,20 +159,20 @@
                                 }
                                 @if (!_votePoll.IsActive)
                                 {
-                                    <div class="text-danger mt-1">This poll is closed.</div>
+                                    <div class="text-danger mt-1">@Loc["VOT_PollClosed"]</div>
                                 }
                             </div>
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label-sm">Chosen Option</label>
+                            <label class="form-label-sm">@Loc["VOT_ChosenOption"]</label>
                             <select class="form-select form-select-sm" @bind="_voteOption">
                                 @for (int i = 0; i < 64; i++)
                                 {
-                                    <option value="@i">Option @i@(i == 0 ? " (No change)" : "")</option>
+                                    <option value="@i">@Loc["VOT_OptionWord"] @i@(i == 0 ? " " + Loc["VOT_NoChange"] : "")</option>
                                 }
                             </select>
-                            <div class="form-text">Voting power is auto-calculated by the contract based on your balance.</div>
+                            <div class="form-text">@Loc["VOT_VotingPowerNote"]</div>
                         </div>
 
                         @if (!_voteConfirming)
@@ -201,13 +202,13 @@
             break;
 
         case "Results":
-            <div class="card"><div class="card-header">Poll Results</div><div class="card-body">
+            <div class="card"><div class="card-header">@Loc["VOT_PollResults"]</div><div class="card-body">
                 <div class="mb-2">
-                    <label class="form-label-sm">Poll ID</label>
+                    <label class="form-label-sm">@Loc["VOT_PollId"]</label>
                     <div class="input-group input-group-sm">
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_resultsPollId" />
                         <button class="btn btn-outline-primary" @onclick="LoadResults" disabled="@_resultsLoading">
-                            @(_resultsLoading ? "Loading..." : "Load Results")
+                            @(_resultsLoading ? Loc["Common_Loading"] : Loc["VOT_LoadResults"])
                         </button>
                     </div>
                 </div>
@@ -265,46 +266,46 @@
             }
             else
             {
-                <div class="card"><div class="card-header">Create a New Poll</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["VOT_CreatePoll"]</div><div class="card-body">
                     <div class="alert alert-warning">Creating a poll costs <strong>@PollCreationFee.ToString("N0") QU</strong> (burned).</div>
 
                     <div class="mb-2">
-                        <label class="form-label-sm">Poll Name (max 32 chars)</label>
+                        <label class="form-label-sm">@Loc["VOT_PollName"]</label>
                         <input class="form-control form-control-sm" maxlength="32" @bind="_pollName" placeholder="My Poll..." />
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label-sm">Poll Type</label>
+                        <label class="form-label-sm">@Loc["VOT_PollType"]</label>
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pollType" id="pollTypeQu"
                                        checked="@(_pollType == 1)" @onchange="() => _pollType = 1" />
-                                <label class="form-check-label" for="pollTypeQu">QU-based (1)</label>
+                                <label class="form-check-label" for="pollTypeQu">@Loc["VOT_QuBased"]</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="pollType" id="pollTypeAsset"
                                        checked="@(_pollType == 2)" @onchange="() => _pollType = 2" />
-                                <label class="form-check-label" for="pollTypeAsset">Asset-based (2)</label>
+                                <label class="form-check-label" for="pollTypeAsset">@Loc["VOT_AssetBased"]</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label-sm">Min Amount</label>
+                        <label class="form-label-sm">@Loc["VOT_MinAmount"]</label>
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_minAmount" />
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label-sm">GitHub Link (max 256 chars)</label>
+                        <label class="form-label-sm">@Loc["VOT_GithubLink"]</label>
                         <input class="form-control form-control-sm" maxlength="256" @bind="_githubLink"
                                placeholder="https://github.com/..." />
-                        <div class="form-text">Must start with https://github.com/</div>
+                        <div class="form-text">@Loc["VOT_GithubHelp"]</div>
                     </div>
 
                     @if (_pollType == 2)
                     {
                         <div class="mb-2">
-                            <label class="form-label-sm">Allowed Assets (up to 16)</label>
+                            <label class="form-label-sm">@Loc["VOT_AllowedAssetsLabel"]</label>
                             @for (int idx = 0; idx < _assetCount; idx++)
                             {
                                 var i = idx;
@@ -318,7 +319,7 @@
                                         <input class="form-control form-control-sm"
                                                value="@_assetNames[i]"
                                                @onchange="(e) => _assetNames[i] = e.Value?.ToString() ?? string.Empty"
-                                               maxlength="7" placeholder="Asset name" />
+                                               maxlength="7" placeholder="@Loc["VOT_AssetNamePlaceholder"]" />
                                     </div>
                                     <div class="col-1">
                                         @if (_assetCount > 1)
@@ -330,14 +331,14 @@
                             }
                             @if (_assetCount < 16)
                             {
-                                <button class="btn btn-outline-secondary btn-sm mt-1" @onclick="AddAsset">+ Add Asset</button>
+                                <button class="btn btn-outline-secondary btn-sm mt-1" @onclick="AddAsset">@Loc["VOT_AddAsset"]</button>
                             }
                         </div>
                     }
 
                     @if (!_createConfirming)
                     {
-                        <button class="btn btn-primary" @onclick="PreviewCreate">Preview</button>
+                        <button class="btn btn-primary" @onclick="PreviewCreate">@Loc["Common_Preview"]</button>
                     }
                     else
                     {
@@ -448,7 +449,7 @@
             var pollIdData = await Backend.QuerySmartContractAsync(QutilContractIndex, 5, Array.Empty<byte>());
             if (pollIdData.Length < 528)
             {
-                _error = $"Unexpected response size ({pollIdData.Length} bytes, expected 528).";
+                _error = string.Format(Loc["Fmt_RespSize528"], pollIdData.Length);
                 return;
             }
 
@@ -524,7 +525,7 @@
         {
             _votePoll = await QueryPollInfo(_votePollId);
             if (_votePoll == null)
-                _error = $"Poll {_votePollId} not found.";
+                _error = string.Format(Loc["Fmt_PollNotFound"], _votePollId);
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _voteLoading = false; }
@@ -535,8 +536,8 @@
         _sending = true; _error = null; _result = null;
         try
         {
-            if (_votePoll == null) { _error = "Load a poll first."; return; }
-            if (!_votePoll.IsActive) { _error = "This poll is closed."; return; }
+            if (_votePoll == null) { _error = Loc["Msg_LoadPollFirst"]; return; }
+            if (!_votePoll.IsActive) { _error = Loc["Msg_PollClosed"]; return; }
 
             var tick = await GetTick();
             var payload = new VotePayload
@@ -573,7 +574,7 @@
             var data = await Backend.QuerySmartContractAsync(QutilContractIndex, 3, PollIdToBytes(_resultsPollId));
             if (data.Length < 1032)
             {
-                _error = $"Unexpected response size ({data.Length} bytes, expected 1032).";
+                _error = string.Format(Loc["Fmt_RespSize1032"], data.Length);
                 return;
             }
 
@@ -635,22 +636,22 @@
     void PreviewCreate()
     {
         _error = null;
-        if (string.IsNullOrWhiteSpace(_pollName)) { _error = "Poll name is required."; return; }
-        if (_pollName.Trim().Length > 32) { _error = "Poll name must be at most 32 characters."; return; }
+        if (string.IsNullOrWhiteSpace(_pollName)) { _error = Loc["Msg_PollNameRequired"]; return; }
+        if (_pollName.Trim().Length > 32) { _error = Loc["Msg_PollNameMax32"]; return; }
         if (!string.IsNullOrEmpty(_githubLink) && !_githubLink.Trim().StartsWith("https://github.com/"))
-        { _error = "GitHub link must start with https://github.com/"; return; }
-        if (_githubLink.Trim().Length > 256) { _error = "GitHub link must be at most 256 characters."; return; }
+        { _error = Loc["Msg_GithubPrefix"]; return; }
+        if (_githubLink.Trim().Length > 256) { _error = Loc["Msg_GithubMax256"]; return; }
 
         if (_pollType == 2)
         {
             for (int i = 0; i < _assetCount; i++)
             {
                 if (string.IsNullOrWhiteSpace(_assetIssuers[i]))
-                { _error = $"Asset #{i + 1}: Issuer identity is required."; return; }
+                { _error = string.Format(Loc["Fmt_AssetNIssuerReq"], i + 1); return; }
                 var err = IdentityValidation.Validate(_assetIssuers[i]);
-                if (err != null) { _error = $"Asset #{i + 1} Issuer: {err}"; return; }
+                if (err != null) { _error = string.Format(Loc["Fmt_AssetNIssuer"], i + 1, err); return; }
                 if (string.IsNullOrWhiteSpace(_assetNames[i]))
-                { _error = $"Asset #{i + 1}: Asset name is required."; return; }
+                { _error = string.Format(Loc["Fmt_AssetNNameReq"], i + 1); return; }
             }
         }
 

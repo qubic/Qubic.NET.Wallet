@@ -2,13 +2,14 @@
 @implements IDisposable
 @using System.Text.Json
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Log Events</h4>
-<p class="text-muted">Browse log events synced from the network for your identity.</p>
+<h4>@Loc["LE_Title"]</h4>
+<p class="text-muted">@Loc["LE_Subtitle"]</p>
 
 @if (!WalletStorage.IsOpen)
 {
-    <div class="alert alert-info">Enter your seed to open the wallet database and start syncing log events.</div>
+    <div class="alert alert-info">@Loc["LE_NeedSeed"]</div>
 }
 else
 {
@@ -17,7 +18,7 @@ else
         @if (logSync.BobLogStatus == Qubic.Services.Storage.StreamStatus.Connecting)
         {
             <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
-            <span>Connecting...</span>
+            <span>@Loc["Common_Connecting"]</span>
         }
         else if (logSync.BobLogStatus == Qubic.Services.Storage.StreamStatus.CatchingUp)
         {
@@ -53,23 +54,23 @@ else
 
     @* ── Filters ── *@
     <div class="d-flex gap-2 mb-3 align-items-center flex-wrap">
-        <input type="number" class="form-control form-control-sm" style="width:100px" placeholder="Log type"
+        <input type="number" class="form-control form-control-sm" style="width:100px" placeholder="@Loc["LE_LogType"]"
                @bind="_filterLogType" @bind:event="oninput" />
-        <input type="number" class="form-control form-control-sm" style="width:100px" placeholder="Epoch"
+        <input type="number" class="form-control form-control-sm" style="width:100px" placeholder="@Loc["Common_Epoch"]"
                @bind="_filterEpoch" @bind:event="oninput" />
-        <input type="number" class="form-control form-control-sm" style="width:120px" placeholder="Min tick"
+        <input type="number" class="form-control form-control-sm" style="width:120px" placeholder="@Loc["LE_MinTick"]"
                @bind="_filterMinTick" @bind:event="oninput" />
-        <input type="number" class="form-control form-control-sm" style="width:120px" placeholder="Max tick"
+        <input type="number" class="form-control form-control-sm" style="width:120px" placeholder="@Loc["LE_MaxTick"]"
                @bind="_filterMaxTick" @bind:event="oninput" />
-        <input class="form-control form-control-sm" style="width:180px" placeholder="Tx hash"
+        <input class="form-control form-control-sm" style="width:180px" placeholder="@Loc["LE_TxHash"]"
                @bind="_filterTxHash" @bind:event="oninput" />
-        <button class="btn btn-sm btn-primary" @onclick="LoadLogs">Filter</button>
-        <button class="btn btn-sm btn-outline-secondary" @onclick="ClearFilters">Clear</button>
+        <button class="btn btn-sm btn-primary" @onclick="LoadLogs">@Loc["LE_Filter"]</button>
+        <button class="btn btn-sm btn-outline-secondary" @onclick="ClearFilters">@Loc["Common_Clear"]</button>
     </div>
 
     @if (_logs == null || _logs.Count == 0)
     {
-        <div class="alert alert-info">No log events found. Sync will populate this view as logs are fetched from the network.</div>
+        <div class="alert alert-info">@Loc["LE_NoLogs"]</div>
     }
     else
     {
@@ -77,13 +78,13 @@ else
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Time</th>
-                        <th>Tick</th>
-                        <th>Type</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Amount / Detail</th>
-                        <th>Tx Hash</th>
+                        <th>@Loc["Common_Time"]</th>
+                        <th>@Loc["Common_Tick"]</th>
+                        <th>@Loc["Common_Type"]</th>
+                        <th>@Loc["Common_From"]</th>
+                        <th>@Loc["Common_To"]</th>
+                        <th>@Loc["LE_AmountDetail"]</th>
+                        <th>@Loc["LE_TxHash"]</th>
                         <th></th>
                     </tr>
                 </thead>

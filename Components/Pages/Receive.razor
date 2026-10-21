@@ -2,22 +2,23 @@
 @inject SeedSessionService Seed
 @inject QubicBackendService Backend
 @inject IJSRuntime JS
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Receive QU</h4>
+<h4>@Loc["Receive_Title"]</h4>
 
 @if (!Seed.HasSeed)
 {
-    <div class="alert alert-warning">Enter your seed in the top bar to view your address.</div>
+    <div class="alert alert-warning">@Loc["Receive_NeedSeed"]</div>
 }
 else
 {
     <div class="row g-3">
         <div class="col-md-7">
             <div class="card">
-                <div class="card-header">Your Identity</div>
+                <div class="card-header">@Loc["Receive_YourIdentity"]</div>
                 <div class="card-body text-center py-4">
                     <p class="text-muted small mb-3">
-                        @(_isRequest ? "Scan to pay. The QR code contains a payment request (qubic: link)." : "Share this address to receive QU or assets.")
+                        @(_isRequest ? Loc["Receive_ScanRequest"] : Loc["Receive_ShareAddress"])
                     </p>
                     @if (_qrSvg != null)
                     {
@@ -32,13 +33,13 @@ else
                     </div>
                     <button class="btn btn-primary" @onclick="CopyText">
                         <i class="bi @(_copied ? "bi-check-lg" : "bi-clipboard") me-1"></i>
-                        @(_copied ? "Copied!" : _isRequest ? "Copy Payment Link" : "Copy Address")
+                        @(_copied ? Loc["Common_Copied"] : _isRequest ? Loc["Receive_CopyLink"] : Loc["Receive_CopyAddress"])
                     </button>
                     @if (_qrSvg != null)
                     {
                         <button class="btn btn-outline-primary ms-2" @onclick="CopyQr">
                             <i class="bi @(_qrCopied ? "bi-check-lg" : "bi-image") me-1"></i>
-                            @(_qrCopied ? "Copied!" : "Copy QR")
+                            @(_qrCopied ? Loc["Common_Copied"] : Loc["Receive_CopyQr"])
                         </button>
                     }
                 </div>
@@ -46,22 +47,22 @@ else
         </div>
         <div class="col-md-5">
             <div class="card">
-                <div class="card-header"><i class="bi bi-receipt me-1"></i>Payment request</div>
+                <div class="card-header"><i class="bi bi-receipt me-1"></i>@Loc["Receive_PaymentRequest"]</div>
                 <div class="card-body">
-                    <p class="small text-muted">Optional: ask for a specific amount. Wallets that understand <code>qubic:</code> links pre-fill the payment.</p>
+                    <p class="small text-muted">@Loc["Receive_PaymentHelp"] <code>qubic:</code> @Loc["Receive_PaymentHelpTail"]</p>
                     <div class="mb-2">
-                        <label class="form-label small">Amount (QU)</label>
+                        <label class="form-label small">@Loc["Send_Amount"]</label>
                         <input type="number" min="1" class="form-control form-control-sm" @bind="_reqAmount" @bind:after="Rebuild" />
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Message</label>
-                        <input class="form-control form-control-sm" maxlength="120" placeholder="e.g. Invoice 42" @bind="_reqMessage" @bind:after="Rebuild" />
+                        <label class="form-label small">@Loc["Common_Message"]</label>
+                        <input class="form-control form-control-sm" maxlength="120" placeholder="@Loc["Receive_MessagePlaceholder"]" @bind="_reqMessage" @bind:after="Rebuild" />
                     </div>
                     @if (!Backend.Profile.IsMainnet)
                     {
-                        <div class="small text-muted mb-2"><i class="bi bi-cone-striped me-1"></i>The link is marked for <code>@Backend.Profile.ChainId</code> (you are on @Backend.Profile.Name).</div>
+                        <div class="small text-muted mb-2"><i class="bi bi-cone-striped me-1"></i>@Loc["Receive_LinkMarkedPre"] <code>@Backend.Profile.ChainId</code> @Loc["Receive_LinkMarkedYouAreOn"] @Backend.Profile.Name).</div>
                     }
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="Clear" disabled="@(!_isRequest)">Show plain address</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="Clear" disabled="@(!_isRequest)">@Loc["Receive_ShowPlain"]</button>
                 </div>
             </div>
         </div>

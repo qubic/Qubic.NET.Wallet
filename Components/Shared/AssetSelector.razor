@@ -1,7 +1,8 @@
 @inject AssetRegistryService Registry
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 <div class="mb-2">
-    <label class="form-label small">@IssuerLabel</label>
+    <label class="form-label small">@(IssuerLabel ?? Loc["ASel_Issuer"])</label>
     <div class="input-group input-group-sm">
         <input class="form-control form-control-sm mono @IdentityValidation.CssClass(IssuerValue)"
                list="@_issuerListId" value="@IssuerValue" @oninput="OnIssuerInput" placeholder="IDENTITY..." />
@@ -16,7 +17,7 @@
     </div>
 </div>
 <div class="mb-2">
-    <label class="form-label small">@NameLabel</label>
+    <label class="form-label small">@(NameLabel ?? Loc["ASel_Name"])</label>
     <div class="input-group input-group-sm">
         <input class="form-control form-control-sm" list="@_nameListId" maxlength="7"
                value="@NameValue" @oninput="OnNameInput" />
@@ -38,8 +39,8 @@
     [Parameter] public EventCallback<string> IssuerValueChanged { get; set; }
     [Parameter] public string NameValue { get; set; } = "";
     [Parameter] public EventCallback<string> NameValueChanged { get; set; }
-    [Parameter] public string IssuerLabel { get; set; } = "Asset Issuer Identity";
-    [Parameter] public string NameLabel { get; set; } = "Asset Name (up to 7 chars)";
+    [Parameter] public string? IssuerLabel { get; set; }
+    [Parameter] public string? NameLabel { get; set; }
 
     private string _issuerListId = "il-" + Guid.NewGuid().ToString("N")[..8];
     private string _nameListId = "nl-" + Guid.NewGuid().ToString("N")[..8];

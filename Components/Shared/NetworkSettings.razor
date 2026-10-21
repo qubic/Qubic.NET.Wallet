@@ -4,6 +4,7 @@
 @inject NetworkFingerprintService Fingerprint
 @inject EgressGuard Guard
 @inject QubicSettingsService Cfg
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
 <div class="row g-3">
@@ -18,20 +19,20 @@
                     <span class="flex-grow-1 text-truncate">@p.Name</span>
                     @if (p.Id == Profiles.ActiveId)
                     {
-                        <span class="badge bg-success ms-1">active</span>
+                        <span class="badge bg-success ms-1">@Loc["VO_Active"]</span>
                     }
                 </button>
             }
         </div>
         <div class="dropdown-center d-grid gap-1">
             <select class="form-select form-select-sm" value="" @onchange="AddFromPreset">
-                <option value="">+ Add network…</option>
-                <option value="@NetworkPresets.AioLocalId">AIO dev kit (this machine)</option>
-                <option value="@NetworkPresets.AioRemoteId">AIO dev kit (remote host)</option>
-                <option value="@NetworkPresets.MainnetId">Mainnet</option>
-                <option value="blank">Empty custom network</option>
+                <option value="">@Loc["NS_AddNetwork"]</option>
+                <option value="@NetworkPresets.AioLocalId">@Loc["NS_Preset_AioLocal"]</option>
+                <option value="@NetworkPresets.AioRemoteId">@Loc["NS_Preset_AioRemote"]</option>
+                <option value="@NetworkPresets.MainnetId">@Loc["NS_Kind_Mainnet"]</option>
+                <option value="blank">@Loc["NS_EmptyCustom"]</option>
             </select>
-            <button class="btn btn-sm btn-outline-secondary" @onclick="RestorePresets">Restore deleted presets</button>
+            <button class="btn btn-sm btn-outline-secondary" @onclick="RestorePresets">@Loc["NS_RestorePresets"]</button>
         </div>
     </div>
 
@@ -54,7 +55,7 @@
                         <button class="btn btn-sm btn-outline-secondary" @onclick="Duplicate" title="Duplicate"><i class="bi bi-files"></i></button>
                         @if (_edit.PresetId != null)
                         {
-                            <button class="btn btn-sm btn-outline-secondary" @onclick="ResetPreset" title="Reset to preset defaults"><i class="bi bi-arrow-counterclockwise"></i></button>
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="ResetPreset" title="@Loc["NS_ResetTitle"]"><i class="bi bi-arrow-counterclockwise"></i></button>
                         }
                         <button class="btn btn-sm btn-outline-danger" @onclick="Delete" disabled="@isActive" title="Delete"><i class="bi bi-trash"></i></button>
                     </div>
@@ -62,26 +63,26 @@
                 <div class="card-body">
                     <div class="row g-2 mb-3">
                         <div class="col-md-5">
-                            <label class="form-label small">Name</label>
+                            <label class="form-label small">@Loc["Common_Name"]</label>
                             <input class="form-control form-control-sm" @bind="_edit.Name" @bind:after="MarkDirty" />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small">Kind</label>
+                            <label class="form-label small">@Loc["CC_Kind"]</label>
                             <select class="form-select form-select-sm" @bind="_edit.Kind" @bind:after="MarkDirty">
-                                <option value="@NetworkKind.Mainnet">Mainnet</option>
-                                <option value="@NetworkKind.Testnet">Testnet</option>
-                                <option value="@NetworkKind.Devnet">Devnet (local / AIO)</option>
-                                <option value="@NetworkKind.Custom">Custom</option>
+                                <option value="@NetworkKind.Mainnet">@Loc["NS_Kind_Mainnet"]</option>
+                                <option value="@NetworkKind.Testnet">@Loc["NS_Kind_Testnet"]</option>
+                                <option value="@NetworkKind.Devnet">@Loc["NS_Kind_Devnet"]</option>
+                                <option value="@NetworkKind.Custom">@Loc["NS_Kind_Custom"]</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label small">Badge colour</label>
+                            <label class="form-label small">@Loc["NS_BadgeColour"]</label>
                             <input type="color" class="form-control form-control-sm form-control-color w-100"
                                    value="@_edit.BadgeColor" @onchange="e => { _edit.Color = e.Value?.ToString(); MarkDirty(); }" />
                         </div>
                     </div>
 
-                    <label class="form-label small mb-1">Methods <span class="text-muted">(priority order — the first enabled method that supports an operation serves it)</span></label>
+                    <label class="form-label small mb-1">@Loc["NS_Methods"] <span class="text-muted">@Loc["NS_MethodsHint"]</span></label>
                     <table class="table table-sm align-middle mb-1">
                         <tbody>
                             @for (int i = 0; i < _edit.Methods.Count; i++)
@@ -99,13 +100,13 @@
                                         {
                                             <div class="input-group input-group-sm">
                                                 <input class="form-control" placeholder="host" @bind="m.Host" @bind:after="MarkDirty" />
-                                                <input type="number" class="form-control" style="max-width:100px" placeholder="port"
+                                                <input type="number" class="form-control" style="max-width:100px" placeholder="@Loc["NS_PortPlaceholder"]"
                                                        @bind="m.Port" @bind:after="MarkDirty" />
                                             </div>
                                             <div class="form-check form-check-inline small mt-1">
                                                 <input class="form-check-input" type="checkbox" id="pd-@idx" checked="@m.PeerDiscovery"
                                                        @onchange="e => { m.PeerDiscovery = (bool)(e.Value ?? false); MarkDirty(); }" />
-                                                <label class="form-check-label" for="pd-@idx">Peer discovery (switch to better peers automatically)</label>
+                                                <label class="form-check-label" for="pd-@idx">@Loc["NS_PeerDiscovery"]</label>
                                             </div>
                                         }
                                         else
@@ -116,7 +117,7 @@
                                                 <div class="form-check form-check-inline small mt-1">
                                                     <input class="form-check-input" type="checkbox" id="ws-@idx" checked="@m.UseWebSocket"
                                                            @onchange="e => { m.UseWebSocket = (bool)(e.Value ?? false); MarkDirty(); }" />
-                                                    <label class="form-check-label" for="ws-@idx">WebSocket (live ticks and log sync)</label>
+                                                    <label class="form-check-label" for="ws-@idx">@Loc["NS_WebSocket"]</label>
                                                 </div>
                                             }
                                         }
@@ -143,43 +144,43 @@
 
                     <div class="row g-2 mb-3">
                         <div class="col-md-8">
-                            <label class="form-label small">Explorer link for transactions <span class="text-muted">({hash} placeholder, empty = no links)</span></label>
+                            <label class="form-label small">@Loc["NS_ExplorerLink"] <span class="text-muted">@Loc["NS_ExplorerHint"]</span></label>
                             <input class="form-control form-control-sm mono" @bind="_edit.ExplorerTxUrlTemplate" @bind:after="MarkDirty" />
                         </div>
                         <div class="col-md-4 d-flex align-items-end">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="staticBundle" checked="@_edit.UseStaticBundle"
                                        @onchange="e => { _edit.UseStaticBundle = (bool)(e.Value ?? false); MarkDirty(); }" />
-                                <label class="form-check-label small" for="staticBundle">Use Mainnet data bundle (labels, fees)</label>
+                                <label class="form-check-label small" for="staticBundle">@Loc["NS_UseBundle"]</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="row g-2 mb-3">
                         <div class="col-md-4">
-                            <label class="form-label small">Target tick</label>
+                            <label class="form-label small">@Loc["Send_TargetTick"]</label>
                             <select class="form-select form-select-sm" @bind="_edit.TickMode" @bind:after="MarkDirty">
-                                <option value="@TickTargetMode.FixedOffset">Fixed tick offset</option>
-                                <option value="@TickTargetMode.TimeBased">Execute in ~N seconds</option>
+                                <option value="@TickTargetMode.FixedOffset">@Loc["NS_FixedOffset"]</option>
+                                <option value="@TickTargetMode.TimeBased">@Loc["NS_TimeBased"]</option>
                             </select>
                         </div>
                         @if (_edit.TickMode == TickTargetMode.FixedOffset)
                         {
                             <div class="col-md-3">
-                                <label class="form-label small">Ticks ahead</label>
+                                <label class="form-label small">@Loc["NS_TicksAhead"]</label>
                                 <input type="number" min="1" max="100" class="form-control form-control-sm" @bind="_edit.TickOffset" @bind:after="MarkDirty" />
                             </div>
                         }
                         else
                         {
                             <div class="col-md-3">
-                                <label class="form-label small">Seconds ahead</label>
+                                <label class="form-label small">@Loc["NS_SecondsAhead"]</label>
                                 <input type="number" min="1" max="600" class="form-control form-control-sm" @bind="_edit.TickTargetSeconds" @bind:after="MarkDirty" />
                             </div>
                         }
                         <div class="col-md-5">
-                            <label class="form-label small">Pending window (ticks) <span class="text-muted">empty = @TickTargeting.PendingWindowTicks(WithoutWindow(_edit))</span></label>
-                            <input type="number" min="1" class="form-control form-control-sm" placeholder="auto"
+                            <label class="form-label small">@Loc["NS_PendingWindow"] <span class="text-muted">@Loc["NS_EmptyEq"] @TickTargeting.PendingWindowTicks(WithoutWindow(_edit))</span></label>
+                            <input type="number" min="1" class="form-control form-control-sm" placeholder="@Loc["Common_Auto"]"
                                    value="@_edit.PendingTxWindowTicks"
                                    @onchange="e => { _edit.PendingTxWindowTicks = int.TryParse(e.Value?.ToString(), out var w) && w > 0 ? w : null; MarkDirty(); }" />
                         </div>
@@ -187,12 +188,12 @@
 
                     <div class="row g-2 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small">Expected network <span class="text-muted">(checked against the computor list)</span></label>
+                            <label class="form-label small">@Loc["NS_ExpectedNetwork"] <span class="text-muted">@Loc["NS_ExpectedHint"]</span></label>
                             <select class="form-select form-select-sm" value="@(_edit.ExpectedFingerprint?.ToString() ?? "")"
                                     @onchange="e => { _edit.ExpectedFingerprint = Enum.TryParse<NetworkFingerprintKind>(e.Value?.ToString(), out var k) ? k : null; MarkDirty(); }">
-                                <option value="">No expectation</option>
-                                <option value="@NetworkFingerprintKind.ArbitratorSigned">Signed by the mainnet arbitrator</option>
-                                <option value="@NetworkFingerprintKind.CoreLiteDevnet">core-lite devnet (public dev computors)</option>
+                                <option value="">@Loc["NS_NoExpectation"]</option>
+                                <option value="@NetworkFingerprintKind.ArbitratorSigned">@Loc["NS_ArbitratorSigned"]</option>
+                                <option value="@NetworkFingerprintKind.CoreLiteDevnet">@Loc["NS_CoreliteDevnet"]</option>
                             </select>
                         </div>
                     </div>
@@ -203,17 +204,17 @@
                     }
                     <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-primary" @onclick="Save" disabled="@(!_dirty)">
-                            <i class="bi bi-save me-1"></i>Save@(isActive ? " and reconnect" : "")
+                            <i class="bi bi-save me-1"></i>@Loc["Common_Save"]@(isActive ? Loc["NS_AndReconnect"] : "")
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Select(_edit.Id)" disabled="@(!_dirty)">Discard changes</button>
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Select(_edit.Id)" disabled="@(!_dirty)">@Loc["NS_Discard"]</button>
                     </div>
                 </div>
             </div>
 
             @* ── Routing: method per operation ── *@
             <div class="card mb-3">
-                <div class="card-header small"><i class="bi bi-signpost-split me-1"></i>Method per operation
-                    <span class="text-muted">— "Auto" follows the priority order above</span></div>
+                <div class="card-header small"><i class="bi bi-signpost-split me-1"></i>@Loc["NS_MethodPerOp"]
+                    <span class="text-muted">@Loc["NS_AutoFollows"]</span></div>
                 <div class="card-body p-0">
                     <table class="table table-sm mb-0 small align-middle">
                         <tbody>
@@ -224,22 +225,22 @@
                                 var choices = Capabilities.SupportedBy(cap).Where(k => _edit.Methods.Any(m => m.Kind == k)).ToList();
                                 var pinned = _edit.Routes != null && _edit.Routes.TryGetValue(cap, out var pk) ? pk : (BackendMethodKind?)null;
                                 <tr>
-                                    <td class="text-nowrap">@Capabilities.DisplayName(cap)</td>
+                                    <td class="text-nowrap">@LibStrings.Cap(Loc, cap)</td>
                                     <td style="width:9.5rem">
                                         @if (choices.Count > 1 || pinned != null)
                                         {
                                             <select class="form-select form-select-sm" value="@(pinned?.ToString() ?? "")"
                                                     @onchange="e => SetRoute(capture, e.Value?.ToString())">
-                                                <option value="">Auto</option>
+                                                <option value="">@Loc["Common_Auto"]</option>
                                                 @foreach (var k in choices)
                                                 {
-                                                    <option value="@k">@Capabilities.MethodName(k)@(_edit.HasMethod(k) ? "" : " (off)")</option>
+                                                    <option value="@k">@Capabilities.MethodName(k)@(_edit.HasMethod(k) ? "" : Loc["NS_Off"])</option>
                                                 }
                                             </select>
                                         }
                                         else
                                         {
-                                            <span class="text-muted">@(choices.Count == 1 ? Capabilities.MethodName(choices[0]) + " only" : "—")</span>
+                                            <span class="text-muted">@(choices.Count == 1 ? Capabilities.MethodName(choices[0]) + " " + Loc["NS_Only"] : "—")</span>
                                         }
                                     </td>
                                     <td>
@@ -267,11 +268,11 @@
 
         @* ── Active network status ── *@
         <div class="card mb-3">
-            <div class="card-header small"><i class="bi bi-fingerprint me-1"></i>Active network: @Profiles.Active.Name</div>
+            <div class="card-header small"><i class="bi bi-fingerprint me-1"></i>@Loc["NS_ActiveNetwork"] @Profiles.Active.Name</div>
             <div class="card-body small">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <button class="btn btn-sm btn-outline-primary" @onclick="CheckFingerprint" disabled="@_checking">
-                        @(_checking ? "Checking…" : "Identify network")
+                        @(_checking ? Loc["NS_Checking"] : Loc["DT_Identify"])
                     </button>
                     @if (Fingerprint.Current is { } fp && fp.ProfileId == Profiles.ActiveId)
                     {
@@ -281,12 +282,12 @@
                         </span>
                     }
                 </div>
-                <div class="text-muted mb-1">Allowed hosts: <span class="mono">@string.Join(", ", Guard.AllowedHosts)</span></div>
+                <div class="text-muted mb-1">@Loc["NS_AllowedHosts"] <span class="mono">@string.Join(", ", Guard.AllowedHosts)</span></div>
                 @if (Guard.Violations.Count > 0)
                 {
                     <div class="mt-2">
-                        <strong>Blocked connections</strong>
-                        <button class="btn btn-sm btn-link p-0 ms-2" @onclick="Guard.ClearViolations">clear</button>
+                        <strong>@Loc["NS_BlockedConnections"]</strong>
+                        <button class="btn btn-sm btn-link p-0 ms-2" @onclick="Guard.ClearViolations">@Loc["NS_ClearLower"]</button>
                         <ul class="mb-0 mono">
                             @foreach (var v in Guard.Violations.TakeLast(10).Reverse())
                             {
@@ -296,7 +297,7 @@
                     </div>
                 }
                 <div class="mt-3">
-                    <label class="form-label small">Tick drift threshold (ticks between methods of this network)</label>
+                    <label class="form-label small">@Loc["NS_DriftThreshold"]</label>
                     <input type="number" class="form-control form-control-sm" style="max-width:120px" min="1" max="100"
                            value="@(Cfg.GetCustom<int?>("tickDriftThreshold") ?? 15)"
                            @onchange="OnDriftThresholdChanged" />

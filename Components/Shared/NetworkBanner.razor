@@ -4,6 +4,7 @@
 @inject ChainResetService ChainReset
 @inject EgressGuard Guard
 @inject NavigationManager Nav
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
 @* Always-visible network context: a solid, high-contrast bar on non-mainnet networks plus alerts that matter for safety. *@
@@ -12,24 +13,24 @@
     <div class="qb-network-banner" style="background:@_profile.BadgeColor;color:@ContrastText(_profile.BadgeColor)">
         <i class="bi bi-cone-striped me-1"></i>
         <strong>@_profile.Name</strong>
-        <span class="ms-1">— @KindText. Not Mainnet.</span>
-        <span class="ms-2 d-none d-lg-inline">Qubic transactions carry no network id: prefer separate seeds for test networks.</span>
+        <span class="ms-1">— @KindText. @Loc["NB_NotMainnet"]</span>
+        <span class="ms-2 d-none d-lg-inline">@Loc["NB_NoNetworkId"]</span>
     </div>
 }
 @if (Fingerprint.IsMismatch && Fingerprint.Current is { } fp)
 {
     <div class="alert alert-danger rounded-0 py-1 px-3 mb-0 small">
         <i class="bi bi-exclamation-octagon-fill me-1"></i>
-        <strong>Network mismatch:</strong> "@_profile.Name" is set up as @_profile.Kind, but the connected chain is
-        @(fp.Kind == NetworkFingerprintKind.CoreLiteDevnet ? "a core-lite devnet" : fp.Kind == NetworkFingerprintKind.ArbitratorSigned ? "signed by the mainnet arbitrator" : "unrecognized").
-        <a href="/settings?tab=networks" class="alert-link">Check network settings</a>
+        <strong>@Loc["NB_Mismatch"]</strong> "@_profile.Name" @Loc["NB_IsSetupAs"] @_profile.Kind@Loc["NB_ButChainIs"]
+        @(fp.Kind == NetworkFingerprintKind.CoreLiteDevnet ? Loc["NB_CoreliteDevnet"] : fp.Kind == NetworkFingerprintKind.ArbitratorSigned ? Loc["NB_ArbitratorSigned"] : Loc["NB_Unrecognized"]).
+        <a href="/settings?tab=networks" class="alert-link">@Loc["NB_CheckSettings"]</a>
     </div>
 }
 @if (_reset != null)
 {
     <div class="alert alert-warning rounded-0 py-1 px-3 mb-0 small d-flex align-items-center">
         <i class="bi bi-arrow-counterclockwise me-1"></i>
-        <span><strong>Chain reset detected on @_reset.ProfileName:</strong> @_reset.Detail Cached history for this network was cleared.</span>
+        <span><strong>@Loc["NB_ChainReset"] @_reset.ProfileName:</strong> @_reset.Detail @Loc["NB_HistoryCleared"]</span>
         <button class="btn-close btn-close-sm ms-auto" @onclick="() => _reset = null" aria-label="Dismiss"></button>
     </div>
 }
@@ -37,7 +38,7 @@
 {
     <div class="alert alert-secondary rounded-0 py-1 px-3 mb-0 small d-flex align-items-center">
         <i class="bi bi-slash-circle me-1"></i>
-        <span>Blocked a connection to <code>@_lastBlocked.Host</code> (@_lastBlocked.Purpose): it is not part of "@_lastBlocked.ProfileName".</span>
+        <span>@Loc["NB_BlockedPre"] <code>@_lastBlocked.Host</code> (@_lastBlocked.Purpose): @Loc["NB_BlockedPost"] "@_lastBlocked.ProfileName".</span>
         <button class="btn-close btn-close-sm ms-auto" @onclick="() => _lastBlocked = null" aria-label="Dismiss"></button>
     </div>
 }
@@ -65,9 +66,9 @@
 
     private string KindText => _profile.Kind switch
     {
-        NetworkKind.Devnet => "local development network",
-        NetworkKind.Testnet => "test network",
-        _ => "custom network"
+        NetworkKind.Devnet => Loc["NB_Devnet"],
+        NetworkKind.Testnet => Loc["NB_Testnet"],
+        _ => Loc["NB_Custom"]
     };
 
     protected override void OnInitialized()

@@ -1,18 +1,19 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @if (Visible)
 {
     <div class="modal d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)" @onclick="Cancel">
         <div class="modal-dialog" @onclick:stopPropagation>
             <div class="modal-content">
                 <div class="modal-header card-header-accent">
-                    <h5 class="modal-title">@Title</h5>
+                    <h5 class="modal-title">@(Title ?? Loc["CD_Confirm"])</h5>
                     <button type="button" class="btn-close" @onclick="Cancel"></button>
                 </div>
                 <div class="modal-body">
                     <p style="white-space:pre-line">@Message</p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-outline-secondary" @onclick="Cancel">Cancel</button>
-                    <button class="btn btn-primary" @onclick="Confirm">@ConfirmText</button>
+                    <button class="btn btn-outline-secondary" @onclick="Cancel">@Loc["Common_Cancel"]</button>
+                    <button class="btn btn-primary" @onclick="Confirm">@(ConfirmText ?? Loc["CD_Confirm"])</button>
                 </div>
             </div>
         </div>
@@ -21,9 +22,9 @@
 
 @code {
     [Parameter] public bool Visible { get; set; }
-    [Parameter] public string Title { get; set; } = "Confirm";
+    [Parameter] public string? Title { get; set; }
     [Parameter] public string Message { get; set; } = "";
-    [Parameter] public string ConfirmText { get; set; } = "Confirm";
+    [Parameter] public string? ConfirmText { get; set; }
     [Parameter] public EventCallback OnConfirm { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
 

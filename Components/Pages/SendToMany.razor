@@ -6,13 +6,14 @@
 @inject TransactionTrackerService TxTracker
 @inject QubicSettingsService Settings
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Send to Many</h4>
-<p class="text-muted">Send QU to up to 25 recipients in a single transaction (QUTIL SendToManyV1).</p>
+<h4>@Loc["Nav_SendToMany"]</h4>
+<p class="text-muted">@Loc["S2M_Subtitle"]</p>
 
 @if (!Seed.HasSeed)
 {
-    <div class="alert alert-warning">Enter your seed in the top bar to enable signing.</div>
+    <div class="alert alert-warning">@Loc["Common_NeedSeedSigning"]</div>
 }
 else
 {
@@ -20,10 +21,10 @@ else
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Recipients</span>
+                    <span>@Loc["S2M_Recipients"]</span>
                     @if (_fee != null)
                     {
-                        <span class="badge bg-info">Fee: @_fee.Value.ToString("N0") QU</span>
+                        <span class="badge bg-info">@Loc["Common_Fee"] @_fee.Value.ToString("N0") QU</span>
                     }
                 </div>
                 <div class="card-body">
@@ -37,13 +38,13 @@ else
                                               Placeholder="Identity (60 chars)" />
                             </div>
                             <div class="col-3">
-                                <input type="number" class="form-control form-control-sm" placeholder="Amount"
+                                <input type="number" class="form-control form-control-sm" placeholder="@Loc["Common_AmountField"]"
                                        @bind="_recipients[idx].Amount" />
                             </div>
                             <div class="col-2">
                                 @if (_recipients.Count > 1)
                                 {
-                                    <button class="btn btn-sm btn-outline-danger" @onclick="() => _recipients.RemoveAt(idx)">Remove</button>
+                                    <button class="btn btn-sm btn-outline-danger" @onclick="() => _recipients.RemoveAt(idx)">@Loc["Common_Remove"]</button>
                                 }
                             </div>
                         </div>
@@ -52,10 +53,10 @@ else
                     <div class="d-flex gap-2 mt-2 flex-wrap">
                         @if (_recipients.Count < 25)
                         {
-                            <button class="btn btn-sm btn-outline-secondary" @onclick="AddRecipient">+ Add Recipient</button>
+                            <button class="btn btn-sm btn-outline-secondary" @onclick="AddRecipient">@Loc["S2M_AddRecipient"]</button>
                         }
                         <button class="btn btn-sm btn-outline-primary" @onclick="() => _showImport = !_showImport">
-                            @(_showImport ? "Hide Import" : "Import from Text")
+                            @(_showImport ? Loc["S2M_HideImport"] : Loc["S2M_ImportFromText"])
                         </button>
                         @if (Vault.IsUnlocked)
                         {
@@ -63,27 +64,27 @@ else
                             @if (Vault.Templates.Count > 0)
                             {
                                 <select class="form-select form-select-sm" style="width:auto;min-width:140px" @bind="_selectedTemplate">
-                                    <option value="">-- Template --</option>
+                                    <option value="">@Loc["S2M_TemplateOption"]</option>
                                     @foreach (var t in Vault.Templates)
                                     {
                                         <option value="@t.Name">@t.Name (@t.Recipients.Count)</option>
                                     }
                                 </select>
-                                <button class="btn btn-sm btn-outline-primary" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="LoadTemplate">Load</button>
-                                <button class="btn btn-sm btn-outline-secondary" disabled="@(string.IsNullOrEmpty(_selectedTemplate) || RecipientsWithAddress.Count() == 0)" @onclick="OverwriteTemplate">Overwrite</button>
-                                <button class="btn btn-sm btn-outline-danger" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="() => _confirmDeleteTemplate = _selectedTemplate">Delete</button>
+                                <button class="btn btn-sm btn-outline-primary" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="LoadTemplate">@Loc["Common_Load"]</button>
+                                <button class="btn btn-sm btn-outline-secondary" disabled="@(string.IsNullOrEmpty(_selectedTemplate) || RecipientsWithAddress.Count() == 0)" @onclick="OverwriteTemplate">@Loc["Common_Overwrite"]</button>
+                                <button class="btn btn-sm btn-outline-danger" disabled="@(string.IsNullOrEmpty(_selectedTemplate))" @onclick="() => _confirmDeleteTemplate = _selectedTemplate">@Loc["Common_Delete"]</button>
                             }
                             @if (!_showSaveAs)
                             {
                                 <button class="btn btn-sm btn-outline-success" disabled="@(RecipientsWithAddress.Count() == 0)" @onclick="() => _showSaveAs = true">
-                                    <i class="bi bi-save me-1"></i>Save As
+                                    <i class="bi bi-save me-1"></i>@Loc["Common_SaveAs"]
                                 </button>
                             }
                             else
                             {
                                 <input type="text" class="form-control form-control-sm" style="width:150px"
-                                       @bind="_saveAsName" @onkeydown="OnSaveAsKey" placeholder="Template name" />
-                                <button class="btn btn-sm btn-success" @onclick="SaveAsTemplate">Save</button>
+                                       @bind="_saveAsName" @onkeydown="OnSaveAsKey" placeholder="@Loc["S2M_TemplateNamePlaceholder"]" />
+                                <button class="btn btn-sm btn-success" @onclick="SaveAsTemplate">@Loc["Common_Save"]</button>
                                 <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _showSaveAs = false; _saveAsName = null; _templateError = null; }">
                                     <i class="bi bi-x"></i>
                                 </button>
@@ -99,13 +100,13 @@ else
                     {
                         <div class="card mt-2 bg-body-secondary">
                             <div class="card-body py-2">
-                                <label class="form-label-sm">Paste recipients (one per line: <code>IDENTITY,AMOUNT</code> or <code>IDENTITY AMOUNT</code>)</label>
+                                <label class="form-label-sm">@Loc["S2M_PasteHelpPre"] <code>IDENTITY,AMOUNT</code> @Loc["S2M_PasteHelpOr"] <code>IDENTITY AMOUNT</code>)</label>
                                 <textarea class="form-control form-control-sm mono" rows="5"
                                           placeholder="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,1000000&#10;BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 2000000"
                                           @bind="_importText"></textarea>
                                 <div class="mt-1 d-flex gap-2">
-                                    <button class="btn btn-sm btn-primary" @onclick="ImportRecipients">Import</button>
-                                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _showImport = false; _importText = null; _importError = null; }">Cancel</button>
+                                    <button class="btn btn-sm btn-primary" @onclick="ImportRecipients">@Loc["Common_Import"]</button>
+                                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _showImport = false; _importText = null; _importError = null; }">@Loc["Common_Cancel"]</button>
                                 </div>
                                 @if (_importError != null)
                                 {
@@ -117,7 +118,7 @@ else
 
                     <hr />
                     <div class="mb-2">
-                        <label class="form-label-sm">Target Tick</label>
+                        <label class="form-label-sm">@Loc["Send_TargetTick"]</label>
                         <div class="input-group input-group-sm" style="max-width:350px">
                             <input type="number" class="form-control" @bind="_targetTick" />
                             @if (_targetTick == 0 && TickMonitor.IsConnected)
@@ -128,36 +129,36 @@ else
                             }
                             else if (_targetTick == 0)
                             {
-                                <span class="input-group-text text-muted">Auto +@Settings.TickOffset</span>
+                                <span class="input-group-text text-muted">@Loc["Common_Auto"] +@Settings.TickOffset</span>
                             }
                             else
                             {
-                                <button class="btn btn-outline-secondary" @onclick="() => _targetTick = 0">Auto</button>
+                                <button class="btn btn-outline-secondary" @onclick="() => _targetTick = 0">@Loc["Common_Auto"]</button>
                             }
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <span>Total: <strong class="mono">@ValidRecipients.Sum(r => r.Amount).ToString("N0")</strong> QU</span>
+                            <span>@Loc["S2M_Total"] <strong class="mono">@ValidRecipients.Sum(r => r.Amount).ToString("N0")</strong> QU</span>
                             @if (_fee != null)
                             {
-                                <span class="ms-2 text-muted">+ @_fee.Value.ToString("N0") fee</span>
+                                <span class="ms-2 text-muted">+ @_fee.Value.ToString("N0") @Loc["Common_FeeWord"]</span>
                                 <span class="ms-1 fw-bold">= @((ValidRecipients.Sum(r => r.Amount) + _fee.Value).ToString("N0")) QU</span>
                             }
-                            <span class="ms-2 text-muted">(@ValidRecipients.Count() recipients)</span>
+                            <span class="ms-2 text-muted">(@ValidRecipients.Count() @Loc["Common_RecipientsWord"])</span>
                         </div>
                         <button class="btn btn-primary" @onclick="Send" disabled="@_sending">
-                            @(_sending ? "Sending..." : "Sign & Broadcast")
+                            @(_sending ? Loc["Send_Sending"] : Loc["Common_SignBroadcast"])
                         </button>
                     </div>
 
                     @if (_result != null)
                     {
                         <div class="alert alert-success mt-3">
-                            Transaction broadcast! Tx ID: <TxHashDisplay Hash="@_result" ShowFull="true" />
+                            @Loc["Send_Broadcast"] <TxHashDisplay Hash="@_result" ShowFull="true" />
                             <div class="mt-1">
-                                <a href="/history">Transaction History</a>
+                                <a href="/history">@Loc["Common_TransactionHistory"]</a>
                             </div>
                         </div>
                         @if (Vault.IsUnlocked)
@@ -166,10 +167,10 @@ else
                             {
                                 <div class="alert alert-info mt-2 py-2 d-flex align-items-center gap-2 flex-wrap">
                                     <i class="bi bi-person-plus"></i>
-                                    <span class="small">Save <span class="mono">@r.Identity[..12]...</span> to address book?</span>
+                                    <span class="small">@Loc["Send_SaveContactPre"] <span class="mono">@r.Identity[..12]...</span> @Loc["Send_SaveContactPost"]</span>
                                     <input type="text" class="form-control form-control-sm" style="width:150px"
                                            @bind="r.Label" placeholder="Label" />
-                                    <button class="btn btn-sm btn-outline-primary" @onclick="() => SaveRecipientContact(r)">Save</button>
+                                    <button class="btn btn-sm btn-outline-primary" @onclick="() => SaveRecipientContact(r)">@Loc["Common_Save"]</button>
                                     <button class="btn btn-sm btn-outline-secondary" @onclick="() => _unknownRecipients.Remove(r)">
                                         <i class="bi bi-x"></i>
                                     </button>
@@ -188,9 +189,9 @@ else
 }
 
 <ConfirmModal Visible="@(_confirmDeleteTemplate != null)"
-             Title="Delete Template"
-             Message="@($"Delete template \"{_confirmDeleteTemplate}\"?")"
-             ConfirmText="Delete"
+             Title="@Loc["S2M_DeleteTemplate"]"
+             Message="@(string.Format(Loc["Fmt_DeleteTemplate"], _confirmDeleteTemplate))"
+             ConfirmText="@Loc["Common_Delete"]"
              OnConfirm="ConfirmDeleteTemplate"
              OnCancel="() => _confirmDeleteTemplate = null" />
 
@@ -234,7 +235,7 @@ else
         _templateError = null;
         if (string.IsNullOrEmpty(_selectedTemplate)) return;
         var template = Vault.Templates.FirstOrDefault(t => t.Name == _selectedTemplate);
-        if (template == null) { _templateError = "Template not found."; return; }
+        if (template == null) { _templateError = Loc["Msg_TemplateNotFound"]; return; }
 
         _recipients.Clear();
         foreach (var r in template.Recipients)
@@ -245,9 +246,9 @@ else
     private void SaveAsTemplate()
     {
         _templateError = null;
-        if (string.IsNullOrWhiteSpace(_saveAsName)) { _templateError = "Name is required."; return; }
+        if (string.IsNullOrWhiteSpace(_saveAsName)) { _templateError = Loc["Msg_NameRequired"]; return; }
         var toSave = RecipientsWithAddress.ToList();
-        if (toSave.Count == 0) { _templateError = "Add at least one address."; return; }
+        if (toSave.Count == 0) { _templateError = Loc["Msg_AddAddress"]; return; }
 
         try
         {
@@ -265,7 +266,7 @@ else
         _templateError = null;
         if (string.IsNullOrEmpty(_selectedTemplate)) return;
         var toSave = RecipientsWithAddress.ToList();
-        if (toSave.Count == 0) { _templateError = "Add at least one address."; return; }
+        if (toSave.Count == 0) { _templateError = Loc["Msg_AddAddress"]; return; }
 
         try
         {
@@ -338,7 +339,7 @@ else
     private void ImportRecipients()
     {
         _importError = null;
-        if (string.IsNullOrWhiteSpace(_importText)) { _importError = "Nothing to import."; return; }
+        if (string.IsNullOrWhiteSpace(_importText)) { _importError = Loc["Msg_NothingToImport"]; return; }
 
         var lines = _importText.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var imported = new List<Recipient>();
@@ -358,7 +359,7 @@ else
             var amountStr = parts.Length == 2 ? parts[1].Replace("'", "").Replace(".", "").Replace(",", "") : "";
             if (parts.Length != 2 || !long.TryParse(amountStr, out var amount))
             {
-                _importError = $"Line {i + 1}: Invalid format. Expected 'IDENTITY,AMOUNT'.";
+                _importError = string.Format(Loc["Fmt_LineInvalidFormat"], i + 1);
                 return;
             }
 
@@ -366,15 +367,15 @@ else
             var idErr = IdentityValidation.Validate(identity);
             if (idErr != null)
             {
-                _importError = $"Line {i + 1}: {idErr}";
+                _importError = string.Format(Loc["Fmt_LineErr"], i + 1, idErr);
                 return;
             }
 
             imported.Add(new Recipient { Identity = identity, Amount = amount });
         }
 
-        if (imported.Count == 0) { _importError = "No valid entries found."; return; }
-        if (imported.Count > 25) { _importError = $"Too many recipients ({imported.Count}). Max is 25."; return; }
+        if (imported.Count == 0) { _importError = Loc["Msg_NoValidEntries"]; return; }
+        if (imported.Count > 25) { _importError = string.Format(Loc["Fmt_TooManyRecipients"], imported.Count); return; }
 
         _recipients.Clear();
         _recipients.AddRange(imported);
@@ -394,7 +395,7 @@ else
             var valid = ValidRecipients.ToList();
             if (valid.Count == 0)
             {
-                _error = "Add at least one recipient with an amount.";
+                _error = Loc["Msg_AddRecipientAmount"];
                 return;
             }
             for (int i = 0; i < valid.Count; i++)
@@ -402,7 +403,7 @@ else
                 var idErr = IdentityValidation.Validate(valid[i].Identity);
                 if (idErr != null)
                 {
-                    _error = $"Recipient {i + 1}: {idErr}";
+                    _error = string.Format(Loc["Fmt_RecipientNErr"], i + 1, idErr);
                     return;
                 }
             }

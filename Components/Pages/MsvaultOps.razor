@@ -8,9 +8,10 @@
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject QubicStaticService StaticData
 @inject VaultService VaultSvc
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 <h4>MSVault (Multisig)</h4>
-<p class="text-muted">Manage multisig vaults: register, deposit, release, and vote on fee changes.</p>
+<p class="text-muted">@Loc["MV_Subtitle"]</p>
 
 @if (_vaultsLoading)
 {
@@ -20,7 +21,7 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
 {
     <div class="card mb-3 border-primary">
         <div class="card-header card-header-accent d-flex justify-content-between align-items-center">
-            <span>Your Vaults (@_vaultSummaries.Count)</span>
+            <span>@Loc["MV_YourVaults"] (@_vaultSummaries.Count)</span>
             <button class="btn btn-sm btn-outline-light" @onclick="RefreshVaults" disabled="@_vaultsLoading">
                 <i class="bi bi-arrow-clockwise"></i>
             </button>
@@ -44,8 +45,8 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                             </div>
                         </div>
                         <div class="small mt-1">
-                            <span class="text-muted">Owners:</span> @v.OwnerCount
-                            <span class="text-muted ms-2">Required Approvals:</span> @v.RequiredApprovals
+                            <span class="text-muted">@Loc["MV_OwnersColon"]</span> @v.OwnerCount
+                            <span class="text-muted ms-2">@Loc["MV_RequiredApprovalsColon"]</span> @v.RequiredApprovals
                         </div>
                         @if (v.PendingReleases.Count > 0)
                         {
@@ -65,9 +66,9 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                                                 <span class="spinner-border spinner-border-sm text-info"></span>
                                             }
                                             <span class="badge @(rel.Approvals >= (int)rel.RequiredApprovals ? "bg-success" : "bg-warning text-dark")">
-                                                @rel.Approvals/@rel.RequiredApprovals approvals
+                                                @rel.Approvals/@rel.RequiredApprovals @Loc["MV_Approvals"]
                                             </span>
-                                            <span>Release <strong>@rel.Amount.ToString("N0") QU</strong> to</span>
+                                            <span>@Loc["MV_ReleasePre"] <strong>@rel.Amount.ToString("N0") QU</strong> @Loc["MV_ReleaseToSuffix"]</span>
                                             <AddressDisplay Address="@rel.Destination" TruncateChars="8" />
                                         </div>
                                         <div class="mt-1">
@@ -91,7 +92,7 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                                             @if (isPending)
                                             {
                                                 <div class="mt-1 small text-info">
-                                                    <span class="spinner-border spinner-border-sm me-1"></span> Release transaction pending...
+                                                    <span class="spinner-border spinner-border-sm me-1"></span> @Loc["MV_ReleasePending"]
                                                 </div>
                                             }
                                             else
@@ -124,9 +125,9 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                                                 <span class="spinner-border spinner-border-sm text-info"></span>
                                             }
                                             <span class="badge @(ar.Approvals >= (int)ar.RequiredApprovals ? "bg-success" : "bg-warning text-dark")">
-                                                @ar.Approvals/@ar.RequiredApprovals approvals
+                                                @ar.Approvals/@ar.RequiredApprovals @Loc["MV_Approvals"]
                                             </span>
-                                            <span>Release <strong>@ar.Amount.ToString("N0") @ar.AssetName</strong> to</span>
+                                            <span>@Loc["MV_ReleasePre"] <strong>@ar.Amount.ToString("N0") @ar.AssetName</strong> @Loc["MV_ReleaseToSuffix"]</span>
                                             <AddressDisplay Address="@ar.Destination" TruncateChars="8" />
                                         </div>
                                         <div class="mt-1">
@@ -150,7 +151,7 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                                             @if (isAssetPending)
                                             {
                                                 <div class="mt-1 small text-info">
-                                                    <span class="spinner-border spinner-border-sm me-1"></span> Release transaction pending...
+                                                    <span class="spinner-border spinner-border-sm me-1"></span> @Loc["MV_ReleasePending"]
                                                 </div>
                                             }
                                             else
@@ -172,7 +173,7 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                         @if (v.OwnerIdentities.Length > 0)
                         {
                             <details class="mt-1">
-                                <summary class="small text-muted" style="cursor:pointer">Show owners</summary>
+                                <summary class="small text-muted" style="cursor:pointer">@Loc["MV_ShowOwners"]</summary>
                                 <div class="mt-1">
                                     @foreach (var owner in v.OwnerIdentities)
                                     {
@@ -183,27 +184,27 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
                         }
                         <div class="mt-2 d-flex flex-wrap gap-1">
                             <button class="btn btn-sm btn-outline-primary"
-                                    @onclick="() => GoToDeposit(v.Id)">Deposit QU</button>
+                                    @onclick="() => GoToDeposit(v.Id)">@Loc["MV_DepositQu"]</button>
                             <button class="btn btn-sm btn-outline-primary"
-                                    @onclick="() => GoToAssetDeposit(v.Id)">Deposit Asset</button>
+                                    @onclick="() => GoToAssetDeposit(v.Id)">@Loc["MV_DepositAsset"]</button>
                             <button class="btn btn-sm btn-outline-warning"
-                                    @onclick="() => GoToRelease(v.Id)">Release QU</button>
+                                    @onclick="() => GoToRelease(v.Id)">@Loc["MV_ReleaseQu"]</button>
                             @if (v.AssetBalances.Count > 0)
                             {
                                 @foreach (var ab in v.AssetBalances)
                                 {
                                     var abIssuer = ab.Issuer; var abName = ab.Name; var abVaultId = v.Id;
                                     <button class="btn btn-sm btn-outline-warning"
-                                            @onclick="() => GoToAssetRelease(abVaultId, abIssuer, abName)">Release @ab.Name</button>
+                                            @onclick="() => GoToAssetRelease(abVaultId, abIssuer, abName)">@Loc["MV_ReleasePre"] @ab.Name</button>
                                 }
                             }
                             else
                             {
                                 <button class="btn btn-sm btn-outline-warning"
-                                        @onclick="() => GoToAssetRelease(v.Id)">Release Asset</button>
+                                        @onclick="() => GoToAssetRelease(v.Id)">@Loc["MV_ReleaseAsset"]</button>
                             }
                             <button class="btn btn-sm btn-outline-secondary"
-                                    @onclick="() => GoToReset(v.Id)">Reset</button>
+                                    @onclick="() => GoToReset(v.Id)">@Loc["MV_Reset"]</button>
                         </div>
                     </div>
                 </div>
@@ -214,7 +215,7 @@ else if (_vaultSummaries != null && _vaultSummaries.Count > 0)
 
 @if (!Seed.HasSeed)
 {
-    <div class="alert alert-warning">Enter your seed in the top bar to enable signing.</div>
+    <div class="alert alert-warning">@Loc["Common_NeedSeedSigning"]</div>
 }
 else
 {
@@ -222,7 +223,7 @@ else
         @foreach (var tab in _tabs)
         {
             <li class="nav-item">
-                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@tab</a>
+                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@Loc[$"MV_Tab_{tab}"]</a>
             </li>
         }
     </ul>
@@ -231,13 +232,13 @@ else
         @switch (_activeTab)
         {
             case "Register":
-                <div class="card"><div class="card-header">Register Vault</div><div class="card-body">
-                    <div class="mb-2"><label class="form-label-sm">Vault Name</label>
+                <div class="card"><div class="card-header">@Loc["MV_RegisterVault"]</div><div class="card-body">
+                    <div class="mb-2"><label class="form-label-sm">@Loc["MV_VaultName"]</label>
                         <input class="form-control form-control-sm" maxlength="32"
                                @bind="_regVaultName" placeholder="My Vault..." />
-                        <div class="form-text">Any name up to 32 characters.</div></div>
+                        <div class="form-text">@Loc["MV_NameHelp"]</div></div>
                     <div class="mb-2">
-                        <label class="form-label-sm">Owners (min 2, max 16 identities)</label>
+                        <label class="form-label-sm">@Loc["MV_OwnersLabel"]</label>
                         @for (int idx = 0; idx < _regOwners.Count; idx++)
                         {
                             var i = idx;
@@ -256,20 +257,20 @@ else
                         }
                         @if (_regOwners.Count < 16)
                         {
-                            <button class="btn btn-outline-secondary btn-sm mt-1" @onclick="() => _regOwners.Add(string.Empty)">+ Add Owner</button>
+                            <button class="btn btn-outline-secondary btn-sm mt-1" @onclick="() => _regOwners.Add(string.Empty)">@Loc["MV_AddOwner"]</button>
                         }
-                        <div class="form-text">The current wallet identity can be one of the owners.</div>
+                        <div class="form-text">@Loc["MV_OwnerHint"]</div>
                     </div>
-                    <div class="mb-2"><label class="form-label-sm">Required Approvals (min 2)</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["MV_RequiredApprovals"]</label>
                         <input type="number" class="form-control form-control-sm" min="2" max="@_regOwners.Count" @bind="_regApprovals" /></div>
-                    <button class="btn btn-primary" @onclick="RegisterVault" disabled="@_sending">@(_sending ? "Registering..." : "Register Vault")</button>
+                    <button class="btn btn-primary" @onclick="RegisterVault" disabled="@_sending">@(_sending ? Loc["MV_Registering"] : Loc["MV_RegisterVault"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.register.ToString("N0") QU (sent as tx amount)</div> }
                 </div></div>
                 break;
 
             case "Deposit":
-                <div class="card"><div class="card-header">Deposit to Vault</div><div class="card-body">
-                    <div class="mb-2"><label class="form-label-sm">Vault</label>
+                <div class="card"><div class="card-header">@Loc["MV_DepositToVault"]</div><div class="card-body">
+                    <div class="mb-2"><label class="form-label-sm">@Loc["MV_Vault"]</label>
                         @if (_vaultSummaries is { Count: > 0 })
                         {
                             <select class="form-select form-select-sm mb-1" @bind="_depVaultId">
@@ -280,27 +281,27 @@ else
                             </select>
                         }
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_depVaultId"
-                               placeholder="Or enter vault ID manually" /></div>
-                    <div class="mb-2"><label class="form-label-sm">Amount (QU)</label>
+                               placeholder="@Loc["MV_VaultIdPlaceholder"]" /></div>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Send_Amount"]</label>
                         <input type="number" class="form-control form-control-sm" min="1" @bind="_depAmount" /></div>
-                    <button class="btn btn-primary" @onclick="Deposit" disabled="@_sending">@(_sending ? "Depositing..." : "Deposit")</button>
+                    <button class="btn btn-primary" @onclick="Deposit" disabled="@_sending">@(_sending ? Loc["MV_Depositing"] : Loc["MV_Deposit"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.deposit.ToString("N0") QU</div> }
                 </div></div>
                 break;
 
             case "Release":
-                <div class="card"><div class="card-header">Release / Reset</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["MV_ReleaseReset"]</div><div class="card-body">
                     <div class="mb-2">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="relMode" id="relModeRelease" checked="@(!_resetMode)" @onchange="() => _resetMode = false" />
-                            <label class="form-check-label" for="relModeRelease">Release To</label>
+                            <label class="form-check-label" for="relModeRelease">@Loc["MV_ReleaseToRadio"]</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="relMode" id="relModeReset" checked="@_resetMode" @onchange="() => _resetMode = true" />
-                            <label class="form-check-label" for="relModeReset">Reset Release</label>
+                            <label class="form-check-label" for="relModeReset">@Loc["MV_ResetRelease"]</label>
                         </div>
                     </div>
-                    <div class="mb-2"><label class="form-label-sm">Vault</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["MV_Vault"]</label>
                         @if (_vaultSummaries is { Count: > 0 })
                         {
                             <select class="form-select form-select-sm mb-1" @bind="_relVaultId">
@@ -311,58 +312,58 @@ else
                             </select>
                         }
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_relVaultId"
-                               placeholder="Or enter vault ID manually" /></div>
+                               placeholder="@Loc["MV_VaultIdPlaceholder"]" /></div>
                     @if (!_resetMode)
                     {
-                        <div class="mb-2"><label class="form-label-sm">Destination Identity</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["AS_DestinationIdentity"]</label>
                             <AddressInput @bind-Value="_relDest" /></div>
-                        <div class="mb-2"><label class="form-label-sm">Amount (QU)</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["Send_Amount"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_relAmount" /></div>
                     }
                     <button class="btn btn-primary" @onclick="ReleaseOrReset" disabled="@_sending">
-                        @(_sending ? "Sending..." : (_resetMode ? "Reset Release" : "Release To"))
+                        @(_sending ? Loc["Send_Sending"] : (_resetMode ? Loc["MV_ResetRelease"] : Loc["MV_ReleaseToRadio"]))
                     </button>
                     @if (_fees != null) { <div class="form-text">Fee: @((_resetMode ? _fees.Value.reset : _fees.Value.release).ToString("N0")) QU</div> }
                 </div></div>
                 break;
 
             case "Vote Fee":
-                <div class="card"><div class="card-header">Vote Fee Change</div><div class="card-body">
-                    <p class="small text-muted">Propose new fee values for vault operations.</p>
+                <div class="card"><div class="card-header">@Loc["MV_VoteFeeChange"]</div><div class="card-body">
+                    <p class="small text-muted">@Loc["MV_VoteDesc"]</p>
                     <div class="row g-2 mb-2">
-                        <div class="col-md-4"><label class="form-label-sm">New Registering Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeRegistering"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfRegFee" /></div>
-                        <div class="col-md-4"><label class="form-label-sm">New Release Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeRelease"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfRelFee" /></div>
-                        <div class="col-md-4"><label class="form-label-sm">New Reset Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeReset"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfResetFee" /></div>
                     </div>
                     <div class="row g-2 mb-2">
-                        <div class="col-md-4"><label class="form-label-sm">New Holding Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeHolding"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfHoldFee" /></div>
-                        <div class="col-md-4"><label class="form-label-sm">New Deposit Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeDeposit"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfDepFee" /></div>
-                        <div class="col-md-4"><label class="form-label-sm">Burn Fee</label>
+                        <div class="col-md-4"><label class="form-label-sm">@Loc["MV_FeeBurn"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_vfBurnFee" /></div>
                     </div>
-                    <button class="btn btn-primary" @onclick="VoteFeeChange" disabled="@_sending">@(_sending ? "Voting..." : "Vote Fee Change")</button>
-                    <div class="form-text">No fee for voting.</div>
+                    <button class="btn btn-primary" @onclick="VoteFeeChange" disabled="@_sending">@(_sending ? Loc["MV_Voting"] : Loc["MV_VoteFeeChange"])</button>
+                    <div class="form-text">@Loc["MV_NoVoteFee"]</div>
                 </div></div>
                 break;
 
             case "Assets":
-                <div class="card"><div class="card-header">Asset Operations</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["MV_AssetOps"]</div><div class="card-body">
                     <div class="mb-2">
                         <select class="form-select form-select-sm" @bind="_assetOp">
-                            <option value="deposit">Deposit Asset</option>
-                            <option value="release">Release Asset To</option>
-                            <option value="reset">Reset Asset Release</option>
-                            <option value="revoke">Revoke Asset Management Rights</option>
+                            <option value="deposit">@Loc["MV_AssetOp_Deposit"]</option>
+                            <option value="release">@Loc["MV_AssetOp_Release"]</option>
+                            <option value="reset">@Loc["MV_AssetOp_Reset"]</option>
+                            <option value="revoke">@Loc["MV_AssetOp_Revoke"]</option>
                         </select>
                     </div>
                     @if (_assetOp != "revoke")
                     {
-                        <div class="mb-2"><label class="form-label-sm">Vault</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["MV_Vault"]</label>
                             @if (_vaultSummaries is { Count: > 0 })
                             {
                                 <select class="form-select form-select-sm mb-1" @bind="_aVaultId">
@@ -373,51 +374,51 @@ else
                                 </select>
                             }
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_aVaultId"
-                                   placeholder="Or enter vault ID manually" /></div>
+                                   placeholder="@Loc["MV_VaultIdPlaceholder"]" /></div>
                     }
                     <AssetSelector @bind-IssuerValue="_aIssuer" @bind-NameValue="_aName" />
                     @if (_assetOp is "deposit" or "release" or "revoke")
                     {
-                        <div class="mb-2"><label class="form-label-sm">@(_assetOp == "revoke" ? "Number of Shares" : "Amount")</label>
+                        <div class="mb-2"><label class="form-label-sm">@(_assetOp == "revoke" ? Loc["Common_NumberOfShares"] : Loc["Common_AmountField"])</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_aAmount" /></div>
                     }
                     @if (_assetOp == "release")
                     {
-                        <div class="mb-2"><label class="form-label-sm">Destination Identity</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["AS_DestinationIdentity"]</label>
                             <AddressInput @bind-Value="_aDest" /></div>
                     }
-                    <button class="btn btn-primary" @onclick="AssetOp" disabled="@_sending">@(_sending ? "Sending..." : "Submit")</button>
+                    <button class="btn btn-primary" @onclick="AssetOp" disabled="@_sending">@(_sending ? Loc["Send_Sending"] : Loc["Common_Submit"])</button>
                 </div></div>
                 break;
 
             case "Query":
-                <div class="card"><div class="card-header">Query MSVault</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["MV_QueryMsvault"]</div><div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label-sm">Query Function</label>
+                        <label class="form-label-sm">@Loc["QE_QueryFunction"]</label>
                         <select class="form-select form-select-sm" @bind="_queryFunc">
-                            <option value="5">Get Vaults (by owner)</option>
-                            <option value="7">Get Balance</option>
-                            <option value="8">Get Vault Name</option>
-                            <option value="11">Get Vault Owners</option>
-                            <option value="6">Get Release Status</option>
-                            <option value="12">Is Shareholder</option>
-                            <option value="10">Get Fees</option>
+                            <option value="5">@Loc["MV_Q5"]</option>
+                            <option value="7">@Loc["MV_Q7"]</option>
+                            <option value="8">@Loc["MV_Q8"]</option>
+                            <option value="11">@Loc["MV_Q11"]</option>
+                            <option value="6">@Loc["MV_Q6"]</option>
+                            <option value="12">@Loc["MV_Q12"]</option>
+                            <option value="10">@Loc["MV_Q10"]</option>
                         </select>
                     </div>
 
                     @if (_queryFunc is 5 or 12)
                     {
-                        <div class="mb-2"><label class="form-label-sm">Identity</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["Common_Identity"]</label>
                             <AddressInput @bind-Value="_qIdentity" /></div>
                     }
                     @if (_queryFunc is 6 or 7 or 8 or 11)
                     {
-                        <div class="mb-2"><label class="form-label-sm">Vault ID</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["MV_VaultId"]</label>
                             <input type="number" class="form-control form-control-sm" min="0" @bind="_qVaultId" /></div>
                     }
 
                     <button class="btn btn-primary" @onclick="RunQuery" disabled="@_querying">
-                        @(_querying ? "Querying..." : "Query")
+                        @(_querying ? Loc["MV_Querying"] : Loc["MV_Tab_Query"])
                     </button>
 
                     @if (_queryResult != null)
@@ -445,7 +446,7 @@ else
                 </div><div class="card-body">
                     @if (!WalletStorage.IsOpen)
                     {
-                        <div class="alert alert-info mb-0">Open the wallet to view history (synced log events).</div>
+                        <div class="alert alert-info mb-0">@Loc["MV_OpenToView"]</div>
                     }
                     else if (_histLoading)
                     {
@@ -453,15 +454,15 @@ else
                     }
                     else if (_histEntries == null || _histEntries.Count == 0)
                     {
-                        <div class="text-muted">No MSVault events found. Events are synced in the background from the network.</div>
+                        <div class="text-muted">@Loc["MV_NoEvents"]</div>
                     }
                     else
                     {
                         @if (_histVaultFilter.HasValue)
                         {
                             <div class="mb-2">
-                                <span class="badge bg-primary me-1">Vault #@_histVaultFilter</span>
-                                <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _histVaultFilter = null; LoadHistory(); }">Show all</button>
+                                <span class="badge bg-primary me-1">@Loc["MV_VaultHash"]@_histVaultFilter</span>
+                                <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _histVaultFilter = null; LoadHistory(); }">@Loc["MV_ShowAll"]</button>
                             </div>
                         }
                         <div class="table-responsive">
@@ -512,7 +513,7 @@ else
             <div class="alert alert-success mt-3">
                 Transaction broadcast! Tx ID: <TxHashDisplay Hash="@_result" ShowFull="true" />
                 <div class="mt-1">
-                    <a href="/history">Transaction History</a>
+                    <a href="/history">@Loc["Common_TransactionHistory"]</a>
                 </div>
             </div>
             @foreach (var addr in _saveableAddresses)
@@ -522,7 +523,7 @@ else
                     <span class="small">Save <span class="mono">@addr.Address[..12]...</span> to address book?</span>
                     <input type="text" class="form-control form-control-sm" style="width:150px"
                            @bind="addr.Label" placeholder="Label" />
-                    <button class="btn btn-sm btn-outline-primary" @onclick="() => SaveMsvaultContact(addr)">Save</button>
+                    <button class="btn btn-sm btn-outline-primary" @onclick="() => SaveMsvaultContact(addr)">@Loc["Common_Save"]</button>
                     <button class="btn btn-sm btn-outline-secondary" @onclick="() => _saveableAddresses.Remove(addr)">
                         <i class="bi bi-x"></i>
                     </button>
@@ -897,30 +898,30 @@ else
     private void RegisterVault()
     {
         _error = null; _result = null;
-        if (_fees == null) { _error = "Fees not loaded yet. Please wait."; return; }
-        if (string.IsNullOrWhiteSpace(_regVaultName)) { _error = "Vault name is required."; return; }
+        if (_fees == null) { _error = Loc["Msg_FeesNotLoaded"]; return; }
+        if (string.IsNullOrWhiteSpace(_regVaultName)) { _error = Loc["Msg_VaultNameRequired"]; return; }
         var nameBytes = new byte[32];
         var utf8 = System.Text.Encoding.UTF8.GetBytes(_regVaultName.Trim());
-        if (utf8.Length > 32) { _error = "Vault name too long (max 32 bytes UTF-8)."; return; }
+        if (utf8.Length > 32) { _error = Loc["Msg_VaultNameTooLong"]; return; }
         utf8.CopyTo(nameBytes, 0);
 
         var ownerPks = new List<byte[]>();
         for (int i = 0; i < _regOwners.Count; i++)
         {
-            if (string.IsNullOrWhiteSpace(_regOwners[i])) { _error = $"Owner #{i + 1}: identity required."; return; }
+            if (string.IsNullOrWhiteSpace(_regOwners[i])) { _error = string.Format(Loc["Fmt_OwnerNIdReq"], i + 1); return; }
             var oe = IdentityValidation.Validate(_regOwners[i]);
-            if (oe != null) { _error = $"Owner #{i + 1}: {oe}"; return; }
+            if (oe != null) { _error = string.Format(Loc["Fmt_OwnerNErr"], i + 1, oe); return; }
             ownerPks.Add(Qubic.Core.Entities.QubicIdentity.FromIdentity(_regOwners[i].Trim()).PublicKey);
         }
-        if (ownerPks.Count < 2) { _error = "At least 2 owners required."; return; }
+        if (ownerPks.Count < 2) { _error = Loc["Msg_MinTwoOwners"]; return; }
         var uniqueSet = new HashSet<string>(ownerPks.Select(Convert.ToHexString));
-        if (uniqueSet.Count != ownerPks.Count) { _error = "All owners must be unique identities."; return; }
+        if (uniqueSet.Count != ownerPks.Count) { _error = Loc["Msg_OwnersUnique"]; return; }
         if (_regApprovals < 2 || _regApprovals > (ulong)ownerPks.Count)
-        { _error = $"Required approvals must be 2-{ownerPks.Count}."; return; }
+        { _error = string.Format(Loc["Fmt_RequiredApprovals"], ownerPks.Count); return; }
 
-        ShowConfirm("Register Vault",
-            $"Register vault \"{_regVaultName.Trim()}\" with {ownerPks.Count} owners, {_regApprovals} required approvals?\n\nFee: {_fees.Value.register:N0} QU",
-            "Register", async () =>
+        ShowConfirm(Loc["MV_RegisterVault"],
+            string.Format(Loc["Fmt_MvRegister"], _regVaultName.Trim(), ownerPks.Count, _regApprovals, _fees.Value.register),
+            Loc["MV_Register"], async () =>
         {
             _sending = true;
             try
@@ -941,10 +942,10 @@ else
     private void Deposit()
     {
         _error = null; _result = null;
-        if (_depAmount <= 0) { _error = "Amount must be positive."; return; }
+        if (_depAmount <= 0) { _error = Loc["Msg_AmountPositive"]; return; }
 
         var vaultId = _depVaultId; var amount = _depAmount;
-        ShowConfirm("Deposit", $"Deposit {amount:N0} QU to vault #{vaultId}?", "Deposit", async () =>
+        ShowConfirm(Loc["MV_Deposit"], string.Format(Loc["Fmt_MvDeposit"], amount, vaultId), Loc["MV_Deposit"], async () =>
         {
             _sending = true;
             try
@@ -961,12 +962,12 @@ else
     private void ReleaseOrReset()
     {
         _error = null; _result = null;
-        if (_fees == null) { _error = "Fees not loaded yet. Please wait."; return; }
+        if (_fees == null) { _error = Loc["Msg_FeesNotLoaded"]; return; }
         var vaultId = _relVaultId;
         if (_resetMode)
         {
             var fee = (long)_fees.Value.reset;
-            ShowConfirm("Reset Release", $"Reset all pending releases for vault #{vaultId}?\n\nFee: {fee:N0} QU", "Reset", async () =>
+            ShowConfirm(Loc["MV_ResetRelease"], string.Format(Loc["Fmt_MvResetRelease"], vaultId, fee), Loc["MV_Reset"], async () =>
             {
                 _sending = true;
                 try
@@ -982,9 +983,9 @@ else
         else
         {
             var err = IdentityValidation.Validate(_relDest);
-            if (err != null) { _error = $"Destination: {err}"; return; }
+            if (err != null) { _error = string.Format(Loc["Fmt_Destination"], err); return; }
             var dest = _relDest.Trim(); var amount = _relAmount; var fee = (long)_fees.Value.release;
-            ShowConfirm("Release", $"Release {amount:N0} QU from vault #{vaultId} to {dest[..12]}...?\n\nFee: {fee:N0} QU", "Release", async () =>
+            ShowConfirm(Loc["MV_ReleasePre"], string.Format(Loc["Fmt_MvRelease"], amount, vaultId, dest[..12], fee), Loc["MV_ReleasePre"], async () =>
             {
                 _sending = true;
                 try
@@ -1007,9 +1008,9 @@ else
     private void VoteFeeChange()
     {
         _error = null; _result = null;
-        ShowConfirm("Vote Fee Change",
-            $"Vote for new fees?\n\nRegister: {_vfRegFee:N0}\nRelease: {_vfRelFee:N0}\nReset: {_vfResetFee:N0}\nHolding: {_vfHoldFee:N0}\nDeposit: {_vfDepFee:N0}\nBurn: {_vfBurnFee:N0}",
-            "Vote", async () =>
+        ShowConfirm(Loc["MV_VoteFeeChange"],
+            string.Format(Loc["Fmt_MvVote"], _vfRegFee, _vfRelFee, _vfResetFee, _vfHoldFee, _vfDepFee, _vfBurnFee),
+            Loc["MV_Vote"], async () =>
         {
             _sending = true;
             try
@@ -1038,15 +1039,15 @@ else
     private async Task AssetOp()
     {
         _error = null; _result = null;
-        if (_fees == null) { _error = "Fees not loaded yet. Please wait."; return; }
+        if (_fees == null) { _error = Loc["Msg_FeesNotLoaded"]; return; }
 
         var err = IdentityValidation.Validate(_aIssuer);
-        if (err != null) { _error = $"Asset Issuer: {err}"; return; }
-        if (string.IsNullOrWhiteSpace(_aName)) { _error = "Asset name required."; return; }
+        if (err != null) { _error = string.Format(Loc["Fmt_AssetIssuer"], err); return; }
+        if (string.IsNullOrWhiteSpace(_aName)) { _error = Loc["Msg_AssetNameRequired2"]; return; }
         if (_assetOp == "release")
         {
             var re = IdentityValidation.Validate(_aDest);
-            if (re != null) { _error = $"Destination: {re}"; return; }
+            if (re != null) { _error = string.Format(Loc["Fmt_Destination"], re); return; }
         }
 
         // For deposit, look up the current managing contract to decide if rights transfer is needed
@@ -1071,7 +1072,7 @@ else
                     }
                     else if (!Qubic.Core.QubicContracts.SupportsManagementRightsTransfer(managingContract))
                     {
-                        _error = $"Asset is managed by {Qubic.Core.QubicContracts.FormatContract(managingContract)} which does not support rights transfer.";
+                        _error = string.Format(Loc["Fmt_AssetManagedBy"], Qubic.Core.QubicContracts.FormatContract(managingContract));
                         return;
                     }
                     else
@@ -1083,33 +1084,35 @@ else
                 }
                 else
                 {
-                    _error = "Asset not found in your owned assets. Make sure you own the specified asset.";
+                    _error = Loc["Msg_AssetNotOwned"];
                     return;
                 }
             }
             catch (Exception ex)
             {
-                _error = $"Failed to look up asset: {ex.Message}";
+                _error = string.Format(Loc["Fmt_FailedLookupAsset"], ex.Message);
                 return;
             }
         }
 
+        var _rightsFeeFrag = rightsFee > 0 ? string.Format(Loc["Fmt_FeeFragment"], rightsFee) : "";
+        var _destShort = _aDest.Trim()[..Math.Min(12, _aDest.Trim().Length)];
         string confirmMsg = _assetOp switch
         {
-            "deposit" when transferRights => $"Deposit {_aAmount:N0} {_aName.Trim()} to vault #{_aVaultId}?\n\nThis will send 2 transactions:\n1. Transfer management rights from {Qubic.Core.QubicContracts.FormatContract(managingContract)} to MSVault{(rightsFee > 0 ? $" (fee: {rightsFee:N0} QU)" : "")}\n2. Deposit asset to vault (fee: {_fees.Value.deposit:N0} QU)",
-            "deposit" => $"Deposit {_aAmount:N0} {_aName.Trim()} to vault #{_aVaultId}?\n\nFee: {_fees.Value.deposit:N0} QU",
-            "release" => $"Release {_aAmount:N0} {_aName.Trim()} from vault #{_aVaultId} to {_aDest.Trim()[..Math.Min(12, _aDest.Trim().Length)]}...?\n\nFee: {_fees.Value.release:N0} QU",
-            "reset" => $"Reset all pending asset releases for vault #{_aVaultId}?\n\nFee: {_fees.Value.reset:N0} QU",
-            "revoke" => $"Revoke management rights for {_aAmount:N0} {_aName.Trim()} shares?\n\nFee: 100 QU",
-            _ => "Proceed with asset operation?"
+            "deposit" when transferRights => string.Format(Loc["Fmt_AssetDepositRights"], _aAmount, _aName.Trim(), _aVaultId, Qubic.Core.QubicContracts.FormatContract(managingContract), _rightsFeeFrag, _fees.Value.deposit),
+            "deposit" => string.Format(Loc["Fmt_AssetDeposit"], _aAmount, _aName.Trim(), _aVaultId, _fees.Value.deposit),
+            "release" => string.Format(Loc["Fmt_AssetRelease"], _aAmount, _aName.Trim(), _aVaultId, _destShort, _fees.Value.release),
+            "reset" => string.Format(Loc["Fmt_AssetReset"], _aVaultId, _fees.Value.reset),
+            "revoke" => string.Format(Loc["Fmt_AssetRevoke"], _aAmount, _aName.Trim()),
+            _ => Loc["MV_ProceedAssetOp"]
         };
         string title = _assetOp switch
         {
-            "deposit" => "Deposit Asset",
-            "release" => "Release Asset",
-            "reset" => "Reset Asset Release",
-            "revoke" => "Revoke Management Rights",
-            _ => "Asset Operation"
+            "deposit" => Loc["MV_AssetOp_Deposit"],
+            "release" => Loc["MV_ReleaseAsset"],
+            "reset" => Loc["MV_AssetOp_Reset"],
+            "revoke" => Loc["MV_RevokeMgmt"],
+            _ => Loc["MV_AssetOperation"]
         };
         var asset = ParseAsset();
         var op = _assetOp;
@@ -1125,7 +1128,7 @@ else
         var resetFee = (long)_fees.Value.reset;
         const long revokeFee = 100;
 
-        ShowConfirm(title, confirmMsg, "Confirm", async () =>
+        ShowConfirm(title, confirmMsg, Loc["CD_Confirm"], async () =>
         {
             _sending = true;
             try
@@ -1230,12 +1233,12 @@ else
 
     private void ApproveRelease(ulong vaultId, ulong amount, string destination)
     {
-        if (_fees == null) { _error = "Fees not loaded yet. Please wait."; return; }
+        if (_fees == null) { _error = Loc["Msg_FeesNotLoaded"]; return; }
         _error = null; _result = null;
         var fee = (long)_fees.Value.release;
-        ShowConfirm("Approve Release",
-            $"Approve release of {amount:N0} QU from vault #{vaultId} to {destination[..Math.Min(12, destination.Length)]}...?\n\nFee: {fee:N0} QU",
-            "Approve", async () =>
+        ShowConfirm(Loc["MV_ApproveRelease"],
+            string.Format(Loc["Fmt_MvApproveRelease"], amount, vaultId, destination[..Math.Min(12, destination.Length)], fee),
+            Loc["MV_Approve"], async () =>
         {
             _sending = true;
             _pendingApproval = (vaultId, amount, destination);
@@ -1258,12 +1261,12 @@ else
 
     private void ApproveAssetRelease(ulong vaultId, string issuer, string assetName, ulong amount, string destination)
     {
-        if (_fees == null) { _error = "Fees not loaded yet. Please wait."; return; }
+        if (_fees == null) { _error = Loc["Msg_FeesNotLoaded"]; return; }
         _error = null; _result = null;
         var fee = (long)_fees.Value.release;
-        ShowConfirm("Approve Asset Release",
-            $"Approve release of {amount:N0} {assetName} from vault #{vaultId} to {destination[..Math.Min(12, destination.Length)]}...?\n\nFee: {fee:N0} QU",
-            "Approve", async () =>
+        ShowConfirm(Loc["MV_ApproveAssetRelease"],
+            string.Format(Loc["Fmt_MvApproveAssetRelease"], amount, assetName, vaultId, destination[..Math.Min(12, destination.Length)], fee),
+            Loc["MV_Approve"], async () =>
         {
             _sending = true;
             _pendingAssetApproval = (vaultId, assetName, amount, destination);

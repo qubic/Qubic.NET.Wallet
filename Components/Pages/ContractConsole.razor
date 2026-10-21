@@ -11,25 +11,26 @@
 @inject TransactionTrackerService TxTracker
 @inject QubicSettingsService Settings
 @inject NetworkProfileService Profiles
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
 <h4>Contract Console</h4>
-<p class="text-muted">Call any smart contract function or procedure — including your own contract, imported from its C++ header.</p>
+<p class="text-muted">@Loc["CC_Subtitle"]</p>
 
 @if (!Features.IsEnabled(WalletFeature.DeveloperTools))
 {
-    <div class="alert alert-secondary">The contract console is part of <strong>Developer tools</strong>. Turn it on in <a href="/settings?tab=features">Settings → Features</a>.</div>
+    <div class="alert alert-secondary">@Loc["CC_FeatureOffPre"] <strong>@Loc["CC_DeveloperTools"]</strong>. @Loc["CC_TurnOnIn"] <a href="/settings?tab=features">@Loc["Common_SettingsFeatures"]</a>.</div>
 }
 else
 {
     <div class="row g-3">
         <div class="col-lg-7">
             <div class="card mb-3">
-                <div class="card-header">Call</div>
+                <div class="card-header">@Loc["CC_Call"]</div>
                 <div class="card-body">
                     <div class="row g-2 mb-2">
                         <div class="col-md-7">
-                            <label class="form-label small">Contract</label>
+                            <label class="form-label small">@Loc["Common_Contract"]</label>
                             <select class="form-select form-select-sm" value="@_contractIndex" @onchange="OnContractChanged">
                                 @foreach (var c in Contracts.Catalog.All)
                                 {
@@ -42,17 +43,17 @@ else
                             </select>
                         </div>
                         <div class="col-md-5">
-                            <label class="form-label small">Kind</label>
+                            <label class="form-label small">@Loc["CC_Kind"]</label>
                             <div class="btn-group btn-group-sm w-100">
-                                <button class="btn @(_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(true)">Function (read)</button>
-                                <button class="btn @(!_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(false)">Procedure (tx)</button>
+                                <button class="btn @(_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(true)">@Loc["CC_FunctionRead"]</button>
+                                <button class="btn @(!_isFunction ? "btn-primary" : "btn-outline-primary")" @onclick="() => SetKind(false)">@Loc["CC_ProcedureTx"]</button>
                             </div>
                         </div>
                     </div>
 
                     @{ var contract = Contracts.Catalog.Get(_contractIndex); }
                     <div class="mb-2">
-                        <label class="form-label small">@(_isFunction ? "Function" : "Procedure")</label>
+                        <label class="form-label small">@(_isFunction ? Loc["CC_Function"] : Loc["CC_Procedure"])</label>
                         @if (contract != null && Entries(contract).Any())
                         {
                             <select class="form-select form-select-sm" value="@_inputType" @onchange="OnEntryChanged">
@@ -71,12 +72,12 @@ else
                     <div class="mb-2">
                         @if (CurrentInput is { } input)
                         {
-                            <label class="form-label small">Input <span class="text-muted">(@ContractLayout.SizeOf(input) bytes)</span></label>
+                            <label class="form-label small">@Loc["CC_Input"] <span class="text-muted">(@ContractLayout.SizeOf(input) bytes)</span></label>
                             <StructEditor Def="input" Values="_values" OnChanged="StateHasChanged" />
                         }
                         else
                         {
-                            <label class="form-label small">Raw input (hex)</label>
+                            <label class="form-label small">@Loc["CC_RawInputHex"]</label>
                             <input class="form-control form-control-sm mono" placeholder="0x…" @bind="_rawHex" />
                         }
                     </div>
@@ -85,11 +86,11 @@ else
                     {
                         <div class="row g-2 mb-2">
                             <div class="col-md-6">
-                                <label class="form-label small">Amount (QU sent with the call)</label>
+                                <label class="form-label small">@Loc["CC_AmountCall"]</label>
                                 <input type="number" min="0" class="form-control form-control-sm" @bind="_amount" />
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small">Target tick</label>
+                                <label class="form-label small">@Loc["Send_TargetTick"]</label>
                                 <div class="input-group input-group-sm">
                                     <input type="number" class="form-control" @bind="_targetTick" placeholder="auto" />
                                     @if (_targetTick == 0) { <TickTargetPreview /> }
@@ -103,17 +104,17 @@ else
                     @if (_isFunction)
                     {
                         <button class="btn btn-sm btn-primary" @onclick="Query" disabled="@_busy">
-                            <i class="bi bi-search me-1"></i>@(_busy ? "Querying…" : "Query")
+                            <i class="bi bi-search me-1"></i>@(_busy ? Loc["CC_Querying"] : Loc["CC_Query"])
                         </button>
                     }
                     else if (!Seed.HasSeed)
                     {
-                        <div class="alert alert-warning py-1 small mb-0">Unlock a seed to send procedures.</div>
+                        <div class="alert alert-warning py-1 small mb-0">@Loc["CC_UnlockProc"]</div>
                     }
                     else
                     {
                         <button class="btn btn-sm btn-primary" @onclick="Send" disabled="@_busy">
-                            <i class="bi bi-pen me-1"></i>@(_busy ? "Sending…" : "Review & Sign")
+                            <i class="bi bi-pen me-1"></i>@(_busy ? Loc["Common_Sending"] : Loc["Send_ReviewSign"])
                         </button>
                     }
                 </div>
@@ -137,12 +138,12 @@ else
                         Transaction <TxHashDisplay Hash="@_txHash" />
                         <span class="ms-2 text-muted">target tick @_sentTick.ToString("N0")</span>
                         <button class="btn btn-sm btn-outline-secondary ms-auto" @onclick="CheckResult"
-                                disabled="@(_busy || !Backend.IsAvailable(Capability.TransactionReceipt))">Check result</button>
+                                disabled="@(_busy || !Backend.IsAvailable(Capability.TransactionReceipt))">@Loc["CC_CheckResult"]</button>
                     </div>
                     @if (_receipt != null)
                     {
                         <div class="card-body small">
-                            <div>Status: <strong class="@(_receipt.Status ? "text-success" : "text-danger")">@(_receipt.Status ? "executed" : "failed / not executed")</strong></div>
+                            <div>@Loc["CC_StatusLabel"] <strong class="@(_receipt.Status ? "text-success" : "text-danger")">@(_receipt.Status ? Loc["CC_Executed"] : Loc["CC_NotExecuted"])</strong></div>
                             @if (_receiptNote != null) { <div class="text-muted">@_receiptNote</div> }
                         </div>
                     }
@@ -156,7 +157,7 @@ else
 
         <div class="col-lg-5">
             <div class="card mb-3">
-                <div class="card-header"><i class="bi bi-file-earmark-code me-1"></i>Import contract header</div>
+                <div class="card-header"><i class="bi bi-file-earmark-code me-1"></i>@Loc["CC_ImportHeader"]</div>
                 <div class="card-body">
                     <p class="small text-muted">
                         Paste or load your contract's <code>.h</code> (e.g. <code>core-lite/src/contracts/MyContract.h</code>).
@@ -165,17 +166,17 @@ else
                     </p>
                     <div class="row g-2 mb-2">
                         <div class="col-4">
-                            <label class="form-label small">Index</label>
+                            <label class="form-label small">@Loc["CC_Index"]</label>
                             <input type="number" min="1" max="1023" class="form-control form-control-sm" @bind="_importIndex" />
                         </div>
                         <div class="col-8">
-                            <label class="form-label small">Name (optional)</label>
+                            <label class="form-label small">@Loc["CC_NameOptional"]</label>
                             <input class="form-control form-control-sm" @bind="_importName" />
                         </div>
                     </div>
                     <InputFile OnChange="LoadHeaderFile" accept=".h,.hpp,.txt" class="form-control form-control-sm mb-2" />
                     <textarea class="form-control form-control-sm mono mb-2" rows="6" placeholder="struct MYCONTRACT : public ContractBase { … }" @bind="_importSource"></textarea>
-                    <button class="btn btn-sm btn-primary" @onclick="Import" disabled="@string.IsNullOrWhiteSpace(_importSource)">Import</button>
+                    <button class="btn btn-sm btn-primary" @onclick="Import" disabled="@string.IsNullOrWhiteSpace(_importSource)">@Loc["Common_Import"]</button>
                     @if (_importResult != null) { <div class="small mt-2 text-success">@_importResult</div> }
                     @foreach (var w in _importWarnings) { <div class="small text-warning">@w</div> }
                     @if (_importError != null) { <div class="small mt-2 text-danger">@_importError</div> }
@@ -183,13 +184,13 @@ else
                     @if (Contracts.Imported.Count > 0)
                     {
                         <hr />
-                        <div class="small fw-semibold mb-1">Imported on this network</div>
+                        <div class="small fw-semibold mb-1">@Loc["CC_ImportedOnNetwork"]</div>
                         <ul class="list-unstyled small mb-0">
                             @foreach (var c in Contracts.Imported)
                             {
                                 <li class="d-flex align-items-center">
                                     <span>#@c.Index @c.Name <span class="text-muted">(@c.StructName, @c.ImportedUtc.ToLocalTime().ToString("g"))</span></span>
-                                    <button class="btn btn-sm btn-link text-danger ms-auto p-0" @onclick="() => Contracts.Remove(c.Index)">remove</button>
+                                    <button class="btn btn-sm btn-link text-danger ms-auto p-0" @onclick="() => Contracts.Remove(c.Index)">@Loc["Common_Remove2"]</button>
                                 </li>
                             }
                         </ul>
@@ -201,14 +202,14 @@ else
             {
                 <div class="card">
                     <div class="card-header small d-flex align-items-center">
-                        Contracts on this node
-                        <button class="btn btn-sm btn-outline-secondary ms-auto" @onclick="RefreshOnChain">Refresh</button>
+                        @Loc["CC_ContractsOnNode"]
+                        <button class="btn btn-sm btn-outline-secondary ms-auto" @onclick="RefreshOnChain">@Loc["Common_Refresh"]</button>
                     </div>
                     @if (Contracts.OnChainContracts.Count > 0)
                     {
                         <div class="card-body p-0">
                             <table class="table table-sm mb-0 small">
-                                <thead><tr><th>#</th><th>Name</th><th>Since epoch</th><th>State</th></tr></thead>
+                                <thead><tr><th>#</th><th>@Loc["Common_Name"]</th><th>@Loc["CC_SinceEpoch"]</th><th>@Loc["CC_State"]</th></tr></thead>
                                 <tbody>
                                     @foreach (var c in Contracts.OnChainContracts)
                                     {
@@ -352,9 +353,9 @@ else
             _txHash = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed,
                 QubicContracts.GetContractIdentity(_contractIndex), _amount, tick, payload, $"{name}: {entry}");
             _sentTick = tick;
-            _receiptNote = "Broadcast. Use \"Check result\" once the target tick has passed.";
+            _receiptNote = Loc["Msg_BroadcastCheck"];
         }
-        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = Loc["Msg_SigningCancelled"]; }
         catch (Exception ex) { _error = ex.Message; }
         finally { _busy = false; }
     }
@@ -367,11 +368,11 @@ else
         {
             if (TickMonitor.Tick <= _sentTick)
             {
-                _receiptNote = $"Target tick {_sentTick:N0} not reached yet (now {TickMonitor.Tick:N0}).";
+                _receiptNote = string.Format(Loc["Fmt_TargetTickNotReached"], _sentTick, TickMonitor.Tick);
                 return;
             }
             _receipt = await Backend.GetTransactionReceiptAsync(_txHash);
-            if (_receipt == null) _receiptNote = "No receipt yet — the transaction was not (yet) included.";
+            if (_receipt == null) _receiptNote = Loc["Msg_NoReceiptYet"];
         }
         catch (Exception ex) { _receiptNote = ex.Message; }
         finally { _busy = false; }
@@ -396,7 +397,7 @@ else
         {
             var (def, warnings) = Contracts.Import(_importSource!, _importIndex, string.IsNullOrWhiteSpace(_importName) ? null : _importName.Trim());
             _importWarnings = warnings;
-            _importResult = $"Imported {def.CSharpName} as #{def.ContractIndex}: {def.Functions.Count} functions, {def.Procedures.Count} procedures.";
+            _importResult = string.Format(Loc["Fmt_Imported"], def.CSharpName, def.ContractIndex, def.Functions.Count, def.Procedures.Count);
             _contractIndex = def.ContractIndex;
             SelectFirstEntry();
         }
@@ -406,7 +407,7 @@ else
     private async Task RefreshOnChain()
     {
         if (!await Contracts.RefreshOnChainAsync())
-            _error = "Could not load the node's contract list.";
+            _error = Loc["Msg_LoadContractsFailed"];
     }
 
     public void Dispose()

@@ -5,9 +5,10 @@
 @inject TickMonitorService TickMonitor
 @inject SeedSessionService Seed
 @inject IJSRuntime JS
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Transaction History</h4>
-<p class="text-muted">Track broadcast transactions and view synced history. Data is encrypted locally per seed.</p>
+<h4>@Loc["TH_Title"]</h4>
+<p class="text-muted">@Loc["TH_Subtitle"]</p>
 
 @* ── Sync Status ── *@
 @if (WalletStorage.IsOpen)
@@ -86,14 +87,14 @@
 
     <div class="d-flex gap-2 mb-3">
         <button class="btn btn-sm btn-outline-secondary" @onclick="ExportToFile" disabled="@(TxTracker.Transactions.Count == 0)">
-            Export JSON
+            @Loc["TH_ExportJson"]
         </button>
         <button class="btn btn-sm btn-outline-secondary" @onclick="() => _showImport = !_showImport">
-            @(_showImport ? "Hide Import" : "Import JSON")
+            @(_showImport ? Loc["TH_HideImport"] : Loc["TH_ImportJson"])
         </button>
         @if (TxTracker.Transactions.Count > 0)
         {
-            <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => _confirmClear = true">Clear All</button>
+            <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => _confirmClear = true">@Loc["Common_ClearAll"]</button>
         }
     </div>
 
@@ -109,16 +110,16 @@
     {
         <div class="card mb-3 bg-body-secondary">
             <div class="card-body py-2">
-                <label class="form-label-sm">Paste exported JSON or load from file:</label>
+                <label class="form-label-sm">@Loc["TH_PasteJson"]</label>
                 <div class="d-flex gap-2 mb-2">
                     <input type="file" id="importFileInput" accept=".json" style="display:none" />
-                    <button class="btn btn-sm btn-outline-primary" @onclick="LoadFromFile">Load File</button>
+                    <button class="btn btn-sm btn-outline-primary" @onclick="LoadFromFile">@Loc["TH_LoadFile"]</button>
                 </div>
                 <textarea class="form-control form-control-sm mono" rows="6"
                           placeholder="Paste JSON here..." @bind="_importText"></textarea>
                 <div class="mt-2 d-flex gap-2 align-items-center">
-                    <button class="btn btn-sm btn-primary" @onclick="ImportFromText">Import</button>
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _showImport = false; _importText = null; _importError = null; }">Cancel</button>
+                    <button class="btn btn-sm btn-primary" @onclick="ImportFromText">@Loc["Common_Import"]</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => { _showImport = false; _importText = null; _importError = null; }">@Loc["Common_Cancel"]</button>
                     @if (_importError != null)
                     {
                         <span class="text-danger small">@_importError</span>
@@ -134,7 +135,7 @@
 
     @if (TxTracker.Transactions.Count == 0)
     {
-        <div class="alert alert-info">No transactions tracked yet. Transactions will appear here after you broadcast them.</div>
+        <div class="alert alert-info">@Loc["TH_NoTracked"]</div>
     }
     else
     {
@@ -144,12 +145,12 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Status</th>
+                        <th>@Loc["Common_Status"]</th>
                         <th>Tx ID</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Target Tick</th>
-                        <th>Created</th>
+                        <th>@Loc["Common_Description"]</th>
+                        <th>@Loc["Common_Amount"]</th>
+                        <th>@Loc["Send_TargetTick"]</th>
+                        <th>@Loc["Common_Created"]</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -169,14 +170,14 @@
                                         }
                                         else
                                         {
-                                            <span class="badge bg-warning text-dark">Pending</span>
+                                            <span class="badge bg-warning text-dark">@Loc["TH_St_Pending"]</span>
                                         }
                                         break;
                                     case TrackedTxStatus.Confirmed:
-                                        <span class="badge bg-success">Confirmed</span>
+                                        <span class="badge bg-success">@Loc["TH_St_Confirmed"]</span>
                                         break;
                                     case TrackedTxStatus.Failed:
-                                        <span class="badge bg-danger">Failed</span>
+                                        <span class="badge bg-danger">@Loc["TH_St_Failed"]</span>
                                         break;
                                     case TrackedTxStatus.Unknown:
                                         <span class="badge bg-secondary">Unknown</span>
@@ -376,9 +377,9 @@ else
 }
 
 <ConfirmModal Visible="_confirmClear"
-             Title="Clear All"
-             Message="Remove all tracked transactions?"
-             ConfirmText="Clear All"
+             Title="@Loc["Common_ClearAll"]"
+             Message="@Loc["TH_RemoveAllConfirm"]"
+             ConfirmText="@Loc["Common_ClearAll"]"
              OnConfirm="() => { TxTracker.Clear(); _confirmClear = false; _expandedHash = null; }"
              OnCancel="() => _confirmClear = false" />
 
@@ -476,11 +477,11 @@ else
             var base64 = Convert.ToBase64String(bytes);
             var filename = $"qubic-tx-{DateTime.Now:yyyyMMdd-HHmmss}.json";
             await JS.InvokeVoidAsync("downloadFile", filename, "application/json", base64);
-            _exportMessage = $"Exported {TxTracker.Transactions.Count} transaction(s) to {filename}";
+            _exportMessage = string.Format(Loc["Fmt_Exported"], TxTracker.Transactions.Count, filename);
         }
         catch (Exception ex)
         {
-            _exportMessage = "Export failed: " + ex.Message;
+            _exportMessage = Loc["Msg_ExportFailed"] + ex.Message;
         }
     }
 
@@ -499,7 +500,7 @@ else
         }
         catch (Exception ex)
         {
-            _importError = "Could not read file: " + ex.Message;
+            _importError = Loc["Msg_CouldNotReadFile"] + ex.Message;
         }
     }
 
@@ -510,7 +511,7 @@ else
 
         if (string.IsNullOrWhiteSpace(_importText))
         {
-            _importError = "Nothing to import.";
+            _importError = Loc["Msg_NothingToImport"];
             return;
         }
 
@@ -525,7 +526,7 @@ else
         }
         catch (Exception ex)
         {
-            _importError = "Invalid JSON: " + ex.Message;
+            _importError = Loc["Msg_InvalidJson"] + ex.Message;
         }
     }
 

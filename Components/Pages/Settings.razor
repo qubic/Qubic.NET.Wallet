@@ -12,67 +12,78 @@
 @inject FileDialogService DialogService
 @inject Qubic.Services.Features.FeatureService Features
 @inject NavigationManager Nav
+@inject Qubic.Net.Wallet.Localization.LanguageService Language
+@inject Qubic.Net.Wallet.Services.AppRestartService AppRestart
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Settings</h4>
-<p class="text-muted">Configure Qubic.Net Wallet behavior.</p>
+<h4>@Loc["ST_Title"]</h4>
+<p class="text-muted">@Loc["ST_Subtitle"]</p>
 
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "general" ? "active" : "")" href="" @onclick="@(() => SetTab("general"))" @onclick:preventDefault>
-            <i class="bi bi-gear me-1"></i>General
-        </a>
+            <i class="bi bi-gear me-1"></i>@Loc["ST_Tab_General"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "networks" ? "active" : "")" href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>
-            <i class="bi bi-hdd-network me-1"></i>Networks</a>
+            <i class="bi bi-hdd-network me-1"></i>@Loc["ST_Tab_Networks"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "features" ? "active" : "")" href="" @onclick="@(() => SetTab("features"))" @onclick:preventDefault>
-            <i class="bi bi-toggles me-1"></i>Features
-        </a>
+            <i class="bi bi-toggles me-1"></i>@Loc["ST_Tab_Features"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "transactions" ? "active" : "")" href="" @onclick="@(() => SetTab("transactions"))" @onclick:preventDefault>
-            <i class="bi bi-arrow-left-right me-1"></i>Transactions
-        </a>
+            <i class="bi bi-arrow-left-right me-1"></i>@Loc["ST_Tab_Transactions"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "labels" ? "active" : "")" href="" @onclick="@(() => SetTab("labels"))" @onclick:preventDefault>
-            <i class="bi bi-tags me-1"></i>Labels
-        </a>
+            <i class="bi bi-tags me-1"></i>@Loc["ST_Tab_Labels"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "data" ? "active" : "")" href="" @onclick="@(() => SetTab("data"))" @onclick:preventDefault>
-            <i class="bi bi-database me-1"></i>Data
-        </a>
+            <i class="bi bi-database me-1"></i>@Loc["ST_Tab_Data"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "vault" ? "active" : "")" href="" @onclick="@(() => SetTab("vault"))" @onclick:preventDefault>
-            <i class="bi bi-shield-lock me-1"></i>Vault
-        </a>
+            <i class="bi bi-shield-lock me-1"></i>@Loc["ST_Tab_Vault"]</a>
     </li>
 </ul>
 
 @if (_activeTab == "general")
 {
     <div class="row"><div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header"><i class="bi bi-translate me-1"></i>@Loc["Language_Title"]</div>
+            <div class="card-body">
+                <p class="small text-muted mb-2">@Loc["Language_Description"]</p>
+                <label class="form-label small">@Loc["Language_Label"]</label>
+                <select class="form-select" value="@Language.CurrentCode" @onchange="OnLanguageChanged">
+                    @foreach (var lang in Qubic.Net.Wallet.Localization.LanguageService.Supported)
+                    {
+                        <option value="@lang.Code">@lang.NativeName@(lang.Code == "en" ? "" : $" ({lang.EnglishName})")</option>
+                    }
+                </select>
+            </div>
+        </div>
+
         <div class="mb-3">
-            <label class="form-label">Theme</label>
+            <label class="form-label">@Loc["ST_Theme"]</label>
             <select class="form-select" value="@_theme" @onchange="OnThemeChanged">
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
+                <option value="light">@Loc["ST_ThemeLight"]</option>
+                <option value="dark">@Loc["ST_ThemeDark"]</option>
             </select>
         </div>
 
         <div class="card mb-3">
-            <div class="card-header"><i class="bi bi-clock me-1"></i>Auto-Lock</div>
+            <div class="card-header"><i class="bi bi-clock me-1"></i>@Loc["ST_AutoLock"]</div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label small">Lock vault after inactivity (minutes)</label>
+                    <label class="form-label small">@Loc["ST_LockAfter"]</label>
                     <input type="number" class="form-control form-control-sm" min="0" max="480"
                            value="@AutoLock.TimeoutMinutes"
                            @onchange="e => { if (int.TryParse(e.Value?.ToString(), out var m)) AutoLock.TimeoutMinutes = m; }" />
-                    <div class="form-text">Set to 0 to disable auto-lock. Default: 15 minutes.</div>
+                    <div class="form-text">@Loc["ST_LockAfterHelp"]</div>
                 </div>
             </div>
         </div>
@@ -85,7 +96,7 @@ else if (_activeTab == "networks")
 else if (_activeTab == "features")
 {
     <div class="row"><div class="col-lg-8">
-        <p class="small text-muted">Optional features are off unless enabled here. Features that are off do not run at all.</p>
+        <p class="small text-muted">@Loc["ST_FeaturesIntro"]</p>
         <FeaturesPanel OnChanged="OnFeatureChanged" />
     </div></div>
 }
@@ -95,7 +106,7 @@ else if (_activeTab == "transactions")
         <div class="alert alert-secondary small py-2">
             <i class="bi bi-info-circle me-1"></i>
             The target tick (fixed offset or "execute in ~N seconds") is set per network in
-            <a href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>Networks</a>.
+            <a href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>@Loc["ST_Tab_Networks"]</a>.
         </div>
 
         <div class="mb-3">
@@ -104,7 +115,7 @@ else if (_activeTab == "transactions")
                        checked="@Cfg.AutoResend"
                        @onchange="e => Cfg.AutoResend = (bool)(e.Value ?? false)" />
                 <label class="form-check-label" for="autoResend">
-                    Auto-Resend Failed Transactions
+                    @Loc["ST_AutoResend"]
                 </label>
             </div>
             <div class="form-text">
@@ -115,7 +126,7 @@ else if (_activeTab == "transactions")
         @if (Cfg.AutoResend)
         {
             <div class="mb-3">
-                <label class="form-label">Max Resend Attempts</label>
+                <label class="form-label">@Loc["ST_MaxResend"]</label>
                 <input type="number" class="form-control" min="1" max="20"
                        value="@Cfg.AutoResendMaxRetries"
                        @onchange="e => Cfg.AutoResendMaxRetries = int.TryParse(e.Value?.ToString(), out var v) ? v : 3" />
@@ -132,7 +143,7 @@ else if (_activeTab == "labels")
                        checked="@Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels)"
                        @onchange="OnRemoteLabelsToggled" />
                 <label class="form-check-label" for="remoteLabels">
-                    Load labels from remote registry
+                    @Loc["ST_RemoteLabels"]
                 </label>
             </div>
             <div class="form-text">
@@ -145,7 +156,7 @@ else if (_activeTab == "labels")
         {
             <div class="d-flex align-items-center gap-2 mb-2">
                 <button class="btn btn-outline-primary btn-sm" @onclick="RefreshLabels" disabled="@StaticData.IsLoading">
-                    <i class="bi bi-arrow-clockwise me-1"></i>@(StaticData.IsLoading ? "Loading..." : "Refresh Labels")
+                    <i class="bi bi-arrow-clockwise me-1"></i>@(StaticData.IsLoading ? Loc["Common_Loading"] : Loc["ST_RefreshLabels"])
                 </button>
                 @if (StaticData.LastFetched != null)
                 {
@@ -178,7 +189,7 @@ else if (_activeTab == "data")
         else
         {
             <div class="card mb-3">
-                <div class="card-header">Export Database</div>
+                <div class="card-header">@Loc["ST_ExportDb"]</div>
                 <div class="card-body">
                     <p class="small text-muted mb-2">
                         Download a backup of your wallet database. This includes all synced transactions,
@@ -189,7 +200,7 @@ else if (_activeTab == "data")
                         {
                             <span class="spinner-border spinner-border-sm me-1"></span>
                         }
-                        <i class="bi bi-download me-1"></i>Export Database
+                        <i class="bi bi-download me-1"></i>@Loc["ST_ExportDb"]
                     </button>
                     @if (_exportError != null)
                     {
@@ -199,7 +210,7 @@ else if (_activeTab == "data")
             </div>
 
             <div class="card mb-3">
-                <div class="card-header">Import Database</div>
+                <div class="card-header">@Loc["ST_ImportDb"]</div>
                 <div class="card-body">
                     <p class="small text-muted mb-2">
                         Restore a previously exported database. This will <strong>replace</strong> your current database
@@ -234,11 +245,11 @@ else if (_activeTab == "data")
             </div>
 
             <div class="card">
-                <div class="card-header">Storage Info</div>
+                <div class="card-header">@Loc["ST_StorageInfo"]</div>
                 <div class="card-body small">
-                    <div class="mb-1"><strong>Database path:</strong> <code>@WalletStorage.Database.DatabasePath</code></div>
-                    <div class="mb-1"><strong>Transactions:</strong> @WalletStorage.TransactionCount</div>
-                    <div><strong>Log events:</strong> @WalletStorage.LogEventCount</div>
+                    <div class="mb-1"><strong>@Loc["ST_DatabasePath"]</strong> <code>@WalletStorage.Database.DatabasePath</code></div>
+                    <div class="mb-1"><strong>@Loc["ST_TransactionsCount"]</strong> @WalletStorage.TransactionCount</div>
+                    <div><strong>@Loc["ST_LogEventsCount"]</strong> @WalletStorage.LogEventCount</div>
                 </div>
             </div>
         }
@@ -254,13 +265,13 @@ else if (_activeTab == "vault")
                 No vault configured. Create a new vault or open an existing vault file.
             </div>
             <div class="card mb-3">
-                <div class="card-header">Create New Vault</div>
+                <div class="card-header">@Loc["ST_CreateNewVault"]</div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label class="form-label small">Vault File Location</label>
+                        <label class="form-label small">@Loc["Shell_VaultFileLocation"]</label>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control"
-                                   @bind="_vaultCreatePath" placeholder="Path to save vault file..." />
+                                   @bind="_vaultCreatePath" placeholder="@Loc["Shell_VaultPathPlaceholder"]" />
                             @if (DialogService.IsAvailable)
                             {
                                 <button class="btn btn-outline-secondary" type="button" @onclick="BrowseCreateVaultPath">
@@ -268,27 +279,27 @@ else if (_activeTab == "vault")
                                 </button>
                             }
                         </div>
-                        <div class="form-text">Choose where to save your encrypted vault file.</div>
+                        <div class="form-text">@Loc["Shell_VaultPathHelp"]</div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Seed (55 characters)</label>
+                        <label class="form-label small">@Loc["ST_Seed55"]</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_vaultCreateSeed" placeholder="Enter 55-char seed..." />
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Label</label>
+                        <label class="form-label small">@Loc["Common_Label"]</label>
                         <input type="text" class="form-control form-control-sm"
                                @bind="_vaultCreateLabel" placeholder="e.g. Main" />
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Password</label>
+                        <label class="form-label small">@Loc["ST_Password"]</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_vaultCreatePassword" @bind:event="oninput" />
                         <PasswordStrengthMeter Password="@_vaultCreatePassword" />
-                        <div class="form-text">Min 12 characters. Longer passphrases beat complex ones — a string of unrelated words is easier to remember and harder to crack.</div>
+                        <div class="form-text">@Loc["Shell_PasswordHelp"]</div>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Confirm Password</label>
+                        <label class="form-label small">@Loc["Shell_ConfirmPassword"]</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_vaultCreatePasswordConfirm" />
                     </div>
@@ -302,10 +313,10 @@ else if (_activeTab == "vault")
                 </div>
             </div>
             <div class="card">
-                <div class="card-header">Open Existing Vault</div>
+                <div class="card-header">@Loc["ST_OpenExistingVault"]</div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label class="form-label small">Vault File Path</label>
+                        <label class="form-label small">@Loc["ST_VaultFilePath"]</label>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control"
                                    @bind="_vaultOpenPath" placeholder="Path to existing vault file..." />
@@ -354,7 +365,7 @@ else if (_activeTab == "vault")
                     {
                         <div class="p-3 border-bottom" style="border-color:var(--qb-border)!important">
                             <div class="mb-2">
-                                <label class="form-label small mb-1">Seed (55 characters)</label>
+                                <label class="form-label small mb-1">@Loc["ST_Seed55"]</label>
                                 <div class="input-group input-group-sm">
                                     <input type="@(_vaultAddSeedRevealed ? "text" : "password")" class="form-control form-control-sm mono"
                                            @bind="_vaultAddSeed" placeholder="Enter or generate a 55-char seed..." />
@@ -373,11 +384,11 @@ else if (_activeTab == "vault")
                             {
                                 <div class="alert alert-danger small py-2 mb-2">
                                     <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                                    <strong>Write down this seed and store it safely!</strong> If you lose it, there is no recovery.
+                                    <strong>@Loc["ST_WriteDownBold"]</strong> @Loc["ST_WriteDownPost"]
                                 </div>
                             }
                             <div class="mb-2">
-                                <label class="form-label small mb-1">Label</label>
+                                <label class="form-label small mb-1">@Loc["Common_Label"]</label>
                                 <input type="text" class="form-control form-control-sm"
                                        @bind="_vaultAddLabel" placeholder="e.g. Trading" />
                             </div>
@@ -389,23 +400,23 @@ else if (_activeTab == "vault")
                                 <button class="btn btn-primary btn-sm" @onclick="AddVaultEntry">
                                     <i class="bi bi-plus-circle me-1"></i>Add Entry
                                 </button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="() => _showVaultAddSeed = false">Cancel</button>
+                                <button class="btn btn-outline-secondary btn-sm" @onclick="() => _showVaultAddSeed = false">@Loc["Common_Cancel"]</button>
                             </div>
                         </div>
                     }
 
                     @if (Vault.Entries.Count == 0)
                     {
-                        <div class="text-center text-muted py-3 small">No seeds stored.</div>
+                        <div class="text-center text-muted py-3 small">@Loc["ST_NoSeeds"]</div>
                     }
                     else
                     {
                         <table class="table table-sm table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Label</th>
-                                    <th>Identity</th>
-                                    <th style="width:150px">Actions</th>
+                                    <th>@Loc["Common_Label"]</th>
+                                    <th>@Loc["Common_Identity"]</th>
+                                    <th style="width:150px">@Loc["Common_Actions"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -475,7 +486,7 @@ else if (_activeTab == "vault")
                                         <tr>
                                             <td colspan="3" class="py-1 px-3" style="background:var(--qb-bg-alt,#1a1a2e)">
                                                 <div class="input-group input-group-sm">
-                                                    <span class="input-group-text small">Seed</span>
+                                                    <span class="input-group-text small">@Loc["ST_SeedShort"]</span>
                                                     <input type="text" class="form-control form-control-sm mono" value="@entry.Seed" readonly />
                                                     <button class="btn btn-outline-secondary btn-sm" @onclick="() => CopyRevealedSeed(entry.Seed)"
                                                             title="Copy to clipboard">
@@ -505,7 +516,7 @@ else if (_activeTab == "vault")
                     {
                         <div class="p-3 border-bottom" style="border-color:var(--qb-border)!important">
                             <div class="mb-2">
-                                <label class="form-label small mb-1">Label</label>
+                                <label class="form-label small mb-1">@Loc["Common_Label"]</label>
                                 <input type="text" class="form-control form-control-sm"
                                        @bind="_contactAddLabel" placeholder="e.g. Exchange Hot Wallet" />
                             </div>
@@ -536,9 +547,9 @@ else if (_activeTab == "vault")
                         <table class="table table-sm table-striped mb-0">
                             <thead>
                                 <tr>
-                                    <th>Label</th>
+                                    <th>@Loc["Common_Label"]</th>
                                     <th>Address</th>
-                                    <th style="width:150px">Actions</th>
+                                    <th style="width:150px">@Loc["Common_Actions"]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -647,7 +658,7 @@ else if (_activeTab == "vault")
                         @if (_confirmDeleteVault)
                         {
                             <div class="alert alert-danger py-2 mt-2 mb-2">
-                                <strong>Are you sure?</strong> This will permanently delete your vault and all stored seeds.
+                                <strong>@Loc["ST_AreYouSureBold"]</strong> @Loc["ST_DeleteConfirmPost"]
                             </div>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-danger btn-sm" @onclick="DeleteVault">
@@ -695,6 +706,17 @@ else if (_activeTab == "vault")
             }
             StateHasChanged();
         }
+    }
+
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        var code = e.Value?.ToString();
+        if (string.IsNullOrEmpty(code) || code == Language.CurrentCode) return;
+        Language.Save(code);
+        if (AppRestart.IsSupported)
+            AppRestart.Restart();                        // desktop: relaunch so the culture is applied at startup
+        else
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);    // server: a fresh reload re-renders in the new language
     }
 
     private async Task OnThemeChanged(ChangeEventArgs e)
@@ -894,12 +916,12 @@ else if (_activeTab == "vault")
     private void CreateVaultFromSettings()
     {
         _vaultCreateError = null;
-        if (string.IsNullOrWhiteSpace(_vaultCreatePath)) { _vaultCreateError = "File path is required."; return; }
-        if (_vaultCreateSeed?.Length != 55) { _vaultCreateError = "Seed must be 55 characters."; return; }
-        if (string.IsNullOrWhiteSpace(_vaultCreateLabel)) { _vaultCreateError = "Label is required."; return; }
+        if (string.IsNullOrWhiteSpace(_vaultCreatePath)) { _vaultCreateError = Loc["Msg_FilePathRequired"]; return; }
+        if (_vaultCreateSeed?.Length != 55) { _vaultCreateError = Loc["Msg_Seed55"]; return; }
+        if (string.IsNullOrWhiteSpace(_vaultCreateLabel)) { _vaultCreateError = Loc["Msg_LabelRequired"]; return; }
         var pwError = VaultService.ValidatePassword(_vaultCreatePassword);
         if (pwError != null) { _vaultCreateError = pwError; return; }
-        if (_vaultCreatePassword != _vaultCreatePasswordConfirm) { _vaultCreateError = "Passwords do not match."; return; }
+        if (_vaultCreatePassword != _vaultCreatePasswordConfirm) { _vaultCreateError = Loc["Msg_PasswordsNoMatch"]; return; }
 
         try
         {
@@ -915,7 +937,7 @@ else if (_activeTab == "vault")
     private void OpenExistingVault()
     {
         _vaultOpenError = null;
-        if (string.IsNullOrWhiteSpace(_vaultOpenPath)) { _vaultOpenError = "File path is required."; return; }
+        if (string.IsNullOrWhiteSpace(_vaultOpenPath)) { _vaultOpenError = Loc["Msg_FilePathRequired"]; return; }
         try
         {
             Vault.SetVaultPath(_vaultOpenPath);
@@ -936,12 +958,12 @@ else if (_activeTab == "vault")
         _vaultAddError = null;
         if (string.IsNullOrWhiteSpace(_vaultAddSeed) || _vaultAddSeed.Length != 55)
         {
-            _vaultAddError = "Seed must be exactly 55 characters.";
+            _vaultAddError = Loc["Msg_Seed55Exact"];
             return;
         }
         if (string.IsNullOrWhiteSpace(_vaultAddLabel))
         {
-            _vaultAddError = "Label is required.";
+            _vaultAddError = Loc["Msg_LabelRequired"];
             return;
         }
         try
@@ -1027,7 +1049,7 @@ else if (_activeTab == "vault")
         _vaultPasswordChanged = false;
         var pwError = VaultService.ValidatePassword(_vaultNewPassword);
         if (pwError != null) { _vaultPasswordChangeError = pwError; return; }
-        if (_vaultNewPassword != _vaultNewPasswordConfirm) { _vaultPasswordChangeError = "Passwords do not match."; return; }
+        if (_vaultNewPassword != _vaultNewPasswordConfirm) { _vaultPasswordChangeError = Loc["Msg_PasswordsNoMatch"]; return; }
         try
         {
             Vault.ChangePassword(_vaultOldPassword!, _vaultNewPassword!);
@@ -1071,7 +1093,7 @@ else if (_activeTab == "vault")
     {
         _contactAddError = null;
         if (string.IsNullOrWhiteSpace(_contactAddLabel))
-        { _contactAddError = "Label is required."; return; }
+        { _contactAddError = Loc["Msg_LabelRequired"]; return; }
         var err = IdentityValidation.Validate(_contactAddAddress);
         if (err != null) { _contactAddError = err; return; }
         try

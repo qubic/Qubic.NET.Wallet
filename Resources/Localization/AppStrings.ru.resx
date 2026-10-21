@@ -1,0 +1,2844 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Nav_VaultOverview" xml:space="preserve">
+    <value>Обзор хранилища</value>
+  </data>
+  <data name="Nav_Section_Transactions" xml:space="preserve">
+    <value>Транзакции</value>
+  </data>
+  <data name="Nav_Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Nav_SendToMany" xml:space="preserve">
+    <value>Отправить многим</value>
+  </data>
+  <data name="Nav_Receive" xml:space="preserve">
+    <value>Получить</value>
+  </data>
+  <data name="Nav_UnlockToSend" xml:space="preserve">
+    <value>Разблокируйте для отправки</value>
+  </data>
+  <data name="Nav_Section_Assets" xml:space="preserve">
+    <value>Активы</value>
+  </data>
+  <data name="Nav_Assets" xml:space="preserve">
+    <value>Активы</value>
+  </data>
+  <data name="Nav_Section_Defi" xml:space="preserve">
+    <value>DeFi</value>
+  </data>
+  <data name="Nav_QxTrading" xml:space="preserve">
+    <value>Торговля QX</value>
+  </data>
+  <data name="Nav_ScAuctions" xml:space="preserve">
+    <value>SC-аукционы</value>
+  </data>
+  <data name="Nav_Voting" xml:space="preserve">
+    <value>Голосование</value>
+  </data>
+  <data name="Nav_Section_History" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="Nav_Watchlist" xml:space="preserve">
+    <value>Список наблюдения</value>
+  </data>
+  <data name="Nav_TxHistory" xml:space="preserve">
+    <value>История транзакций</value>
+  </data>
+  <data name="Nav_LogEvents" xml:space="preserve">
+    <value>События журнала</value>
+  </data>
+  <data name="Nav_Section_Tools" xml:space="preserve">
+    <value>Инструменты</value>
+  </data>
+  <data name="Nav_SignVerify" xml:space="preserve">
+    <value>Подписать / Проверить</value>
+  </data>
+  <data name="Nav_LocalEndpoint" xml:space="preserve">
+    <value>Локальная точка</value>
+  </data>
+  <data name="Nav_Section_Developer" xml:space="preserve">
+    <value>Разработчик</value>
+  </data>
+  <data name="Nav_DevTools" xml:space="preserve">
+    <value>Инструменты разработчика</value>
+  </data>
+  <data name="Nav_ContractConsole" xml:space="preserve">
+    <value>Консоль контрактов</value>
+  </data>
+  <data name="Nav_SyncManager" xml:space="preserve">
+    <value>Менеджер синхронизации</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Language_Title" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Language_Description" xml:space="preserve">
+    <value>Выберите язык интерфейса. Кошелёк перезапустится, чтобы применить изменение.</value>
+  </data>
+  <data name="Language_Label" xml:space="preserve">
+    <value>Язык интерфейса</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Common_Lock" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
+  <data name="Common_Unlock" xml:space="preserve">
+    <value>Разблокировать</value>
+  </data>
+  <data name="Common_Clear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Shell_Vault" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="Shell_CopyIdentity" xml:space="preserve">
+    <value>Копировать полный идентификатор</value>
+  </data>
+  <data name="Shell_LockAndClear" xml:space="preserve">
+    <value>Заблокировать хранилище и очистить seed</value>
+  </data>
+  <data name="Shell_VaultPasswordPlaceholder" xml:space="preserve">
+    <value>Пароль хранилища...</value>
+  </data>
+  <data name="Shell_UnlockVault" xml:space="preserve">
+    <value>Разблокировать хранилище</value>
+  </data>
+  <data name="Shell_OpenAnotherVaultFile" xml:space="preserve">
+    <value>Открыть другой файл хранилища</value>
+  </data>
+  <data name="Shell_EnterSeedWithoutVault" xml:space="preserve">
+    <value>Ввести seed без хранилища</value>
+  </data>
+  <data name="Shell_UseSeedDirectly" xml:space="preserve">
+    <value>Использовать seed напрямую</value>
+  </data>
+  <data name="Shell_SeedActive" xml:space="preserve">
+    <value>Seed активен</value>
+  </data>
+  <data name="Shell_SaveToVault" xml:space="preserve">
+    <value>Сохранить в хранилище</value>
+  </data>
+  <data name="Shell_SaveToVaultTitle" xml:space="preserve">
+    <value>Сохранить этот seed в хранилище</value>
+  </data>
+  <data name="Shell_AddToVault" xml:space="preserve">
+    <value>Добавить в хранилище</value>
+  </data>
+  <data name="Shell_AddToVaultTitle" xml:space="preserve">
+    <value>Добавить этот seed в существующее хранилище</value>
+  </data>
+  <data name="Shell_OpenVaultDots" xml:space="preserve">
+    <value>Открыть хранилище...</value>
+  </data>
+  <data name="Shell_LockVaultTitle" xml:space="preserve">
+    <value>Заблокировать хранилище</value>
+  </data>
+  <data name="Shell_SeedPlaceholder" xml:space="preserve">
+    <value>Введите seed из 55 символов для подписи...</value>
+  </data>
+  <data name="Shell_SaveSeedToVaultTitle" xml:space="preserve">
+    <value>Сохранить seed в хранилище</value>
+  </data>
+  <data name="Shell_VaultFileLocation" xml:space="preserve">
+    <value>Расположение файла хранилища</value>
+  </data>
+  <data name="Shell_VaultPathPlaceholder" xml:space="preserve">
+    <value>Путь для сохранения файла хранилища...</value>
+  </data>
+  <data name="Shell_VaultPathHelp" xml:space="preserve">
+    <value>Выберите, где сохранить зашифрованный файл хранилища.</value>
+  </data>
+  <data name="Shell_LabelForSeed" xml:space="preserve">
+    <value>Метка для этого seed</value>
+  </data>
+  <data name="Shell_LabelPlaceholder" xml:space="preserve">
+    <value>напр. Основной, Трейдинг, Сбережения</value>
+  </data>
+  <data name="Shell_VaultPassword" xml:space="preserve">
+    <value>Пароль хранилища</value>
+  </data>
+  <data name="Shell_PasswordHelp" xml:space="preserve">
+    <value>Минимум 12 символов. Длинные фразы лучше сложных: набор несвязанных слов легче запомнить и труднее взломать.</value>
+  </data>
+  <data name="Shell_ConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
+  <data name="Shell_PasswordsNoMatch" xml:space="preserve">
+    <value>Пароли не совпадают.</value>
+  </data>
+  <data name="Shell_CreateVault" xml:space="preserve">
+    <value>Создать хранилище</value>
+  </data>
+  <data name="Shell_AddSeedToVaultTitle" xml:space="preserve">
+    <value>Добавить seed в хранилище</value>
+  </data>
+  <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
+    <value>Введите пароль хранилища, чтобы разблокировать и добавить...</value>
+  </data>
+  <data name="Common_Hide" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="Common_Reveal" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="Common_CopyToClipboard" xml:space="preserve">
+    <value>Копировать в буфер обмена</value>
+  </data>
+  <data name="Common_Identity" xml:space="preserve">
+    <value>Идентификатор</value>
+  </data>
+  <data name="Common_Balance" xml:space="preserve">
+    <value>Баланс</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="Common_Epoch" xml:space="preserve">
+    <value>Эпоха</value>
+  </data>
+  <data name="Common_Tick" xml:space="preserve">
+    <value>Тик</value>
+  </data>
+  <data name="Common_NotConnected" xml:space="preserve">
+    <value>Нет подключения</value>
+  </data>
+  <data name="Common_History" xml:space="preserve">
+    <value>История</value>
+  </data>
+  <data name="Common_Syncing" xml:space="preserve">
+    <value>Синхронизация...</value>
+  </data>
+  <data name="Common_Idle" xml:space="preserve">
+    <value>Простой</value>
+  </data>
+  <data name="Common_ViewAll" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="Common_Asset" xml:space="preserve">
+    <value>Актив</value>
+  </data>
+  <data name="Common_Shares" xml:space="preserve">
+    <value>Доли</value>
+  </data>
+  <data name="Common_Contract" xml:space="preserve">
+    <value>Контракт</value>
+  </data>
+  <data name="Common_Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Common_Price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="Common_Ask" xml:space="preserve">
+    <value>Продажа</value>
+  </data>
+  <data name="Common_Bid" xml:space="preserve">
+    <value>Покупка</value>
+  </data>
+  <data name="Common_Tip" xml:space="preserve">
+    <value>Совет:</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>Добро пожаловать в Qubic.Net Wallet</value>
+  </data>
+  <data name="Home_SelectIdentity" xml:space="preserve">
+    <value>Выберите идентификатор</value>
+  </data>
+  <data name="Home_SelectIdentityHint" xml:space="preserve">
+    <value>Ваше хранилище разблокировано. Выберите идентификатор для активации или просмотрите все идентификаторы с балансами в разделе</value>
+  </data>
+  <data name="Home_Activate" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="Home_GetStarted" xml:space="preserve">
+    <value>Начало работы</value>
+  </data>
+  <data name="Home_GetStartedDesc" xml:space="preserve">
+    <value>Введите seed из 55 символов в верхней панели, чтобы разблокировать кошелёк.</value>
+  </data>
+  <data name="Home_SeedMemoryNote" xml:space="preserve">
+    <value>Seed хранится только в памяти и очищается при закрытии приложения.</value>
+  </data>
+  <data name="Home_CreateNewWallet" xml:space="preserve">
+    <value>Создать новый кошелёк</value>
+  </data>
+  <data name="Home_NoSeedYet" xml:space="preserve">
+    <value>Ещё нет seed? Сгенерируйте новый, чтобы создать кошелёк.</value>
+  </data>
+  <data name="Home_GenerateNewSeed" xml:space="preserve">
+    <value>Сгенерировать seed</value>
+  </data>
+  <data name="Home_WriteDownSeed" xml:space="preserve">
+    <value>Запишите свой seed и храните его в надёжном месте!</value>
+  </data>
+  <data name="Home_SeedBullet1" xml:space="preserve">
+    <value>Seed — единственный ключ к вашему кошельку и средствам.</value>
+  </data>
+  <data name="Home_SeedBullet2" xml:space="preserve">
+    <value>Если вы его потеряете, восстановление невозможно — средства будут потеряны навсегда.</value>
+  </data>
+  <data name="Home_SeedBullet3" xml:space="preserve">
+    <value>Никому не сообщайте свой seed. Любой, у кого он есть, полностью контролирует ваши средства.</value>
+  </data>
+  <data name="Home_SeedBullet4" xml:space="preserve">
+    <value>Храните его офлайн (бумага, аппаратный носитель), а не в текстовом файле, почте или облаке.</value>
+  </data>
+  <data name="Home_YourNewSeed" xml:space="preserve">
+    <value>Ваш новый seed</value>
+  </data>
+  <data name="Home_SeedConfirmCheck" xml:space="preserve">
+    <value>Я записал(а) свой seed и надёжно сохранил(а) его</value>
+  </data>
+  <data name="Home_UseThisSeed" xml:space="preserve">
+    <value>Использовать этот seed</value>
+  </data>
+  <data name="Home_GenerateAnother" xml:space="preserve">
+    <value>Сгенерировать другой</value>
+  </data>
+  <data name="Home_TipSaveVault" xml:space="preserve">
+    <value>Вы можете сохранить этот seed в защищённое паролем хранилище с помощью панели выше.</value>
+  </data>
+  <data name="Home_LoadBalance" xml:space="preserve">
+    <value>Загрузить баланс</value>
+  </data>
+  <data name="Home_TransactionsWord" xml:space="preserve">
+    <value>транзакций</value>
+  </data>
+  <data name="Home_LogEventsWord" xml:space="preserve">
+    <value>событий журнала</value>
+  </data>
+  <data name="Home_OwnedAssets" xml:space="preserve">
+    <value>Мои активы</value>
+  </data>
+  <data name="Home_LoadingAssets" xml:space="preserve">
+    <value>Загрузка активов...</value>
+  </data>
+  <data name="Home_NoOwnedAssets" xml:space="preserve">
+    <value>Нет активов.</value>
+  </data>
+  <data name="Home_OpenQxOrders" xml:space="preserve">
+    <value>Открытые ордера QX</value>
+  </data>
+  <data name="Home_LoadingOrders" xml:space="preserve">
+    <value>Загрузка ордеров...</value>
+  </data>
+  <data name="Home_NoOpenOrders" xml:space="preserve">
+    <value>Нет открытых ордеров.</value>
+  </data>
+  <data name="Common_Auto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="Common_LabelField" xml:space="preserve">
+    <value>Метка</value>
+  </data>
+  <data name="Send_Title" xml:space="preserve">
+    <value>Отправить QU</value>
+  </data>
+  <data name="Send_NeedSeed" xml:space="preserve">
+    <value>Введите seed в верхней панели, чтобы отправлять.</value>
+  </data>
+  <data name="Send_Transfer" xml:space="preserve">
+    <value>Перевод</value>
+  </data>
+  <data name="Send_From" xml:space="preserve">
+    <value>Откуда</value>
+  </data>
+  <data name="Send_LoadingBalance" xml:space="preserve">
+    <value>Загрузка баланса...</value>
+  </data>
+  <data name="Send_PaymentPlaceholder" xml:space="preserve">
+    <value>Вставьте запрос платежа (ссылку qubic:… или изображение QR), чтобы заполнить форму</value>
+  </data>
+  <data name="Send_Destination" xml:space="preserve">
+    <value>Получатель (идентификатор из 60 символов)</value>
+  </data>
+  <data name="Send_Amount" xml:space="preserve">
+    <value>Сумма (QU)</value>
+  </data>
+  <data name="Send_TargetTick" xml:space="preserve">
+    <value>Целевой тик</value>
+  </data>
+  <data name="Send_Sending" xml:space="preserve">
+    <value>Отправка...</value>
+  </data>
+  <data name="Send_ReviewSign" xml:space="preserve">
+    <value>Проверить и подписать</value>
+  </data>
+  <data name="Send_ReviewNote" xml:space="preserve">
+    <value>Вы увидите транзакцию целиком до того, как что-либо будет подписано.</value>
+  </data>
+  <data name="Send_Broadcast" xml:space="preserve">
+    <value>Транзакция отправлена! ID транзакции:</value>
+  </data>
+  <data name="Send_ViewInHistory" xml:space="preserve">
+    <value>Показать в истории транзакций</value>
+  </data>
+  <data name="Send_SaveContactPre" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Send_SaveContactPost" xml:space="preserve">
+    <value>в адресную книгу?</value>
+  </data>
+  <data name="Common_Copied" xml:space="preserve">
+    <value>Скопировано!</value>
+  </data>
+  <data name="Common_Message" xml:space="preserve">
+    <value>Сообщение</value>
+  </data>
+  <data name="Receive_Title" xml:space="preserve">
+    <value>Получить QU</value>
+  </data>
+  <data name="Receive_NeedSeed" xml:space="preserve">
+    <value>Введите seed в верхней панели, чтобы увидеть свой адрес.</value>
+  </data>
+  <data name="Receive_YourIdentity" xml:space="preserve">
+    <value>Ваш идентификатор</value>
+  </data>
+  <data name="Receive_ScanRequest" xml:space="preserve">
+    <value>Отсканируйте для оплаты. QR-код содержит запрос платежа (ссылка qubic:).</value>
+  </data>
+  <data name="Receive_ShareAddress" xml:space="preserve">
+    <value>Поделитесь этим адресом, чтобы получать QU или активы.</value>
+  </data>
+  <data name="Receive_CopyLink" xml:space="preserve">
+    <value>Копировать ссылку на оплату</value>
+  </data>
+  <data name="Receive_CopyAddress" xml:space="preserve">
+    <value>Копировать адрес</value>
+  </data>
+  <data name="Receive_CopyQr" xml:space="preserve">
+    <value>Копировать QR</value>
+  </data>
+  <data name="Receive_PaymentRequest" xml:space="preserve">
+    <value>Запрос платежа</value>
+  </data>
+  <data name="Receive_PaymentHelp" xml:space="preserve">
+    <value>Необязательно: запросить конкретную сумму. Кошельки, понимающие ссылки</value>
+  </data>
+  <data name="Receive_PaymentHelpTail" xml:space="preserve">
+    <value>заранее заполняют платёж.</value>
+  </data>
+  <data name="Receive_MessagePlaceholder" xml:space="preserve">
+    <value>напр. Счёт 42</value>
+  </data>
+  <data name="Receive_LinkMarkedPre" xml:space="preserve">
+    <value>Ссылка помечена для</value>
+  </data>
+  <data name="Receive_LinkMarkedYouAreOn" xml:space="preserve">
+    <value>(вы на</value>
+  </data>
+  <data name="Receive_ShowPlain" xml:space="preserve">
+    <value>Показать обычный адрес</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Common_Label" xml:space="preserve">
+    <value>Метка</value>
+  </data>
+  <data name="VO_Title" xml:space="preserve">
+    <value>Обзор хранилища</value>
+  </data>
+  <data name="VO_SubtitlePre" xml:space="preserve">
+    <value>Каждый идентификатор в вашем хранилище с балансами из</value>
+  </data>
+  <data name="VO_SubtitlePost" xml:space="preserve">
+    <value>. Активный seed не требуется.</value>
+  </data>
+  <data name="VO_NoVault" xml:space="preserve">
+    <value>Хранилище не настроено. Создайте или откройте его в</value>
+  </data>
+  <data name="VO_Locked" xml:space="preserve">
+    <value>Разблокируйте хранилище в верхней панели, чтобы увидеть его идентификаторы.</value>
+  </data>
+  <data name="VO_NoIdentities" xml:space="preserve">
+    <value>В этом хранилище пока нет идентификаторов. Добавьте в</value>
+  </data>
+  <data name="VO_SettingsVault" xml:space="preserve">
+    <value>Настройки → Хранилище</value>
+  </data>
+  <data name="VO_Identities" xml:space="preserve">
+    <value>Идентификаторы</value>
+  </data>
+  <data name="VO_TotalBalance" xml:space="preserve">
+    <value>Общий баланс</value>
+  </data>
+  <data name="VO_NotAvailable" xml:space="preserve">
+    <value>недоступно в этой сети</value>
+  </data>
+  <data name="VO_OfLoadedPre" xml:space="preserve">
+    <value>из</value>
+  </data>
+  <data name="VO_OfLoadedPost" xml:space="preserve">
+    <value>загружено</value>
+  </data>
+  <data name="VO_Updated" xml:space="preserve">
+    <value>Обновлено</value>
+  </data>
+  <data name="VO_Active" xml:space="preserve">
+    <value>активна</value>
+  </data>
+  <data name="VO_More" xml:space="preserve">
+    <value>ещё</value>
+  </data>
+  <data name="VO_None" xml:space="preserve">
+    <value>нет</value>
+  </data>
+  <data name="Common_NeedSeedSigning" xml:space="preserve">
+    <value>Введите seed в верхней панели, чтобы подписывать.</value>
+  </data>
+  <data name="Common_Fee" xml:space="preserve">
+    <value>Комиссия:</value>
+  </data>
+  <data name="Common_FeeWord" xml:space="preserve">
+    <value>комиссия</value>
+  </data>
+  <data name="Common_AmountField" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Common_Load" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="Common_Overwrite" xml:space="preserve">
+    <value>Перезаписать</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Common_SaveAs" xml:space="preserve">
+    <value>Сохранить как</value>
+  </data>
+  <data name="Common_Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="Common_SignBroadcast" xml:space="preserve">
+    <value>Подписать и отправить</value>
+  </data>
+  <data name="Common_TransactionHistory" xml:space="preserve">
+    <value>История транзакций</value>
+  </data>
+  <data name="Common_RecipientsWord" xml:space="preserve">
+    <value>получателей</value>
+  </data>
+  <data name="S2M_Subtitle" xml:space="preserve">
+    <value>Отправьте QU до 25 получателям в одной транзакции (QUTIL SendToManyV1).</value>
+  </data>
+  <data name="S2M_Recipients" xml:space="preserve">
+    <value>Получатели</value>
+  </data>
+  <data name="S2M_AddRecipient" xml:space="preserve">
+    <value>+ Добавить получателя</value>
+  </data>
+  <data name="S2M_HideImport" xml:space="preserve">
+    <value>Скрыть импорт</value>
+  </data>
+  <data name="S2M_ImportFromText" xml:space="preserve">
+    <value>Импорт из текста</value>
+  </data>
+  <data name="S2M_TemplateOption" xml:space="preserve">
+    <value>-- Шаблон --</value>
+  </data>
+  <data name="S2M_TemplateNamePlaceholder" xml:space="preserve">
+    <value>Название шаблона</value>
+  </data>
+  <data name="S2M_PasteHelpPre" xml:space="preserve">
+    <value>Вставьте получателей (по одному в строке:</value>
+  </data>
+  <data name="S2M_PasteHelpOr" xml:space="preserve">
+    <value>или</value>
+  </data>
+  <data name="S2M_Total" xml:space="preserve">
+    <value>Итого:</value>
+  </data>
+  <data name="Common_AssetName7" xml:space="preserve">
+    <value>Название актива (макс. 7 символов)</value>
+  </data>
+  <data name="Common_NumberOfShares" xml:space="preserve">
+    <value>Количество долей</value>
+  </data>
+  <data name="Common_AmountOfShares" xml:space="preserve">
+    <value>Количество долей</value>
+  </data>
+  <data name="Common_UnitOfMeasure7" xml:space="preserve">
+    <value>Единица измерения (макс. 7 символов)</value>
+  </data>
+  <data name="Common_DecimalPlaces" xml:space="preserve">
+    <value>Знаков после запятой (0-18)</value>
+  </data>
+  <data name="Common_NewOwnerIdentity" xml:space="preserve">
+    <value>Идентификатор нового владельца</value>
+  </data>
+  <data name="Common_IssueAsset" xml:space="preserve">
+    <value>Выпустить актив</value>
+  </data>
+  <data name="Common_Issuing" xml:space="preserve">
+    <value>Выпуск...</value>
+  </data>
+  <data name="Common_TransferAsset" xml:space="preserve">
+    <value>Передать актив</value>
+  </data>
+  <data name="Common_Transfer" xml:space="preserve">
+    <value>Передать</value>
+  </data>
+  <data name="Common_Transferring" xml:space="preserve">
+    <value>Передача...</value>
+  </data>
+  <data name="Common_Processing" xml:space="preserve">
+    <value>Обработка...</value>
+  </data>
+  <data name="QSwap_Title" xml:space="preserve">
+    <value>QSwap AMM</value>
+  </data>
+  <data name="QSwap_Subtitle" xml:space="preserve">
+    <value>Выпускайте/передавайте активы, создавайте пулы, добавляйте/выводите ликвидность и обменивайте на AMM QSwap.</value>
+  </data>
+  <data name="QSwap_Preview" xml:space="preserve">
+    <value>Эта функция в предварительной версии и может измениться в будущих обновлениях.</value>
+  </data>
+  <data name="QSwap_Tab_Issue" xml:space="preserve">
+    <value>Выпуск</value>
+  </data>
+  <data name="QSwap_Tab_Transfer" xml:space="preserve">
+    <value>Передача</value>
+  </data>
+  <data name="QSwap_Tab_Pool" xml:space="preserve">
+    <value>Пул</value>
+  </data>
+  <data name="QSwap_Tab_Liquidity" xml:space="preserve">
+    <value>Ликвидность</value>
+  </data>
+  <data name="QSwap_Tab_Swap" xml:space="preserve">
+    <value>Обмен</value>
+  </data>
+  <data name="QSwap_IssueHdr" xml:space="preserve">
+    <value>Выпустить актив (QSwap)</value>
+  </data>
+  <data name="QSwap_TransferHdr" xml:space="preserve">
+    <value>Передать актив (QSwap)</value>
+  </data>
+  <data name="QSwap_CreatePool" xml:space="preserve">
+    <value>Создать пул</value>
+  </data>
+  <data name="QSwap_Creating" xml:space="preserve">
+    <value>Создание...</value>
+  </data>
+  <data name="QSwap_LiquidityHdr" xml:space="preserve">
+    <value>Добавить / вывести ликвидность</value>
+  </data>
+  <data name="QSwap_AddLiquidity" xml:space="preserve">
+    <value>Добавить ликвидность</value>
+  </data>
+  <data name="QSwap_RemoveLiquidity" xml:space="preserve">
+    <value>Вывести ликвидность</value>
+  </data>
+  <data name="QSwap_QuAmountTx" xml:space="preserve">
+    <value>Сумма QU (сумма транзакции)</value>
+  </data>
+  <data name="QSwap_AssetAmountDesired" xml:space="preserve">
+    <value>Желаемое количество актива</value>
+  </data>
+  <data name="QSwap_QuAmountMin" xml:space="preserve">
+    <value>Мин. сумма QU</value>
+  </data>
+  <data name="QSwap_AssetAmountMin" xml:space="preserve">
+    <value>Мин. количество актива</value>
+  </data>
+  <data name="QSwap_BurnLiquidity" xml:space="preserve">
+    <value>Количество сжигаемой ликвидности</value>
+  </data>
+  <data name="QSwap_SwapType" xml:space="preserve">
+    <value>Тип обмена</value>
+  </data>
+  <data name="QSwap_Opt_ExactQuForAsset" xml:space="preserve">
+    <value>Точно QU → Актив</value>
+  </data>
+  <data name="QSwap_Opt_QuForExactAsset" xml:space="preserve">
+    <value>QU → Точно актив</value>
+  </data>
+  <data name="QSwap_Opt_ExactAssetForQu" xml:space="preserve">
+    <value>Точно актив → QU</value>
+  </data>
+  <data name="QSwap_Opt_AssetForExactQu" xml:space="preserve">
+    <value>Актив → Точно QU</value>
+  </data>
+  <data name="QSwap_QuAmountInTx" xml:space="preserve">
+    <value>Входящая сумма QU (сумма транзакции)</value>
+  </data>
+  <data name="QSwap_AssetOutMin" xml:space="preserve">
+    <value>Мин. количество актива на выходе</value>
+  </data>
+  <data name="QSwap_MaxQuInTx" xml:space="preserve">
+    <value>Макс. входящая сумма QU (сумма транзакции)</value>
+  </data>
+  <data name="QSwap_ExactAssetOut" xml:space="preserve">
+    <value>Точное количество актива на выходе</value>
+  </data>
+  <data name="QSwap_AssetAmountIn" xml:space="preserve">
+    <value>Количество актива на входе</value>
+  </data>
+  <data name="QSwap_QuOutMin" xml:space="preserve">
+    <value>Мин. сумма QU на выходе</value>
+  </data>
+  <data name="QSwap_MaxAssetIn" xml:space="preserve">
+    <value>Макс. количество актива на входе</value>
+  </data>
+  <data name="QSwap_ExactQuOut" xml:space="preserve">
+    <value>Точная сумма QU на выходе</value>
+  </data>
+  <data name="QSwap_Swapping" xml:space="preserve">
+    <value>Обмен...</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Common_Issuer" xml:space="preserve">
+    <value>Эмитент</value>
+  </data>
+  <data name="QX_Title" xml:space="preserve">
+    <value>Операции с активами QX</value>
+  </data>
+  <data name="QX_Subtitle" xml:space="preserve">
+    <value>Выпускайте активы, передавайте доли и управляйте ордерами на децентрализованной бирже QX.</value>
+  </data>
+  <data name="QX_YourOpenOrders" xml:space="preserve">
+    <value>Ваши открытые ордера</value>
+  </data>
+  <data name="QX_Tab_Issue" xml:space="preserve">
+    <value>Выпуск</value>
+  </data>
+  <data name="QX_Tab_Transfer" xml:space="preserve">
+    <value>Передача</value>
+  </data>
+  <data name="QX_Tab_Ask" xml:space="preserve">
+    <value>Продажа</value>
+  </data>
+  <data name="QX_Tab_Bid" xml:space="preserve">
+    <value>Покупка</value>
+  </data>
+  <data name="QX_Tab_Rights" xml:space="preserve">
+    <value>Права</value>
+  </data>
+  <data name="QX_OrdersWord" xml:space="preserve">
+    <value>Ордера</value>
+  </data>
+  <data name="QX_PricePerShare" xml:space="preserve">
+    <value>Цена за долю (QU)</value>
+  </data>
+  <data name="QX_TradeFee" xml:space="preserve">
+    <value>Торговая комиссия:</value>
+  </data>
+  <data name="QX_TransferMgmtRights" xml:space="preserve">
+    <value>Передать права управления</value>
+  </data>
+  <data name="QX_NewManagingContract" xml:space="preserve">
+    <value>Новый управляющий контракт</value>
+  </data>
+  <data name="QX_Submitting" xml:space="preserve">
+    <value>Отправка...</value>
+  </data>
+  <data name="QX_AddAskOrder" xml:space="preserve">
+    <value>Добавить ордер на продажу</value>
+  </data>
+  <data name="QX_RemoveAskOrder" xml:space="preserve">
+    <value>Удалить ордер на продажу</value>
+  </data>
+  <data name="QX_AddBidOrder" xml:space="preserve">
+    <value>Добавить ордер на покупку</value>
+  </data>
+  <data name="QX_RemoveBidOrder" xml:space="preserve">
+    <value>Удалить ордер на покупку</value>
+  </data>
+  <data name="QX_MarketOverview" xml:space="preserve">
+    <value>Обзор рынка QX</value>
+  </data>
+  <data name="QX_BestAsk" xml:space="preserve">
+    <value>Лучшая продажа</value>
+  </data>
+  <data name="QX_AskDepth" xml:space="preserve">
+    <value>Глубина продаж</value>
+  </data>
+  <data name="QX_BestBid" xml:space="preserve">
+    <value>Лучшая покупка</value>
+  </data>
+  <data name="QX_BidDepth" xml:space="preserve">
+    <value>Глубина покупок</value>
+  </data>
+  <data name="QX_Spread" xml:space="preserve">
+    <value>Спред</value>
+  </data>
+  <data name="QX_NoActiveOrders" xml:space="preserve">
+    <value>Активных ордеров не найдено.</value>
+  </data>
+  <data name="QX_LoadHintPre" xml:space="preserve">
+    <value>Нажмите</value>
+  </data>
+  <data name="QX_LoadHintPost" xml:space="preserve">
+    <value>, чтобы найти и запросить все активы, торгуемые на QX.</value>
+  </data>
+  <data name="QX_PortfolioHintPre" xml:space="preserve">
+    <value>Чтобы продать или управлять своими активами, перейдите на страницу</value>
+  </data>
+  <data name="QX_AssetPortfolio" xml:space="preserve">
+    <value>Портфель активов</value>
+  </data>
+  <data name="QX_PortfolioHintPost" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="QE_Title" xml:space="preserve">
+    <value>Стейкинг QEarn</value>
+  </data>
+  <data name="QE_Subtitle" xml:space="preserve">
+    <value>Блокируйте QU для получения вознаграждений, разблокируйте и запрашивайте информацию о стейкинге.</value>
+  </data>
+  <data name="QE_LoadingInfo" xml:space="preserve">
+    <value>Загрузка информации о стейкинге...</value>
+  </data>
+  <data name="QE_StakingSummary" xml:space="preserve">
+    <value>Сводка по стейкингу</value>
+  </data>
+  <data name="QE_LockEpoch" xml:space="preserve">
+    <value>Эпоха блокировки</value>
+  </data>
+  <data name="QE_LockedAmount" xml:space="preserve">
+    <value>Заблокированная сумма</value>
+  </data>
+  <data name="QE_EpochTotal" xml:space="preserve">
+    <value>Итог эпохи</value>
+  </data>
+  <data name="QE_EpochTotalTitle" xml:space="preserve">
+    <value>Всего QU, заблокированных всеми пользователями в этой эпохе</value>
+  </data>
+  <data name="QE_Week" xml:space="preserve">
+    <value>Неделя</value>
+  </data>
+  <data name="QE_Remaining" xml:space="preserve">
+    <value>Осталось</value>
+  </data>
+  <data name="QE_Yield" xml:space="preserve">
+    <value>Доходность</value>
+  </data>
+  <data name="QE_EstFullReward" xml:space="preserve">
+    <value>Оцен. полная награда</value>
+  </data>
+  <data name="QE_EarlyUnlock" xml:space="preserve">
+    <value>Досрочная разблокировка</value>
+  </data>
+  <data name="QE_EarlyUnlockTitle" xml:space="preserve">
+    <value>Вознаграждение при разблокировке сейчас по графику досрочной разблокировки</value>
+  </data>
+  <data name="QE_Unlocking" xml:space="preserve">
+    <value>Разблокировка...</value>
+  </data>
+  <data name="QE_FullyUnlocked" xml:space="preserve">
+    <value>Полностью разблокировано:</value>
+  </data>
+  <data name="QE_EarlyUnlocked" xml:space="preserve">
+    <value>Досрочно разблокировано:</value>
+  </data>
+  <data name="QE_TotalLocked" xml:space="preserve">
+    <value>Всего заблокировано:</value>
+  </data>
+  <data name="QE_Across" xml:space="preserve">
+    <value>в</value>
+  </data>
+  <data name="QE_EpochWord" xml:space="preserve">
+    <value>эпох</value>
+  </data>
+  <data name="QE_EstTotalReward" xml:space="preserve">
+    <value>| Оцен. общая награда при полной разблокировке:</value>
+  </data>
+  <data name="QE_Tab_Lock" xml:space="preserve">
+    <value>Блокировать</value>
+  </data>
+  <data name="QE_Tab_Query" xml:space="preserve">
+    <value>Запрос</value>
+  </data>
+  <data name="QE_LockDesc" xml:space="preserve">
+    <value>Заблокируйте QU в смарт-контракте QEarn, чтобы получать вознаграждения за стейкинг.</value>
+  </data>
+  <data name="QE_AmountToLock" xml:space="preserve">
+    <value>Сумма для блокировки (QU)</value>
+  </data>
+  <data name="QE_LockHelp" xml:space="preserve">
+    <value>Будет заблокирована вся сумма. Без дополнительной комиссии. Мин. 10 000 000 QU.</value>
+  </data>
+  <data name="QE_Locking" xml:space="preserve">
+    <value>Блокировка...</value>
+  </data>
+  <data name="QE_QueryFunction" xml:space="preserve">
+    <value>Функция запроса</value>
+  </data>
+  <data name="QE_Q1" xml:space="preserve">
+    <value>Инфо блокировки по эпохе</value>
+  </data>
+  <data name="QE_Q2" xml:space="preserve">
+    <value>Инфо блокировки пользователя</value>
+  </data>
+  <data name="QE_Q3" xml:space="preserve">
+    <value>Состояние раунда</value>
+  </data>
+  <data name="QE_Q4" xml:space="preserve">
+    <value>Статус блокировки пользователя (52-недельная битовая маска)</value>
+  </data>
+  <data name="QE_Q5" xml:space="preserve">
+    <value>Статус завершения</value>
+  </data>
+  <data name="QE_Q6" xml:space="preserve">
+    <value>Статистика по эпохе</value>
+  </data>
+  <data name="QE_Q7" xml:space="preserve">
+    <value>Статистика сжигания и буста (глобально)</value>
+  </data>
+  <data name="QE_Q8" xml:space="preserve">
+    <value>Статистика сжигания и буста по эпохе</value>
+  </data>
+  <data name="QE_UserIdentity" xml:space="preserve">
+    <value>Идентификатор пользователя</value>
+  </data>
+  <data name="QE_LockStatusLabel" xml:space="preserve">
+    <value>Статус блокировки (52 недели, бит 0 = самый ранний)</value>
+  </data>
+  <data name="QE_Querying" xml:space="preserve">
+    <value>Запрос...</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Common_Verify" xml:space="preserve">
+    <value>Проверить</value>
+  </data>
+  <data name="Common_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Common_Amount" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Common_Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="Common_Updated" xml:space="preserve">
+    <value>Обновлено</value>
+  </data>
+  <data name="Common_Actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="Common_Units" xml:space="preserve">
+    <value>Единицы</value>
+  </data>
+  <data name="Common_Possessor" xml:space="preserve">
+    <value>Владелец</value>
+  </data>
+  <data name="Common_Decimals" xml:space="preserve">
+    <value>Десятичные</value>
+  </data>
+  <data name="SV_Title" xml:space="preserve">
+    <value>Подписать / Проверить сообщение</value>
+  </data>
+  <data name="SV_Subtitle" xml:space="preserve">
+    <value>Подпишите сообщение своим seed или проверьте подписанное сообщение.</value>
+  </data>
+  <data name="SV_SignMessage" xml:space="preserve">
+    <value>Подписать сообщение</value>
+  </data>
+  <data name="SV_SignPlaceholder" xml:space="preserve">
+    <value>Введите сообщение для подписи</value>
+  </data>
+  <data name="SV_Sign" xml:space="preserve">
+    <value>Подписать</value>
+  </data>
+  <data name="SV_SignedOutput" xml:space="preserve">
+    <value>Подписанный вывод (JSON)</value>
+  </data>
+  <data name="SV_VerifyMessage" xml:space="preserve">
+    <value>Проверить сообщение</value>
+  </data>
+  <data name="SV_SignedJson" xml:space="preserve">
+    <value>Подписанный JSON</value>
+  </data>
+  <data name="SV_ValidSig" xml:space="preserve">
+    <value>Подпись действительна</value>
+  </data>
+  <data name="SV_InvalidSig" xml:space="preserve">
+    <value>Недействительная подпись</value>
+  </data>
+  <data name="SV_SignInValid" xml:space="preserve">
+    <value>Сообщение корректно и действительно в данный момент.</value>
+  </data>
+  <data name="WL_Subtitle" xml:space="preserve">
+    <value>Отслеживайте балансы и активы внешних адресов.</value>
+  </data>
+  <data name="WL_LastUpdated" xml:space="preserve">
+    <value>Последнее обновление:</value>
+  </data>
+  <data name="WL_Refreshing" xml:space="preserve">
+    <value>Обновление...</value>
+  </data>
+  <data name="WL_RefreshAll" xml:space="preserve">
+    <value>Обновить все</value>
+  </data>
+  <data name="WL_Empty" xml:space="preserve">
+    <value>В списке наблюдения нет адресов. Добавьте ниже.</value>
+  </data>
+  <data name="WL_InOut" xml:space="preserve">
+    <value>Входящие / Исходящие</value>
+  </data>
+  <data name="WL_LastUpdatedLabel" xml:space="preserve">
+    <value>Последнее обновление</value>
+  </data>
+  <data name="WL_ClickRefresh" xml:space="preserve">
+    <value>Нажмите «Обновить», чтобы загрузить данные.</value>
+  </data>
+  <data name="WL_AddToWatchlist" xml:space="preserve">
+    <value>Добавить в список наблюдения</value>
+  </data>
+  <data name="WL_LabelPlaceholder" xml:space="preserve">
+    <value>напр. Казначейский кошелёк</value>
+  </data>
+  <data name="WL_AddressLabel" xml:space="preserve">
+    <value>Адрес (идентификатор из 60 символов)</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Common_ClearAll" xml:space="preserve">
+    <value>Очистить все</value>
+  </data>
+  <data name="Common_Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="Common_From" xml:space="preserve">
+    <value>От</value>
+  </data>
+  <data name="Common_To" xml:space="preserve">
+    <value>Кому</value>
+  </data>
+  <data name="Common_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Common_Created" xml:space="preserve">
+    <value>Создано</value>
+  </data>
+  <data name="Common_Connecting" xml:space="preserve">
+    <value>Подключение...</value>
+  </data>
+  <data name="TH_Title" xml:space="preserve">
+    <value>История транзакций</value>
+  </data>
+  <data name="TH_Subtitle" xml:space="preserve">
+    <value>Отслеживайте отправленные транзакции и просматривайте синхронизированную историю. Данные шифруются локально для каждого seed.</value>
+  </data>
+  <data name="TH_ExportJson" xml:space="preserve">
+    <value>Экспорт JSON</value>
+  </data>
+  <data name="TH_HideImport" xml:space="preserve">
+    <value>Скрыть импорт</value>
+  </data>
+  <data name="TH_ImportJson" xml:space="preserve">
+    <value>Импорт JSON</value>
+  </data>
+  <data name="TH_NoTracked" xml:space="preserve">
+    <value>Пока нет отслеживаемых транзакций. Они появятся здесь после отправки.</value>
+  </data>
+  <data name="TH_St_Pending" xml:space="preserve">
+    <value>В ожидании</value>
+  </data>
+  <data name="TH_St_Confirmed" xml:space="preserve">
+    <value>Подтверждена</value>
+  </data>
+  <data name="TH_St_Failed" xml:space="preserve">
+    <value>Не удалась</value>
+  </data>
+  <data name="TH_LoadFile" xml:space="preserve">
+    <value>Загрузить файл</value>
+  </data>
+  <data name="TH_PasteJson" xml:space="preserve">
+    <value>Вставьте экспортированный JSON или загрузите из файла:</value>
+  </data>
+  <data name="LE_Title" xml:space="preserve">
+    <value>События журнала</value>
+  </data>
+  <data name="LE_Subtitle" xml:space="preserve">
+    <value>Просматривайте события журнала, синхронизированные из сети для вашего идентификатора.</value>
+  </data>
+  <data name="LE_NeedSeed" xml:space="preserve">
+    <value>Введите seed, чтобы открыть базу данных кошелька и начать синхронизацию событий журнала.</value>
+  </data>
+  <data name="LE_NoLogs" xml:space="preserve">
+    <value>События журнала не найдены. Синхронизация заполнит это представление по мере получения логов из сети.</value>
+  </data>
+  <data name="LE_Filter" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="LE_LogType" xml:space="preserve">
+    <value>Тип лога</value>
+  </data>
+  <data name="LE_MinTick" xml:space="preserve">
+    <value>Мин. тик</value>
+  </data>
+  <data name="LE_MaxTick" xml:space="preserve">
+    <value>Макс. тик</value>
+  </data>
+  <data name="LE_TxHash" xml:space="preserve">
+    <value>Хеш транзакции</value>
+  </data>
+  <data name="LE_AmountDetail" xml:space="preserve">
+    <value>Сумма / Детали</value>
+  </data>
+  <data name="SM_Title" xml:space="preserve">
+    <value>Менеджер синхронизации</value>
+  </data>
+  <data name="SM_Subtitle" xml:space="preserve">
+    <value>Отслеживайте и управляйте синхронизацией данных из RPC и WebSocket Bob.</value>
+  </data>
+  <data name="SM_NeedSeed" xml:space="preserve">
+    <value>Введите seed, чтобы открыть базу данных кошелька и начать синхронизацию.</value>
+  </data>
+  <data name="SM_Connection" xml:space="preserve">
+    <value>Подключение</value>
+  </data>
+  <data name="SM_OverallState" xml:space="preserve">
+    <value>Общее состояние</value>
+  </data>
+  <data name="SM_InitialSync" xml:space="preserve">
+    <value>Начальная синхронизация</value>
+  </data>
+  <data name="SM_Complete" xml:space="preserve">
+    <value>Завершена</value>
+  </data>
+  <data name="SM_InProgress" xml:space="preserve">
+    <value>Выполняется...</value>
+  </data>
+  <data name="SM_BackendTick" xml:space="preserve">
+    <value>Сравнение тиков бэкендов</value>
+  </data>
+  <data name="SM_Backend" xml:space="preserve">
+    <value>Бэкенд</value>
+  </data>
+  <data name="SM_LastCheck" xml:space="preserve">
+    <value>Последняя проверка</value>
+  </data>
+  <data name="SM_Database" xml:space="preserve">
+    <value>База данных</value>
+  </data>
+  <data name="LEP_Title" xml:space="preserve">
+    <value>Локальная точка подписи</value>
+  </data>
+  <data name="LEP_Off" xml:space="preserve">
+    <value>Локальная точка выключена. Включите её в</value>
+  </data>
+  <data name="Common_SettingsFeatures" xml:space="preserve">
+    <value>Настройки → Функции</value>
+  </data>
+  <data name="LEP_ConnectionFile" xml:space="preserve">
+    <value>Файл подключения</value>
+  </data>
+  <data name="LEP_Port" xml:space="preserve">
+    <value>Порт (0 = случайный)</value>
+  </data>
+  <data name="LEP_ApplyRestart" xml:space="preserve">
+    <value>Применить и перезапустить</value>
+  </data>
+  <data name="LEP_NewToken" xml:space="preserve">
+    <value>Новый токен</value>
+  </data>
+  <data name="LEP_AutoApprove" xml:space="preserve">
+    <value>Авто-одобрение dev-аккаунтов</value>
+  </data>
+  <data name="WC_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="WC_Off" xml:space="preserve">
+    <value>WalletConnect выключен. Включите его в</value>
+  </data>
+  <data name="WC_NoProjectId" xml:space="preserve">
+    <value>В этой сборке не настроен id проекта WalletConnect.</value>
+  </data>
+  <data name="WC_PairWithDapp" xml:space="preserve">
+    <value>Подключиться к dApp</value>
+  </data>
+  <data name="WC_Pair" xml:space="preserve">
+    <value>Подключить</value>
+  </data>
+  <data name="WC_ConnectedDapps" xml:space="preserve">
+    <value>Подключённые dApp</value>
+  </data>
+  <data name="WC_NoSessions" xml:space="preserve">
+    <value>Нет активных сессий.</value>
+  </data>
+  <data name="WC_Disconnect" xml:space="preserve">
+    <value>Отключить</value>
+  </data>
+  <data name="Common_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Common_Preview" xml:space="preserve">
+    <value>Предпросмотр</value>
+  </data>
+  <data name="Common_Link" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="SCA_Subtitle" xml:space="preserve">
+    <value>Просматривайте активные аукционы долей контрактов, проверяйте статус ставок и делайте ставки.</value>
+  </data>
+  <data name="SCA_Tab_Browse" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="SCA_Tab_Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="SCA_Tab_Bid" xml:space="preserve">
+    <value>Ставка</value>
+  </data>
+  <data name="SCA_ActiveAuctions" xml:space="preserve">
+    <value>Активные аукционы</value>
+  </data>
+  <data name="SCA_ContractIndex" xml:space="preserve">
+    <value>Индекс контракта</value>
+  </data>
+  <data name="SCA_ContractIdentity" xml:space="preserve">
+    <value>Идентификатор контракта</value>
+  </data>
+  <data name="SCA_ViewStatus" xml:space="preserve">
+    <value>Статус →</value>
+  </data>
+  <data name="SCA_NoAuctions" xml:space="preserve">
+    <value>Активных аукционов не найдено.</value>
+  </data>
+  <data name="SCA_NetworkSettings" xml:space="preserve">
+    <value>Настройки сети</value>
+  </data>
+  <data name="SCA_SummaryContract" xml:space="preserve">
+    <value>Сводка — контракт</value>
+  </data>
+  <data name="SCA_FilledSlots" xml:space="preserve">
+    <value>Занятые слоты</value>
+  </data>
+  <data name="SCA_MinBid" xml:space="preserve">
+    <value>Мин. ставка</value>
+  </data>
+  <data name="SCA_MaxBid" xml:space="preserve">
+    <value>Макс. ставка</value>
+  </data>
+  <data name="SCA_AvgBid" xml:space="preserve">
+    <value>Средняя ставка</value>
+  </data>
+  <data name="SCA_TotalBid" xml:space="preserve">
+    <value>Всего QU в ставках</value>
+  </data>
+  <data name="SCA_MyBids" xml:space="preserve">
+    <value>Мои ставки</value>
+  </data>
+  <data name="SCA_AtRisk" xml:space="preserve">
+    <value>Под угрозой</value>
+  </data>
+  <data name="SCA_Slot" xml:space="preserve">
+    <value>Слот №</value>
+  </data>
+  <data name="SCA_BidAmount" xml:space="preserve">
+    <value>Сумма ставки</value>
+  </data>
+  <data name="SCA_Rank" xml:space="preserve">
+    <value>Ранг</value>
+  </data>
+  <data name="SCA_AllBids" xml:space="preserve">
+    <value>Все ставки</value>
+  </data>
+  <data name="SCA_NoBids" xml:space="preserve">
+    <value>Ставок пока нет.</value>
+  </data>
+  <data name="SCA_NoMyBids" xml:space="preserve">
+    <value>У вас нет ставок в этом аукционе.</value>
+  </data>
+  <data name="SCA_NeedSeedBid" xml:space="preserve">
+    <value>Введите seed в верхней панели, чтобы сделать ставку.</value>
+  </data>
+  <data name="SCA_PlaceBid" xml:space="preserve">
+    <value>Сделать ставку на аукционе</value>
+  </data>
+  <data name="SCA_ContractIndexPlaceholder" xml:space="preserve">
+    <value>Или введите индекс контракта</value>
+  </data>
+  <data name="SCA_SharesRange" xml:space="preserve">
+    <value>Количество долей (1-676)</value>
+  </data>
+  <data name="SCA_PreviewBid" xml:space="preserve">
+    <value>Предпросмотр ставки</value>
+  </data>
+  <data name="VOT_Title" xml:space="preserve">
+    <value>Голосование сообщества</value>
+  </data>
+  <data name="VOT_Subtitle" xml:space="preserve">
+    <value>Просматривайте, голосуйте и создавайте опросы сообщества через контракт QUtil.</value>
+  </data>
+  <data name="VOT_Tab_Browse" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="VOT_Tab_Vote" xml:space="preserve">
+    <value>Голосовать</value>
+  </data>
+  <data name="VOT_Tab_Results" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="VOT_Tab_Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="VOT_ActivePolls" xml:space="preserve">
+    <value>Активные опросы</value>
+  </data>
+  <data name="VOT_Creator" xml:space="preserve">
+    <value>Создатель</value>
+  </data>
+  <data name="VOT_Active" xml:space="preserve">
+    <value>Активен</value>
+  </data>
+  <data name="VOT_Closed" xml:space="preserve">
+    <value>Закрыт</value>
+  </data>
+  <data name="VOT_AllowedAssets" xml:space="preserve">
+    <value>Разрешённые активы:</value>
+  </data>
+  <data name="VOT_CreatorLabel" xml:space="preserve">
+    <value>Создатель:</value>
+  </data>
+  <data name="VOT_NoPolls" xml:space="preserve">
+    <value>Активных опросов не найдено.</value>
+  </data>
+  <data name="VOT_ClickLoadPre" xml:space="preserve">
+    <value>Нажмите</value>
+  </data>
+  <data name="VOT_ClickLoadPost" xml:space="preserve">
+    <value>, чтобы получить активные опросы сообщества из контракта QUtil.</value>
+  </data>
+  <data name="VOT_NeedSeed" xml:space="preserve">
+    <value>Введите seed в верхней панели, чтобы голосовать.</value>
+  </data>
+  <data name="VOT_PollId" xml:space="preserve">
+    <value>ID опроса</value>
+  </data>
+  <data name="VOT_LoadPoll" xml:space="preserve">
+    <value>Загрузить опрос</value>
+  </data>
+  <data name="VOT_ChosenOption" xml:space="preserve">
+    <value>Выбранный вариант</value>
+  </data>
+  <data name="VOT_OptionWord" xml:space="preserve">
+    <value>Вариант</value>
+  </data>
+  <data name="VOT_NoChange" xml:space="preserve">
+    <value>(Без изменений)</value>
+  </data>
+  <data name="VOT_VotingPowerNote" xml:space="preserve">
+    <value>Сила голоса рассчитывается контрактом автоматически на основе вашего баланса.</value>
+  </data>
+  <data name="VOT_ConfirmVote" xml:space="preserve">
+    <value>Подтвердить голос</value>
+  </data>
+  <data name="VOT_PollResults" xml:space="preserve">
+    <value>Результаты опроса</value>
+  </data>
+  <data name="VOT_LoadResults" xml:space="preserve">
+    <value>Загрузить результаты</value>
+  </data>
+  <data name="VOT_CreatePoll" xml:space="preserve">
+    <value>Создать новый опрос</value>
+  </data>
+  <data name="VOT_PollName" xml:space="preserve">
+    <value>Название опроса (макс. 32 символа)</value>
+  </data>
+  <data name="VOT_PollType" xml:space="preserve">
+    <value>Тип опроса</value>
+  </data>
+  <data name="VOT_QuBased" xml:space="preserve">
+    <value>На основе QU (1)</value>
+  </data>
+  <data name="VOT_AssetBased" xml:space="preserve">
+    <value>На основе активов (2)</value>
+  </data>
+  <data name="VOT_MinAmount" xml:space="preserve">
+    <value>Мин. сумма</value>
+  </data>
+  <data name="VOT_GithubLink" xml:space="preserve">
+    <value>Ссылка GitHub (макс. 256 символов)</value>
+  </data>
+  <data name="VOT_GithubHelp" xml:space="preserve">
+    <value>Должна начинаться с https://github.com/</value>
+  </data>
+  <data name="VOT_AllowedAssetsLabel" xml:space="preserve">
+    <value>Разрешённые активы (до 16)</value>
+  </data>
+  <data name="VOT_AssetNamePlaceholder" xml:space="preserve">
+    <value>Название актива</value>
+  </data>
+  <data name="VOT_AddAsset" xml:space="preserve">
+    <value>+ Добавить актив</value>
+  </data>
+  <data name="VOT_PollClosed" xml:space="preserve">
+    <value>Этот опрос закрыт.</value>
+  </data>
+  <data name="VOT_BadgeAsset" xml:space="preserve">
+    <value>Актив</value>
+  </data>
+  <data name="Common_Sending" xml:space="preserve">
+    <value>Отправка...</value>
+  </data>
+  <data name="Common_Orders" xml:space="preserve">
+    <value>Ордера</value>
+  </data>
+  <data name="Common_Placing" xml:space="preserve">
+    <value>Размещение...</value>
+  </data>
+  <data name="AS_Title" xml:space="preserve">
+    <value>Портфель активов</value>
+  </data>
+  <data name="AS_Subtitle" xml:space="preserve">
+    <value>Просматривайте собственные, выпущенные и находящиеся во владении активы любого идентификатора. Передавайте активы и меняйте права управления.</value>
+  </data>
+  <data name="AS_IdentityPlaceholder" xml:space="preserve">
+    <value>Введите идентификатор из 60 символов</value>
+  </data>
+  <data name="AS_LookupAssets" xml:space="preserve">
+    <value>Найти активы</value>
+  </data>
+  <data name="AS_YourOpenOrders" xml:space="preserve">
+    <value>Ваши открытые ордера QX</value>
+  </data>
+  <data name="AS_PossessedAssets" xml:space="preserve">
+    <value>Активы во владении</value>
+  </data>
+  <data name="AS_NoPossessed" xml:space="preserve">
+    <value>Нет активов во владении.</value>
+  </data>
+  <data name="AS_IssuedAssets" xml:space="preserve">
+    <value>Выпущенные активы</value>
+  </data>
+  <data name="AS_NoIssued" xml:space="preserve">
+    <value>Нет выпущенных активов.</value>
+  </data>
+  <data name="AS_TransferAsset" xml:space="preserve">
+    <value>Передать актив</value>
+  </data>
+  <data name="AS_ChangeRights" xml:space="preserve">
+    <value>Изменить права управления</value>
+  </data>
+  <data name="AS_SellQx" xml:space="preserve">
+    <value>Продать на QX</value>
+  </data>
+  <data name="AS_BuyQx" xml:space="preserve">
+    <value>Купить на QX</value>
+  </data>
+  <data name="AS_OrderBook" xml:space="preserve">
+    <value>Книга ордеров</value>
+  </data>
+  <data name="AS_LoadingOrderBook" xml:space="preserve">
+    <value>Загрузка книги ордеров...</value>
+  </data>
+  <data name="AS_ClickRow" xml:space="preserve">
+    <value>Нажмите на строку, чтобы заполнить ордер на покупку или продажу.</value>
+  </data>
+  <data name="AS_AsksSellers" xml:space="preserve">
+    <value>Продажи (продавцы)</value>
+  </data>
+  <data name="AS_BidsBuyers" xml:space="preserve">
+    <value>Покупки (покупатели)</value>
+  </data>
+  <data name="AS_NoAsks" xml:space="preserve">
+    <value>Нет предложений на продажу.</value>
+  </data>
+  <data name="AS_NoBids" xml:space="preserve">
+    <value>Нет предложений на покупку.</value>
+  </data>
+  <data name="AS_DestinationIdentity" xml:space="preserve">
+    <value>Идентификатор получателя</value>
+  </data>
+  <data name="AS_SharesMaxPre" xml:space="preserve">
+    <value>Количество долей (макс.:</value>
+  </data>
+  <data name="AS_TransferViaQx" xml:space="preserve">
+    <value>Передать через QX</value>
+  </data>
+  <data name="AS_PlaceSellOrder" xml:space="preserve">
+    <value>Разместить ордер на продажу</value>
+  </data>
+  <data name="AS_PlaceBuyOrder" xml:space="preserve">
+    <value>Разместить ордер на покупку</value>
+  </data>
+  <data name="AS_ChangeRightsVia" xml:space="preserve">
+    <value>Изменить права через</value>
+  </data>
+  <data name="AS_Each" xml:space="preserve">
+    <value>за шт.</value>
+  </data>
+  <data name="AS_OnMatch" xml:space="preserve">
+    <value>при совпадении</value>
+  </data>
+  <data name="Common_Remove2" xml:space="preserve">
+    <value>удалить</value>
+  </data>
+  <data name="DT_Title" xml:space="preserve">
+    <value>Инструменты разработчика</value>
+  </data>
+  <data name="DT_Subtitle" xml:space="preserve">
+    <value>Для локальных тестнетов AIO / core-lite: публичные dev-аккаунты, кран, выпуск активов и genesis-финансирование.</value>
+  </data>
+  <data name="DT_Identify" xml:space="preserve">
+    <value>Определить сеть</value>
+  </data>
+  <data name="DT_EnableAnywayPre" xml:space="preserve">
+    <value>Всё равно включить для</value>
+  </data>
+  <data name="DT_EnableAnywayPost" xml:space="preserve">
+    <value>(моя собственная сборка core-lite с другими seed)</value>
+  </data>
+  <data name="DT_DevWarn1" xml:space="preserve">
+    <value>Dev-аккаунты используют</value>
+  </data>
+  <data name="DT_DevWarnBold" xml:space="preserve">
+    <value>публично известные seed</value>
+  </data>
+  <data name="DT_DevWarn2" xml:space="preserve">
+    <value>. Они только для этой тестовой сети — никогда не отправляйте им средства Mainnet.</value>
+  </data>
+  <data name="DT_Faucet" xml:space="preserve">
+    <value>Кран</value>
+  </data>
+  <data name="DT_FundIdentity" xml:space="preserve">
+    <value>Пополнить идентификатор</value>
+  </data>
+  <data name="DT_DestinationPlaceholder" xml:space="preserve">
+    <value>Идентификатор получателя</value>
+  </data>
+  <data name="DT_FundBtn" xml:space="preserve">
+    <value>Пополнить с dev-аккаунта</value>
+  </data>
+  <data name="DT_Sent" xml:space="preserve">
+    <value>Отправлено:</value>
+  </data>
+  <data name="DT_IssueCard" xml:space="preserve">
+    <value>Выпустить актив QX с dev-аккаунта</value>
+  </data>
+  <data name="DT_DevAccountNum" xml:space="preserve">
+    <value>Dev-аккаунт №</value>
+  </data>
+  <data name="DT_IssueBtn" xml:space="preserve">
+    <value>Выпустить (комиссия QX с узла)</value>
+  </data>
+  <data name="DT_GenesisCard" xml:space="preserve">
+    <value>Genesis-финансирование (набор AIO)</value>
+  </data>
+  <data name="DT_GenesisNotePre" xml:space="preserve">
+    <value>Балансы и активы также можно записать в файлы состояния genesis. Выполните это в папке</value>
+  </data>
+  <data name="DT_GenesisNotePost" xml:space="preserve">
+    <value>— это перезапустит цепочку.</value>
+  </data>
+  <data name="DT_AssetOpt" xml:space="preserve">
+    <value>актив (необяз.)</value>
+  </data>
+  <data name="DT_SharesPh" xml:space="preserve">
+    <value>доли</value>
+  </data>
+  <data name="DT_CopyCommands" xml:space="preserve">
+    <value>Копировать команды</value>
+  </data>
+  <data name="DT_DevAccounts" xml:space="preserve">
+    <value>Dev-аккаунты</value>
+  </data>
+  <data name="DT_Use" xml:space="preserve">
+    <value>исп.</value>
+  </data>
+  <data name="DT_UseTitle" xml:space="preserve">
+    <value>Использовать как активный идентификатор</value>
+  </data>
+  <data name="CC_Subtitle" xml:space="preserve">
+    <value>Вызывайте любую функцию или процедуру смарт-контракта — включая ваш собственный, импортированный из C++-заголовка.</value>
+  </data>
+  <data name="CC_FeatureOffPre" xml:space="preserve">
+    <value>Консоль контрактов входит в</value>
+  </data>
+  <data name="CC_DeveloperTools" xml:space="preserve">
+    <value>Инструменты разработчика</value>
+  </data>
+  <data name="CC_TurnOnIn" xml:space="preserve">
+    <value>Включите её в</value>
+  </data>
+  <data name="CC_Call" xml:space="preserve">
+    <value>Вызов</value>
+  </data>
+  <data name="CC_Kind" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="CC_FunctionRead" xml:space="preserve">
+    <value>Функция (чтение)</value>
+  </data>
+  <data name="CC_ProcedureTx" xml:space="preserve">
+    <value>Процедура (tx)</value>
+  </data>
+  <data name="CC_Function" xml:space="preserve">
+    <value>Функция</value>
+  </data>
+  <data name="CC_Procedure" xml:space="preserve">
+    <value>Процедура</value>
+  </data>
+  <data name="CC_Input" xml:space="preserve">
+    <value>Ввод</value>
+  </data>
+  <data name="CC_RawInputHex" xml:space="preserve">
+    <value>Сырой ввод (hex)</value>
+  </data>
+  <data name="CC_AmountCall" xml:space="preserve">
+    <value>Сумма (QU, отправляемые с вызовом)</value>
+  </data>
+  <data name="CC_Querying" xml:space="preserve">
+    <value>Запрос…</value>
+  </data>
+  <data name="CC_Query" xml:space="preserve">
+    <value>Запрос</value>
+  </data>
+  <data name="CC_UnlockProc" xml:space="preserve">
+    <value>Разблокируйте seed, чтобы отправлять процедуры.</value>
+  </data>
+  <data name="CC_Result" xml:space="preserve">
+    <value>Результат</value>
+  </data>
+  <data name="CC_CheckResult" xml:space="preserve">
+    <value>Проверить результат</value>
+  </data>
+  <data name="CC_StatusLabel" xml:space="preserve">
+    <value>Статус:</value>
+  </data>
+  <data name="CC_Executed" xml:space="preserve">
+    <value>выполнено</value>
+  </data>
+  <data name="CC_NotExecuted" xml:space="preserve">
+    <value>не удалось / не выполнено</value>
+  </data>
+  <data name="CC_ImportHeader" xml:space="preserve">
+    <value>Импорт заголовка контракта</value>
+  </data>
+  <data name="CC_Index" xml:space="preserve">
+    <value>Индекс</value>
+  </data>
+  <data name="CC_NameOptional" xml:space="preserve">
+    <value>Имя (необязательно)</value>
+  </data>
+  <data name="CC_ImportedOnNetwork" xml:space="preserve">
+    <value>Импортировано в этой сети</value>
+  </data>
+  <data name="CC_ContractsOnNode" xml:space="preserve">
+    <value>Контракты на этом узле</value>
+  </data>
+  <data name="CC_SinceEpoch" xml:space="preserve">
+    <value>С эпохи</value>
+  </data>
+  <data name="CC_State" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="Common_NetworkWord" xml:space="preserve">
+    <value>Сеть</value>
+  </data>
+  <data name="SRH_More" xml:space="preserve">
+    <value>ещё в очереди</value>
+  </data>
+  <data name="SRH_PublicDevKey" xml:space="preserve">
+    <value>ПУБЛИЧНЫЙ DEV-КЛЮЧ</value>
+  </data>
+  <data name="SRH_TargetTick" xml:space="preserve">
+    <value>Целевой тик</value>
+  </data>
+  <data name="SRH_InputType" xml:space="preserve">
+    <value>Тип ввода</value>
+  </data>
+  <data name="SRH_Site" xml:space="preserve">
+    <value>Сайт</value>
+  </data>
+  <data name="SRH_Statement" xml:space="preserve">
+    <value>Заявление</value>
+  </data>
+  <data name="SRH_Issued" xml:space="preserve">
+    <value>Выдано</value>
+  </data>
+  <data name="SRH_Expires" xml:space="preserve">
+    <value>Истекает</value>
+  </data>
+  <data name="SRH_Nonce" xml:space="preserve">
+    <value>Nonce</value>
+  </data>
+  <data name="SRH_RawInputPre" xml:space="preserve">
+    <value>Сырой ввод (</value>
+  </data>
+  <data name="SRH_Bytes" xml:space="preserve">
+    <value>байт)</value>
+  </data>
+  <data name="SRH_Acknowledge" xml:space="preserve">
+    <value>Я понимаю приведённые выше предупреждения</value>
+  </data>
+  <data name="SRH_Reject" xml:space="preserve">
+    <value>Отклонить</value>
+  </data>
+  <data name="SRH_O_LocalEndpoint" xml:space="preserve">
+    <value>Локальная точка</value>
+  </data>
+  <data name="SRH_O_DevTools" xml:space="preserve">
+    <value>Инструменты разработчика</value>
+  </data>
+  <data name="SRH_O_Repeat" xml:space="preserve">
+    <value>Повтор</value>
+  </data>
+  <data name="SRH_O_InApp" xml:space="preserve">
+    <value>Этот кошелёк</value>
+  </data>
+  <data name="NB_Devnet" xml:space="preserve">
+    <value>локальная сеть разработки</value>
+  </data>
+  <data name="NB_Testnet" xml:space="preserve">
+    <value>тестовая сеть</value>
+  </data>
+  <data name="NB_Custom" xml:space="preserve">
+    <value>пользовательская сеть</value>
+  </data>
+  <data name="NB_NotMainnet" xml:space="preserve">
+    <value>Не Mainnet.</value>
+  </data>
+  <data name="NB_NoNetworkId" xml:space="preserve">
+    <value>Транзакции Qubic не содержат id сети: используйте отдельные seed для тестовых сетей.</value>
+  </data>
+  <data name="NB_Mismatch" xml:space="preserve">
+    <value>Несоответствие сети:</value>
+  </data>
+  <data name="NB_IsSetupAs" xml:space="preserve">
+    <value>настроен как</value>
+  </data>
+  <data name="NB_ButChainIs" xml:space="preserve">
+    <value>, но подключённая цепочка —</value>
+  </data>
+  <data name="NB_CoreliteDevnet" xml:space="preserve">
+    <value>devnet core-lite</value>
+  </data>
+  <data name="NB_ArbitratorSigned" xml:space="preserve">
+    <value>подписана арбитром mainnet</value>
+  </data>
+  <data name="NB_Unrecognized" xml:space="preserve">
+    <value>не распознана</value>
+  </data>
+  <data name="NB_CheckSettings" xml:space="preserve">
+    <value>Проверьте настройки сети</value>
+  </data>
+  <data name="NB_ChainReset" xml:space="preserve">
+    <value>Обнаружен сброс цепочки в</value>
+  </data>
+  <data name="NB_HistoryCleared" xml:space="preserve">
+    <value>Кэшированная история этой сети очищена.</value>
+  </data>
+  <data name="NB_BlockedPre" xml:space="preserve">
+    <value>Заблокировано подключение к</value>
+  </data>
+  <data name="NB_BlockedPost" xml:space="preserve">
+    <value>оно не является частью</value>
+  </data>
+  <data name="NS_Manage" xml:space="preserve">
+    <value>Управление сетями…</value>
+  </data>
+  <data name="FD_Title" xml:space="preserve">
+    <value>Выберите дополнительные функции</value>
+  </data>
+  <data name="FD_Intro" xml:space="preserve">
+    <value>Эти функции выключены, пока вы их не включите. Выключенные функции не работают вовсе — никаких подключений, слушателей и фоновых загрузок.</value>
+  </data>
+  <data name="FD_ChangeAnytime" xml:space="preserve">
+    <value>Вы можете изменить это в любое время в</value>
+  </data>
+  <data name="FD_SaveChoices" xml:space="preserve">
+    <value>Сохранить выбор</value>
+  </data>
+  <data name="ST_Title" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="ST_Tab_General" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="ST_Tab_Networks" xml:space="preserve">
+    <value>Сети</value>
+  </data>
+  <data name="ST_Tab_Features" xml:space="preserve">
+    <value>Функции</value>
+  </data>
+  <data name="ST_Tab_Transactions" xml:space="preserve">
+    <value>Транзакции</value>
+  </data>
+  <data name="ST_Tab_Labels" xml:space="preserve">
+    <value>Метки</value>
+  </data>
+  <data name="ST_Tab_Data" xml:space="preserve">
+    <value>Данные</value>
+  </data>
+  <data name="ST_Tab_Vault" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="ST_Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="ST_ThemeLight" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="ST_ThemeDark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="ST_AutoLock" xml:space="preserve">
+    <value>Автоблокировка</value>
+  </data>
+  <data name="ST_LockAfter" xml:space="preserve">
+    <value>Блокировать хранилище после простоя (минуты)</value>
+  </data>
+  <data name="ST_LockAfterHelp" xml:space="preserve">
+    <value>Установите 0, чтобы отключить автоблокировку. По умолчанию: 15 минут.</value>
+  </data>
+  <data name="ST_FeaturesIntro" xml:space="preserve">
+    <value>Дополнительные функции выключены, пока не включены здесь. Выключенные функции не работают вовсе.</value>
+  </data>
+  <data name="ST_RefreshLabels" xml:space="preserve">
+    <value>Обновить метки</value>
+  </data>
+  <data name="ST_RemoteLabels" xml:space="preserve">
+    <value>Загружать метки из удалённого реестра</value>
+  </data>
+  <data name="ST_AutoResend" xml:space="preserve">
+    <value>Автоматически повторять неудавшиеся транзакции</value>
+  </data>
+  <data name="ST_MaxResend" xml:space="preserve">
+    <value>Макс. попыток повтора</value>
+  </data>
+  <data name="ST_ExportDb" xml:space="preserve">
+    <value>Экспорт базы данных</value>
+  </data>
+  <data name="ST_ImportDb" xml:space="preserve">
+    <value>Импорт базы данных</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="MV_Subtitle" xml:space="preserve">
+    <value>Управляйте мультиподписными хранилищами: регистрация, депозит, выпуск и голосование по комиссиям.</value>
+  </data>
+  <data name="MV_YourVaults" xml:space="preserve">
+    <value>Ваши хранилища</value>
+  </data>
+  <data name="MV_OwnersColon" xml:space="preserve">
+    <value>Владельцы:</value>
+  </data>
+  <data name="MV_RequiredApprovalsColon" xml:space="preserve">
+    <value>Требуется одобрений:</value>
+  </data>
+  <data name="MV_Approvals" xml:space="preserve">
+    <value>одобрений</value>
+  </data>
+  <data name="MV_ReleasePre" xml:space="preserve">
+    <value>Выпустить</value>
+  </data>
+  <data name="MV_ReleaseToSuffix" xml:space="preserve">
+    <value>на</value>
+  </data>
+  <data name="MV_ReleasePending" xml:space="preserve">
+    <value>Транзакция выпуска в ожидании...</value>
+  </data>
+  <data name="MV_ApproveRelease" xml:space="preserve">
+    <value>Одобрить выпуск</value>
+  </data>
+  <data name="MV_ShowOwners" xml:space="preserve">
+    <value>Показать владельцев</value>
+  </data>
+  <data name="MV_DepositQu" xml:space="preserve">
+    <value>Внести QU</value>
+  </data>
+  <data name="MV_DepositAsset" xml:space="preserve">
+    <value>Внести актив</value>
+  </data>
+  <data name="MV_ReleaseQu" xml:space="preserve">
+    <value>Выпустить QU</value>
+  </data>
+  <data name="MV_ReleaseAsset" xml:space="preserve">
+    <value>Выпустить актив</value>
+  </data>
+  <data name="MV_Reset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="MV_Tab_Register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="MV_Tab_Deposit" xml:space="preserve">
+    <value>Депозит</value>
+  </data>
+  <data name="MV_Tab_Release" xml:space="preserve">
+    <value>Выпуск</value>
+  </data>
+  <data name="MV_Tab_Assets" xml:space="preserve">
+    <value>Активы</value>
+  </data>
+  <data name="MV_Tab_Query" xml:space="preserve">
+    <value>Запрос</value>
+  </data>
+  <data name="MV_RegisterVault" xml:space="preserve">
+    <value>Зарегистрировать хранилище</value>
+  </data>
+  <data name="MV_Registering" xml:space="preserve">
+    <value>Регистрация...</value>
+  </data>
+  <data name="MV_VaultName" xml:space="preserve">
+    <value>Название хранилища</value>
+  </data>
+  <data name="MV_NameHelp" xml:space="preserve">
+    <value>Любое имя до 32 символов.</value>
+  </data>
+  <data name="MV_OwnersLabel" xml:space="preserve">
+    <value>Владельцы (мин. 2, макс. 16 идентификаторов)</value>
+  </data>
+  <data name="MV_AddOwner" xml:space="preserve">
+    <value>+ Добавить владельца</value>
+  </data>
+  <data name="MV_OwnerHint" xml:space="preserve">
+    <value>Текущий идентификатор кошелька может быть одним из владельцев.</value>
+  </data>
+  <data name="MV_RequiredApprovals" xml:space="preserve">
+    <value>Требуется одобрений (мин. 2)</value>
+  </data>
+  <data name="MV_DepositToVault" xml:space="preserve">
+    <value>Внести в хранилище</value>
+  </data>
+  <data name="MV_Vault" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="MV_VaultIdPlaceholder" xml:space="preserve">
+    <value>Или введите ID хранилища вручную</value>
+  </data>
+  <data name="MV_Depositing" xml:space="preserve">
+    <value>Внесение...</value>
+  </data>
+  <data name="MV_Deposit" xml:space="preserve">
+    <value>Внести</value>
+  </data>
+  <data name="MV_ReleaseReset" xml:space="preserve">
+    <value>Выпуск / Сброс</value>
+  </data>
+  <data name="MV_ReleaseToRadio" xml:space="preserve">
+    <value>Выпустить на</value>
+  </data>
+  <data name="MV_ResetRelease" xml:space="preserve">
+    <value>Сбросить выпуск</value>
+  </data>
+  <data name="MV_VaultId" xml:space="preserve">
+    <value>ID хранилища</value>
+  </data>
+  <data name="MV_AssetOps" xml:space="preserve">
+    <value>Операции с активами</value>
+  </data>
+  <data name="MV_AssetOp_Deposit" xml:space="preserve">
+    <value>Внести актив</value>
+  </data>
+  <data name="MV_AssetOp_Release" xml:space="preserve">
+    <value>Выпустить актив на</value>
+  </data>
+  <data name="MV_AssetOp_Reset" xml:space="preserve">
+    <value>Сбросить выпуск актива</value>
+  </data>
+  <data name="MV_AssetOp_Revoke" xml:space="preserve">
+    <value>Отозвать права управления активом</value>
+  </data>
+  <data name="MV_VoteFeeChange" xml:space="preserve">
+    <value>Голосовать за изменение комиссии</value>
+  </data>
+  <data name="MV_Voting" xml:space="preserve">
+    <value>Голосование...</value>
+  </data>
+  <data name="MV_VoteDesc" xml:space="preserve">
+    <value>Предложите новые значения комиссий для операций хранилища.</value>
+  </data>
+  <data name="MV_FeeBurn" xml:space="preserve">
+    <value>Комиссия сжигания</value>
+  </data>
+  <data name="MV_FeeDeposit" xml:space="preserve">
+    <value>Новая комиссия депозита</value>
+  </data>
+  <data name="MV_FeeHolding" xml:space="preserve">
+    <value>Новая комиссия хранения</value>
+  </data>
+  <data name="MV_FeeRegistering" xml:space="preserve">
+    <value>Новая комиссия регистрации</value>
+  </data>
+  <data name="MV_FeeRelease" xml:space="preserve">
+    <value>Новая комиссия выпуска</value>
+  </data>
+  <data name="MV_FeeReset" xml:space="preserve">
+    <value>Новая комиссия сброса</value>
+  </data>
+  <data name="MV_NoVoteFee" xml:space="preserve">
+    <value>Голосование без комиссии.</value>
+  </data>
+  <data name="MV_QueryMsvault" xml:space="preserve">
+    <value>Запрос MSVault</value>
+  </data>
+  <data name="MV_Querying" xml:space="preserve">
+    <value>Запрос...</value>
+  </data>
+  <data name="MV_Q5" xml:space="preserve">
+    <value>Получить хранилища (по владельцу)</value>
+  </data>
+  <data name="MV_Q6" xml:space="preserve">
+    <value>Получить статус выпуска</value>
+  </data>
+  <data name="MV_Q7" xml:space="preserve">
+    <value>Получить баланс</value>
+  </data>
+  <data name="MV_Q8" xml:space="preserve">
+    <value>Получить название хранилища</value>
+  </data>
+  <data name="MV_Q10" xml:space="preserve">
+    <value>Получить комиссии</value>
+  </data>
+  <data name="MV_Q11" xml:space="preserve">
+    <value>Получить владельцев хранилища</value>
+  </data>
+  <data name="MV_Q12" xml:space="preserve">
+    <value>Является акционером</value>
+  </data>
+  <data name="MV_NoEvents" xml:space="preserve">
+    <value>События MSVault не найдены. События синхронизируются в фоне из сети.</value>
+  </data>
+  <data name="MV_OpenToView" xml:space="preserve">
+    <value>Откройте кошелёк, чтобы просмотреть историю (синхронизированные события журнала).</value>
+  </data>
+  <data name="MV_ShowAll" xml:space="preserve">
+    <value>Показать все</value>
+  </data>
+  <data name="MV_VaultHash" xml:space="preserve">
+    <value>Хранилище №</value>
+  </data>
+  <data name="CG_SettingsNetworks" xml:space="preserve">
+    <value>Настройки → Сети</value>
+  </data>
+  <data name="WCP_FlaggedPre" xml:space="preserve">
+    <value>WalletConnect Verify отметил этот сайт как</value>
+  </data>
+  <data name="WCP_FlaggedBold" xml:space="preserve">
+    <value>не соответствующий</value>
+  </data>
+  <data name="WCP_FlaggedPost" xml:space="preserve">
+    <value>заявленному домену.</value>
+  </data>
+  <data name="WCP_ChainMismatchPre" xml:space="preserve">
+    <value>Он запрашивает</value>
+  </data>
+  <data name="WCP_ButWalletOn" xml:space="preserve">
+    <value>, но кошелёк находится в</value>
+  </data>
+  <data name="WCP_SwitchOrReject" xml:space="preserve">
+    <value>Сначала смените сеть или отклоните.</value>
+  </data>
+  <data name="WCP_AccountsToShare" xml:space="preserve">
+    <value>Аккаунты для доступа</value>
+  </data>
+  <data name="WCP_NoAccount" xml:space="preserve">
+    <value>Нет доступных аккаунтов — сначала разблокируйте хранилище или введите seed.</value>
+  </data>
+  <data name="WCP_DappSees" xml:space="preserve">
+    <value>dApp видит эти адреса и балансы. Она может запрашивать подписи; каждый запрос сначала показывается вам.</value>
+  </data>
+  <data name="WCP_Connect" xml:space="preserve">
+    <value>Подключить</value>
+  </data>
+  <data name="CG_NotAvailable" xml:space="preserve">
+    <value>Недоступно в этой сети</value>
+  </data>
+  <data name="CG_NoMethodPre" xml:space="preserve">
+    <value>не имеет метода, предоставляющего</value>
+  </data>
+  <data name="CG_AddPre" xml:space="preserve">
+    <value>Добавьте метод</value>
+  </data>
+  <data name="CG_AddPost" xml:space="preserve">
+    <value>к этой сети в</value>
+  </data>
+  <data name="TTP_TimeBased" xml:space="preserve">
+    <value>Цель по времени (задаётся для каждой сети)</value>
+  </data>
+  <data name="TTP_FixedOffset" xml:space="preserve">
+    <value>Фиксированное смещение тика (задаётся для каждой сети)</value>
+  </data>
+  <data name="ASel_Issuer" xml:space="preserve">
+    <value>Идентификатор эмитента актива</value>
+  </data>
+  <data name="ASel_Name" xml:space="preserve">
+    <value>Название актива (до 7 символов)</value>
+  </data>
+  <data name="SE_NoInputs" xml:space="preserve">
+    <value>Нет полей ввода.</value>
+  </data>
+  <data name="SE_HexPost" xml:space="preserve">
+    <value>] как hex</value>
+  </data>
+  <data name="SE_ElementsPre" xml:space="preserve">
+    <value>Элементы</value>
+  </data>
+  <data name="SE_ElementsPost" xml:space="preserve">
+    <value>оставлены нулевыми.</value>
+  </data>
+  <data name="NS_Discard" xml:space="preserve">
+    <value>Отменить изменения</value>
+  </data>
+  <data name="NS_Checking" xml:space="preserve">
+    <value>Проверка…</value>
+  </data>
+  <data name="NS_PortPlaceholder" xml:space="preserve">
+    <value>порт</value>
+  </data>
+  <data name="NS_PeerDiscovery" xml:space="preserve">
+    <value>Обнаружение пиров (автоматически переключаться на лучшие)</value>
+  </data>
+  <data name="NS_WebSocket" xml:space="preserve">
+    <value>WebSocket (живые тики и синхронизация логов)</value>
+  </data>
+  <data name="NS_UseBundle" xml:space="preserve">
+    <value>Использовать пакет данных Mainnet (метки, комиссии)</value>
+  </data>
+  <data name="NS_BadgeColour" xml:space="preserve">
+    <value>Цвет значка</value>
+  </data>
+  <data name="NS_ExpectedNetwork" xml:space="preserve">
+    <value>Ожидаемая сеть</value>
+  </data>
+  <data name="NS_ExpectedHint" xml:space="preserve">
+    <value>(проверяется по списку computor)</value>
+  </data>
+  <data name="NS_ExplorerLink" xml:space="preserve">
+    <value>Ссылка обозревателя для транзакций</value>
+  </data>
+  <data name="NS_ExplorerHint" xml:space="preserve">
+    <value>(заполнитель {hash}, пусто = без ссылок)</value>
+  </data>
+  <data name="NS_Methods" xml:space="preserve">
+    <value>Методы</value>
+  </data>
+  <data name="NS_MethodsHint" xml:space="preserve">
+    <value>(порядок приоритета — операцию обслуживает первый включённый метод, который её поддерживает)</value>
+  </data>
+  <data name="NS_PendingWindow" xml:space="preserve">
+    <value>Окно ожидания (тики)</value>
+  </data>
+  <data name="NS_EmptyEq" xml:space="preserve">
+    <value>пусто =</value>
+  </data>
+  <data name="NS_SecondsAhead" xml:space="preserve">
+    <value>Секунд вперёд</value>
+  </data>
+  <data name="NS_DriftThreshold" xml:space="preserve">
+    <value>Порог дрейфа тиков (тики между методами этой сети)</value>
+  </data>
+  <data name="NS_TicksAhead" xml:space="preserve">
+    <value>Тиков вперёд</value>
+  </data>
+  <data name="NS_AddNetwork" xml:space="preserve">
+    <value>+ Добавить сеть…</value>
+  </data>
+  <data name="NS_EmptyCustom" xml:space="preserve">
+    <value>Пустая пользовательская сеть</value>
+  </data>
+  <data name="NS_Off" xml:space="preserve">
+    <value> (выкл.)</value>
+  </data>
+  <data name="NS_ArbitratorSigned" xml:space="preserve">
+    <value>Подписана арбитром mainnet</value>
+  </data>
+  <data name="NS_CoreliteDevnet" xml:space="preserve">
+    <value>devnet core-lite (публичные dev-computor)</value>
+  </data>
+  <data name="NS_NoExpectation" xml:space="preserve">
+    <value>Без ожидания</value>
+  </data>
+  <data name="NS_Kind_Mainnet" xml:space="preserve">
+    <value>Mainnet</value>
+  </data>
+  <data name="NS_Kind_Testnet" xml:space="preserve">
+    <value>Testnet</value>
+  </data>
+  <data name="NS_Kind_Devnet" xml:space="preserve">
+    <value>Devnet (локально / AIO)</value>
+  </data>
+  <data name="NS_Kind_Custom" xml:space="preserve">
+    <value>Пользовательская</value>
+  </data>
+  <data name="NS_Preset_AioLocal" xml:space="preserve">
+    <value>AIO dev kit (этот компьютер)</value>
+  </data>
+  <data name="NS_Preset_AioRemote" xml:space="preserve">
+    <value>AIO dev kit (удалённый хост)</value>
+  </data>
+  <data name="NS_FixedOffset" xml:space="preserve">
+    <value>Фиксированное смещение тика</value>
+  </data>
+  <data name="NS_TimeBased" xml:space="preserve">
+    <value>Выполнить через ~N секунд</value>
+  </data>
+  <data name="NS_RestorePresets" xml:space="preserve">
+    <value>Восстановить удалённые пресеты</value>
+  </data>
+  <data name="NS_ResetTitle" xml:space="preserve">
+    <value>Сбросить к значениям пресета</value>
+  </data>
+  <data name="NS_AndReconnect" xml:space="preserve">
+    <value> и переподключить</value>
+  </data>
+  <data name="NS_MethodPerOp" xml:space="preserve">
+    <value>Метод для операции</value>
+  </data>
+  <data name="NS_AutoFollows" xml:space="preserve">
+    <value>— «Авто» следует порядку приоритета выше</value>
+  </data>
+  <data name="NS_Only" xml:space="preserve">
+    <value>только</value>
+  </data>
+  <data name="NS_ActiveNetwork" xml:space="preserve">
+    <value>Активная сеть:</value>
+  </data>
+  <data name="NS_BlockedConnections" xml:space="preserve">
+    <value>Заблокированные подключения</value>
+  </data>
+  <data name="NS_AllowedHosts" xml:space="preserve">
+    <value>Разрешённые хосты:</value>
+  </data>
+  <data name="NS_ClearLower" xml:space="preserve">
+    <value>очистить</value>
+  </data>
+  <data name="ST_CreateNewVault" xml:space="preserve">
+    <value>Создать новое хранилище</value>
+  </data>
+  <data name="ST_OpenExistingVault" xml:space="preserve">
+    <value>Открыть существующее хранилище</value>
+  </data>
+  <data name="ST_StorageInfo" xml:space="preserve">
+    <value>Сведения о хранилище</value>
+  </data>
+  <data name="ST_VaultFilePath" xml:space="preserve">
+    <value>Путь к файлу хранилища</value>
+  </data>
+  <data name="ST_Seed55" xml:space="preserve">
+    <value>Seed (55 символов)</value>
+  </data>
+  <data name="ST_Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="ST_OpenVault" xml:space="preserve">
+    <value>Открыть хранилище</value>
+  </data>
+  <data name="ST_Disconnect" xml:space="preserve">
+    <value>Отключить</value>
+  </data>
+  <data name="ST_DeleteVault" xml:space="preserve">
+    <value>Удалить хранилище</value>
+  </data>
+  <data name="ST_Generate" xml:space="preserve">
+    <value>Сгенерировать</value>
+  </data>
+  <data name="ST_WriteDownBold" xml:space="preserve">
+    <value>Запишите этот seed и храните его надёжно!</value>
+  </data>
+  <data name="ST_WriteDownPost" xml:space="preserve">
+    <value>Если вы его потеряете, восстановление невозможно.</value>
+  </data>
+  <data name="ST_AreYouSureBold" xml:space="preserve">
+    <value>Вы уверены?</value>
+  </data>
+  <data name="ST_DeleteConfirmPost" xml:space="preserve">
+    <value>Это навсегда удалит ваше хранилище и все сохранённые seed.</value>
+  </data>
+  <data name="ST_DatabasePath" xml:space="preserve">
+    <value>Путь к базе данных:</value>
+  </data>
+  <data name="ST_TransactionsCount" xml:space="preserve">
+    <value>Транзакции:</value>
+  </data>
+  <data name="ST_LogEventsCount" xml:space="preserve">
+    <value>События журнала:</value>
+  </data>
+  <data name="ST_NoSeeds" xml:space="preserve">
+    <value>Нет сохранённых seed.</value>
+  </data>
+  <data name="ST_SeedShort" xml:space="preserve">
+    <value>Seed</value>
+  </data>
+  <data name="FP_New" xml:space="preserve">
+    <value>новое</value>
+  </data>
+  <data name="FP_ConnectsTo" xml:space="preserve">
+    <value>Подключается к:</value>
+  </data>
+  <data name="ST_Subtitle" xml:space="preserve">
+    <value>Настройте поведение Qubic.Net Wallet.</value>
+  </data>
+  <data name="Msg_AddAddress" xml:space="preserve">
+    <value>Добавьте хотя бы один адрес.</value>
+  </data>
+  <data name="Msg_AddRecipientAmount" xml:space="preserve">
+    <value>Добавьте хотя бы одного получателя с суммой.</value>
+  </data>
+  <data name="Msg_OwnersUnique" xml:space="preserve">
+    <value>Все владельцы должны быть уникальными идентификаторами.</value>
+  </data>
+  <data name="Msg_AmountPositive" xml:space="preserve">
+    <value>Сумма должна быть положительной.</value>
+  </data>
+  <data name="Msg_AssetNameRequired" xml:space="preserve">
+    <value>Требуется название актива.</value>
+  </data>
+  <data name="Msg_AssetNameRequired2" xml:space="preserve">
+    <value>Требуется название актива.</value>
+  </data>
+  <data name="Msg_AssetNotOwned" xml:space="preserve">
+    <value>Актив не найден среди ваших активов. Убедитесь, что вы владеете указанным активом.</value>
+  </data>
+  <data name="Msg_MinTwoOwners" xml:space="preserve">
+    <value>Требуется минимум 2 владельца.</value>
+  </data>
+  <data name="Msg_BroadcastCheck" xml:space="preserve">
+    <value>Отправлено. Используйте «Проверить результат» после прохождения целевого тика.</value>
+  </data>
+  <data name="Msg_ContractIndexRange" xml:space="preserve">
+    <value>Индекс контракта должен быть от 1 до 1023.</value>
+  </data>
+  <data name="Msg_LoadContractsFailed" xml:space="preserve">
+    <value>Не удалось загрузить список контрактов узла.</value>
+  </data>
+  <data name="Msg_CouldNotReadFile" xml:space="preserve">
+    <value>Не удалось прочитать файл: </value>
+  </data>
+  <data name="Msg_DestInvalid" xml:space="preserve">
+    <value>Получатель должен быть корректным идентификатором из 60 символов.</value>
+  </data>
+  <data name="Msg_ExportFailed" xml:space="preserve">
+    <value>Ошибка экспорта: </value>
+  </data>
+  <data name="Msg_FeesNotLoaded" xml:space="preserve">
+    <value>Комиссии ещё не загружены. Подождите.</value>
+  </data>
+  <data name="Msg_FileLocationRequired" xml:space="preserve">
+    <value>Требуется расположение файла.</value>
+  </data>
+  <data name="Msg_FilePathRequired" xml:space="preserve">
+    <value>Требуется путь к файлу.</value>
+  </data>
+  <data name="Msg_GithubMax256" xml:space="preserve">
+    <value>Ссылка GitHub не должна превышать 256 символов.</value>
+  </data>
+  <data name="Msg_GithubPrefix" xml:space="preserve">
+    <value>Ссылка GitHub должна начинаться с https://github.com/</value>
+  </data>
+  <data name="Msg_IpoNeedsDirect" xml:space="preserve">
+    <value>Для статуса IPO нужен метод Direct (узел) в этой сети.</value>
+  </data>
+  <data name="Msg_InvalidJsonExpected" xml:space="preserve">
+    <value>Неверный формат JSON. Ожидалось: {"identity":"...","message":"...","signature":"..."}</value>
+  </data>
+  <data name="Msg_InvalidJson" xml:space="preserve">
+    <value>Неверный JSON: </value>
+  </data>
+  <data name="Msg_InvalidShareCount" xml:space="preserve">
+    <value>Неверное количество долей.</value>
+  </data>
+  <data name="Msg_IssuerPrefix" xml:space="preserve">
+    <value>Эмитент: </value>
+  </data>
+  <data name="Msg_LabelRequired" xml:space="preserve">
+    <value>Требуется метка.</value>
+  </data>
+  <data name="Msg_LoadPollFirst" xml:space="preserve">
+    <value>Сначала загрузите опрос.</value>
+  </data>
+  <data name="Msg_NameRequired" xml:space="preserve">
+    <value>Требуется имя.</value>
+  </data>
+  <data name="Msg_NewOwnerPrefix" xml:space="preserve">
+    <value>Новый владелец: </value>
+  </data>
+  <data name="Msg_NoAssetsRpc" xml:space="preserve">
+    <value>Активы не найдены. Проверьте подключение RPC.</value>
+  </data>
+  <data name="Msg_NoReceiptYet" xml:space="preserve">
+    <value>Квитанции пока нет — транзакция (ещё) не включена.</value>
+  </data>
+  <data name="Msg_NoValidEntries" xml:space="preserve">
+    <value>Допустимых записей не найдено.</value>
+  </data>
+  <data name="Msg_NothingToImport" xml:space="preserve">
+    <value>Нечего импортировать.</value>
+  </data>
+  <data name="Msg_SharesRange676" xml:space="preserve">
+    <value>Количество долей должно быть 1-676.</value>
+  </data>
+  <data name="Msg_SharesPositive" xml:space="preserve">
+    <value>Количество долей должно быть положительным.</value>
+  </data>
+  <data name="Msg_PasswordRequired" xml:space="preserve">
+    <value>Требуется пароль.</value>
+  </data>
+  <data name="Msg_PasswordsNoMatch" xml:space="preserve">
+    <value>Пароли не совпадают.</value>
+  </data>
+  <data name="Msg_PasteSignedJson" xml:space="preserve">
+    <value>Вставьте подписанный JSON для проверки.</value>
+  </data>
+  <data name="Msg_PollNameRequired" xml:space="preserve">
+    <value>Требуется название опроса.</value>
+  </data>
+  <data name="Msg_PollNameMax32" xml:space="preserve">
+    <value>Название опроса не должно превышать 32 символа.</value>
+  </data>
+  <data name="Msg_PricePositive" xml:space="preserve">
+    <value>Цена должна быть положительной.</value>
+  </data>
+  <data name="Msg_PricePerSharePositive" xml:space="preserve">
+    <value>Цена за долю должна быть положительной.</value>
+  </data>
+  <data name="Msg_Seed55" xml:space="preserve">
+    <value>Seed должен содержать 55 символов.</value>
+  </data>
+  <data name="Msg_Seed55Exact" xml:space="preserve">
+    <value>Seed должен содержать ровно 55 символов.</value>
+  </data>
+  <data name="Msg_ShareCountPositive" xml:space="preserve">
+    <value>Количество долей должно быть положительным.</value>
+  </data>
+  <data name="Msg_SharesPositive2" xml:space="preserve">
+    <value>Доли должны быть положительными.</value>
+  </data>
+  <data name="Msg_SigningCancelled" xml:space="preserve">
+    <value>Подписание отменено.</value>
+  </data>
+  <data name="Msg_TemplateNotFound" xml:space="preserve">
+    <value>Шаблон не найден.</value>
+  </data>
+  <data name="Msg_QrNoAddress" xml:space="preserve">
+    <value>QR-код не содержит адрес Qubic.</value>
+  </data>
+  <data name="Msg_QrNotWalletConnect" xml:space="preserve">
+    <value>Этот QR-код не является ссылкой WalletConnect.</value>
+  </data>
+  <data name="Msg_SignInNeedsFeature" xml:space="preserve">
+    <value>Это запрос Sign-In with Qubic. Включите «Sign-In with Qubic» в Настройки → Функции, чтобы подписать его.</value>
+  </data>
+  <data name="Msg_PollClosed" xml:space="preserve">
+    <value>Этот опрос закрыт.</value>
+  </data>
+  <data name="Msg_VaultFileNotFound" xml:space="preserve">
+    <value>Файл хранилища не найден.</value>
+  </data>
+  <data name="Msg_VaultNameRequired" xml:space="preserve">
+    <value>Требуется название хранилища.</value>
+  </data>
+  <data name="Msg_VaultNameTooLong" xml:space="preserve">
+    <value>Название хранилища слишком длинное (макс. 32 байта UTF-8).</value>
+  </data>
+  <data name="Msg_RequestsAssetPre" xml:space="preserve">
+    <value>Запрашивается</value>
+  </data>
+  <data name="Msg_RequestsAssetPost" xml:space="preserve">
+    <value>долей — используйте страницу «Активы» для передачи активов.</value>
+  </data>
+  <data name="Msg_ContractCallNote" xml:space="preserve">
+    <value>Этот запрос — вызов контракта — не поддерживается на этой странице.</value>
+  </data>
+  <data name="Msg_FilledFrom" xml:space="preserve">
+    <value>Заполнено из запроса платежа</value>
+  </data>
+  <data name="Msg_MeantForPre" xml:space="preserve">
+    <value>Он предназначен для</value>
+  </data>
+  <data name="Msg_MeantForMid" xml:space="preserve">
+    <value>, но вы находитесь в</value>
+  </data>
+  <data name="Msg_MissingIdentity" xml:space="preserve">
+    <value>Отсутствует поле 'identity'</value>
+  </data>
+  <data name="Msg_MissingMessage" xml:space="preserve">
+    <value>Отсутствует поле 'message'</value>
+  </data>
+  <data name="Msg_MissingSignature" xml:space="preserve">
+    <value>Отсутствует поле 'signature'</value>
+  </data>
+  <data name="Msg_SigLen64" xml:space="preserve">
+    <value>Подпись должна быть 64 байта</value>
+  </data>
+  <data name="Msg_SigChecksum" xml:space="preserve">
+    <value>Контрольная сумма подписи недействительна.</value>
+  </data>
+  <data name="Fmt_AmountBetween" xml:space="preserve">
+    <value>Сумма должна быть от 1 до {0:N0}.</value>
+  </data>
+  <data name="Fmt_AssetNIssuer" xml:space="preserve">
+    <value>Актив №{0} Эмитент: {1}</value>
+  </data>
+  <data name="Fmt_AssetNNameReq" xml:space="preserve">
+    <value>Актив №{0}: требуется название актива.</value>
+  </data>
+  <data name="Fmt_AssetNIssuerReq" xml:space="preserve">
+    <value>Актив №{0}: требуется идентификатор эмитента.</value>
+  </data>
+  <data name="Fmt_AssetIssuer" xml:space="preserve">
+    <value>Эмитент актива: {0}</value>
+  </data>
+  <data name="Fmt_AssetManagedBy" xml:space="preserve">
+    <value>Активом управляет {0}, который не поддерживает передачу прав.</value>
+  </data>
+  <data name="Fmt_Destination" xml:space="preserve">
+    <value>Получатель: {0}</value>
+  </data>
+  <data name="Fmt_DevAccountHistory" xml:space="preserve">
+    <value>Dev-аккаунт №{0} активен, но его базу данных истории не удалось открыть: {1}</value>
+  </data>
+  <data name="Fmt_Exported" xml:space="preserve">
+    <value>Экспортировано транзакций: {0} в {1}</value>
+  </data>
+  <data name="Fmt_FailedLookupAsset" xml:space="preserve">
+    <value>Не удалось найти актив: {0}</value>
+  </data>
+  <data name="Fmt_Imported" xml:space="preserve">
+    <value>{0} импортирован как #{1}: {2} функций, {3} процедур.</value>
+  </data>
+  <data name="Fmt_InsufficientBalance" xml:space="preserve">
+    <value>Недостаточный баланс ({0} QU).</value>
+  </data>
+  <data name="Fmt_LineInvalidFormat" xml:space="preserve">
+    <value>Строка {0}: неверный формат. Ожидалось 'IDENTITY,AMOUNT'.</value>
+  </data>
+  <data name="Fmt_LineErr" xml:space="preserve">
+    <value>Строка {0}: {1}</value>
+  </data>
+  <data name="Fmt_OwnerNIdReq" xml:space="preserve">
+    <value>Владелец №{0}: требуется идентификатор.</value>
+  </data>
+  <data name="Fmt_OwnerNErr" xml:space="preserve">
+    <value>Владелец №{0}: {1}</value>
+  </data>
+  <data name="Fmt_PollNotFound" xml:space="preserve">
+    <value>Опрос {0} не найден.</value>
+  </data>
+  <data name="Fmt_RecipientNErr" xml:space="preserve">
+    <value>Получатель {0}: {1}</value>
+  </data>
+  <data name="Fmt_RequiredApprovals" xml:space="preserve">
+    <value>Требуемых одобрений должно быть 2-{0}.</value>
+  </data>
+  <data name="Fmt_SharesBetween" xml:space="preserve">
+    <value>Доли должны быть от 1 до {0:N0}.</value>
+  </data>
+  <data name="Fmt_TargetTickNotReached" xml:space="preserve">
+    <value>Целевой тик {0:N0} ещё не достигнут (сейчас {1:N0}).</value>
+  </data>
+  <data name="Fmt_TooManyRecipients" xml:space="preserve">
+    <value>Слишком много получателей ({0}). Максимум 25.</value>
+  </data>
+  <data name="Fmt_RespSize1032" xml:space="preserve">
+    <value>Неожиданный размер ответа ({0} байт, ожидалось 1032).</value>
+  </data>
+  <data name="Fmt_RespSize528" xml:space="preserve">
+    <value>Неожиданный размер ответа ({0} байт, ожидалось 528).</value>
+  </data>
+  <data name="CD_Confirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="S2M_DeleteTemplate" xml:space="preserve">
+    <value>Удалить шаблон</value>
+  </data>
+  <data name="Fmt_DeleteTemplate" xml:space="preserve">
+    <value>Удалить шаблон «{0}»?</value>
+  </data>
+  <data name="TH_RemoveAllConfirm" xml:space="preserve">
+    <value>Удалить все отслеживаемые транзакции?</value>
+  </data>
+  <data name="MV_Register" xml:space="preserve">
+    <value>Регистрировать</value>
+  </data>
+  <data name="MV_Vote" xml:space="preserve">
+    <value>Голосовать</value>
+  </data>
+  <data name="MV_Approve" xml:space="preserve">
+    <value>Одобрить</value>
+  </data>
+  <data name="MV_ApproveAssetRelease" xml:space="preserve">
+    <value>Одобрить выпуск актива</value>
+  </data>
+  <data name="Fmt_MvRegister" xml:space="preserve">
+    <value>Зарегистрировать хранилище «{0}» с {1} владельцами, {2} требуемыми одобрениями?
+
+Комиссия: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvDeposit" xml:space="preserve">
+    <value>Внести {0:N0} QU в хранилище №{1}?</value>
+  </data>
+  <data name="Fmt_MvResetRelease" xml:space="preserve">
+    <value>Сбросить все ожидающие выпуски для хранилища №{0}?
+
+Комиссия: {1:N0} QU</value>
+  </data>
+  <data name="Fmt_MvRelease" xml:space="preserve">
+    <value>Выпустить {0:N0} QU из хранилища №{1} на {2}...?
+
+Комиссия: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvVote" xml:space="preserve">
+    <value>Голосовать за новые комиссии?
+
+Регистрация: {0:N0}
+Выпуск: {1:N0}
+Сброс: {2:N0}
+Хранение: {3:N0}
+Депозит: {4:N0}
+Сжигание: {5:N0}</value>
+  </data>
+  <data name="Fmt_MvApproveRelease" xml:space="preserve">
+    <value>Одобрить выпуск {0:N0} QU из хранилища №{1} на {2}...?
+
+Комиссия: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvApproveAssetRelease" xml:space="preserve">
+    <value>Одобрить выпуск {0:N0} {1} из хранилища №{2} на {3}...?
+
+Комиссия: {4:N0} QU</value>
+  </data>
+  <data name="MV_RevokeMgmt" xml:space="preserve">
+    <value>Отозвать права управления</value>
+  </data>
+  <data name="MV_AssetOperation" xml:space="preserve">
+    <value>Операция с активом</value>
+  </data>
+  <data name="MV_ProceedAssetOp" xml:space="preserve">
+    <value>Продолжить операцию с активом?</value>
+  </data>
+  <data name="Fmt_FeeFragment" xml:space="preserve">
+    <value> (комиссия: {0:N0} QU)</value>
+  </data>
+  <data name="Fmt_AssetDepositRights" xml:space="preserve">
+    <value>Внести {0:N0} {1} в хранилище №{2}?
+
+Будет отправлено 2 транзакции:
+1. Передать права управления от {3} к MSVault{4}
+2. Внести актив в хранилище (комиссия: {5:N0} QU)</value>
+  </data>
+  <data name="Fmt_AssetDeposit" xml:space="preserve">
+    <value>Внести {0:N0} {1} в хранилище №{2}?
+
+Комиссия: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRelease" xml:space="preserve">
+    <value>Выпустить {0:N0} {1} из хранилища №{2} на {3}...?
+
+Комиссия: {4:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetReset" xml:space="preserve">
+    <value>Сбросить все ожидающие выпуски активов для хранилища №{0}?
+
+Комиссия: {1:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRevoke" xml:space="preserve">
+    <value>Отозвать права управления для {0:N0} долей {1}?
+
+Комиссия: 100 QU</value>
+  </data>
+  <data name="Cap_TickInfo" xml:space="preserve">
+    <value>Инфо тика</value>
+  </data>
+  <data name="Cap_Balance" xml:space="preserve">
+    <value>Балансы</value>
+  </data>
+  <data name="Cap_Broadcast" xml:space="preserve">
+    <value>Трансляция</value>
+  </data>
+  <data name="Cap_SmartContractQuery" xml:space="preserve">
+    <value>Запросы контрактов</value>
+  </data>
+  <data name="Cap_Computors" xml:space="preserve">
+    <value>Список computor</value>
+  </data>
+  <data name="Cap_TransactionLookup" xml:space="preserve">
+    <value>Поиск транзакции</value>
+  </data>
+  <data name="Cap_TransactionReceipt" xml:space="preserve">
+    <value>Квитанции транзакций</value>
+  </data>
+  <data name="Cap_TransferHistory" xml:space="preserve">
+    <value>История переводов</value>
+  </data>
+  <data name="Cap_TransactionArchive" xml:space="preserve">
+    <value>Архив транзакций</value>
+  </data>
+  <data name="Cap_Logs" xml:space="preserve">
+    <value>События журнала</value>
+  </data>
+  <data name="Cap_AssetListings" xml:space="preserve">
+    <value>Списки активов</value>
+  </data>
+  <data name="Cap_Issuances" xml:space="preserve">
+    <value>Выпуски активов</value>
+  </data>
+  <data name="Cap_AssetBalance" xml:space="preserve">
+    <value>Баланс активов</value>
+  </data>
+  <data name="Cap_ActiveIpos" xml:space="preserve">
+    <value>Активные IPO</value>
+  </data>
+  <data name="Cap_IpoStatus" xml:space="preserve">
+    <value>Статус IPO</value>
+  </data>
+  <data name="Cap_TickData" xml:space="preserve">
+    <value>Данные тика</value>
+  </data>
+  <data name="Cap_ChainInfo" xml:space="preserve">
+    <value>Инфо цепочки</value>
+  </data>
+  <data name="Cap_RawJsonRpc" xml:space="preserve">
+    <value>Песочница JSON-RPC</value>
+  </data>
+  <data name="Cap_Peers" xml:space="preserve">
+    <value>Пиры</value>
+  </data>
+  <data name="Cap_NodeCommands" xml:space="preserve">
+    <value>Команды узла</value>
+  </data>
+  <data name="Cap_TickTransactionCheck" xml:space="preserve">
+    <value>Проверка включения в тик</value>
+  </data>
+  <data name="Cap_Oracle" xml:space="preserve">
+    <value>Запросы оракула</value>
+  </data>
+  <data name="Cap_ContractRegistry" xml:space="preserve">
+    <value>Реестр контрактов</value>
+  </data>
+  <data name="Feat_RemoteLabels_Title" xml:space="preserve">
+    <value>Удалённые метки</value>
+  </data>
+  <data name="Feat_RemoteLabels_Desc" xml:space="preserve">
+    <value>Показывает имена бирж, токенов и смарт-контрактов и подставляет комиссии процедур контрактов, используя публичный пакет данных Qubic. Только на Mainnet.</value>
+  </data>
+  <data name="Feat_RemoteLabels_Connects" xml:space="preserve">
+    <value>static.qubic.org</value>
+  </data>
+  <data name="Feat_RemoteLabels_Risk" xml:space="preserve">
+    <value>Сообщает static.qubic.org, что вы используете кошелёк Qubic (адреса не отправляются).</value>
+  </data>
+  <data name="Feat_DeveloperTools_Title" xml:space="preserve">
+    <value>Инструменты разработчика</value>
+  </data>
+  <data name="Feat_DeveloperTools_Desc" xml:space="preserve">
+    <value>В локальном тестнете AIO / core-lite: публичные dev-аккаунты, встроенный кран, помощник по активам и консоль для вызова любого контракта — включая ваш собственный, импортированный из C++-заголовка.</value>
+  </data>
+  <data name="Feat_DeveloperTools_Connects" xml:space="preserve">
+    <value>Только активный devnet</value>
+  </data>
+  <data name="Feat_DeveloperTools_Risk" xml:space="preserve">
+    <value>Dev-аккаунты используют публично известные seed. Никогда не используйте их и не отправляйте им средства на Mainnet.</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Title" xml:space="preserve">
+    <value>Sign-In with Qubic</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Desc" xml:space="preserve">
+    <value>Позволяет сайтам просить вас подтвердить владение идентификатором, подписав структурированное сообщение входа (домен, nonce, срок действия). Ничего не отправляется в сеть.</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Connects" xml:space="preserve">
+    <value>Само по себе ничего</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Risk" xml:space="preserve">
+    <value>Подписанный вход подтверждает владение этому сайту. Всегда проверяйте домен, показанный в запросе.</value>
+  </data>
+  <data name="Feat_WalletConnect_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="Feat_WalletConnect_Desc" xml:space="preserve">
+    <value>Подключайтесь к dApp (например, созданным с @qubic/react), сканируя QR-код WalletConnect. Каждый запрос показывается для одобрения перед подписью.</value>
+  </data>
+  <data name="Feat_WalletConnect_Connects" xml:space="preserve">
+    <value>Реле WalletConnect (relay.walletconnect.org) и dApp, с которыми вы соединяетесь</value>
+  </data>
+  <data name="Feat_WalletConnect_Risk" xml:space="preserve">
+    <value>Сопряжённые dApp могут запрашивать подписи; они никогда не подпишут без вашего одобрения.</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Title" xml:space="preserve">
+    <value>Локальная точка подписи</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Desc" xml:space="preserve">
+    <value>Открывает конечную точку JSON-RPC на 127.0.0.1 (случайный порт, секретный токен), чтобы скрипты и тесты могли просить кошелёк подписать. Каждый запрос требует вашего одобрения.</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Connects" xml:space="preserve">
+    <value>Ничего внешнего — слушает только 127.0.0.1</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Risk" xml:space="preserve">
+    <value>Любая локальная программа с токеном может запрашивать подписи.</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Title" xml:space="preserve">
+    <value>Авто-одобрение dev-аккаунтов</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Desc" xml:space="preserve">
+    <value>Позволяет локальной точке подписывать публичными dev-аккаунтами в devnet core-lite без запроса — для автоматических тестов контрактов.</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Connects" xml:space="preserve">
+    <value>Только активный devnet</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Risk" xml:space="preserve">
+    <value>Применяется только к публичным dev-ключам в проверенном devnet core-lite; никогда к вашим собственным seed.</value>
+  </data>
+  <data name="Warn_NetworkMismatch" xml:space="preserve">
+    <value>Несоответствие сети</value>
+  </data>
+  <data name="Warn_PublicDevSource" xml:space="preserve">
+    <value>Публичный dev-ключ на Mainnet</value>
+  </data>
+  <data name="Warn_PublicDevDestination" xml:space="preserve">
+    <value>Получатель — публичный dev-ключ</value>
+  </data>
+  <data name="Warn_TickWindow" xml:space="preserve">
+    <value>Целевой тик слишком далеко</value>
+  </data>
+  <data name="Warn_TickPassed" xml:space="preserve">
+    <value>Целевой тик уже прошёл</value>
+  </data>
+  <data name="Warn_NotDecoded" xml:space="preserve">
+    <value>Вызов не декодирован</value>
+  </data>
+  <data name="Warn_SizeMismatch" xml:space="preserve">
+    <value>Несовпадение размера ввода</value>
+  </data>
+  <data name="Warn_Signin" xml:space="preserve">
+    <value>Проблема входа</value>
+  </data>
+  <data name="Warn_SigninIdentity" xml:space="preserve">
+    <value>Неверный идентификатор</value>
+  </data>
+  <data name="Warn_WcPrefix" xml:space="preserve">
+    <value>Сообщение WalletConnect</value>
+  </data>
+  <data name="Warn_CrossNetwork" xml:space="preserve">
+    <value>Seed использован в другой сети</value>
+  </data>
+</root>

@@ -145,7 +145,9 @@ class Program
         services.AddSingleton<AutoLockService>();
         services.AddSingleton<BalanceService>();
         services.AddSingleton(new FileDialogService());
-        services.AddLocalization();
+        services.AddLocalization(o => o.ResourcesPath = "Resources");
+        services.AddSingleton<Qubic.Net.Wallet.Localization.LanguageService>();
+        services.AddSingleton<Qubic.Net.Wallet.Services.AppRestartService>();
     }
 
     static void RunDesktop(string[] args)
@@ -158,6 +160,19 @@ class Program
         appBuilder.RootComponents.Add<Routes>("app");
 
         var app = appBuilder.Build();
+        app.Services.GetRequiredService<Qubic.Net.Wallet.Localization.LanguageService>().ApplyAtStartup();
+        app.Services.GetRequiredService<Qubic.Net.Wallet.Services.AppRestartService>().Configure(() =>
+        {
+            // Relaunch so the new UI culture is applied at startup, then close this instance.
+            try
+            {
+                var exe = Environment.ProcessPath;
+                if (exe != null)
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exe) { UseShellExecute = true });
+            }
+            catch { /* best effort */ }
+            try { app.MainWindow.Close(); } catch { Environment.Exit(0); }
+        });
         app.Services.GetRequiredService<FileDialogService>().SetWindow(app.MainWindow);
         var iconPath = GetIconPath();
         app.MainWindow
@@ -188,6 +203,7 @@ class Program
         builder.Environment.WebRootPath = wwwrootPath;
 
         var app = builder.Build();
+        app.Services.GetRequiredService<Qubic.Net.Wallet.Localization.LanguageService>().ApplyAtStartup();
 
         // Session token middleware: validates every request before anything else.
         // First request arrives with ?token=xxx — we set an HttpOnly cookie and redirect

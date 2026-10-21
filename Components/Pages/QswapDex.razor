@@ -5,14 +5,15 @@
 @inject TransactionTrackerService TxTracker
 @inject QubicSettingsService Settings
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>QSwap AMM</h4>
-<p class="text-muted">Issue/transfer assets, create pools, add/remove liquidity, and swap on the QSwap AMM.</p>
-<div class="alert alert-info small py-2">This feature is in preview and may change in future updates.</div>
+<h4>@Loc["QSwap_Title"]</h4>
+<p class="text-muted">@Loc["QSwap_Subtitle"]</p>
+<div class="alert alert-info small py-2">@Loc["QSwap_Preview"]</div>
 
 @if (!Seed.HasSeed)
 {
-    <div class="alert alert-warning">Enter your seed in the top bar to enable signing.</div>
+    <div class="alert alert-warning">@Loc["Common_NeedSeedSigning"]</div>
 }
 else
 {
@@ -20,7 +21,7 @@ else
         @foreach (var tab in _tabs)
         {
             <li class="nav-item">
-                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@tab</a>
+                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@Loc[$"QSwap_Tab_{tab}"]</a>
             </li>
         }
     </ul>
@@ -29,112 +30,112 @@ else
         @switch (_activeTab)
         {
             case "Issue":
-                <div class="card"><div class="card-header">Issue Asset (QSwap)</div><div class="card-body">
-                    <div class="mb-2"><label class="form-label-sm">Asset Name (max 7 chars)</label>
+                <div class="card"><div class="card-header">@Loc["QSwap_IssueHdr"]</div><div class="card-body">
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_AssetName7"]</label>
                         <input class="form-control form-control-sm" maxlength="7" @bind="_issueName" /></div>
-                    <div class="mb-2"><label class="form-label-sm">Number of Shares</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_NumberOfShares"]</label>
                         <input type="number" class="form-control form-control-sm" @bind="_issueShares" /></div>
-                    <div class="mb-2"><label class="form-label-sm">Unit of Measurement (max 7 chars)</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_UnitOfMeasure7"]</label>
                         <input class="form-control form-control-sm" maxlength="7" @bind="_issueUnit" /></div>
-                    <div class="mb-2"><label class="form-label-sm">Decimal Places (0-18)</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_DecimalPlaces"]</label>
                         <input type="number" class="form-control form-control-sm" min="0" max="18" @bind="_issueDecimals" /></div>
-                    <button class="btn btn-primary" @onclick="IssueAsset" disabled="@_sending">@(_sending ? "Issuing..." : "Issue Asset")</button>
+                    <button class="btn btn-primary" @onclick="IssueAsset" disabled="@_sending">@(_sending ? Loc["Common_Issuing"] : Loc["Common_IssueAsset"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.issuance.ToString("N0") QU</div> }
                 </div></div>
                 break;
 
             case "Transfer":
-                <div class="card"><div class="card-header">Transfer Asset (QSwap)</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["QSwap_TransferHdr"]</div><div class="card-body">
                     <AssetSelector @bind-IssuerValue="_xferIssuer" @bind-NameValue="_xferName" />
-                    <div class="mb-2"><label class="form-label-sm">New Owner Identity</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_NewOwnerIdentity"]</label>
                         <AddressInput @bind-Value="_xferNewOwner" /></div>
-                    <div class="mb-2"><label class="form-label-sm">Amount of Shares</label>
+                    <div class="mb-2"><label class="form-label-sm">@Loc["Common_AmountOfShares"]</label>
                         <input type="number" class="form-control form-control-sm" @bind="_xferAmount" /></div>
-                    <button class="btn btn-primary" @onclick="TransferAsset" disabled="@_sending">@(_sending ? "Transferring..." : "Transfer")</button>
+                    <button class="btn btn-primary" @onclick="TransferAsset" disabled="@_sending">@(_sending ? Loc["Common_Transferring"] : Loc["Common_Transfer"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.transfer.ToString("N0") QU</div> }
                 </div></div>
                 break;
 
             case "Pool":
-                <div class="card"><div class="card-header">Create Pool</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["QSwap_CreatePool"]</div><div class="card-body">
                     <AssetSelector @bind-IssuerValue="_poolIssuer" @bind-NameValue="_poolName" />
-                    <button class="btn btn-primary" @onclick="CreatePool" disabled="@_sending">@(_sending ? "Creating..." : "Create Pool")</button>
+                    <button class="btn btn-primary" @onclick="CreatePool" disabled="@_sending">@(_sending ? Loc["QSwap_Creating"] : Loc["QSwap_CreatePool"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.pool.ToString("N0") QU</div> }
                 </div></div>
                 break;
 
             case "Liquidity":
-                <div class="card"><div class="card-header">Add / Remove Liquidity</div><div class="card-body">
+                <div class="card"><div class="card-header">@Loc["QSwap_LiquidityHdr"]</div><div class="card-body">
                     <div class="mb-2 d-flex gap-2">
                         <button class="btn btn-sm @(_liqAdd ? "btn-primary" : "btn-outline-primary")" @onclick="() => _liqAdd = true">Add</button>
-                        <button class="btn btn-sm @(!_liqAdd ? "btn-primary" : "btn-outline-primary")" @onclick="() => _liqAdd = false">Remove</button>
+                        <button class="btn btn-sm @(!_liqAdd ? "btn-primary" : "btn-outline-primary")" @onclick="() => _liqAdd = false">@Loc["Common_Remove"]</button>
                     </div>
                     <AssetSelector @bind-IssuerValue="_liqIssuer" @bind-NameValue="_liqName" />
                     @if (_liqAdd)
                     {
-                        <div class="mb-2"><label class="form-label-sm">QU Amount (tx amount)</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_QuAmountTx"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqQuAmount" /></div>
-                        <div class="mb-2"><label class="form-label-sm">Asset Amount Desired</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetAmountDesired"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqAssetDesired" /></div>
-                        <div class="mb-2"><label class="form-label-sm">QU Amount Min</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_QuAmountMin"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqQuMin" /></div>
-                        <div class="mb-2"><label class="form-label-sm">Asset Amount Min</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetAmountMin"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqAssetMin" /></div>
                     }
                     else
                     {
-                        <div class="mb-2"><label class="form-label-sm">Burn Liquidity Amount</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_BurnLiquidity"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqBurnAmount" /></div>
-                        <div class="mb-2"><label class="form-label-sm">QU Amount Min</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_QuAmountMin"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqQuMin" /></div>
-                        <div class="mb-2"><label class="form-label-sm">Asset Amount Min</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetAmountMin"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqAssetMin" /></div>
                     }
                     <button class="btn btn-primary" @onclick="ManageLiquidity" disabled="@_sending">
-                        @(_sending ? "Processing..." : (_liqAdd ? "Add Liquidity" : "Remove Liquidity"))
+                        @(_sending ? Loc["Common_Processing"] : (_liqAdd ? Loc["QSwap_AddLiquidity"] : Loc["QSwap_RemoveLiquidity"]))
                     </button>
                 </div></div>
                 break;
 
             case "Swap":
-                <div class="card"><div class="card-header">Swap</div><div class="card-body">
-                    <div class="mb-2"><label class="form-label-sm">Swap Type</label>
+                <div class="card"><div class="card-header">@Loc["QSwap_Tab_Swap"]</div><div class="card-body">
+                    <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_SwapType"]</label>
                         <select class="form-select form-select-sm" @bind="_swapType">
-                            <option value="exactQuForAsset">Exact QU → Asset</option>
-                            <option value="quForExactAsset">QU → Exact Asset</option>
-                            <option value="exactAssetForQu">Exact Asset → QU</option>
-                            <option value="assetForExactQu">Asset → Exact QU</option>
+                            <option value="exactQuForAsset">@Loc["QSwap_Opt_ExactQuForAsset"]</option>
+                            <option value="quForExactAsset">@Loc["QSwap_Opt_QuForExactAsset"]</option>
+                            <option value="exactAssetForQu">@Loc["QSwap_Opt_ExactAssetForQu"]</option>
+                            <option value="assetForExactQu">@Loc["QSwap_Opt_AssetForExactQu"]</option>
                         </select>
                     </div>
                     <AssetSelector @bind-IssuerValue="_swapIssuer" @bind-NameValue="_swapName" />
                     @switch (_swapType)
                     {
                         case "exactQuForAsset":
-                            <div class="mb-2"><label class="form-label-sm">QU Amount In (tx amount)</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_QuAmountInTx"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount1" /></div>
-                            <div class="mb-2"><label class="form-label-sm">Asset Amount Out Min</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetOutMin"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount2" /></div>
                             break;
                         case "quForExactAsset":
-                            <div class="mb-2"><label class="form-label-sm">Max QU Amount In (tx amount)</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_MaxQuInTx"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount1" /></div>
-                            <div class="mb-2"><label class="form-label-sm">Exact Asset Amount Out</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_ExactAssetOut"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount2" /></div>
                             break;
                         case "exactAssetForQu":
-                            <div class="mb-2"><label class="form-label-sm">Asset Amount In</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetAmountIn"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount1" /></div>
-                            <div class="mb-2"><label class="form-label-sm">QU Amount Out Min</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_QuOutMin"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount2" /></div>
                             break;
                         case "assetForExactQu":
-                            <div class="mb-2"><label class="form-label-sm">Max Asset Amount In</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_MaxAssetIn"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount1" /></div>
-                            <div class="mb-2"><label class="form-label-sm">Exact QU Amount Out</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_ExactQuOut"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_swapAmount2" /></div>
                             break;
                     }
-                    <button class="btn btn-primary" @onclick="ExecuteSwap" disabled="@_sending">@(_sending ? "Swapping..." : "Swap")</button>
+                    <button class="btn btn-primary" @onclick="ExecuteSwap" disabled="@_sending">@(_sending ? Loc["QSwap_Swapping"] : Loc["QSwap_Tab_Swap"])</button>
                     @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.swap.ToString("N0") QU</div> }
                 </div></div>
                 break;
@@ -156,7 +157,7 @@ else
                     <span class="small">Save <span class="mono">@_xferNewOwner[..12]...</span> to address book?</span>
                     <input type="text" class="form-control form-control-sm" style="width:150px"
                            @bind="_saveContactLabel" placeholder="Label" />
-                    <button class="btn btn-sm btn-outline-primary" @onclick="SaveNewContact">Save</button>
+                    <button class="btn btn-sm btn-outline-primary" @onclick="SaveNewContact">@Loc["Common_Save"]</button>
                     <button class="btn btn-sm btn-outline-secondary" @onclick="() => _dismissSaveContact = true">
                         <i class="bi bi-x"></i>
                     </button>
@@ -223,8 +224,8 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_issueName)) { _error = "Asset name is required."; return; }
-            if (_issueShares <= 0) { _error = "Shares must be positive."; return; }
+            if (string.IsNullOrWhiteSpace(_issueName)) { _error = Loc["Msg_AssetNameRequired"]; return; }
+            if (_issueShares <= 0) { _error = Loc["Msg_SharesPositive2"]; return; }
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qswap.IssueAssetPayload
             {
@@ -244,8 +245,8 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_xferName)) { _error = "Asset name required."; return; }
-            if (_xferAmount <= 0) { _error = "Amount must be positive."; return; }
+            if (string.IsNullOrWhiteSpace(_xferName)) { _error = Loc["Msg_AssetNameRequired2"]; return; }
+            if (_xferAmount <= 0) { _error = Loc["Msg_AmountPositive"]; return; }
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qswap.TransferShareOwnershipAndPossessionPayload
             {
@@ -265,7 +266,7 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_poolName)) { _error = "Asset name required."; return; }
+            if (string.IsNullOrWhiteSpace(_poolName)) { _error = Loc["Msg_AssetNameRequired2"]; return; }
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qswap.CreatePoolPayload
             {
@@ -283,7 +284,7 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_liqName)) { _error = "Asset name required."; return; }
+            if (string.IsNullOrWhiteSpace(_liqName)) { _error = Loc["Msg_AssetNameRequired2"]; return; }
             var tick = await GetTick();
             var issuer = ParseIssuer(_liqIssuer);
             var assetName = AssetNameHelper.ToUlong(_liqName.Trim());
@@ -328,7 +329,7 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_swapName)) { _error = "Asset name required."; return; }
+            if (string.IsNullOrWhiteSpace(_swapName)) { _error = Loc["Msg_AssetNameRequired2"]; return; }
             var tick = await GetTick();
             var issuer = ParseIssuer(_swapIssuer);
             var assetName = AssetNameHelper.ToUlong(_swapName.Trim());
