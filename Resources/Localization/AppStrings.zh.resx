@@ -2841,4 +2841,7 @@
   <data name="Warn_CrossNetwork" xml:space="preserve">
     <value>种子已在其他网络使用</value>
   </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>待处理（tick 尚未验证）</value>
+  </data>
 </root>

@@ -936,4 +936,5 @@ STRINGS = {
   'Warn_SigninIdentity': {"en":'Wrong identity', "es":'Identidad incorrecta', "fr":'Mauvaise identité', "de":'Falsche Identität', "ru":'Неверный идентификатор', "zh":'身份错误'},
   'Warn_WcPrefix': {"en":'WalletConnect message', "es":'Mensaje de WalletConnect', "fr":'Message WalletConnect', "de":'WalletConnect-Nachricht', "ru":'Сообщение WalletConnect', "zh":'WalletConnect 消息'},
   'Warn_CrossNetwork': {"en":'Seed used on another network', "es":'Semilla usada en otra red', "fr":'Graine utilisée sur un autre réseau', "de":'Seed auf anderem Netzwerk verwendet', "ru":'Seed использован в другой сети', "zh":'种子已在其他网络使用'},
+  'CC_Pending': {"en":'pending (tick not yet verified)', "es":'pendiente (tick aún no verificado)', "fr":'en attente (tick non encore vérifié)', "de":'ausstehend (Tick noch nicht verifiziert)', "ru":'ожидание (тик ещё не проверен)', "zh":'待处理（tick 尚未验证）'},
 }

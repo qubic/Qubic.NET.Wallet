@@ -2841,4 +2841,7 @@
   <data name="Warn_CrossNetwork" xml:space="preserve">
     <value>Seed использован в другой сети</value>
   </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>ожидание (тик ещё не проверен)</value>
+  </data>
 </root>

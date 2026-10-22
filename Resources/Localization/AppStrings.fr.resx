@@ -2841,4 +2841,7 @@ Frais : 100 QU</value>
   <data name="Warn_CrossNetwork" xml:space="preserve">
     <value>Graine utilisée sur un autre réseau</value>
   </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>en attente (tick non encore vérifié)</value>
+  </data>
 </root>

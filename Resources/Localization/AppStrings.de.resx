@@ -2841,4 +2841,7 @@ Gebühr: 100 QU</value>
   <data name="Warn_CrossNetwork" xml:space="preserve">
     <value>Seed auf anderem Netzwerk verwendet</value>
   </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>ausstehend (Tick noch nicht verifiziert)</value>
+  </data>
 </root>

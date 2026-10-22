@@ -143,7 +143,7 @@ else
                     @if (_receipt != null)
                     {
                         <div class="card-body small">
-                            <div>@Loc["CC_StatusLabel"] <strong class="@(_receipt.Status ? "text-success" : "text-danger")">@(_receipt.Status ? Loc["CC_Executed"] : Loc["CC_NotExecuted"])</strong></div>
+                            <div>@Loc["CC_StatusLabel"] <strong class="@(_receipt.IsPending ? "text-warning" : _receipt.Status ? "text-success" : "text-danger")">@(_receipt.IsPending ? Loc["CC_Pending"] : _receipt.Status ? Loc["CC_Executed"] : Loc["CC_NotExecuted"])</strong></div>
                             @if (_receiptNote != null) { <div class="text-muted">@_receiptNote</div> }
                         </div>
                     }
