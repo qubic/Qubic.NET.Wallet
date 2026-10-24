@@ -8,7 +8,7 @@
     <value>Home</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>Vault Overview</value>
+    <value>Vault</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>Transactions</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>Enter your vault password to unlock and add...</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Generate</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>Hide</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>log events</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Open or create a vault</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Save as a vault</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Vault</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Total across vault</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Pending transactions</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>No pending transactions</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>at tick</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>Owned Assets</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>Label</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Transaction sent</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Broadcasting — waiting for the target tick</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Transaction confirmed</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>Transaction failed</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Status unknown — check history later</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Target tick</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>ticks remaining</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>View in history</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Switch vault</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Open a recent vault</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Use</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Open another file…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Creating or opening another vault locks the current one first.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Create a new vault</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Add seed</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>Vault Overview</value>
+    <value>Vault</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>Every identity in your vault, with balances from</value>
@@ -2843,5 +2930,53 @@ Fee: 100 QU</value>
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>pending (tick not yet verified)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Import vault file…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Import from web / mobile wallet</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Import accounts from a vault file exported by the Qubic web wallet or the Qubic mobile app. Select the file and enter the password you used there.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Vault file password</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Read file</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Reading…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Choose which accounts to import:</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>watch-only (no seed)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>already in vault</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Import selected</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>No importable accounts were found in this file.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>Imported {0} account(s).</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Select the exported vault file</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Enter the file's password and read it</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Choose accounts, adjust names, and import</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Name in your vault</value>
   </data>
 </root>

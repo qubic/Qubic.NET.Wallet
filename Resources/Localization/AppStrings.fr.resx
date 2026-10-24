@@ -8,7 +8,7 @@
     <value>Accueil</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>Aperçu du coffre</value>
+    <value>Coffre</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>Transactions</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>Saisissez le mot de passe du coffre pour déverrouiller et ajouter...</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Générer</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>Masquer</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>journaux</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Ouvrir ou créer un coffre</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Enregistrer dans un coffre</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Réseau</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Serveur</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Hors ligne</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Coffre</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Total du coffre</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Transactions en attente</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>Aucune transaction en attente</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>au tick</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>Actifs détenus</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>Libellé</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Transaction envoyée</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Diffusion — en attente du tick cible</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Transaction confirmée</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>La transaction a échoué</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Statut inconnu — vérifiez l'historique plus tard</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Tick cible</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>ticks restants</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Masquer</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>Voir dans l'historique</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Changer de coffre</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Ouvrir un coffre récent</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Utiliser</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Actuel</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Ouvrir un autre fichier…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Créer ou ouvrir un autre coffre verrouille d'abord l'actuel.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Créer un nouveau coffre</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Ajouter une graine</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>Aperçu du coffre</value>
+    <value>Coffre</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>Chaque identité de votre coffre, avec les soldes de</value>
@@ -2843,5 +2930,53 @@ Frais : 100 QU</value>
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>en attente (tick non encore vérifié)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Importer un fichier de coffre…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Importer depuis le portefeuille web / mobile</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Importez des comptes depuis un fichier de coffre exporté par le portefeuille web Qubic ou l'application mobile Qubic. Sélectionnez le fichier et saisissez le mot de passe que vous y avez utilisé.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Mot de passe du fichier de coffre</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Lire le fichier</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Lecture…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Choisissez les comptes à importer :</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>lecture seule (pas de graine)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>déjà dans le coffre</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Importer la sélection</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>Aucun compte importable trouvé dans ce fichier.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>{0} compte(s) importé(s).</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Sélectionnez le fichier de coffre exporté</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Saisissez le mot de passe du fichier et lisez-le</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Choisissez les comptes, ajustez les noms et importez</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Nom dans votre coffre</value>
   </data>
 </root>

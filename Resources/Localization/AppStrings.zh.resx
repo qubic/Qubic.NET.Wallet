@@ -8,7 +8,7 @@
     <value>主页</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>保险库概览</value>
+    <value>保险库</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>交易</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>输入保险库密码以解锁并添加…</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>生成</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>隐藏</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>条日志事件</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>打开或创建保险库</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>保存为保险库</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>离线</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>保险库合计</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>待处理交易</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>没有待处理交易</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>于 tick</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>持有资产</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>标签</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>交易已发送</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>正在广播 — 等待目标 tick</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>交易已确认</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>交易失败</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>状态未知 — 请稍后查看历史</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>目标 tick</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>个 tick 剩余</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>在历史中查看</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>切换保险库</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>打开最近的保险库</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>使用</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>当前</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>打开其他文件…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>创建或打开其他保险库会先锁定当前保险库。</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>创建新保险库</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>添加种子</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>保险库概览</value>
+    <value>保险库</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>保险库中的每个身份及其来自</value>
@@ -2843,5 +2930,53 @@
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>待处理（tick 尚未验证）</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>导入保险库文件…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>从网页 / 移动钱包导入</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>从 Qubic 网页钱包或 Qubic 移动应用导出的保险库文件导入账户。选择文件并输入您在那里使用的密码。</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>保险库文件密码</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>读取文件</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>读取中…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>选择要导入的账户：</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>仅观察（无种子）</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>已在保险库中</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>导入所选</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>此文件中未找到可导入的账户。</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>已导入 {0} 个账户。</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. 选择导出的保险库文件</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. 输入文件密码并读取</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. 选择账户、调整名称并导入</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>在您保险库中的名称</value>
   </data>
 </root>

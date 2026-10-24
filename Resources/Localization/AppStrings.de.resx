@@ -8,7 +8,7 @@
     <value>Start</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>Tresor-Übersicht</value>
+    <value>Tresor</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>Transaktionen</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>Tresor-Passwort eingeben, um zu entsperren und hinzuzufügen...</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Erzeugen</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>Verbergen</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>Log-Ereignisse</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Tresor öffnen oder erstellen</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Als Tresor speichern</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Netzwerk</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Gesamt im Tresor</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Ausstehende Transaktionen</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>Keine ausstehenden Transaktionen</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>bei Tick</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>Eigene Assets</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>Bezeichnung</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Transaktion gesendet</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Wird gesendet — warten auf den Ziel-Tick</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Transaktion bestätigt</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>Transaktion fehlgeschlagen</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Status unbekannt — später im Verlauf prüfen</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Ziel-Tick</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>Ticks verbleibend</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>Im Verlauf anzeigen</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Tresor wechseln</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Zuletzt verwendeten Tresor öffnen</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Verwenden</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Aktuell</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Andere Datei öffnen…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Beim Erstellen oder Öffnen eines anderen Tresors wird der aktuelle zuerst gesperrt.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Neuen Tresor erstellen</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Seed hinzufügen</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>Tresor-Übersicht</value>
+    <value>Tresor</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>Jede Identität in deinem Tresor, mit Guthaben von</value>
@@ -2843,5 +2930,53 @@ Gebühr: 100 QU</value>
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>ausstehend (Tick noch nicht verifiziert)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Tresordatei importieren…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Aus Web-/Mobil-Wallet importieren</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Importiere Konten aus einer Tresordatei, die von der Qubic-Web-Wallet oder der Qubic-Mobile-App exportiert wurde. Wähle die Datei und gib das dort verwendete Passwort ein.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Passwort der Tresordatei</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Datei lesen</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Wird gelesen…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Wähle, welche Konten importiert werden:</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>nur beobachten (kein Seed)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>bereits im Tresor</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Auswahl importieren</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>In dieser Datei wurden keine importierbaren Konten gefunden.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>{0} Konto/Konten importiert.</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Exportierte Tresordatei auswählen</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Passwort der Datei eingeben und lesen</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Konten wählen, Namen anpassen und importieren</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Name in deinem Tresor</value>
   </data>
 </root>

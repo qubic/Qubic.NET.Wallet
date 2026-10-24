@@ -1,0 +1,254 @@
+@using Qubic.Core.Entities
+@inject VaultService Vault
+@inject FileDialogService DialogService
+@inject QubicSettingsService Cfg
+@inject SeedSessionService Seed
+@inject Qubic.Services.Storage.WalletStorageService WalletStorage
+@inject TransactionTrackerService TxTracker
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
+
+@* Shared "switch vault" dialog: open a recent vault, browse for another file, or create a new one.
+   Open it with Open() (optionally seeding the create form), and listen to OnChanged to refresh. *@
+@if (_open)
+{
+    <div class="modal d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)" @onclick="Close">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" @onclick:stopPropagation>
+            <div class="modal-content">
+                <div class="modal-header card-header-accent">
+                    <h5 class="modal-title"><i class="bi bi-arrow-left-right me-1"></i>@Loc["VSw_Switch"]</h5>
+                    <button type="button" class="btn-close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (_error != null) { <div class="text-danger small mb-2">@_error</div> }
+
+                    @* Open a recent vault *@
+                    @if (_vaultFiles.Count > 0)
+                    {
+                        <label class="form-label small fw-semibold">@Loc["VSw_Recent"]</label>
+                        <div class="list-group mb-3">
+                            @foreach (var path in _vaultFiles)
+                            {
+                                var isCurrent = VaultFileHistory.IsSame(path, Vault.VaultPath);
+                                <div class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                                    <span class="text-truncate">
+                                        <span><i class="bi bi-safe me-1"></i>@VaultLabel(path)
+                                        @if (isCurrent) { <span class="badge bg-success ms-1">@Loc["VSw_Current"]</span> }</span>
+                                        <div class="small text-muted text-truncate" title="@path">@path</div>
+                                    </span>
+                                    @if (!isCurrent)
+                                    {
+                                        <button class="btn btn-sm btn-outline-primary flex-shrink-0" @onclick="() => SwitchToVaultFile(path)">@Loc["VSw_Use"]</button>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                    @if (DialogService.IsAvailable)
+                    {
+                        <button class="btn btn-sm btn-outline-secondary mb-3" @onclick="BrowseSwitchVaultFile">
+                            <i class="bi bi-folder2-open me-1"></i>@Loc["VSw_Browse"]
+                        </button>
+                    }
+
+                    <hr />
+
+                    @* Create a new vault *@
+                    <label class="form-label small fw-semibold">@Loc["VSw_Create"]</label>
+                    <div class="mb-2">
+                        <label class="form-label small">@Loc["Shell_VaultFileLocation"]</label>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" @bind="_createPath" placeholder="@Loc["Shell_VaultPathPlaceholder"]" />
+                            @if (DialogService.IsAvailable)
+                            {
+                                <button class="btn btn-outline-secondary" type="button" @onclick="BrowseCreatePath"><i class="bi bi-folder2-open"></i></button>
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">@Loc["ST_Seed55"]</label>
+                        <div class="input-group input-group-sm">
+                            <input type="@(_createSeedRevealed ? "text" : "password")" class="form-control form-control-sm mono"
+                                   @bind="_createSeed" placeholder="Enter or generate a 55-char seed..." />
+                            <button class="btn btn-outline-secondary" type="button"
+                                    @onclick="() => _createSeedRevealed = !_createSeedRevealed"
+                                    title="@(_createSeedRevealed ? Loc["Common_Hide"] : Loc["Common_Reveal"])">
+                                <i class="bi @(_createSeedRevealed ? "bi-eye-slash" : "bi-eye")"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" type="button" @onclick="GenerateCreateSeed">
+                                <i class="bi bi-shuffle me-1"></i>@Loc["Common_Generate"]
+                            </button>
+                        </div>
+                        @if (_createSeedGenerated)
+                        {
+                            <div class="alert alert-danger small py-2 mt-2 mb-0">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                <strong>@Loc["ST_WriteDownBold"]</strong> @Loc["ST_WriteDownPost"]
+                            </div>
+                        }
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">@Loc["Common_Label"]</label>
+                        <input type="text" class="form-control form-control-sm" @bind="_createLabel" placeholder="e.g. Main" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">@Loc["ST_Password"]</label>
+                        <input type="password" class="form-control form-control-sm" @bind="_createPassword" @bind:event="oninput" />
+                        <PasswordStrengthMeter Password="@_createPassword" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">@Loc["Shell_ConfirmPassword"]</label>
+                        <input type="password" class="form-control form-control-sm" @bind="_createPasswordConfirm" />
+                    </div>
+                    @if (_createError != null) { <div class="text-danger small mb-2">@_createError</div> }
+                    @if (Vault.IsUnlocked)
+                    {
+                        <div class="alert alert-warning small py-2 mb-0">
+                            <i class="bi bi-exclamation-triangle me-1"></i>@Loc["VSw_LockNote"]
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" @onclick="Close">@Loc["Common_Close"]</button>
+                    <button class="btn btn-primary" @onclick="CreateVault"><i class="bi bi-shield-plus me-1"></i>Create Vault</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    /// <summary>Raised after a successful switch or create, so the host can refresh.</summary>
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    private bool _open;
+    private string? _error;
+    private List<string> _vaultFiles = [];
+    private Dictionary<string, string> _vaultLabels = new();
+
+    private string _createPath = "";
+    private string? _createSeed;
+    private bool _createSeedRevealed;
+    private bool _createSeedGenerated;
+    private string? _createLabel;
+    private string? _createPassword;
+    private string? _createPasswordConfirm;
+    private string? _createError;
+
+    /// <summary>Opens the dialog. Pass a seed to pre-fill the "create a new vault" form.</summary>
+    public void Open(string? seed = null)
+    {
+        _error = null;
+        _createError = null;
+        _createSeed = seed;
+        _createSeedRevealed = false;
+        _createSeedGenerated = false;
+        _createLabel = null;
+        _createPassword = null;
+        _createPasswordConfirm = null;
+        if (string.IsNullOrWhiteSpace(_createPath))
+            _createPath = Path.Combine(Cfg.StorageDirectory, "vault.dat");
+        RefreshVaultFiles();
+        _open = true;
+        StateHasChanged();
+    }
+
+    private void Close() => _open = false;
+
+    private void GenerateCreateSeed()
+    {
+        _createSeed = Qubic.Core.QubicSeed.Generate();
+        _createSeedGenerated = true;
+        _createError = null;
+    }
+
+    /// <summary>Current vault first, then the other recently used vault files.</summary>
+    private void RefreshVaultFiles()
+    {
+        var files = VaultFileHistory.Get(Cfg);
+        var current = Vault.VaultPath;
+        if (!string.IsNullOrWhiteSpace(current))
+        {
+            files.RemoveAll(p => VaultFileHistory.IsSame(p, current));
+            files.Insert(0, current);
+        }
+        _vaultFiles = files;
+        _vaultLabels = VaultFileHistory.DisplayNames(files);
+    }
+
+    private string VaultLabel(string path) =>
+        _vaultLabels.TryGetValue(path, out var label) ? label : VaultFileHistory.DisplayName(path);
+
+    private async Task BrowseCreatePath()
+    {
+        var path = await DialogService.ShowSaveFileAsync("Create Vault File", _createPath, ".dat",
+            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
+        if (path != null) _createPath = path;
+    }
+
+    private async Task BrowseSwitchVaultFile()
+    {
+        var start = Vault.VaultPath ?? Path.Combine(Cfg.StorageDirectory, "vault.dat");
+        var path = await DialogService.ShowOpenFileAsync("Open Vault File", start,
+            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
+        if (!string.IsNullOrEmpty(path)) await SwitchToVaultFile(path);
+    }
+
+    /// <summary>
+    /// Points the wallet at the chosen vault file and leaves it locked, so picking a
+    /// vault always lands on its password prompt. The current session is ended first.
+    /// </summary>
+    private async Task SwitchToVaultFile(string path)
+    {
+        _error = null;
+        if (VaultFileHistory.IsSame(path, Vault.VaultPath)) { _open = false; return; }
+        if (Vault.IsUnlocked) { Vault.LockVault(); ClearSession(); }
+        try
+        {
+            Vault.SetVaultPath(path);
+            VaultFileHistory.Add(Cfg, path);
+            _open = false;
+            await OnChanged.InvokeAsync();
+        }
+        catch (FileNotFoundException)
+        {
+            _error = Loc["Msg_VaultFileNotFound"];
+            VaultFileHistory.Remove(Cfg, path);
+        }
+        catch (Exception ex) { _error = ex.Message; }
+    }
+
+    private async Task CreateVault()
+    {
+        _createError = null;
+        if (string.IsNullOrWhiteSpace(_createPath)) { _createError = Loc["Msg_FilePathRequired"]; return; }
+        if (_createSeed?.Length != 55) { _createError = Loc["Msg_Seed55"]; return; }
+        if (string.IsNullOrWhiteSpace(_createLabel)) { _createError = Loc["Msg_LabelRequired"]; return; }
+        var pwError = VaultService.ValidatePassword(_createPassword);
+        if (pwError != null) { _createError = pwError; return; }
+        if (_createPassword != _createPasswordConfirm) { _createError = Loc["Msg_PasswordsNoMatch"]; return; }
+
+        try
+        {
+            // Creating from an unlocked vault means switching to the new one: end the
+            // current session first so no seed from the old vault survives the switch.
+            if (Vault.IsUnlocked) { Vault.LockVault(); ClearSession(); }
+            var entries = new List<VaultEntry> { new() { Label = _createLabel, Seed = _createSeed } };
+            Vault.CreateVault(_createPath, _createPassword!, entries);
+            VaultFileHistory.Add(Cfg, Vault.VaultPath);
+            _createSeed = null; _createLabel = null;
+            _createSeedRevealed = false; _createSeedGenerated = false;
+            _createPassword = null; _createPasswordConfirm = null;
+            _open = false;
+            await OnChanged.InvokeAsync();
+        }
+        catch (Exception ex) { _createError = ex.Message; }
+    }
+
+    /// <summary>Tears down the seed session; each step isolated so one failure cannot skip the rest.</summary>
+    private void ClearSession()
+    {
+        try { Seed.ClearSeed(); } catch { }
+        try { WalletStorage.ClearSeed(); } catch { }
+        try { TxTracker.ClearEncryptionKey(); } catch { }
+    }
+}

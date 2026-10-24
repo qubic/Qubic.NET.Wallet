@@ -14,6 +14,8 @@
 
 <h4>@Loc["Home_Welcome"]</h4>
 
+<VaultSwitchDialog @ref="_vaultDlg" OnChanged="OnVaultChangedFromDialog" />
+
 @if (Vault.IsUnlocked && !Seed.HasSeed)
 {
     <div class="row">
@@ -53,6 +55,9 @@ else if (!Seed.HasSeed)
                     <h5>@Loc["Home_GetStarted"]</h5>
                     <p class="text-muted">@Loc["Home_GetStartedDesc"]</p>
                     <p class="small text-muted">@Loc["Home_SeedMemoryNote"]</p>
+                    <button class="btn btn-outline-primary btn-sm" @onclick="() => _vaultDlg?.Open()">
+                        <i class="bi bi-safe me-1"></i>@Loc["Home_OpenOrCreateVault"]
+                    </button>
                 </div>
             </div>
         </div>
@@ -100,9 +105,12 @@ else if (!Seed.HasSeed)
                                 @Loc["Home_SeedConfirmCheck"]
                             </label>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <button class="btn btn-primary" @onclick="UseGeneratedSeed" disabled="@(!_seedSavedConfirmed)">
                                 <i class="bi bi-unlock me-1"></i>@Loc["Home_UseThisSeed"]
+                            </button>
+                            <button class="btn btn-outline-primary" @onclick="() => _vaultDlg?.Open(_generatedSeed)" disabled="@(!_seedSavedConfirmed)">
+                                <i class="bi bi-safe me-1"></i>@Loc["Home_SaveAsVault"]
                             </button>
                             <button class="btn btn-outline-secondary" @onclick="GenerateSeed">
                                 <i class="bi bi-arrow-clockwise me-1"></i>@Loc["Home_GenerateAnother"]
@@ -160,6 +168,113 @@ else
                     else
                     {
                         <span class="text-muted small">@Loc["Common_NotConnected"]</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── Wallet status ── *@
+    <div class="row g-3 mb-3">
+        @* Network & connection health *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_Network"]</span>
+                        @if (TickMonitor.IsConnected)
+                        {
+                            <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:.5em"></i>@Loc["Home_Connected"]</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger"><i class="bi bi-circle-fill me-1" style="font-size:.5em"></i>@Loc["Home_Offline"]</span>
+                        }
+                    </div>
+                    <div class="fw-semibold"><i class="bi bi-hdd-network me-1"></i>@Backend.Profile.Name</div>
+                    @if (TickMonitor.IsConnected)
+                    {
+                        <div class="small text-muted mt-1">@Loc["Common_Epoch"] <strong class="text-body">@TickMonitor.Epoch</strong> · @Loc["Common_Tick"] <strong class="text-body">@TickMonitor.Tick.ToString("N0")</strong></div>
+                    }
+                    else if (TickMonitor.Error != null)
+                    {
+                        <div class="small text-danger mt-1 text-truncate" title="@TickMonitor.Error">@TickMonitor.Error</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Vault summary *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_VaultCard"]</span>
+                        <span class="d-flex gap-2">
+                            <button class="btn btn-link btn-sm p-0 small" @onclick="() => _vaultDlg?.Open()">@Loc["VSw_Switch"]</button>
+                            <a class="small" href="/accounts">@Loc["Common_ViewAll"]</a>
+                        </span>
+                    </div>
+                    @if (Vault.IsUnlocked)
+                    {
+                        <div class="fw-semibold text-truncate" title="@Vault.VaultPath">
+                            <i class="bi bi-safe me-1"></i>@VaultFileHistory.DisplayName(Vault.VaultPath ?? "")
+                        </div>
+                        <div class="small text-muted">@Vault.Entries.Count @Loc["VO_Identities"]</div>
+                        <div class="small text-muted">@Loc["Home_VaultTotal"]:
+                            @if (_vaultTotal != null)
+                            {
+                                <strong class="text-body">@_vaultTotal.Value.ToString("N0") QU</strong>
+                                @if (_vaultTotalPartial) { <span class="text-muted"> …</span> }
+                            }
+                            else
+                            {
+                                <span class="spinner-border spinner-border-sm text-muted"></span>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="small text-muted"><i class="bi bi-lock me-1"></i>@Loc["VO_Locked"]</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Pending transactions *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    @{ var pending = TxTracker.Transactions.Where(t => t.Status == Qubic.Services.TrackedTxStatus.Pending).OrderBy(t => t.TargetTick).ToList(); }
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_PendingTitle"]</span>
+                        @if (pending.Count > 0)
+                        {
+                            <span class="badge bg-warning text-dark">@pending.Count</span>
+                        }
+                    </div>
+                    @if (pending.Count == 0)
+                    {
+                        <div class="small text-muted"><i class="bi bi-check2-circle me-1"></i>@Loc["Home_NoPending"]</div>
+                    }
+                    else
+                    {
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var t in pending.Take(3))
+                            {
+                                <li class="d-flex justify-content-between gap-2">
+                                    <span class="d-flex align-items-center gap-1 text-truncate">
+                                        <span class="spinner-border spinner-border-sm text-warning" style="width:.7em;height:.7em"></span>
+                                        <span class="mono">@t.Amount.ToString("N0") QU</span>
+                                    </span>
+                                    <span class="text-muted text-nowrap">@Loc["Home_AtTick"] @t.TargetTick.ToString("N0")</span>
+                                </li>
+                            }
+                        </ul>
+                        @if (pending.Count > 3)
+                        {
+                            <a class="small" href="/history">+@(pending.Count - 3) · @Loc["Common_ViewAll"]</a>
+                        }
                     }
                 </div>
             </div>
@@ -329,20 +444,65 @@ else
     private bool _ordersLoading;
     private string? _ordersError;
 
+    // Vault total (sum across all identities)
+    private long? _vaultTotal;
+    private bool _vaultTotalPartial;
+
+    private VaultSwitchDialog? _vaultDlg;
+
+    private async Task OnVaultChangedFromDialog()
+    {
+        _vaultTotal = null;
+        if (Seed.HasSeed) BalanceSvc.RequestRefresh();
+        await LoadVaultTotal();
+        StateHasChanged();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
         Seed.OnSeedChanged += OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged += OnSyncChanged;
         BalanceSvc.OnBalanceChanged += OnBalanceChanged;
+        TxTracker.OnChanged += OnTxChanged;
 
         if (Seed.HasSeed)
         {
             BalanceSvc.RequestRefresh();
             var assetsTask = LoadAssets();
             var ordersTask = LoadOrders();
-            await Task.WhenAll(assetsTask, ordersTask);
+            var totalTask = LoadVaultTotal();
+            await Task.WhenAll(assetsTask, ordersTask, totalTask);
         }
+    }
+
+    private void OnTxChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private async Task LoadVaultTotal()
+    {
+        if (!Vault.IsUnlocked || Vault.Entries.Count == 0) { _vaultTotal = null; return; }
+        var identities = Vault.Entries.Select(e => e.Identity).ToList();
+        long sum = 0;
+        var partial = false;
+        using var gate = new SemaphoreSlim(4);
+        await Task.WhenAll(identities.Select(async id =>
+        {
+            await gate.WaitAsync();
+            try
+            {
+                var bal = await Backend.GetBalanceAsync(Qubic.Core.Entities.QubicIdentity.FromIdentity(id));
+                System.Threading.Interlocked.Add(ref sum, bal.Amount);
+            }
+            catch { partial = true; }
+            finally { gate.Release(); }
+        }));
+        _vaultTotal = sum;
+        _vaultTotalPartial = partial;
+        if (!_disposed) await InvokeAsync(StateHasChanged);
     }
 
     private void OnTickChanged()
@@ -368,11 +528,13 @@ else
             _askOrders = null;
             _bidOrders = null;
             _ordersError = null;
+            _vaultTotal = null;
             if (Seed.HasSeed)
             {
                 var t1 = LoadAssets();
                 var t2 = LoadOrders();
-                await Task.WhenAll(t1, t2);
+                var t3 = LoadVaultTotal();
+                await Task.WhenAll(t1, t2, t3);
             }
             StateHasChanged();
         });
@@ -499,5 +661,6 @@ else
         Seed.OnSeedChanged -= OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged -= OnSyncChanged;
         BalanceSvc.OnBalanceChanged -= OnBalanceChanged;
+        TxTracker.OnChanged -= OnTxChanged;
     }
 }

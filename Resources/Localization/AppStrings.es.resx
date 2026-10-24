@@ -8,7 +8,7 @@
     <value>Inicio</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>Resumen del baúl</value>
+    <value>Baúl</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>Transacciones</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>Introduce la contraseña del baúl para desbloquear y añadir...</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Generar</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>Ocultar</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>eventos de registro</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Abrir o crear un baúl</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Guardar como baúl</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Servidor</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Sin conexión</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Baúl</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Total del baúl</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Transacciones pendientes</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>Sin transacciones pendientes</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>en el tick</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>Activos en propiedad</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>Etiqueta</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Transacción enviada</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Difundiendo: esperando el tick objetivo</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Transacción confirmada</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>La transacción falló</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Estado desconocido: consulta el historial más tarde</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Tick objetivo</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>ticks restantes</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Ocultar</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>Ver en el historial</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Cambiar de baúl</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Abrir un baúl reciente</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Usar</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Abrir otro archivo…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Crear o abrir otro baúl bloquea primero el actual.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Crear un nuevo baúl</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Añadir semilla</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>Resumen del baúl</value>
+    <value>Baúl</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>Cada identidad de tu baúl, con los saldos de</value>
@@ -2843,5 +2930,53 @@ Comisión: 100 QU</value>
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>pendiente (tick aún no verificado)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Importar archivo de baúl…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Importar desde el monedero web / móvil</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Importa cuentas desde un archivo de baúl exportado por el monedero web de Qubic o la app móvil de Qubic. Selecciona el archivo e introduce la contraseña que usaste allí.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Contraseña del archivo de baúl</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Leer archivo</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Leyendo…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Elige qué cuentas importar:</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>solo lectura (sin semilla)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>ya está en el baúl</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Importar seleccionadas</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>No se encontraron cuentas importables en este archivo.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>Se importaron {0} cuenta(s).</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Selecciona el archivo de baúl exportado</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Introduce la contraseña del archivo y léelo</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Elige las cuentas, ajusta los nombres e importa</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Nombre en tu baúl</value>
   </data>
 </root>

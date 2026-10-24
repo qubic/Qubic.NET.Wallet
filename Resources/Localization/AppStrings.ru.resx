@@ -8,7 +8,7 @@
     <value>Главная</value>
   </data>
   <data name="Nav_VaultOverview" xml:space="preserve">
-    <value>Обзор хранилища</value>
+    <value>Хранилище</value>
   </data>
   <data name="Nav_Section_Transactions" xml:space="preserve">
     <value>Транзакции</value>
@@ -193,6 +193,9 @@
   <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
     <value>Введите пароль хранилища, чтобы разблокировать и добавить...</value>
   </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Сгенерировать</value>
+  </data>
   <data name="Common_Hide" xml:space="preserve">
     <value>Скрыть</value>
   </data>
@@ -325,6 +328,39 @@
   <data name="Home_LogEventsWord" xml:space="preserve">
     <value>событий журнала</value>
   </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Открыть или создать хранилище</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Сохранить в хранилище</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Сеть</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Сервер</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Подключено</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Не в сети</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Всего в хранилище</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Ожидающие транзакции</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>Нет ожидающих транзакций</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>на тике</value>
+  </data>
   <data name="Home_OwnedAssets" xml:space="preserve">
     <value>Мои активы</value>
   </data>
@@ -454,8 +490,59 @@
   <data name="Common_Label" xml:space="preserve">
     <value>Метка</value>
   </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Транзакция отправлена</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Отправка — ожидание целевого тика</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Транзакция подтверждена</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>Транзакция не удалась</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Статус неизвестен — проверьте историю позже</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Целевой тик</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>тиков осталось</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>Показать в истории</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Сменить хранилище</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Открыть недавнее хранилище</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Текущее</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Открыть другой файл…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Создание или открытие другого хранилища сначала блокирует текущее.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Создать новое хранилище</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Добавить сид</value>
+  </data>
   <data name="VO_Title" xml:space="preserve">
-    <value>Обзор хранилища</value>
+    <value>Хранилище</value>
   </data>
   <data name="VO_SubtitlePre" xml:space="preserve">
     <value>Каждый идентификатор в вашем хранилище с балансами из</value>
@@ -2843,5 +2930,53 @@
   </data>
   <data name="CC_Pending" xml:space="preserve">
     <value>ожидание (тик ещё не проверен)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Импорт файла хранилища…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Импорт из веб- / мобильного кошелька</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Импортируйте аккаунты из файла хранилища, экспортированного веб-кошельком Qubic или мобильным приложением Qubic. Выберите файл и введите пароль, который вы там использовали.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Пароль файла хранилища</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Прочитать файл</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Чтение…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Выберите, какие аккаунты импортировать:</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>только наблюдение (без seed)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>уже в хранилище</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Импортировать выбранные</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>В этом файле не найдено импортируемых аккаунтов.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>Импортировано аккаунтов: {0}.</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Выберите экспортированный файл хранилища</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Введите пароль файла и прочитайте его</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Выберите аккаунты, измените имена и импортируйте</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Имя в вашем хранилище</value>
   </data>
 </root>
