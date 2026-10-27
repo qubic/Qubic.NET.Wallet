@@ -11,10 +11,11 @@
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject TransactionTrackerService TxTracker
 @inject IJSRuntime JS
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
-<h4>Developer Tools</h4>
-<p class="text-muted">For local AIO / core-lite testnets: public dev accounts, a faucet, asset issuance and genesis funding.</p>
+<h4>@Loc["DT_Title"]</h4>
+<p class="text-muted">@Loc["DT_Subtitle"]</p>
 
 @if (!Dev.IsAvailable)
 {
@@ -23,17 +24,17 @@
         @if (Features.IsEnabled(WalletFeature.DeveloperTools) && !Profiles.Active.IsMainnet && !Fingerprint.IsCoreLiteDevnet)
         {
             <div class="mt-2 d-flex gap-2 align-items-center">
-                <button class="btn btn-sm btn-outline-primary" @onclick="Identify" disabled="@_busy">Identify network</button>
+                <button class="btn btn-sm btn-outline-primary" @onclick="Identify" disabled="@_busy">@Loc["DT_Identify"]</button>
                 <div class="form-check mb-0">
                     <input class="form-check-input" type="checkbox" id="forceDev" checked="@Dev.ForcedForActiveProfile"
                            @onchange="e => { Dev.ForcedForActiveProfile = (bool)(e.Value ?? false); StateHasChanged(); }" />
-                    <label class="form-check-label small" for="forceDev">Enable anyway for "@Profiles.Active.Name" (my own core-lite build with different seeds)</label>
+                    <label class="form-check-label small" for="forceDev">@Loc["DT_EnableAnywayPre"] "@Profiles.Active.Name" @Loc["DT_EnableAnywayPost"]</label>
                 </div>
             </div>
         }
         else if (!Features.IsEnabled(WalletFeature.DeveloperTools))
         {
-            <a class="ms-1" href="/settings?tab=features">Settings → Features</a>
+            <a class="ms-1" href="/settings?tab=features">@Loc["Common_SettingsFeatures"]</a>
         }
     </div>
 }
@@ -41,69 +42,69 @@ else
 {
     <div class="alert alert-warning py-2 small">
         <i class="bi bi-exclamation-triangle me-1"></i>
-        Dev accounts use <strong>publicly known seeds</strong>. They are only for this test network — never send Mainnet funds to them.
+        @Loc["DT_DevWarn1"] <strong>@Loc["DT_DevWarnBold"]</strong>@Loc["DT_DevWarn2"]
     </div>
 
     <div class="row g-3">
         <div class="col-lg-6">
             <div class="card mb-3">
-                <div class="card-header"><i class="bi bi-droplet me-1"></i>Faucet</div>
+                <div class="card-header"><i class="bi bi-droplet me-1"></i>@Loc["DT_Faucet"]</div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label class="form-label small">Fund identity</label>
-                        <AddressInput @bind-Value="_fundTo" Placeholder="Destination identity" />
+                        <label class="form-label small">@Loc["DT_FundIdentity"]</label>
+                        <AddressInput @bind-Value="_fundTo" Placeholder="@Loc["DT_DestinationPlaceholder"]" />
                     </div>
                     <div class="mb-2">
-                        <label class="form-label small">Amount (QU)</label>
+                        <label class="form-label small">@Loc["Send_Amount"]</label>
                         <input type="number" min="1" class="form-control form-control-sm" @bind="_fundAmount" />
                     </div>
                     <button class="btn btn-sm btn-primary" @onclick="Fund" disabled="@(_busy || string.IsNullOrWhiteSpace(_fundTo))">
-                        <i class="bi bi-droplet-fill me-1"></i>Fund from dev account
+                        <i class="bi bi-droplet-fill me-1"></i>@Loc["DT_FundBtn"]
                     </button>
-                    @if (_fundResult != null) { <div class="small mt-2">Sent: <TxHashDisplay Hash="@_fundResult" /></div> }
+                    @if (_fundResult != null) { <div class="small mt-2">@Loc["DT_Sent"] <TxHashDisplay Hash="@_fundResult" /></div> }
                 </div>
             </div>
 
             <div class="card mb-3">
-                <div class="card-header"><i class="bi bi-coin me-1"></i>Issue a QX asset from a dev account</div>
+                <div class="card-header"><i class="bi bi-coin me-1"></i>@Loc["DT_IssueCard"]</div>
                 <div class="card-body">
                     <div class="row g-2 mb-2">
                         <div class="col-4">
-                            <label class="form-label small">Dev account #</label>
+                            <label class="form-label small">@Loc["DT_DevAccountNum"]</label>
                             <input type="number" min="0" max="@(Dev.Accounts.Count - 1)" class="form-control form-control-sm" @bind="_issueAccount" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label small">Name</label>
+                            <label class="form-label small">@Loc["Common_Name"]</label>
                             <input class="form-control form-control-sm" maxlength="7" @bind="_issueName" />
                         </div>
                         <div class="col-4">
-                            <label class="form-label small">Shares</label>
+                            <label class="form-label small">@Loc["Common_Shares"]</label>
                             <input type="number" min="1" class="form-control form-control-sm" @bind="_issueShares" />
                         </div>
                     </div>
                     <div class="small text-muted mb-2">Issuer: <span class="mono">@SafeAccount(_issueAccount)?.Identity</span></div>
-                    <button class="btn btn-sm btn-primary" @onclick="Issue" disabled="@_busy">Issue (QX fee from the node)</button>
-                    @if (_issueResult != null) { <div class="small mt-2">Sent: <TxHashDisplay Hash="@_issueResult" /></div> }
+                    <button class="btn btn-sm btn-primary" @onclick="Issue" disabled="@_busy">@Loc["DT_IssueBtn"]</button>
+                    @if (_issueResult != null) { <div class="small mt-2">@Loc["DT_Sent"] <TxHashDisplay Hash="@_issueResult" /></div> }
                 </div>
             </div>
 
             <div class="card mb-3">
-                <div class="card-header"><i class="bi bi-terminal me-1"></i>Genesis funding (AIO kit)</div>
+                <div class="card-header"><i class="bi bi-terminal me-1"></i>@Loc["DT_GenesisCard"]</div>
                 <div class="card-body">
-                    <p class="small text-muted">Balances and assets can also be written into the genesis state files. Run these in the <code>aio-qubic-dev-kit</code> folder — it restarts the chain.</p>
+                    <p class="small text-muted">@Loc["DT_GenesisNotePre"] <code>aio-qubic-dev-kit</code> @Loc["DT_GenesisNotePost"]</p>
                     <div class="row g-2 mb-2">
                         <div class="col-md-12">
                             <AddressInput @bind-Value="_genesisId" Placeholder="Identity to fund" />
                         </div>
                         <div class="col-4"><input type="number" class="form-control form-control-sm" @bind="_genesisAmount" title="QU" /></div>
-                        <div class="col-4"><input class="form-control form-control-sm" maxlength="7" placeholder="asset (opt.)" @bind="_genesisAsset" /></div>
-                        <div class="col-4"><input type="number" class="form-control form-control-sm" placeholder="shares" @bind="_genesisShares" /></div>
+                        <div class="col-4"><input class="form-control form-control-sm" maxlength="7" placeholder="@Loc["DT_AssetOpt"]" @bind="_genesisAsset" /></div>
+                        <div class="col-4"><input type="number" class="form-control form-control-sm" placeholder="@Loc["DT_SharesPh"]" @bind="_genesisShares" /></div>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(_genesisId))
                     {
                         var cmds = string.Join("\n", Dev.GenesisCommands(_genesisId.Trim(), _genesisAmount, _genesisAsset, _genesisShares));
                         <pre class="qb-message-preview mono small">@cmds</pre>
-                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Copy(cmds)">Copy commands</button>
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="() => Copy(cmds)">@Loc["DT_CopyCommands"]</button>
                     }
                 </div>
             </div>
@@ -111,7 +112,7 @@ else
             <div class="card mb-3">
                 <div class="card-header"><i class="bi bi-calendar3 me-1"></i>Epoch</div>
                 <div class="card-body small">
-                    <div>Epoch <strong>@TickMonitor.Epoch</strong> · tick <span class="mono">@TickMonitor.Tick.ToString("N0")</span>
+                    <div>@Loc["Common_Epoch"] <strong>@TickMonitor.Epoch</strong> · tick <span class="mono">@TickMonitor.Tick.ToString("N0")</span>
                         @if (TickMonitor.EstimatedTickDurationMs is { } ms) { <span class="text-muted">· ~@(ms.ToString("0")) ms/tick</span> }
                     </div>
                     <div class="text-muted mt-1">
@@ -125,7 +126,7 @@ else
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <i class="bi bi-people me-1"></i>Dev accounts (@Dev.Accounts.Count)
+                    <i class="bi bi-people me-1"></i>@Loc["DT_DevAccounts"] (@Dev.Accounts.Count)
                     <div class="ms-auto btn-group btn-group-sm">
                         <button class="btn btn-outline-secondary" @onclick="() => Page(-1)" disabled="@(_skip == 0)"><i class="bi bi-chevron-left"></i></button>
                         <button class="btn btn-outline-secondary" @onclick="LoadBalances" disabled="@_busy"><i class="bi bi-arrow-clockwise"></i></button>
@@ -134,7 +135,7 @@ else
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-sm mb-0 small align-middle">
-                        <thead><tr><th>#</th><th>Identity</th><th class="text-end">Balance</th><th></th></tr></thead>
+                        <thead><tr><th>#</th><th>@Loc["Common_Identity"]</th><th class="text-end">@Loc["Common_Balance"]</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var a in Dev.Accounts.Skip(_skip).Take(PageSize))
                             {
@@ -144,7 +145,7 @@ else
                                     <td class="mono"><AddressDisplay Address="@a.Identity" /></td>
                                     <td class="text-end mono">@(bal?.Balance?.ToString("N0") ?? (bal?.Error != null ? "error" : "…"))</td>
                                     <td class="text-end">
-                                        <button class="btn btn-sm btn-link p-0" @onclick="() => UseAccount(a)" title="Use as the active identity">use</button>
+                                        <button class="btn btn-sm btn-link p-0" @onclick="() => UseAccount(a)" title="@Loc["DT_UseTitle"]">@Loc["DT_Use"]</button>
                                     </td>
                                 </tr>
                             }
@@ -224,7 +225,7 @@ else
     {
         _busy = true; _error = null; _fundResult = null;
         try { _fundResult = await Dev.FundAsync(_fundTo!, _fundAmount); }
-        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = Loc["Msg_SigningCancelled"]; }
         catch (Exception ex) { _error = ex.Message; }
         finally { _busy = false; }
     }
@@ -233,7 +234,7 @@ else
     {
         _busy = true; _error = null; _issueResult = null;
         try { _issueResult = await Dev.IssueAssetAsync(_issueAccount, _issueName, _issueShares); }
-        catch (Qubic.Services.Signing.SigningRejectedException) { _error = "Signing cancelled."; }
+        catch (Qubic.Services.Signing.SigningRejectedException) { _error = Loc["Msg_SigningCancelled"]; }
         catch (Exception ex) { _error = ex.Message; }
         finally { _busy = false; }
     }
@@ -250,7 +251,7 @@ else
         }
         catch (Exception ex)
         {
-            _error = $"Dev account #{a.Index} is active, but its history database could not be opened: {ex.Message}";
+            _error = string.Format(Loc["Fmt_DevAccountHistory"], a.Index, ex.Message);
         }
     }
 

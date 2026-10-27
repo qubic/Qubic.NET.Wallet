@@ -1,10 +1,11 @@
 @using Qubic.Core.Contracts.Metadata
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 @* Form for a contract input struct. Values are text keyed by field path (a, nested.b, list[3], list[3].c),
    which ContractCodec.Encode turns into bytes. *@
 @if (Def.Fields.Count == 0)
 {
-    <div class="small text-muted">No input fields.</div>
+    <div class="small text-muted">@Loc["SE_NoInputs"]</div>
 }
 else
 {
@@ -15,7 +16,7 @@ else
         @if (f.IsArray && (f.ArrayElementType ?? f.CppType) is "uint8" or "sint8")
         {
             <div class="mb-2">
-                <label class="form-label small mb-0">@f.Name <span class="text-muted">uint8[@f.ArrayLength] as hex</span></label>
+                <label class="form-label small mb-0">@f.Name <span class="text-muted">uint8[@f.ArrayLength@Loc["SE_HexPost"]</span></label>
                 <input class="form-control form-control-sm mono" placeholder="0x…" value="@Get(path)" @onchange="e => Set(path, e)" />
             </div>
         }
@@ -42,7 +43,7 @@ else
                 }
                 @if (f.ArrayLength > shown)
                 {
-                    <div class="small text-muted">Elements @shown–@(f.ArrayLength - 1) are left zero.</div>
+                    <div class="small text-muted">@Loc["SE_ElementsPre"] @shown–@(f.ArrayLength - 1) @Loc["SE_ElementsPost"]</div>
                 }
             </fieldset>
         }

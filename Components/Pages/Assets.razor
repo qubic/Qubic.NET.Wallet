@@ -8,18 +8,19 @@
 @inject QubicStaticService StaticData
 @inject NavigationManager Nav
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Asset Portfolio</h4>
-<p class="text-muted">View owned, issued, and possessed assets for any identity. Transfer assets and change management rights.</p>
+<h4>@Loc["AS_Title"]</h4>
+<p class="text-muted">@Loc["AS_Subtitle"]</p>
 
 <div class="row mb-3">
     <div class="col-md-10">
         <div class="d-flex gap-2 mb-1">
             <div class="flex-grow-1">
-                <AddressInput @bind-Value="_identity" Placeholder="Enter 60-character identity" />
+                <AddressInput @bind-Value="_identity" Placeholder="@Loc["AS_IdentityPlaceholder"]" />
             </div>
             <button class="btn btn-sm btn-primary" @onclick="Lookup" disabled="@(_loading || IdentityValidation.Validate(_identity) != null)">
-                @(_loading ? "Loading..." : "Lookup Assets")
+                @(_loading ? Loc["Common_Loading"] : Loc["AS_LookupAssets"])
             </button>
         </div>
         @{ var idErr = IdentityValidation.Validate(_identity); }
@@ -44,11 +45,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 {
     var orderCount = (_myAskOrders?.Count ?? 0) + (_myBidOrders?.Count ?? 0);
     <div class="card mb-3 border-info">
-        <div class="card-header card-header-accent">Your Open QX Orders (@orderCount)</div>
+        <div class="card-header card-header-accent">@Loc["AS_YourOpenOrders"] (@orderCount)</div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover mb-0">
-                    <thead><tr><th>Type</th><th>Asset</th><th>Price</th><th>Shares</th><th></th></tr></thead>
+                    <thead><tr><th>@Loc["Common_Type"]</th><th>@Loc["Common_Asset"]</th><th>@Loc["Common_Price"]</th><th>@Loc["Common_Shares"]</th><th></th></tr></thead>
                     <tbody>
                         @if (_myAskOrders != null)
                         {
@@ -58,7 +59,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                 var key = $"a:{o.AssetName}:{o.Price}:{o.NumberOfShares}";
                                 var isCancelling = IsCancelPending(key);
                                 <tr>
-                                    <td><span class="badge bg-danger">Ask</span></td>
+                                    <td><span class="badge bg-danger">@Loc["Common_Ask"]</span></td>
                                     <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                     <td class="mono">@o.Price.ToString("N0")</td>
                                     <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -78,7 +79,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                 var key = $"b:{o.AssetName}:{o.Price}:{o.NumberOfShares}";
                                 var isCancelling = IsCancelPending(key);
                                 <tr>
-                                    <td><span class="badge bg-success">Bid</span></td>
+                                    <td><span class="badge bg-success">@Loc["Common_Bid"]</span></td>
                                     <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                     <td class="mono">@o.Price.ToString("N0")</td>
                                     <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -101,11 +102,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 {
     <div class="card mb-3">
         @{ var ownedVisible = _owned.Where(a => long.TryParse(a.Data.NumberOfUnits, out var u) ? u > 0 : true).ToList(); }
-        <div class="card-header">Owned Assets (@ownedVisible.Count)</div>
+        <div class="card-header">@Loc["Home_OwnedAssets"] (@ownedVisible.Count)</div>
         <div class="card-body">
             @if (ownedVisible.Count == 0)
             {
-                <span class="text-muted">No owned assets.</span>
+                <span class="text-muted">@Loc["Home_NoOwnedAssets"]</span>
             }
             else
             {
@@ -113,12 +114,12 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                     <table class="table table-sm table-hover">
                         <thead>
                             <tr>
-                                <th>Asset</th>
-                                <th>Units</th>
-                                <th>Contract</th>
+                                <th>@Loc["Common_Asset"]</th>
+                                <th>@Loc["Common_Units"]</th>
+                                <th>@Loc["Common_Contract"]</th>
                                 @if (Seed.HasSeed)
                                 {
-                                    <th>Actions</th>
+                                    <th>@Loc["Common_Actions"]</th>
                                 }
                             </tr>
                         </thead>
@@ -146,16 +147,16 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                             @if (isQx)
                                             {
                                                 <button class="btn btn-sm btn-outline-info me-1"
-                                                        @onclick="() => OpenOrderBook(assetName, issuerIdentity)">Orders</button>
+                                                        @onclick="() => OpenOrderBook(assetName, issuerIdentity)">@Loc["Common_Orders"]</button>
                                                 <button class="btn btn-sm btn-outline-success me-1"
                                                         @onclick="() => OpenAsk(assetName, issuerIdentity, units)">Sell</button>
                                                 <button class="btn btn-sm btn-outline-warning me-1"
                                                         @onclick="() => OpenBid(assetName, issuerIdentity, units)">Buy</button>
                                             }
                                             <button class="btn btn-sm btn-outline-primary me-1"
-                                                    @onclick="() => OpenTransfer(assetName, issuerIdentity, units)">Transfer</button>
+                                                    @onclick="() => OpenTransfer(assetName, issuerIdentity, units)">@Loc["Common_Transfer"]</button>
                                             <button class="btn btn-sm btn-outline-secondary me-1"
-                                                    @onclick="() => OpenRights(assetName, issuerIdentity, units, (int)a.Data.ManagingContractIndex)">Rights</button>
+                                                    @onclick="() => OpenRights(assetName, issuerIdentity, units, (int)a.Data.ManagingContractIndex)">@Loc["QX_Tab_Rights"]</button>
                                             <button class="btn btn-sm btn-outline-info"
                                                     @onclick="() => OpenVaultDeposit(assetName, issuerIdentity)"
                                                     title="Deposit to MSVault">MSVAULT</button>
@@ -175,11 +176,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 {
     var possessedVisible = _possessed.Where(a => long.TryParse(a.Data.NumberOfUnits, out var u) ? u > 0 : true).ToList();
     <div class="card mb-3">
-        <div class="card-header">Possessed Assets (@possessedVisible.Count)</div>
+        <div class="card-header">@Loc["AS_PossessedAssets"] (@possessedVisible.Count)</div>
         <div class="card-body">
             @if (possessedVisible.Count == 0)
             {
-                <span class="text-muted">No possessed assets.</span>
+                <span class="text-muted">@Loc["AS_NoPossessed"]</span>
             }
             else
             {
@@ -187,10 +188,10 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                     <table class="table table-sm table-hover">
                         <thead>
                             <tr>
-                                <th>Asset</th>
-                                <th>Units</th>
-                                <th>Possessor</th>
-                                <th>Contract</th>
+                                <th>@Loc["Common_Asset"]</th>
+                                <th>@Loc["Common_Units"]</th>
+                                <th>@Loc["Common_Possessor"]</th>
+                                <th>@Loc["Common_Contract"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -214,11 +215,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 @if (_issued != null)
 {
     <div class="card mb-3">
-        <div class="card-header">Issued Assets (@_issued.Count)</div>
+        <div class="card-header">@Loc["AS_IssuedAssets"] (@_issued.Count)</div>
         <div class="card-body">
             @if (_issued.Count == 0)
             {
-                <span class="text-muted">No issued assets.</span>
+                <span class="text-muted">@Loc["AS_NoIssued"]</span>
             }
             else
             {
@@ -226,10 +227,10 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                     <table class="table table-sm table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Issuer</th>
-                                <th>Type</th>
-                                <th>Decimals</th>
+                                <th>@Loc["Common_Name"]</th>
+                                <th>@Loc["Common_Issuer"]</th>
+                                <th>@Loc["Common_Type"]</th>
+                                <th>@Loc["Common_Decimals"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -265,18 +266,18 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                     {
                         @if (_bookLoading)
                         {
-                            <div class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading order book...</div>
+                            <div class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> @Loc["AS_LoadingOrderBook"]</div>
                         }
                         else
                         {
-                            <div class="small text-muted mb-2">Click a row to pre-fill a buy or sell order.</div>
+                            <div class="small text-muted mb-2">@Loc["AS_ClickRow"]</div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h6 class="text-danger">Asks (Sellers)</h6>
+                                    <h6 class="text-danger">@Loc["AS_AsksSellers"]</h6>
                                     @if (_bookAsks != null && _bookAsks.Count > 0)
                                     {
                                         <table class="table table-sm table-hover mb-0">
-                                            <thead><tr><th>Price</th><th>Shares</th></tr></thead>
+                                            <thead><tr><th>@Loc["Common_Price"]</th><th>@Loc["Common_Shares"]</th></tr></thead>
                                             <tbody>
                                                 @foreach (var o in _bookAsks.OrderBy(o => o.Price))
                                                 {
@@ -288,14 +289,14 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                             </tbody>
                                         </table>
                                     }
-                                    else { <span class="text-muted small">No asks.</span> }
+                                    else { <span class="text-muted small">@Loc["AS_NoAsks"]</span> }
                                 </div>
                                 <div class="col-md-6">
-                                    <h6 class="text-success">Bids (Buyers)</h6>
+                                    <h6 class="text-success">@Loc["AS_BidsBuyers"]</h6>
                                     @if (_bookBids != null && _bookBids.Count > 0)
                                     {
                                         <table class="table table-sm table-hover mb-0">
-                                            <thead><tr><th>Price</th><th>Shares</th></tr></thead>
+                                            <thead><tr><th>@Loc["Common_Price"]</th><th>@Loc["Common_Shares"]</th></tr></thead>
                                             <tbody>
                                                 @foreach (var o in _bookBids.OrderByDescending(o => o.Price))
                                                 {
@@ -307,7 +308,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                             </tbody>
                                         </table>
                                     }
-                                    else { <span class="text-muted small">No bids.</span> }
+                                    else { <span class="text-muted small">@Loc["AS_NoBids"]</span> }
                                 </div>
                             </div>
                         }
@@ -315,19 +316,19 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                     else
                     {
                         <div class="mb-2"><label class="form-label-sm">Asset: <strong class="mono">@_actionAssetName</strong></label></div>
-                        <div class="mb-2"><label class="form-label-sm">Issuer</label>
+                        <div class="mb-2"><label class="form-label-sm">@Loc["Common_Issuer"]</label>
                             <input class="form-control form-control-sm mono" readonly value="@_actionIssuer" /></div>
 
                         @if (_actionMode == ActionMode.Transfer)
                         {
-                            <div class="mb-2"><label class="form-label-sm">Destination Identity</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["AS_DestinationIdentity"]</label>
                                 <AddressInput @bind-Value="_actionDest" /></div>
                             <div class="mb-2"><label class="form-label-sm">Number of Shares (max: @_actionMaxShares.ToString("N0"))</label>
                                 <input type="number" class="form-control form-control-sm" min="1" max="@_actionMaxShares" @bind="_actionShares" /></div>
                         }
                         else if (_actionMode == ActionMode.Rights)
                         {
-                            <div class="mb-2"><label class="form-label-sm">New Managing Contract</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QX_NewManagingContract"]</label>
                                 <select class="form-select form-select-sm" @bind="_actionContractIdx">
                                     @foreach (var c in Qubic.Core.QubicContracts.GetManagementRightsTargets())
                                     {
@@ -342,7 +343,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                         }
                         else @* Ask / Bid *@
                         {
-                            <div class="mb-2"><label class="form-label-sm">Price per Share (QU)</label>
+                            <div class="mb-2"><label class="form-label-sm">@Loc["QX_PricePerShare"]</label>
                                 <input type="number" class="form-control form-control-sm" min="1" @bind="_actionPrice" /></div>
                             <div class="mb-2"><label class="form-label-sm">Number of Shares@(_actionMode == ActionMode.Ask ? $" (max: {_actionMaxShares:N0})" : "")</label>
                                 <input type="number" class="form-control form-control-sm" min="1"
@@ -386,22 +387,22 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                         {
                             case ActionMode.Transfer:
                                 <button class="btn btn-primary" @onclick="ExecuteTransfer" disabled="@_actionSending">
-                                    @(_actionSending ? "Transferring..." : "Transfer via QX")
+                                    @(_actionSending ? Loc["Common_Transferring"] : Loc["AS_TransferViaQx"])
                                 </button>
                                 break;
                             case ActionMode.Rights:
                                 <button class="btn btn-primary" @onclick="ExecuteRights" disabled="@_actionSending">
-                                    @(_actionSending ? "Sending..." : $"Change Rights via {Qubic.Core.QubicContracts.GetContractName(_actionCurrentManagingContract) ?? "Contract"}")
+                                    @(_actionSending ? Loc["Common_Sending"] : $"{Loc["AS_ChangeRightsVia"]} {Qubic.Core.QubicContracts.GetContractName(_actionCurrentManagingContract) ?? Loc["Common_Contract"]}")
                                 </button>
                                 break;
                             case ActionMode.Ask:
                                 <button class="btn btn-success" @onclick="ExecuteAsk" disabled="@_actionSending">
-                                    @(_actionSending ? "Placing..." : "Place Sell Order")
+                                    @(_actionSending ? Loc["Common_Placing"] : Loc["AS_PlaceSellOrder"])
                                 </button>
                                 break;
                             case ActionMode.Bid:
                                 <button class="btn btn-warning" @onclick="ExecuteBid" disabled="@_actionSending">
-                                    @(_actionSending ? "Placing..." : "Place Buy Order")
+                                    @(_actionSending ? Loc["Common_Placing"] : Loc["AS_PlaceBuyOrder"])
                                 </button>
                                 break;
                         }
@@ -565,11 +566,11 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 
     private string GetModalTitle() => _actionMode switch
     {
-        ActionMode.Transfer => "Transfer Asset",
-        ActionMode.Rights => "Change Management Rights",
-        ActionMode.Ask => "Sell on QX",
-        ActionMode.Bid => "Buy on QX",
-        ActionMode.OrderBook => "Order Book",
+        ActionMode.Transfer => Loc["AS_TransferAsset"],
+        ActionMode.Rights => Loc["AS_ChangeRights"],
+        ActionMode.Ask => Loc["AS_SellQx"],
+        ActionMode.Bid => Loc["AS_BuyQx"],
+        ActionMode.OrderBook => Loc["AS_OrderBook"],
         _ => ""
     };
 
@@ -760,8 +761,8 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
         try
         {
             var destErr = IdentityValidation.Validate(_actionDest);
-            if (destErr != null) { _actionError = $"Destination: {destErr}"; return; }
-            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = "Invalid share count."; return; }
+            if (destErr != null) { _actionError = string.Format(Loc["Fmt_Destination"], destErr); return; }
+            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = Loc["Msg_InvalidShareCount"]; return; }
 
             var tick = await GetTick();
             var issuerPk = Qubic.Core.Entities.QubicIdentity.FromIdentity(_actionIssuer.Trim()).PublicKey;
@@ -790,7 +791,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
         _actionSending = true; _actionError = null; _actionResult = null;
         try
         {
-            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = "Invalid share count."; return; }
+            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = Loc["Msg_InvalidShareCount"]; return; }
 
             var tick = await GetTick();
             var issuerPk = Qubic.Core.Entities.QubicIdentity.FromIdentity(_actionIssuer.Trim()).PublicKey;
@@ -816,8 +817,8 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
         _actionSending = true; _actionError = null; _actionResult = null;
         try
         {
-            if (_actionPrice <= 0) { _actionError = "Price must be positive."; return; }
-            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = $"Shares must be between 1 and {_actionMaxShares:N0}."; return; }
+            if (_actionPrice <= 0) { _actionError = Loc["Msg_PricePositive"]; return; }
+            if (_actionShares <= 0 || _actionShares > _actionMaxShares) { _actionError = string.Format(Loc["Fmt_SharesBetween"], _actionMaxShares); return; }
 
             var tick = await GetTick();
             var issuerPk = Qubic.Core.Entities.QubicIdentity.FromIdentity(_actionIssuer.Trim()).PublicKey;
@@ -844,8 +845,8 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
         _actionSending = true; _actionError = null; _actionResult = null;
         try
         {
-            if (_actionPrice <= 0) { _actionError = "Price must be positive."; return; }
-            if (_actionShares <= 0) { _actionError = "Share count must be positive."; return; }
+            if (_actionPrice <= 0) { _actionError = Loc["Msg_PricePositive"]; return; }
+            if (_actionShares <= 0) { _actionError = Loc["Msg_ShareCountPositive"]; return; }
 
             var tick = await GetTick();
             var issuerPk = Qubic.Core.Entities.QubicIdentity.FromIdentity(_actionIssuer.Trim()).PublicKey;

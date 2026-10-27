@@ -1,4 +1,5 @@
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
 <div style="position:relative" @onfocusout="OnFocusOut">
@@ -133,7 +134,7 @@
         var problem = AllowContractIndex ? IdentityValidation.ValidateDestination(address) : IdentityValidation.Validate(address);
         if (problem != null)
         {
-            _qrError = "The QR code does not contain a Qubic address.";
+            _qrError = Loc["Msg_QrNoAddress"];
             return;
         }
         await ValueChanged.InvokeAsync(address);

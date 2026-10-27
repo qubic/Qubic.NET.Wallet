@@ -1,0 +1,129 @@
+@using Qubic.Services
+@implements IDisposable
+@inject TransactionTrackerService TxTracker
+@inject TickMonitorService TickMonitor
+@inject NavigationManager Nav
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
+
+@* Central progress dialog shown after a transaction is submitted (any send path).
+   Lives once in the layout; subscribes to the tracker's "tx tracked" signal. *@
+@if (_visible && Tx is { } tx)
+{
+    var pending = tx.Status == TrackedTxStatus.Pending;
+    var remaining = TickMonitor.IsConnected ? (long)tx.TargetTick - TickMonitor.Tick : 0;
+    <div class="modal d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)" @onclick="Hide">
+        <div class="modal-dialog modal-dialog-centered" @onclick:stopPropagation>
+            <div class="modal-content">
+                <div class="modal-header card-header-accent">
+                    <h5 class="modal-title"><i class="bi bi-send-check me-1"></i>@Loc["TP_Title"]</h5>
+                    <button type="button" class="btn-close" @onclick="Hide"></button>
+                </div>
+                <div class="modal-body text-center">
+                    @switch (tx.Status)
+                    {
+                        case TrackedTxStatus.Pending:
+                            <div class="spinner-border text-primary mb-2" role="status"></div>
+                            <div class="fw-semibold">@Loc["TP_Pending"]</div>
+                            break;
+                        case TrackedTxStatus.Confirmed:
+                            <i class="bi bi-check-circle-fill text-success display-5 mb-2 d-block"></i>
+                            <div class="fw-semibold text-success">@Loc["TP_Confirmed"]</div>
+                            break;
+                        case TrackedTxStatus.Failed:
+                            <i class="bi bi-x-circle-fill text-danger display-5 mb-2 d-block"></i>
+                            <div class="fw-semibold text-danger">@Loc["TP_Failed"]</div>
+                            break;
+                        default:
+                            <i class="bi bi-question-circle-fill text-warning display-5 mb-2 d-block"></i>
+                            <div class="fw-semibold text-warning">@Loc["TP_Unknown"]</div>
+                            break;
+                    }
+
+                    <div class="mt-3 text-start small">
+                        @if (tx.Amount > 0)
+                        {
+                            <div class="d-flex justify-content-between"><span class="text-muted">@Loc["Common_Amount"]</span><span class="mono">@tx.Amount.ToString("N0") QU</span></div>
+                        }
+                        @if (!string.IsNullOrEmpty(tx.Destination))
+                        {
+                            <div class="d-flex justify-content-between"><span class="text-muted">@Loc["Common_To"]</span><span class="mono">@Short(tx.Destination)</span></div>
+                        }
+                        <div class="d-flex justify-content-between"><span class="text-muted">@Loc["TP_TargetTick"]</span><span class="mono">@tx.TargetTick.ToString("N0")</span></div>
+                        @if (pending && remaining > 0)
+                        {
+                            <div class="d-flex justify-content-between"><span class="text-muted">@Loc["Common_Tick"]</span><span class="mono">@TickMonitor.Tick.ToString("N0") <span class="text-muted">(@remaining.ToString("N0") @Loc["TP_TicksRemaining"])</span></span></div>
+                        }
+                        @if (!string.IsNullOrEmpty(tx.Description))
+                        {
+                            <div class="text-muted mt-1 text-truncate" title="@tx.Description">@tx.Description</div>
+                        }
+                        <div class="mt-2"><TxHashDisplay Hash="@tx.Hash" ShowFull="false" /></div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary btn-sm" @onclick="Hide">
+                        <i class="bi bi-chevron-down me-1"></i>@Loc["TP_Hide"]
+                    </button>
+                    <span class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm" @onclick="ViewHistory">
+                            <i class="bi bi-list-ul me-1"></i>@Loc["TP_ViewHistory"]
+                        </button>
+                        @if (!pending)
+                        {
+                            <button class="btn btn-primary btn-sm" @onclick="Hide">@Loc["Common_Close"]</button>
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _visible;
+    private string? _hash;
+
+    private TrackedTransaction? Tx =>
+        _hash == null ? null : TxTracker.Transactions.FirstOrDefault(t => t.Hash == _hash);
+
+    protected override void OnInitialized()
+    {
+        TxTracker.OnTransactionTracked += OnTracked;
+        TxTracker.OnChanged += OnChanged;
+        TickMonitor.OnTickChanged += OnChanged;
+    }
+
+    private void OnTracked(TrackedTransaction tx)
+    {
+        _hash = tx.Hash;
+        _visible = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnChanged()
+    {
+        if (_visible) InvokeAsync(StateHasChanged);
+    }
+
+    private void Hide()
+    {
+        _visible = false;
+        StateHasChanged();
+    }
+
+    private void ViewHistory()
+    {
+        _visible = false;
+        Nav.NavigateTo("/history");
+    }
+
+    private static string Short(string id) =>
+        id.Length > 20 ? $"{id[..12]}…{id[^6..]}" : id;
+
+    public void Dispose()
+    {
+        TxTracker.OnTransactionTracked -= OnTracked;
+        TxTracker.OnChanged -= OnChanged;
+        TickMonitor.OnTickChanged -= OnChanged;
+    }
+}

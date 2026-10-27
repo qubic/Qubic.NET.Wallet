@@ -4,10 +4,11 @@
 @inject VaultService Vault
 @inject QubicBackendService Backend
 @inject QubicSettingsService Cfg
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
-<h4>Watchlist</h4>
-<p class="text-muted">Monitor balances and assets of external addresses.</p>
+<h4>@Loc["Nav_Watchlist"]</h4>
+<p class="text-muted">@Loc["WL_Subtitle"]</p>
 
 @if (!Vault.IsUnlocked)
 {
@@ -21,7 +22,7 @@ else
         <div>
             @if (_lastRefresh != null)
             {
-                <span class="text-muted small">Last updated: @_lastRefresh.Value.ToLocalTime().ToString("HH:mm:ss")</span>
+                <span class="text-muted small">@Loc["WL_LastUpdated"] @_lastRefresh.Value.ToLocalTime().ToString("HH:mm:ss")</span>
             }
         </div>
         <div class="d-flex gap-2">
@@ -36,11 +37,11 @@ else
             <button class="btn btn-sm btn-outline-primary" @onclick="RefreshAll" disabled="@_refreshing">
                 @if (_refreshing)
                 {
-                    <span class="spinner-border spinner-border-sm me-1"></span><span>Refreshing...</span>
+                    <span class="spinner-border spinner-border-sm me-1"></span><span>@Loc["WL_Refreshing"]</span>
                 }
                 else
                 {
-                    <i class="bi bi-arrow-clockwise me-1"></i><span>Refresh All</span>
+                    <i class="bi bi-arrow-clockwise me-1"></i><span>@Loc["WL_RefreshAll"]</span>
                 }
             </button>
         </div>
@@ -50,7 +51,7 @@ else
     {
         <div class="card mb-3">
             <div class="card-body text-center text-muted py-4">
-                <p class="mb-0">No addresses in watchlist. Add one below.</p>
+                <p class="mb-0">@Loc["WL_Empty"]</p>
             </div>
         </div>
     }
@@ -62,12 +63,12 @@ else
                 <table class="table table-sm table-striped mb-0">
                     <thead>
                         <tr>
-                            <th>Label</th>
-                            <th>Address</th>
-                            <th class="text-end">Balance (QU)</th>
-                            <th class="text-end">Assets</th>
-                            <th>Updated</th>
-                            <th style="width:120px">Actions</th>
+                            <th>@Loc["Common_Label"]</th>
+                            <th>@Loc["Common_Address"]</th>
+                            <th class="text-end">@Loc["Common_Balance"] (QU)</th>
+                            <th class="text-end">@Loc["Nav_Assets"]</th>
+                            <th>@Loc["Common_Updated"]</th>
+                            <th style="width:120px">@Loc["Common_Actions"]</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,7 +99,7 @@ else
                                 <td class="text-end">
                                     @if (hasData && info!.Error != null)
                                     {
-                                        <span class="text-danger small" title="@info.Error">Error</span>
+                                        <span class="text-danger small" title="@info.Error">@Loc["Common_Error"]</span>
                                     }
                                     else if (hasData)
                                     {
@@ -206,15 +207,15 @@ else
                     {
                         <div class="row">
                             <div class="col-md-4 mb-2">
-                                <div class="small text-muted">Balance</div>
+                                <div class="small text-muted">@Loc["Common_Balance"]</div>
                                 <h5 class="mb-0">@info!.Balance.ToString("N0") <small class="text-muted">QU</small></h5>
                             </div>
                             <div class="col-md-4 mb-2">
-                                <div class="small text-muted">Incoming / Outgoing</div>
+                                <div class="small text-muted">@Loc["WL_InOut"]</div>
                                 <span>@info.IncomingCount.ToString("N0") / @info.OutgoingCount.ToString("N0")</span>
                             </div>
                             <div class="col-md-4 mb-2">
-                                <div class="small text-muted">Last Updated</div>
+                                <div class="small text-muted">@Loc["WL_LastUpdatedLabel"]</div>
                                 <span class="small">@info.FetchedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</span>
                             </div>
                         </div>
@@ -226,9 +227,9 @@ else
                                 <table class="table table-sm table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Issuer</th>
-                                            <th class="text-end">Amount</th>
+                                            <th>@Loc["Common_Name"]</th>
+                                            <th>@Loc["Common_Issuer"]</th>
+                                            <th class="text-end">@Loc["Common_Amount"]</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -248,11 +249,11 @@ else
                     else if (_refreshing)
                     {
                         <span class="spinner-border spinner-border-sm text-muted me-1"></span>
-                        <span class="text-muted small">Loading...</span>
+                        <span class="text-muted small">@Loc["Common_Loading"]</span>
                     }
                     else
                     {
-                        <span class="text-muted small">Click refresh to load data.</span>
+                        <span class="text-muted small">@Loc["WL_ClickRefresh"]</span>
                     }
                 </div>
             </div>
@@ -260,22 +261,22 @@ else
     }
 
     <div class="card mb-3">
-        <div class="card-header">Add to Watchlist</div>
+        <div class="card-header">@Loc["WL_AddToWatchlist"]</div>
         <div class="card-body">
             <div class="row g-2 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label small">Label</label>
+                    <label class="form-label small">@Loc["Common_Label"]</label>
                     <input type="text" class="form-control form-control-sm"
-                           @bind="_addLabel" placeholder="e.g. Treasury Wallet" />
+                           @bind="_addLabel" placeholder="@Loc["WL_LabelPlaceholder"]" />
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label small">Address (60-character identity)</label>
+                    <label class="form-label small">@Loc["WL_AddressLabel"]</label>
                     <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_addAddress)"
                            @bind="_addAddress" @bind:event="oninput" placeholder="IDENTITY..." />
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-primary btn-sm w-100" @onclick="AddEntry">
-                        <i class="bi bi-plus-circle me-1"></i>Add
+                        <i class="bi bi-plus-circle me-1"></i>@Loc["Common_Add"]
                     </button>
                 </div>
             </div>
@@ -345,7 +346,7 @@ else
     {
         _addError = null;
         if (string.IsNullOrWhiteSpace(_addLabel))
-        { _addError = "Label is required."; return; }
+        { _addError = Loc["Msg_LabelRequired"]; return; }
         var err = IdentityValidation.Validate(_addAddress);
         if (err != null) { _addError = err; return; }
         try

@@ -9,7 +9,7 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyName>Qubic.Net.Wallet</AssemblyName>
-    <Version>0.7.1</Version>
+    <Version>0.8.1</Version>
     <!-- Resolve the Internal.Assets package so blazor.web.js is available for server fallback mode -->
     <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
   </PropertyGroup>
@@ -36,7 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="Qubic.Core" Version="1.301.9" />
-    <PackageReference Include="Qubic.Services" Version="1.6.0" />
+    <PackageReference Include="Qubic.Services" Version="1.6.3" />
     <PackageReference Include="Qubic.WalletConnect" Version="1.0.1" />
   </ItemGroup>
 

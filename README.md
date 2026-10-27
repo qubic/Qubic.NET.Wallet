@@ -15,6 +15,7 @@ Cross-platform desktop wallet for the [Qubic](https://qubic.org) network. Runs a
 - **Target tick by time** — schedule transactions "in ~N seconds" besides the fixed tick offset
 - **Send / Receive** — single transfers with QR code support (paste or drop a QR screenshot into any address field), `qubic:` payment requests with amount and message, batch "Send to Many" with reusable templates
 - **Encrypted Vault** — password-protected vault stores multiple seeds and an address book, encrypted with AES-256-GCM; any vault works on any network
+- **Vault Overview** — every identity in the unlocked vault with full address, QU balance and assets, plus the total; activate any of them in one click (no seed needs to be active)
 - **Vault switching** — pick a recently used vault file (or browse to another one) straight from the header bar, without going through settings
 - **Address Book** — save contacts and quickly select them from any address input with autocomplete
 - **Assets** — view and transfer QX-listed tokens

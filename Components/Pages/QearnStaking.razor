@@ -7,31 +7,32 @@
 @inject IJSRuntime JS
 @inject VaultService Vault
 @inject BalanceService BalanceSvc
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>QEarn Staking</h4>
-<p class="text-muted">Lock QU to earn rewards, unlock, and query staking information.</p>
+<h4>@Loc["QE_Title"]</h4>
+<p class="text-muted">@Loc["QE_Subtitle"]</p>
 
 @if (_autoLoading)
 {
-    <div class="text-muted mb-3"><span class="spinner-border spinner-border-sm me-1"></span> Loading your staking info...</div>
+    <div class="text-muted mb-3"><span class="spinner-border spinner-border-sm me-1"></span> @Loc["QE_LoadingInfo"]</div>
 }
 else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
 {
     <div class="card mb-3 border-primary">
-        <div class="card-header card-header-accent">Your Staking Summary</div>
+        <div class="card-header card-header-accent">@Loc["QE_StakingSummary"]</div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover mb-2">
                     <thead>
                         <tr>
-                            <th>Lock Epoch</th>
-                            <th>Locked Amount</th>
-                            <th title="Total QU locked by all users in this epoch">Epoch Total</th>
-                            <th>Week</th>
-                            <th>Remaining</th>
-                            <th>Yield</th>
-                            <th>Est. Full Reward</th>
-                            <th title="Reward if unlocked now based on early unlock schedule">Early Unlock</th>
+                            <th>@Loc["QE_LockEpoch"]</th>
+                            <th>@Loc["QE_LockedAmount"]</th>
+                            <th title="@Loc["QE_EpochTotalTitle"]">@Loc["QE_EpochTotal"]</th>
+                            <th>@Loc["QE_Week"]</th>
+                            <th>@Loc["QE_Remaining"]</th>
+                            <th>@Loc["QE_Yield"]</th>
+                            <th>@Loc["QE_EstFullReward"]</th>
+                            <th title="@Loc["QE_EarlyUnlockTitle"]">@Loc["QE_EarlyUnlock"]</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -70,7 +71,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                                             <div class="d-flex align-items-center gap-1">
                                                 <input type="text" inputmode="numeric" class="form-control form-control-sm" style="width:160px"
                                                        value="@FormatQu((long)_unlockAmount)" @onchange="e => _unlockAmount = (ulong)ParseQu(e.Value?.ToString())" />
-                                                <button class="btn btn-sm btn-warning" @onclick="() => ConfirmUnlock(lk)">OK</button>
+                                                <button class="btn btn-sm btn-warning" @onclick="() => ConfirmUnlock(lk)">@Loc["Common_OK"]</button>
                                                 <button class="btn btn-sm btn-outline-secondary" @onclick="() => _unlockingEpoch = null">X</button>
                                             </div>
                                         }
@@ -78,7 +79,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                                         {
                                             <button class="btn btn-sm btn-outline-warning" @onclick="() => StartUnlock(lk)"
                                                     disabled="@(_sending)">
-                                                @(_unlockingEpoch == l.Epoch && _sending ? "Unlocking..." : "Unlock")
+                                                @(_unlockingEpoch == l.Epoch && _sending ? Loc["QE_Unlocking"] : Loc["Common_Unlock"])
                                             </button>
                                         }
                                     }
@@ -91,14 +92,14 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                             @if (es.fullyUnlocked > 0)
                             {
                                 <tr class="table-success">
-                                    <td colspan="4" class="mono">Fully Unlocked: @es.fullyUnlocked.ToString("N0") QU</td>
+                                    <td colspan="4" class="mono">@Loc["QE_FullyUnlocked"] @es.fullyUnlocked.ToString("N0") QU</td>
                                     <td colspan="4" class="mono">Rewarded: @es.fullyRewarded.ToString("N0") QU</td>
                                 </tr>
                             }
                             @if (es.earlyUnlocked > 0)
                             {
                                 <tr class="table-warning">
-                                    <td colspan="4" class="mono">Early Unlocked: @es.earlyUnlocked.ToString("N0") QU</td>
+                                    <td colspan="4" class="mono">@Loc["QE_EarlyUnlocked"] @es.earlyUnlocked.ToString("N0") QU</td>
                                     <td colspan="4" class="mono">Rewarded: @es.earlyRewarded.ToString("N0") QU</td>
                                 </tr>
                             }
@@ -109,10 +110,10 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
             @if (_activeLocks.Count > 0)
             {
                 <div class="small text-muted">
-                    Total locked: <strong>@_activeLocks.Sum(l => (long)l.Amount).ToString("N0") QU</strong> across <strong>@_activeLocks.Count</strong> epoch@(_activeLocks.Count != 1 ? "s" : "")
+                    @Loc["QE_TotalLocked"] <strong>@_activeLocks.Sum(l => (long)l.Amount).ToString("N0") QU</strong> @Loc["QE_Across"] <strong>@_activeLocks.Count</strong> @Loc["QE_EpochWord"]
                     @if (_activeLocks.Sum(l => (long)l.EstReward) > 0)
                     {
-                        <span class="ms-2">| Est. total reward at full unlock: <strong class="text-success">+@_activeLocks.Sum(l => (long)l.EstReward).ToString("N0") QU</strong></span>
+                        <span class="ms-2">@Loc["QE_EstTotalReward"] <strong class="text-success">+@_activeLocks.Sum(l => (long)l.EstReward).ToString("N0") QU</strong></span>
                     }
                 </div>
             }
@@ -124,7 +125,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
     @foreach (var tab in _tabs)
     {
         <li class="nav-item">
-            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@tab</a>
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@Loc[$"QE_Tab_{tab}"]</a>
         </li>
     }
 </ul>
@@ -134,9 +135,9 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
     {
         case "Lock":
             <div class="card"><div class="card-header">Lock QU</div><div class="card-body">
-                <p class="small text-muted">Lock QU into QEarn smart contract to earn staking rewards.</p>
+                <p class="small text-muted">@Loc["QE_LockDesc"]</p>
                 <div class="mb-2">
-                    <label class="form-label-sm">Amount to lock (QU)</label>
+                    <label class="form-label-sm">@Loc["QE_AmountToLock"]</label>
                     <input type="text" inputmode="numeric" class="form-control form-control-sm"
                            value="@FormatQu(_lockAmount)" @onchange="e => _lockAmount = ParseQu(e.Value?.ToString())" />
                     @if (BalanceSvc.Balance != null)
@@ -147,10 +148,10 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                             <button class="btn btn-outline-secondary btn-sm" @onclick="() => SetLockPercent(100)">100%</button>
                         </div>
                     }
-                    <div class="form-text">The full amount will be locked. No additional fee. Min 10,000,000 QU.</div>
+                    <div class="form-text">@Loc["QE_LockHelp"]</div>
                 </div>
                 <button class="btn btn-primary" @onclick="Lock" disabled="@(_sending || _lockAmount <= 0)">
-                    @(_sending ? "Locking..." : "Lock")
+                    @(_sending ? Loc["QE_Locking"] : Loc["QE_Tab_Lock"])
                 </button>
             </div></div>
             break;
@@ -158,43 +159,43 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
         case "Query":
             <div class="card"><div class="card-header">Query QEarn</div><div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label-sm">Query Function</label>
+                    <label class="form-label-sm">@Loc["QE_QueryFunction"]</label>
                     <select class="form-select form-select-sm" @bind="_queryFunc">
-                        <option value="1">Lock Info Per Epoch</option>
-                        <option value="2">User Locked Info</option>
-                        <option value="3">State of Round</option>
-                        <option value="4">User Lock Status (52-week bitmask)</option>
-                        <option value="5">Ended Status</option>
-                        <option value="6">Stats Per Epoch</option>
-                        <option value="7">Burned &amp; Boosted Stats (global)</option>
-                        <option value="8">Burned &amp; Boosted Stats Per Epoch</option>
+                        <option value="1">@Loc["QE_Q1"]</option>
+                        <option value="2">@Loc["QE_Q2"]</option>
+                        <option value="3">@Loc["QE_Q3"]</option>
+                        <option value="4">@Loc["QE_Q4"]</option>
+                        <option value="5">@Loc["QE_Q5"]</option>
+                        <option value="6">@Loc["QE_Q6"]</option>
+                        <option value="7">@Loc["QE_Q7"]</option>
+                        <option value="8">@Loc["QE_Q8"]</option>
                     </select>
                 </div>
 
                 @if (_queryFunc is 1 or 3 or 6 or 8)
                 {
                     <div class="mb-2">
-                        <label class="form-label-sm">Epoch</label>
+                        <label class="form-label-sm">@Loc["Common_Epoch"]</label>
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_qEpoch" />
                     </div>
                 }
                 @if (_queryFunc is 2 or 4 or 5)
                 {
                     <div class="mb-2">
-                        <label class="form-label-sm">User Identity</label>
+                        <label class="form-label-sm">@Loc["QE_UserIdentity"]</label>
                         <AddressInput @bind-Value="_qIdentity" />
                     </div>
                 }
                 @if (_queryFunc == 2)
                 {
                     <div class="mb-2">
-                        <label class="form-label-sm">Epoch</label>
+                        <label class="form-label-sm">@Loc["Common_Epoch"]</label>
                         <input type="number" class="form-control form-control-sm" min="0" @bind="_qEpoch" />
                     </div>
                 }
 
                 <button class="btn btn-primary" @onclick="RunQuery" disabled="@_querying">
-                    @(_querying ? "Querying..." : "Query")
+                    @(_querying ? Loc["QE_Querying"] : Loc["QE_Tab_Query"])
                 </button>
 
                 @if (_queryResult != null)
@@ -214,7 +215,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
                 @if (_lockStatusBits != null)
                 {
                     <div class="mt-3">
-                        <label class="form-label-sm">Lock Status (52 weeks, bit 0 = earliest)</label>
+                        <label class="form-label-sm">@Loc["QE_LockStatusLabel"]</label>
                         <div class="d-flex flex-wrap gap-1 mt-1">
                             @for (int i = 0; i < 52; i++)
                             {
@@ -405,7 +406,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
         _sending = true; _error = null; _result = null;
         try
         {
-            if (_lockAmount <= 0) { _error = "Amount must be positive."; return; }
+            if (_lockAmount <= 0) { _error = Loc["Msg_AmountPositive"]; return; }
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qearn.LockPayload();
             await Broadcast(_lockAmount, tick, payload, $"QEarn Lock {_lockAmount:N0} QU");
@@ -426,7 +427,7 @@ else if (_activeLocks.Count > 0 || _autoEndedStatus != null)
     {
         if (_unlockAmount <= 0 || _unlockAmount > lk.Amount)
         {
-            _error = $"Amount must be between 1 and {lk.Amount:N0}.";
+            _error = string.Format(Loc["Fmt_AmountBetween"], lk.Amount);
             return;
         }
 

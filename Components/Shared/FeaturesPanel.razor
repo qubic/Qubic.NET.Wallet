@@ -1,5 +1,6 @@
 @using Qubic.Services.Features
 @inject FeatureService Features
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 @* Opt-in feature list. In Review mode choices are collected and saved together (first run / after an update);
    otherwise each switch applies immediately (Settings → Features). *@
@@ -16,17 +17,17 @@
                            @onchange="e => Toggle(f.Feature, (bool)(e.Value ?? false))" />
                 </div>
                 <div class="flex-grow-1">
-                    <label class="fw-semibold" for="feat-@f.Feature">@f.Title</label>
+                    <label class="fw-semibold" for="feat-@f.Feature">@LibStrings.FeatureTitle(Loc, f)</label>
                     @if (Review && f.IntroducedInFeatureSet > 0 && IsNew(f))
                     {
-                        <span class="badge bg-info ms-1">new</span>
+                        <span class="badge bg-info ms-1">@Loc["FP_New"]</span>
                     }
-                    <div class="small">@f.Description</div>
+                    <div class="small">@LibStrings.FeatureDescription(Loc, f)</div>
                     <div class="small text-muted mt-1">
-                        <i class="bi bi-hdd-network me-1"></i>Connects to: @f.ConnectsTo
+                        <i class="bi bi-hdd-network me-1"></i>@Loc["FP_ConnectsTo"] @LibStrings.FeatureConnectsTo(Loc, f)
                     </div>
                     <div class="small text-muted">
-                        <i class="bi bi-shield-exclamation me-1"></i>@f.Risk
+                        <i class="bi bi-shield-exclamation me-1"></i>@LibStrings.FeatureRisk(Loc, f)
                     </div>
                 </div>
             </div>

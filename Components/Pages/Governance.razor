@@ -1,0 +1,1066 @@
+@page "/governance"
+@using System.Buffers.Binary
+@using Qubic.Core.Contracts.Gqmprop
+@using Qubic.Core.Entities
+@using Qubic.Core.Payloads
+@inject QubicBackendService Backend
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject TransactionTrackerService TxTracker
+@inject QubicSettingsService Settings
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
+@implements IDisposable
+
+<h4><i class="bi bi-bank me-2"></i>@Loc["GOV_Title"]</h4>
+<p class="text-muted">@Loc["GOV_Subtitle"]</p>
+
+<ul class="nav nav-tabs mb-3">
+    @foreach (var tab in _tabs)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@Loc[$"GOV_Tab_{tab.Replace(" ", "")}"]</a>
+        </li>
+    }
+</ul>
+
+@switch (_activeTab)
+{
+    // ══════════════════════════════════════════════════════════
+    // BROWSE — list and inspect proposals
+    // ══════════════════════════════════════════════════════════
+    case "Browse":
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="browseMode" id="govBrowseActive" checked="@_browseActive" @onchange="() => { _browseActive = true; _browseIndices = null; }" />
+                <label class="form-check-label" for="govBrowseActive">@Loc["GOV_BrowseActive"]</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="browseMode" id="govBrowsePrior" checked="@(!_browseActive)" @onchange="() => { _browseActive = false; _browseIndices = null; }" />
+                <label class="form-check-label" for="govBrowsePrior">@Loc["GOV_BrowsePrior"]</label>
+            </div>
+        </div>
+        <button class="btn btn-primary btn-sm" @onclick="LoadProposalIndices" disabled="@_loading">
+            @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadProposals"])
+        </button>
+
+        @if (_browseIndices != null)
+        {
+            <div class="mt-3">
+                @if (_browseIndices.Count == 0)
+                {
+                    <div class="text-muted">@Loc["GOV_NoProposals"]</div>
+                }
+                else
+                {
+                    <table class="table table-sm table-hover">
+                        <thead><tr><th style="width:60px">@Loc["GOV_ColIndex"]</th><th>@Loc["GOV_Proposer"]</th><th>@Loc["Common_Type"]</th><th style="width:60px">@Loc["Common_Epoch"]</th><th>@Loc["GOV_Url"]</th><th style="width:72px"></th></tr></thead>
+                        <tbody>
+                            @foreach (var idx in _browseIndices)
+                            {
+                                var localIdx = idx;
+                                var p = _browseProposals.GetValueOrDefault(idx);
+                                <tr @onclick="() => ToggleExpand(localIdx)" style="cursor:pointer">
+                                    <td>@idx</td>
+                                    <td class="mono small">@(p != null ? TruncateId(p.Proposer) : "...")</td>
+                                    <td>@(p != null ? GetTypeLabel(p.Type) : "...")</td>
+                                    <td>@(p?.Epoch.ToString() ?? "...")</td>
+                                    <td class="small text-truncate" style="max-width:250px">@(p?.Url ?? "...")</td>
+                                    <td class="text-nowrap">
+                                        <button class="btn btn-sm btn-qb-ghost p-0 me-2" title="@Loc["GOV_ViewResults"]"
+                                                @onclick="() => ViewResults(localIdx)" @onclick:stopPropagation>
+                                            <i class="bi bi-bar-chart"></i>
+                                        </button>
+                                        <i class="bi @(_expandedIndex == idx ? "bi-chevron-up" : "bi-chevron-down")"></i>
+                                    </td>
+                                </tr>
+                                @if (_expandedIndex == idx && p != null)
+                                {
+                                    <tr><td colspan="6">
+                                        <div class="card card-body small">
+                                            <div class="row g-2">
+                                                <div class="col-12"><strong>@Loc["GOV_Proposer"]:</strong> <span class="mono">@p.Proposer</span></div>
+                                                <div class="col-md-6"><strong>@Loc["Common_Type"]:</strong> @GetTypeLabel(p.Type) (0x@(p.Type.ToString("X4")))</div>
+                                                <div class="col-md-3"><strong>@Loc["Common_Tick"]:</strong> @p.Tick</div>
+                                                <div class="col-md-3"><strong>@Loc["Common_Epoch"]:</strong> @p.Epoch</div>
+                                                <div class="col-12"><strong>@Loc["GOV_Url"]:</strong>
+                                                    @if (!string.IsNullOrEmpty(p.Url))
+                                                    {
+                                                        <a href="@p.Url" target="_blank" rel="noopener">@p.Url</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">@Loc["Common_None"]</span>
+                                                    }
+                                                </div>
+                                                @(RenderProposalData(p))
+                                            </div>
+                                        </div>
+                                    </td></tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @if (_browseIndices.Count >= 64)
+                    {
+                        <button class="btn btn-outline-primary btn-sm" @onclick="LoadMoreProposals" disabled="@_loading">@Loc["GOV_LoadMore"]</button>
+                    }
+                }
+            </div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // PROPOSE — set or clear a proposal
+    // ══════════════════════════════════════════════════════════
+    case "Propose":
+        @if (!Seed.HasSeed)
+        {
+            <div class="seed-warning">@Loc["Common_NeedSeedSigning"]</div>
+        }
+        else
+        {
+            <div class="row"><div class="col-md-8">
+                @if (!_isComputor)
+                {
+                    <div class="alert alert-warning small">@Loc["GOV_ComputorOnly"]</div>
+                }
+                <div class="card"><div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_ProposalType"]</label>
+                        <select class="form-select form-select-sm" @bind="_propType">
+                            <optgroup label="@Loc["GOV_Grp_General"]">
+                                <option value="2">@Loc["GOV_TL_0002"] (0x0002)</option>
+                                <option value="3">@Loc["GOV_TL_0003"] (0x0003)</option>
+                                <option value="4">@Loc["GOV_TL_0004"] (0x0004)</option>
+                                <option value="5">@Loc["GOV_TL_0005"] (0x0005)</option>
+                                <option value="6">@Loc["GOV_TL_0006"] (0x0006)</option>
+                                <option value="7">@Loc["GOV_TL_0007"] (0x0007)</option>
+                                <option value="8">@Loc["GOV_TL_0008"] (0x0008)</option>
+                            </optgroup>
+                            <optgroup label="@Loc["GOV_Grp_Transfer"]">
+                                <option value="258">@Loc["GOV_TL_0102"] (0x0102)</option>
+                                <option value="259">@Loc["GOV_TL_0103"] (0x0103)</option>
+                                <option value="260">@Loc["GOV_TL_0104"] (0x0104)</option>
+                                <option value="261">@Loc["GOV_TL_0105"] (0x0105)</option>
+                            </optgroup>
+                            <optgroup label="@Loc["GOV_Grp_Variable"]">
+                                <option value="512">@Loc["GOV_TL_0200"] (0x0200)</option>
+                                <option value="514">@Loc["GOV_TL_0202"] (0x0202)</option>
+                                <option value="515">@Loc["GOV_TL_0203"] (0x0203)</option>
+                                <option value="516">@Loc["GOV_TL_0204"] (0x0204)</option>
+                                <option value="517">@Loc["GOV_TL_0205"] (0x0205)</option>
+                            </optgroup>
+                            <optgroup label="@Loc["GOV_Grp_MultiVar"]">
+                                <option value="770">@Loc["GOV_TL_0302"] (0x0302)</option>
+                                <option value="771">@Loc["GOV_TL_0303"] (0x0303)</option>
+                                <option value="772">@Loc["GOV_TL_0304"] (0x0304)</option>
+                            </optgroup>
+                            <optgroup label="@Loc["GOV_Grp_TransferEpoch"]">
+                                <option value="1026">@Loc["GOV_TL_0402"] (0x0402)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_ProposalUrl"] <small class="text-muted">@Loc["GOV_UrlHelp255"]</small></label>
+                        <input class="form-control form-control-sm" @bind="_propUrl" maxlength="255" placeholder="https://..." />
+                    </div>
+                    @if (TickMonitor.IsConnected)
+                    {
+                        <div class="mb-3 small text-muted">@Loc["Common_Epoch"]: @TickMonitor.Epoch (@Loc["GOV_AutoDetected"])</div>
+                    }
+
+                    @* ── Type-specific fields ── *@
+                    @{
+                        var ptc = GetTypeClass(_propType);
+                        var poc = GetOptionCount(_propType);
+                    }
+
+                    @if (ptc == 0x01) @* Transfer *@
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_DestIdentity"]</label>
+                            <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_propDest)"
+                                   @bind="_propDest" @bind:event="oninput" placeholder="IDENTITY..." />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_Amounts"] <small class="text-muted">@Loc["GOV_AmountsHelp"]</small></label>
+                            @for (int i = 0; i < Math.Min(poc - 1, 4); i++)
+                            {
+                                var ai = i;
+                                <div class="input-group input-group-sm mb-1">
+                                    <span class="input-group-text" style="width:80px">@Loc["GOV_OptionWord"] @(ai + 1)</span>
+                                    <input type="number" class="form-control" @bind="_propAmounts[ai]" />
+                                </div>
+                            }
+                        </div>
+                    }
+                    else if (ptc == 0x04) @* TransferInEpoch *@
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_DestIdentity"]</label>
+                            <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_propDest)"
+                                   @bind="_propDest" @bind:event="oninput" placeholder="IDENTITY..." />
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col">
+                                <label class="form-label">@Loc["Common_Amount"] <small class="text-muted">@Loc["GOV_Millionths"]</small></label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propAmount" />
+                            </div>
+                            <div class="col">
+                                <label class="form-label">@Loc["GOV_TargetEpoch"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propTargetEpoch" />
+                            </div>
+                        </div>
+                    }
+                    else if (ptc == 0x02 && poc == 0) @* Variable Scalar *@
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_VariableId"]</label>
+                            <input type="number" class="form-control form-control-sm" @bind="_propVariable" />
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col">
+                                <label class="form-label">@Loc["GOV_MinValue"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propMinValue" />
+                            </div>
+                            <div class="col">
+                                <label class="form-label">@Loc["GOV_MaxValue"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propMaxValue" />
+                            </div>
+                            <div class="col">
+                                <label class="form-label">@Loc["GOV_ProposedValue"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propProposedValue" />
+                            </div>
+                        </div>
+                    }
+                    else if (ptc == 0x02 && poc >= 2) @* Variable Options *@
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_VariableId"]</label>
+                            <input type="number" class="form-control form-control-sm" @bind="_propVariable" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_Values"]</label>
+                            @for (int i = 0; i < Math.Min(poc - 1, 4); i++)
+                            {
+                                var vi = i;
+                                <div class="input-group input-group-sm mb-1">
+                                    <span class="input-group-text" style="width:80px">@Loc["GOV_OptionWord"] @(vi + 1)</span>
+                                    <input type="number" class="form-control" @bind="_propValues[vi]" />
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" @onclick="SubmitProposal" disabled="@(_sending || !_isComputor)">
+                            @(_sending ? Loc["Common_Sending"] : Loc["GOV_SetProposal"])
+                        </button>
+                        <button class="btn btn-outline-danger" @onclick="ClearProposal" disabled="@(_sending || !_isComputor)">@Loc["GOV_ClearMyProposal"]</button>
+                    </div>
+                </div></div>
+            </div></div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // VOTE — cast or clear a vote
+    // ══════════════════════════════════════════════════════════
+    case "Vote":
+        @if (!Seed.HasSeed)
+        {
+            <div class="seed-warning">@Loc["Common_NeedSeedSigning"]</div>
+        }
+        else
+        {
+            <div class="row"><div class="col-md-8">
+                @if (!_isComputor)
+                {
+                    <div class="alert alert-warning small">@Loc["GOV_ComputorOnly"]</div>
+                }
+                <div class="card"><div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control" @bind="_voteProposalIndex" min="0" />
+                            <button class="btn btn-outline-primary" @onclick="LoadVoteProposal" disabled="@_loading">
+                                @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadProposal"])
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (_voteProposal != null)
+                    {
+                        <div class="alert alert-info small mb-3">
+                            <strong>@GetTypeLabel(_voteProposal.Type)</strong> (0x@(_voteProposal.Type.ToString("X4")))<br />
+                            @Loc["Common_Tick"]: @_voteProposal.Tick &bull; @Loc["Common_Epoch"]: @_voteProposal.Epoch<br />
+                            @if (!string.IsNullOrEmpty(_voteProposal.Url))
+                            {
+                                <text>@Loc["GOV_Url"]: <a href="@_voteProposal.Url" target="_blank" rel="noopener">@_voteProposal.Url</a></text>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_VoteValue"]</label>
+                            @if (GetTypeClass(_voteProposal.Type) == 0x02 && GetOptionCount(_voteProposal.Type) == 0)
+                            {
+                                <input type="number" class="form-control form-control-sm" @bind="_voteValue" placeholder="@Loc["GOV_ScalarValuePlaceholder"]" />
+                                <div class="form-text">@Loc["GOV_ScalarVoteHelp"]</div>
+                            }
+                            else
+                            {
+                                <select class="form-select form-select-sm" @bind="_voteValue">
+                                    <option value="0">0 — @Loc["GOV_NoChange"]</option>
+                                    @for (int i = 1; i < GetOptionCount(_voteProposal.Type); i++)
+                                    {
+                                        var oi = i;
+                                        <option value="@oi">@oi — @Loc["GOV_OptionWord"] @oi</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" @onclick="SubmitVote" disabled="@(_sending || !_isComputor)">
+                                @(_sending ? Loc["Common_Sending"] : Loc["GOV_CastVote"])
+                            </button>
+                            <button class="btn btn-outline-danger" @onclick="ClearVote" disabled="@(_sending || !_isComputor)">@Loc["GOV_ClearVote"]</button>
+                        </div>
+                    }
+                </div></div>
+            </div></div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // RESULTS — view voting results
+    // ══════════════════════════════════════════════════════════
+    case "Results":
+        <div class="row"><div class="col-md-8">
+            <div class="mb-3">
+                <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                <div class="input-group input-group-sm">
+                    <input type="number" class="form-control" @bind="_resultsIndex" min="0" />
+                    <button class="btn btn-outline-primary" @onclick="LoadResults" disabled="@_loading">
+                        @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadResults"])
+                    </button>
+                </div>
+            </div>
+
+            @if (_resultsData != null)
+            {
+                <div class="card card-body">
+                    <div class="row g-2 small mb-3">
+                        <div class="col-6"><strong>@Loc["GOV_ProposalIndex"]:</strong> @_resultsData.ProposalIndex</div>
+                        <div class="col-6"><strong>@Loc["Common_Tick"]:</strong> @_resultsData.Tick</div>
+                        <div class="col-6"><strong>@Loc["GOV_AuthorizedVoters"]:</strong> @_resultsData.TotalAuthorized</div>
+                        <div class="col-6"><strong>@Loc["GOV_VotesCast"]:</strong> @_resultsData.TotalCast</div>
+                    </div>
+
+                    @if (_resultsData.OptionCount > 0)
+                    {
+                        <h6>@Loc["GOV_OptionVotes"]</h6>
+                        @for (int i = 0; i < _resultsData.OptionCount && i < 8; i++)
+                        {
+                            var ri = i;
+                            var votes = _resultsData.OptionVotes[ri];
+                            var pct = _resultsData.TotalCast > 0 ? 100.0 * votes / _resultsData.TotalCast : 0;
+                            <div class="d-flex align-items-center gap-2 mb-1 small">
+                                <span style="width:80px">@(ri == 0 ? Loc["GOV_NoChange"] : $"{Loc["GOV_OptionWord"]} {ri}")</span>
+                                <div class="progress flex-grow-1" style="height:20px">
+                                    <div class="progress-bar @(ri == 0 ? "bg-secondary" : "qb-progress-accent")" style="width:@(Math.Max(pct, 0.5).ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%">
+                                        @votes (@(pct.ToString("F1"))%)
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h6>@Loc["GOV_ScalarResult"]</h6>
+                        <div class="fs-4">@_resultsData.ScalarResult</div>
+                    }
+                </div>
+            }
+        </div></div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // GET VOTE — check a specific voter's vote
+    // ══════════════════════════════════════════════════════════
+    case "Get Vote":
+        <div class="row"><div class="col-md-8">
+            <div class="row g-2 mb-3">
+                <div class="col-3">
+                    <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                    <input type="number" class="form-control form-control-sm" @bind="_getVoteIndex" min="0" />
+                </div>
+                <div class="col">
+                    <label class="form-label">@Loc["GOV_VoterIdentity"] <small class="text-muted">@Loc["GOV_BlankYourIdentity"]</small></label>
+                    <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_getVoteIdentity)"
+                           @bind="_getVoteIdentity" @bind:event="oninput" placeholder="IDENTITY..." />
+                </div>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" @onclick="LoadVote" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadVote"])
+            </button>
+
+            @if (_getVoteData != null)
+            {
+                <div class="card card-body mt-3 small">
+                    <div class="row g-2">
+                        <div class="col-6"><strong>@Loc["GOV_ProposalIndex"]:</strong> @_getVoteData.ProposalIndex</div>
+                        <div class="col-6"><strong>@Loc["Common_Type"]:</strong> @GetTypeLabel(_getVoteData.ProposalType) (0x@(_getVoteData.ProposalType.ToString("X4")))</div>
+                        <div class="col-6"><strong>@Loc["GOV_ProposalTick"]:</strong> @_getVoteData.ProposalTick</div>
+                        <div class="col-6"><strong>@Loc["GOV_VoteValue"]:</strong>
+                            @if (_getVoteData.VoteValue == long.MinValue)
+                            {
+                                <span class="text-muted">@Loc["GOV_NoVoteCleared"]</span>
+                            }
+                            else if (_getVoteData.VoteValue == 0)
+                            {
+                                <span>@Loc["GOV_ZeroNoChange"]</span>
+                            }
+                            else
+                            {
+                                <span>@_getVoteData.VoteValue</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div></div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // REVENUE — revenue donation table
+    // ══════════════════════════════════════════════════════════
+    case "Revenue":
+        <div>
+            <p class="small text-muted">@Loc["GOV_RevenueDesc"]</p>
+            <button class="btn btn-outline-primary btn-sm" @onclick="LoadRevenueDonation" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadRevenue"])
+            </button>
+
+            @if (_revEntries != null)
+            {
+                <div class="mt-3">
+                    @if (_revEntries.Count == 0)
+                    {
+                        <div class="text-muted">@Loc["GOV_NoRevenue"]</div>
+                    }
+                    else
+                    {
+                        <table class="table table-sm table-hover">
+                            <thead><tr><th style="width:40px">#</th><th>@Loc["GOV_Destination"]</th><th>@Loc["Common_Amount"]</th><th>@Loc["GOV_FirstEpoch"]</th></tr></thead>
+                            <tbody>
+                                @{ var rn = 0; }
+                                @foreach (var e in _revEntries)
+                                {
+                                    rn++;
+                                    <tr>
+                                        <td class="text-muted">@rn</td>
+                                        <td><AddressDisplay Address="@e.Destination" /></td>
+                                        <td>@FormatMillionths(e.MillionthAmount)</td>
+                                        <td>@e.FirstEpoch</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        </div>
+        break;
+
+}
+
+@if (_result != null)
+{
+    <div class="alert alert-success mt-3">
+        @Loc["Common_TxBroadcast"] <TxHashDisplay Hash="@_result" ShowFull="true" />
+        <div class="mt-1">
+            <a href="/history">@Loc["Common_TransactionHistory"]</a>
+        </div>
+    </div>
+}
+@if (_error != null)
+{
+    <div class="alert alert-danger mt-2">@_error</div>
+}
+
+@code {
+    // ── Constants ──
+    const uint GqmpropIndex = 6;
+    const long NO_VOTE_VALUE = long.MinValue;
+
+    // ── Tab state ──
+    static readonly string[] _tabs = ["Browse", "Propose", "Vote", "Results", "Get Vote", "Revenue"];
+    string _activeTab = "Browse";
+    string? _error;
+    string? _result;
+    bool _sending;
+    bool _loading;
+
+    // ── Computor gate ──
+    private bool _isComputor;
+
+    // ── Browse ──
+    bool _browseActive = true;
+    List<ushort>? _browseIndices;
+    Dictionary<ushort, ParsedProposal> _browseProposals = new();
+    ushort? _expandedIndex;
+
+    // ── Propose ──
+    int _propType = 0x0002;
+    string _propUrl = "";
+    string _propDest = "";
+    string[] _propAmounts = ["", "", "", ""];
+    string _propVariable = "";
+    string[] _propValues = ["", "", "", ""];
+    string _propMinValue = "";
+    string _propMaxValue = "";
+    string _propProposedValue = "";
+    string _propTargetEpoch = "";
+    string _propAmount = "";
+
+    // ── Vote ──
+    int _voteProposalIndex;
+    ParsedProposal? _voteProposal;
+    string _voteValue = "0";
+
+    // ── Results ──
+    int _resultsIndex;
+    ParsedResults? _resultsData;
+
+    // ── Get Vote ──
+    int _getVoteIndex;
+    string _getVoteIdentity = "";
+    ParsedVote? _getVoteData;
+
+    // ── Revenue ──
+    List<RevDonEntry>? _revEntries;
+
+    // ── Helper records ──
+    record ParsedProposal(ushort Index, string Proposer, string Url, ushort Epoch, ushort Type, uint Tick, byte[] DataUnion);
+    record ParsedResults(ushort ProposalIndex, ushort OptionCount, uint Tick, uint TotalAuthorized, uint TotalCast, uint[] OptionVotes, long ScalarResult);
+    record ParsedVote(ushort ProposalIndex, ushort ProposalType, uint ProposalTick, long VoteValue);
+    record RevDonEntry(string Destination, long MillionthAmount, ushort FirstEpoch);
+
+    // ══════════════════════════════════════════════════════════
+    // Lifecycle + computor gate
+    // ══════════════════════════════════════════════════════════
+
+    protected override async Task OnInitializedAsync()
+    {
+        Seed.OnSeedChanged += OnSeedChanged;
+        await RefreshComputorStatus();
+    }
+
+    private void OnSeedChanged()
+    {
+        InvokeAsync(async () =>
+        {
+            await RefreshComputorStatus();
+            StateHasChanged();
+        });
+    }
+
+    private async Task RefreshComputorStatus()
+    {
+        try
+        {
+            if (Backend.IsAvailable(Qubic.Services.Networks.Capability.Computors) && Seed.Identity != null)
+            {
+                var snap = await Backend.GetComputorsAsync();
+                _isComputor = snap.Identities.Any(id => string.Equals(id, Seed.Identity!.Value.ToString(), StringComparison.OrdinalIgnoreCase));
+            }
+            else _isComputor = false;
+        }
+        catch { _isComputor = false; }
+    }
+
+    public void Dispose()
+    {
+        Seed.OnSeedChanged -= OnSeedChanged;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Helpers
+    // ══════════════════════════════════════════════════════════
+
+    void SetTab(string tab) { _activeTab = tab; _error = null; _result = null; }
+
+    async Task ViewResults(ushort index)
+    {
+        _resultsIndex = index;
+        _activeTab = "Results";
+        _error = null; _result = null;
+        await LoadResults();
+    }
+
+    static int GetTypeClass(int type) => (type >> 8) & 0xFF;
+    static int GetOptionCount(int type) => type & 0xFF;
+
+    string GetTypeLabel(int type) => type switch
+    {
+        0x0002 => Loc["GOV_TL_0002"],
+        0x0003 => Loc["GOV_TL_0003"],
+        0x0004 => Loc["GOV_TL_0004"],
+        0x0005 => Loc["GOV_TL_0005"],
+        0x0006 => Loc["GOV_TL_0006"],
+        0x0007 => Loc["GOV_TL_0007"],
+        0x0008 => Loc["GOV_TL_0008"],
+        0x0102 => Loc["GOV_TL_0102"],
+        0x0103 => Loc["GOV_TL_0103"],
+        0x0104 => Loc["GOV_TL_0104"],
+        0x0105 => Loc["GOV_TL_0105"],
+        0x0200 => Loc["GOV_TL_0200"],
+        0x0202 => Loc["GOV_TL_0202"],
+        0x0203 => Loc["GOV_TL_0203"],
+        0x0204 => Loc["GOV_TL_0204"],
+        0x0205 => Loc["GOV_TL_0205"],
+        0x0302 => Loc["GOV_TL_0302"],
+        0x0303 => Loc["GOV_TL_0303"],
+        0x0304 => Loc["GOV_TL_0304"],
+        0x0402 => Loc["GOV_TL_0402"],
+        _ => string.Format(Loc["GOV_TL_Unknown"], type.ToString("X4"))
+    };
+
+    string FormatMillionths(long value)
+    {
+        var pct = value / 10000.0;
+        return $"{pct:F4}% ({value:N0})";
+    }
+
+    static string TruncateId(string id) => id.Length > 16 ? id[..8] + "..." + id[^8..] : id;
+
+    static string SafeIdentityFromPk(byte[] pk)
+    {
+        try { return QubicIdentity.FromPublicKey(pk).ToString(); }
+        catch { return Convert.ToHexString(pk)[..16] + "..."; }
+    }
+
+    static long ReadSint64(ReadOnlySpan<byte> data, int offset) =>
+        offset + 8 <= data.Length ? BinaryPrimitives.ReadInt64LittleEndian(data[offset..]) : 0;
+
+    static ulong ReadUint64(ReadOnlySpan<byte> data, int offset) =>
+        offset + 8 <= data.Length ? BinaryPrimitives.ReadUInt64LittleEndian(data[offset..]) : 0;
+
+    static ushort ReadUint16(ReadOnlySpan<byte> data, int offset) =>
+        offset + 2 <= data.Length ? BinaryPrimitives.ReadUInt16LittleEndian(data[offset..]) : (ushort)0;
+
+    // ── Browse: render expanded data fields ──
+    RenderFragment RenderProposalData(ParsedProposal p) => __builder =>
+    {
+        var tc = GetTypeClass(p.Type);
+        var oc = GetOptionCount(p.Type);
+        var d = p.DataUnion.AsSpan();
+
+        if (tc == 0x01) // Transfer
+        {
+            __builder.OpenElement(0, "div"); __builder.AddAttribute(1, "class", "col-12 mt-1");
+            __builder.AddContent(2, (MarkupString)$"<strong>{Loc["GOV_Destination"]}:</strong> <span class=\"mono\">{SafeIdentityFromPk(d[..32].ToArray())}</span>");
+            __builder.CloseElement();
+            for (int i = 0; i < Math.Min(oc - 1, 4); i++)
+            {
+                var amt = ReadSint64(d, 32 + i * 8);
+                __builder.OpenElement(3, "div"); __builder.AddAttribute(4, "class", "col-md-6");
+                __builder.AddContent(5, (MarkupString)$"<strong>{Loc["GOV_AmountN"]} {i + 1}:</strong> {FormatMillionths(amt)}");
+                __builder.CloseElement();
+            }
+        }
+        else if (tc == 0x04) // TransferInEpoch
+        {
+            __builder.OpenElement(0, "div"); __builder.AddAttribute(1, "class", "col-12 mt-1");
+            __builder.AddContent(2, (MarkupString)$"<strong>{Loc["GOV_Destination"]}:</strong> <span class=\"mono\">{SafeIdentityFromPk(d[..32].ToArray())}</span>");
+            __builder.CloseElement();
+            __builder.OpenElement(3, "div"); __builder.AddAttribute(4, "class", "col-md-6");
+            __builder.AddContent(5, (MarkupString)$"<strong>{Loc["Common_Amount"]}:</strong> {FormatMillionths(ReadSint64(d, 32))}");
+            __builder.CloseElement();
+            __builder.OpenElement(6, "div"); __builder.AddAttribute(7, "class", "col-md-6");
+            __builder.AddContent(8, (MarkupString)$"<strong>{Loc["GOV_TargetEpoch"]}:</strong> {ReadUint16(d, 40)}");
+            __builder.CloseElement();
+        }
+        else if (tc == 0x02 && oc == 0) // Variable Scalar
+        {
+            __builder.OpenElement(0, "div"); __builder.AddAttribute(1, "class", "col-md-6 mt-1");
+            __builder.AddContent(2, (MarkupString)$"<strong>{Loc["GOV_VariableId"]}:</strong> {ReadUint64(d, 0)}");
+            __builder.CloseElement();
+            __builder.OpenElement(3, "div"); __builder.AddAttribute(4, "class", "col-md-6");
+            __builder.AddContent(5, (MarkupString)$"<strong>{Loc["GOV_Min"]}:</strong> {ReadSint64(d, 8)}");
+            __builder.CloseElement();
+            __builder.OpenElement(6, "div"); __builder.AddAttribute(7, "class", "col-md-6");
+            __builder.AddContent(8, (MarkupString)$"<strong>{Loc["GOV_Max"]}:</strong> {ReadSint64(d, 16)}");
+            __builder.CloseElement();
+            __builder.OpenElement(9, "div"); __builder.AddAttribute(10, "class", "col-md-6");
+            __builder.AddContent(11, (MarkupString)$"<strong>{Loc["GOV_Proposed"]}:</strong> {ReadSint64(d, 24)}");
+            __builder.CloseElement();
+        }
+        else if (tc == 0x02 && oc >= 2) // Variable Options
+        {
+            __builder.OpenElement(0, "div"); __builder.AddAttribute(1, "class", "col-md-6 mt-1");
+            __builder.AddContent(2, (MarkupString)$"<strong>{Loc["GOV_VariableId"]}:</strong> {ReadUint64(d, 0)}");
+            __builder.CloseElement();
+            for (int i = 0; i < Math.Min(oc - 1, 4); i++)
+            {
+                var val = ReadSint64(d, 8 + i * 8);
+                __builder.OpenElement(3, "div"); __builder.AddAttribute(4, "class", "col-md-6");
+                __builder.AddContent(5, (MarkupString)$"<strong>{Loc["GOV_ValueN"]} {i + 1}:</strong> {val}");
+                __builder.CloseElement();
+            }
+        }
+    };
+
+    // ══════════════════════════════════════════════════════════
+    // Browse
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadProposalIndices()
+    {
+        _loading = true; _error = null; _browseProposals.Clear(); _expandedIndex = null;
+        try
+        {
+            var input = new GetProposalIndicesInput { ActiveProposals = _browseActive, PrevProposalIndex = -1 };
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 1, input.ToBytes());
+            var output = GetProposalIndicesOutput.FromBytes(result);
+            _browseIndices = output.Indices.Take(output.NumOfIndices).ToList();
+            StateHasChanged();
+
+            foreach (var idx in _browseIndices)
+            {
+                try { await LoadProposalDetail(idx); StateHasChanged(); }
+                catch { /* skip failed fetches */ }
+            }
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task LoadMoreProposals()
+    {
+        if (_browseIndices == null || _browseIndices.Count == 0) return;
+        _loading = true; _error = null;
+        try
+        {
+            var prevMax = _browseIndices.Max();
+            var input = new GetProposalIndicesInput { ActiveProposals = _browseActive, PrevProposalIndex = prevMax };
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 1, input.ToBytes());
+            var output = GetProposalIndicesOutput.FromBytes(result);
+            var newIndices = output.Indices.Take(output.NumOfIndices).ToList();
+            _browseIndices.AddRange(newIndices);
+            StateHasChanged();
+
+            foreach (var idx in newIndices)
+            {
+                try { await LoadProposalDetail(idx); StateHasChanged(); }
+                catch { /* skip */ }
+            }
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task LoadProposalDetail(ushort index)
+    {
+        var input = new GetProposalInput { ProposalIndex = index };
+        var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 2, input.ToBytes());
+        var p = ParseProposalResponse(index, result);
+        if (p != null)
+            _browseProposals[index] = p;
+    }
+
+    ParsedProposal? ParseProposalResponse(ushort index, byte[] data)
+    {
+        if (data.Length < 368 || data[0] == 0) return null;
+
+        var proposerPk = data.AsSpan(8, 32).ToArray();
+        var proposer = SafeIdentityFromPk(proposerPk);
+        var proposal = data.AsSpan(40, 328);
+        var url = System.Text.Encoding.ASCII.GetString(proposal[..256]).TrimEnd('\0');
+        var epoch = BinaryPrimitives.ReadUInt16LittleEndian(proposal[256..]);
+        var type = BinaryPrimitives.ReadUInt16LittleEndian(proposal[258..]);
+        var tick = BinaryPrimitives.ReadUInt32LittleEndian(proposal[260..]);
+        var dataUnion = proposal.Slice(264, 64).ToArray();
+
+        return new ParsedProposal(index, proposer, url, epoch, type, tick, dataUnion);
+    }
+
+    async Task ToggleExpand(ushort index)
+    {
+        if (_expandedIndex == index) { _expandedIndex = null; return; }
+        _expandedIndex = index;
+        if (!_browseProposals.ContainsKey(index))
+        {
+            try { await LoadProposalDetail(index); }
+            catch (Exception ex) { _error = ex.Message; }
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Propose
+    // ══════════════════════════════════════════════════════════
+
+    async Task SubmitProposal()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            var payload = BuildProposalPayload();
+            await BroadcastGqm(1, payload, "GQMProp Set Proposal");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    async Task ClearProposal()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            await BroadcastGqm(1, new byte[328], "GQMProp Clear Proposal");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    byte[] BuildProposalPayload()
+    {
+        var data = new byte[328];
+
+        // URL (256 bytes, ASCII, null-terminated)
+        var urlBytes = System.Text.Encoding.ASCII.GetBytes(_propUrl.Trim());
+        if (urlBytes.Length > 255) throw new InvalidOperationException(Loc["GOV_ErrUrlTooLong"]);
+        Array.Copy(urlBytes, data, urlBytes.Length);
+
+        // Epoch (auto from TickMonitor)
+        var epoch = TickMonitor.IsConnected ? TickMonitor.Epoch : (ushort)0;
+        if (epoch == 0) throw new InvalidOperationException(Loc["GOV_ErrNoEpoch"]);
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(256), epoch);
+
+        // Type
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(258), (ushort)_propType);
+
+        // Tick = 0 (system fills at offset 260-263, already zero)
+
+        // Data union (64 bytes at offset 264)
+        var typeClass = GetTypeClass(_propType);
+        var optCount = GetOptionCount(_propType);
+
+        if (typeClass == 0x01) // Transfer
+        {
+            WriteDest(data.AsSpan(264));
+            for (int i = 0; i < Math.Min(optCount - 1, 4); i++)
+                if (long.TryParse(_propAmounts[i], out var amt))
+                    BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(296 + i * 8), amt);
+        }
+        else if (typeClass == 0x04) // TransferInEpoch
+        {
+            WriteDest(data.AsSpan(264));
+            if (long.TryParse(_propAmount, out var amt))
+                BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(296), amt);
+            if (ushort.TryParse(_propTargetEpoch, out var te))
+                BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(304), te);
+        }
+        else if (typeClass == 0x02 && optCount == 0) // Variable Scalar
+        {
+            if (ulong.TryParse(_propVariable, out var vid))
+                BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(264), vid);
+            if (long.TryParse(_propMinValue, out var min))
+                BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(272), min);
+            if (long.TryParse(_propMaxValue, out var max))
+                BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(280), max);
+            if (long.TryParse(_propProposedValue, out var pv))
+                BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(288), pv);
+        }
+        else if (typeClass == 0x02 && optCount >= 2) // Variable Options
+        {
+            if (ulong.TryParse(_propVariable, out var vid))
+                BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(264), vid);
+            for (int i = 0; i < Math.Min(optCount - 1, 4); i++)
+                if (long.TryParse(_propValues[i], out var val))
+                    BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(272 + i * 8), val);
+        }
+        // GeneralOptions (0x00) and MultiVariables (0x03) have no data union fields
+
+        return data;
+    }
+
+    void WriteDest(Span<byte> target)
+    {
+        var err = IdentityValidation.Validate(_propDest);
+        if (err != null) throw new InvalidOperationException(string.Format(Loc["GOV_ErrInvalidDest"], err));
+        if (!QubicIdentity.TryParse(_propDest.Trim(), out var destId))
+            throw new InvalidOperationException(Loc["GOV_ErrParseDest"]);
+        destId.PublicKey.CopyTo(target);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Vote
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadVoteProposal()
+    {
+        _loading = true; _error = null; _voteProposal = null;
+        try
+        {
+            var input = new GetProposalInput { ProposalIndex = (ushort)_voteProposalIndex };
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 2, input.ToBytes());
+            _voteProposal = ParseProposalResponse((ushort)_voteProposalIndex, result);
+            if (_voteProposal == null) _error = Loc["GOV_ErrProposalNotFound"];
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task SubmitVote()
+    {
+        if (_voteProposal == null) { _error = Loc["GOV_ErrLoadProposalFirst"]; return; }
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            if (!long.TryParse(_voteValue, out var voteVal)) { _error = Loc["GOV_ErrInvalidVoteValue"]; _sending = false; return; }
+            var data = BuildVotePayload(_voteProposal, voteVal);
+            await BroadcastGqm(2, data, $"GQMProp Vote (index={_voteProposalIndex}, value={voteVal})");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    async Task ClearVote()
+    {
+        if (_voteProposal == null) { _error = Loc["GOV_ErrLoadProposalFirst"]; return; }
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            var data = BuildVotePayload(_voteProposal, NO_VOTE_VALUE);
+            await BroadcastGqm(2, data, $"GQMProp Clear Vote (index={_voteProposalIndex})");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    static byte[] BuildVotePayload(ParsedProposal proposal, long voteValue)
+    {
+        var data = new byte[16];
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(0), proposal.Index);
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(2), proposal.Type);
+        BinaryPrimitives.WriteUInt32LittleEndian(data.AsSpan(4), proposal.Tick);
+        BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(8), voteValue);
+        return data;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Results
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadResults()
+    {
+        _loading = true; _error = null; _resultsData = null;
+        try
+        {
+            var input = new GetVotingResultsInput { ProposalIndex = (ushort)_resultsIndex };
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 4, input.ToBytes());
+
+            if (result.Length < 2 || result[0] == 0) { _error = Loc["GOV_ErrNoResults"]; return; }
+
+            // Determine data offset: if response >= 56 bytes, aligned (offset 8); otherwise try packed (offset 1)
+            int off = result.Length >= 56 ? 8 : 1;
+            var d = result.AsSpan(off);
+
+            var optVotes = new uint[8];
+            for (int i = 0; i < 8; i++)
+                optVotes[i] = BinaryPrimitives.ReadUInt32LittleEndian(d[(16 + i * 4)..]);
+
+            _resultsData = new ParsedResults(
+                BinaryPrimitives.ReadUInt16LittleEndian(d),
+                BinaryPrimitives.ReadUInt16LittleEndian(d[2..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[4..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[8..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[12..]),
+                optVotes,
+                BinaryPrimitives.ReadInt64LittleEndian(d[16..])
+            );
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Get Vote
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadVote()
+    {
+        _loading = true; _error = null; _getVoteData = null;
+        try
+        {
+            byte[] voterPk;
+            if (string.IsNullOrWhiteSpace(_getVoteIdentity))
+            {
+                if (!Seed.HasSeed) { _error = Loc["GOV_ErrEnterVoterOrSeed"]; _loading = false; return; }
+                voterPk = Seed.GetPublicKey();
+            }
+            else
+            {
+                var err = IdentityValidation.Validate(_getVoteIdentity);
+                if (err != null) { _error = err; _loading = false; return; }
+                if (!QubicIdentity.TryParse(_getVoteIdentity.Trim(), out var voterId))
+                { _error = Loc["GOV_ErrInvalidVoter"]; _loading = false; return; }
+                voterPk = voterId.PublicKey;
+            }
+
+            var input = new GetVoteInput { Voter = voterPk, ProposalIndex = (ushort)_getVoteIndex };
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 3, input.ToBytes());
+
+            if (result.Length < 2 || result[0] == 0) { _error = Loc["GOV_ErrNoVote"]; return; }
+
+            // Determine offset: aligned (8) or packed (1)
+            int off = result.Length >= 24 ? 8 : 1;
+            var d = result.AsSpan(off);
+
+            _getVoteData = new ParsedVote(
+                BinaryPrimitives.ReadUInt16LittleEndian(d),
+                BinaryPrimitives.ReadUInt16LittleEndian(d[2..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[4..]),
+                BinaryPrimitives.ReadInt64LittleEndian(d[8..])
+            );
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Revenue Donation
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadRevenueDonation()
+    {
+        _loading = true; _error = null; _revEntries = null;
+        try
+        {
+            var result = await Backend.QuerySmartContractAsync(GqmpropIndex, 5, []);
+            var output = GetRevenueDonationOutput.FromBytes(result);
+            _revEntries = output.Entries
+                .Where(e => e.DestinationPublicKey.Any(b => b != 0))
+                .Select(e => new RevDonEntry(SafeIdentityFromPk(e.DestinationPublicKey), e.MillionthAmount, e.FirstEpoch))
+                .ToList();
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Broadcast helpers
+    // ══════════════════════════════════════════════════════════
+
+    async Task BroadcastGqm(ushort inputType, byte[] data, string desc)
+        => await Broadcast(GqmpropIndex, 0, new GenericContractPayload(inputType, data), desc);
+
+    async Task Broadcast(uint contractIndex, long amount, ITransactionPayload payload, string desc)
+    {
+        var dest = QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey((int)contractIndex));
+        var tick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, desc);
+    }
+}

@@ -4,14 +4,15 @@
 @inject QubicWalletConnectService WalletConnect
 @inject FeatureService Features
 @inject QubicBackendService Backend
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
-<h4>WalletConnect</h4>
+<h4>@Loc["WC_Title"]</h4>
 <p class="text-muted">Connect dApps (for example ones built with <code>@@qubic.org/react</code>) to this wallet. Every request is shown to you before anything is signed.</p>
 
 @if (!Features.IsEnabled(WalletFeature.WalletConnect))
 {
-    <div class="alert alert-secondary">WalletConnect is off. Turn it on in <a href="/settings?tab=features">Settings → Features</a>.</div>
+    <div class="alert alert-secondary">@Loc["WC_Off"] <a href="/settings?tab=features">@Loc["Common_SettingsFeatures"]</a>.</div>
 }
 else
 {
@@ -26,7 +27,7 @@ else
                 <div class="card-body">
                     @if (WalletConnect.State == WalletConnectState.NeedsProjectId)
                     {
-                        <div class="alert alert-warning py-1 small">This build has no WalletConnect project id configured.</div>
+                        <div class="alert alert-warning py-1 small">@Loc["WC_NoProjectId"]</div>
                     }
                     @if (WalletConnect.LastError != null) { <div class="alert alert-danger py-1 small">@WalletConnect.LastError</div> }
                     @if (WalletConnect.State == WalletConnectState.OtherInstance)
@@ -36,11 +37,11 @@ else
 
                     @if (WalletConnect.State == WalletConnectState.Ready)
                     {
-                        <label class="form-label small mt-2">Pair with a dApp</label>
+                        <label class="form-label small mt-2">@Loc["WC_PairWithDapp"]</label>
                         <div class="input-group input-group-sm">
                             <input class="form-control mono" @bind="_uri" placeholder="wc:…@@2?relay-protocol=irn&symKey=…" />
                             <QrPasteButton OnDecoded="OnPairQr" OnError="e => _error = e" />
-                            <button class="btn btn-primary" @onclick="Pair" disabled="@(string.IsNullOrWhiteSpace(_uri) || _busy)">Pair</button>
+                            <button class="btn btn-primary" @onclick="Pair" disabled="@(string.IsNullOrWhiteSpace(_uri) || _busy)">@Loc["WC_Pair"]</button>
                         </div>
                         <div class="form-text">Paste the WalletConnect link from the dApp's QR dialog, or a screenshot of the QR code (Ctrl+V, drop it here, or use the <i class="bi bi-qr-code-scan"></i> button).</div>
                     }
@@ -51,11 +52,11 @@ else
 
         <div class="col-lg-6">
             <div class="card">
-                <div class="card-header">Connected dApps</div>
+                <div class="card-header">@Loc["WC_ConnectedDapps"]</div>
                 <div class="card-body p-0">
                     @if (WalletConnect.Sessions.Count == 0)
                     {
-                        <div class="p-3 small text-muted">No active sessions.</div>
+                        <div class="p-3 small text-muted">@Loc["WC_NoSessions"]</div>
                     }
                     <ul class="list-group list-group-flush">
                         @foreach (var s in WalletConnect.Sessions)
@@ -63,7 +64,7 @@ else
                             <li class="list-group-item small">
                                 <div class="d-flex align-items-center">
                                     <strong>@s.Name</strong>
-                                    <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => Disconnect(s.Topic)">Disconnect</button>
+                                    <button class="btn btn-sm btn-outline-danger ms-auto" @onclick="() => Disconnect(s.Topic)">@Loc["WC_Disconnect"]</button>
                                 </div>
                                 <div class="mono text-muted text-break">@s.Url</div>
                                 <div>@foreach (var a in s.Accounts) { <span class="badge bg-secondary me-1 mono">@a.Split(':')[1]:@a.Split(':').Last()[..8]…</span> }</div>
@@ -104,7 +105,7 @@ else
         _error = null;
         if (!text.StartsWith("wc:", StringComparison.OrdinalIgnoreCase))
         {
-            _error = "This QR code is not a WalletConnect link.";
+            _error = Loc["Msg_QrNotWalletConnect"];
             return;
         }
         _uri = text;

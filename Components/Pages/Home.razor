@@ -9,15 +9,22 @@
 @inject IJSRuntime JS
 @inject VaultService Vault
 @inject QubicSettingsService Settings
+@inject Qubic.Net.Wallet.Services.VaultActivationService VaultActivation
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Welcome to Qubic.Net Wallet</h4>
+<h4>@Loc["Home_Welcome"]</h4>
+
+<VaultSwitchDialog @ref="_vaultDlg" OnChanged="OnVaultChangedFromDialog" />
 
 @if (Vault.IsUnlocked && !Seed.HasSeed)
 {
     <div class="row">
         <div class="col-12">
-            <h5>Select an Identity</h5>
-            <p class="text-muted">Your vault is unlocked. Choose an identity to activate.</p>
+            <h5>@Loc["Home_SelectIdentity"]</h5>
+            <p class="text-muted">
+                @Loc["Home_SelectIdentityHint"]
+                <a href="/accounts">@Loc["Nav_VaultOverview"]</a>.
+            </p>
         </div>
         @foreach (var entry in Vault.Entries)
         {
@@ -30,7 +37,7 @@
                     </div>
                     <div class="card-footer text-center">
                         <button class="btn btn-primary btn-sm" @onclick="() => ActivateFromHome(entry)">
-                            <i class="bi bi-unlock me-1"></i>Activate
+                            <i class="bi bi-unlock me-1"></i>@Loc["Home_Activate"]
                         </button>
                     </div>
                 </div>
@@ -45,45 +52,48 @@ else if (!Seed.HasSeed)
             <div class="card mt-3">
                 <div class="card-body text-center py-5">
                     <i class="bi bi-wallet2 display-1 text-primary mb-3 d-block"></i>
-                    <h5>Get Started</h5>
-                    <p class="text-muted">Enter your 55-character seed in the top bar to unlock your wallet.</p>
-                    <p class="small text-muted">Your seed is stored only in memory and cleared when you close the app.</p>
+                    <h5>@Loc["Home_GetStarted"]</h5>
+                    <p class="text-muted">@Loc["Home_GetStartedDesc"]</p>
+                    <p class="small text-muted">@Loc["Home_SeedMemoryNote"]</p>
+                    <button class="btn btn-outline-primary btn-sm" @onclick="() => _vaultDlg?.Open()">
+                        <i class="bi bi-safe me-1"></i>@Loc["Home_OpenOrCreateVault"]
+                    </button>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="card mt-3">
-                <div class="card-header">Create New Wallet</div>
+                <div class="card-header">@Loc["Home_CreateNewWallet"]</div>
                 <div class="card-body">
                     @if (_generatedSeed == null)
                     {
-                        <p class="text-muted small">Don't have a seed yet? Generate a new one to create a wallet.</p>
+                        <p class="text-muted small">@Loc["Home_NoSeedYet"]</p>
                         <button class="btn btn-primary" @onclick="GenerateSeed">
-                            <i class="bi bi-plus-circle me-1"></i>Generate New Seed
+                            <i class="bi bi-plus-circle me-1"></i>@Loc["Home_GenerateNewSeed"]
                         </button>
                     }
                     else
                     {
                         <div class="alert alert-danger py-2 mb-2">
                             <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                            <strong>Write down your seed and store it in a safe place!</strong>
+                            <strong>@Loc["Home_WriteDownSeed"]</strong>
                         </div>
                         <ul class="small text-muted mb-2">
-                            <li>Your seed is the <strong>only key</strong> to your wallet and funds.</li>
-                            <li>If you lose it, <strong>there is no recovery</strong> &mdash; your funds will be lost forever.</li>
-                            <li><strong>Never share</strong> your seed with anyone. Anyone with your seed has full control over your funds.</li>
-                            <li>Store it <strong>offline</strong> (paper, hardware) &mdash; not in a text file, email, or cloud storage.</li>
+                            <li>@Loc["Home_SeedBullet1"]</li>
+                            <li>@Loc["Home_SeedBullet2"]</li>
+                            <li>@Loc["Home_SeedBullet3"]</li>
+                            <li>@Loc["Home_SeedBullet4"]</li>
                         </ul>
                         <div class="mb-2">
-                            <label class="form-label-sm">Your New Seed</label>
+                            <label class="form-label-sm">@Loc["Home_YourNewSeed"]</label>
                             <div class="input-group">
                                 <input type="@(_seedRevealed ? "text" : "password")" class="form-control form-control-sm mono"
                                        value="@_generatedSeed" readonly />
                                 <button class="btn btn-sm btn-outline-secondary" @onclick="() => _seedRevealed = !_seedRevealed"
-                                        title="@(_seedRevealed ? "Hide" : "Reveal")">
+                                        title="@(_seedRevealed ? Loc["Common_Hide"] : Loc["Common_Reveal"])">
                                     <i class="bi @(_seedRevealed ? "bi-eye-slash" : "bi-eye")"></i>
                                 </button>
-                                <button class="btn btn-sm btn-outline-secondary" @onclick="CopyGeneratedSeed" title="Copy to clipboard">
+                                <button class="btn btn-sm btn-outline-secondary" @onclick="CopyGeneratedSeed" title="@Loc["Common_CopyToClipboard"]">
                                     <i class="bi @(_seedCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
                                 </button>
                             </div>
@@ -92,15 +102,18 @@ else if (!Seed.HasSeed)
                             <input class="form-check-input" type="checkbox" id="seedSavedCheck"
                                    @bind="_seedSavedConfirmed" />
                             <label class="form-check-label small" for="seedSavedCheck">
-                                I have written down my seed and stored it securely
+                                @Loc["Home_SeedConfirmCheck"]
                             </label>
                         </div>
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <button class="btn btn-primary" @onclick="UseGeneratedSeed" disabled="@(!_seedSavedConfirmed)">
-                                <i class="bi bi-unlock me-1"></i>Use This Seed
+                                <i class="bi bi-unlock me-1"></i>@Loc["Home_UseThisSeed"]
+                            </button>
+                            <button class="btn btn-outline-primary" @onclick="() => _vaultDlg?.Open(_generatedSeed)" disabled="@(!_seedSavedConfirmed)">
+                                <i class="bi bi-safe me-1"></i>@Loc["Home_SaveAsVault"]
                             </button>
                             <button class="btn btn-outline-secondary" @onclick="GenerateSeed">
-                                <i class="bi bi-arrow-clockwise me-1"></i>Generate Another
+                                <i class="bi bi-arrow-clockwise me-1"></i>@Loc["Home_GenerateAnother"]
                             </button>
                         </div>
                     }
@@ -115,7 +128,7 @@ else
     {
         <div class="alert alert-info small py-2 mb-3">
             <i class="bi bi-lightbulb me-1"></i>
-            <strong>Tip:</strong> You can save this seed to a password-protected vault from the toolbar above.
+            <strong>@Loc["Common_Tip"]</strong> @Loc["Home_TipSaveVault"]
         </div>
     }
 
@@ -124,14 +137,14 @@ else
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-md-5 mb-2 mb-md-0">
-                    <div class="small text-muted mb-1">Identity</div>
+                    <div class="small text-muted mb-1">@Loc["Common_Identity"]</div>
                     <AddressDisplay Address="@Seed.Identity?.ToString()" ShowFull="true" />
                 </div>
                 <div class="col-md-4 mb-2 mb-md-0">
-                    <div class="small text-muted mb-1">Balance</div>
+                    <div class="small text-muted mb-1">@Loc["Common_Balance"]</div>
                     @if (BalanceSvc.IsLoading && BalanceSvc.Balance == null)
                     {
-                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading...</span>
+                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> @Loc["Common_Loading"]</span>
                     }
                     else if (BalanceSvc.Balance != null)
                     {
@@ -143,18 +156,125 @@ else
                     }
                     else
                     {
-                        <button class="btn btn-sm btn-outline-primary" @onclick="BalanceSvc.RequestRefresh">Load Balance</button>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="BalanceSvc.RequestRefresh">@Loc["Home_LoadBalance"]</button>
                     }
                 </div>
                 <div class="col-md-3 text-md-end">
                     @if (TickMonitor.IsConnected)
                     {
-                        <div class="small text-muted">Epoch <strong class="text-body">@TickMonitor.Epoch</strong></div>
-                        <div class="small text-muted">Tick <strong class="text-body">@TickMonitor.Tick.ToString("N0")</strong></div>
+                        <div class="small text-muted">@Loc["Common_Epoch"] <strong class="text-body">@TickMonitor.Epoch</strong></div>
+                        <div class="small text-muted">@Loc["Common_Tick"] <strong class="text-body">@TickMonitor.Tick.ToString("N0")</strong></div>
                     }
                     else
                     {
-                        <span class="text-muted small">Not connected</span>
+                        <span class="text-muted small">@Loc["Common_NotConnected"]</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── Wallet status ── *@
+    <div class="row g-3 mb-3">
+        @* Network & connection health *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_Network"]</span>
+                        @if (TickMonitor.IsConnected)
+                        {
+                            <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:.5em"></i>@Loc["Home_Connected"]</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger"><i class="bi bi-circle-fill me-1" style="font-size:.5em"></i>@Loc["Home_Offline"]</span>
+                        }
+                    </div>
+                    <div class="fw-semibold"><i class="bi bi-hdd-network me-1"></i>@Backend.Profile.Name</div>
+                    @if (TickMonitor.IsConnected)
+                    {
+                        <div class="small text-muted mt-1">@Loc["Common_Epoch"] <strong class="text-body">@TickMonitor.Epoch</strong> · @Loc["Common_Tick"] <strong class="text-body">@TickMonitor.Tick.ToString("N0")</strong></div>
+                    }
+                    else if (TickMonitor.Error != null)
+                    {
+                        <div class="small text-danger mt-1 text-truncate" title="@TickMonitor.Error">@TickMonitor.Error</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Vault summary *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_VaultCard"]</span>
+                        <span class="d-flex gap-2">
+                            <button class="btn btn-link btn-sm p-0 small" @onclick="() => _vaultDlg?.Open()">@Loc["VSw_Switch"]</button>
+                            <a class="small" href="/accounts">@Loc["Common_ViewAll"]</a>
+                        </span>
+                    </div>
+                    @if (Vault.IsUnlocked)
+                    {
+                        <div class="fw-semibold text-truncate" title="@Vault.VaultPath">
+                            <i class="bi bi-safe me-1"></i>@VaultFileHistory.DisplayName(Vault.VaultPath ?? "")
+                        </div>
+                        <div class="small text-muted">@Vault.Entries.Count @Loc["VO_Identities"]</div>
+                        <div class="small text-muted">@Loc["Home_VaultTotal"]:
+                            @if (_vaultTotal != null)
+                            {
+                                <strong class="text-body">@_vaultTotal.Value.ToString("N0") QU</strong>
+                                @if (_vaultTotalPartial) { <span class="text-muted"> …</span> }
+                            }
+                            else
+                            {
+                                <span class="spinner-border spinner-border-sm text-muted"></span>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="small text-muted"><i class="bi bi-lock me-1"></i>@Loc["VO_Locked"]</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Pending transactions *@
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body py-3">
+                    @{ var pending = TxTracker.Transactions.Where(t => t.Status == Qubic.Services.TrackedTxStatus.Pending).OrderBy(t => t.TargetTick).ToList(); }
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="small text-muted">@Loc["Home_PendingTitle"]</span>
+                        @if (pending.Count > 0)
+                        {
+                            <span class="badge bg-warning text-dark">@pending.Count</span>
+                        }
+                    </div>
+                    @if (pending.Count == 0)
+                    {
+                        <div class="small text-muted"><i class="bi bi-check2-circle me-1"></i>@Loc["Home_NoPending"]</div>
+                    }
+                    else
+                    {
+                        <ul class="list-unstyled mb-0 small">
+                            @foreach (var t in pending.Take(3))
+                            {
+                                <li class="d-flex justify-content-between gap-2">
+                                    <span class="d-flex align-items-center gap-1 text-truncate">
+                                        <span class="spinner-border spinner-border-sm text-warning" style="width:.7em;height:.7em"></span>
+                                        <span class="mono">@t.Amount.ToString("N0") QU</span>
+                                    </span>
+                                    <span class="text-muted text-nowrap">@Loc["Home_AtTick"] @t.TargetTick.ToString("N0")</span>
+                                </li>
+                            }
+                        </ul>
+                        @if (pending.Count > 3)
+                        {
+                            <a class="small" href="/history">+@(pending.Count - 3) · @Loc["Common_ViewAll"]</a>
+                        }
                     }
                 </div>
             </div>
@@ -163,11 +283,11 @@ else
 
     @* ── Quick Actions ── *@
     <div class="d-flex flex-wrap gap-2 mb-3">
-        <a class="btn btn-primary quick-action-btn" href="/send"><i class="bi bi-send me-1"></i>Send</a>
-        <a class="btn btn-outline-primary quick-action-btn" href="/receive"><i class="bi bi-qr-code me-1"></i>Receive</a>
-        <a class="btn btn-outline-primary quick-action-btn" href="/assets"><i class="bi bi-grid-3x3-gap me-1"></i>Assets</a>
-        <a class="btn btn-outline-primary quick-action-btn" href="/qx"><i class="bi bi-shop me-1"></i>QX Trading</a>
-        <a class="btn btn-outline-primary quick-action-btn" href="/history"><i class="bi bi-list-ul me-1"></i>History</a>
+        <a class="btn btn-primary quick-action-btn" href="/send"><i class="bi bi-send me-1"></i>@Loc["Nav_Send"]</a>
+        <a class="btn btn-outline-primary quick-action-btn" href="/receive"><i class="bi bi-qr-code me-1"></i>@Loc["Nav_Receive"]</a>
+        <a class="btn btn-outline-primary quick-action-btn" href="/assets"><i class="bi bi-grid-3x3-gap me-1"></i>@Loc["Nav_Assets"]</a>
+        <a class="btn btn-outline-primary quick-action-btn" href="/qx"><i class="bi bi-shop me-1"></i>@Loc["Nav_QxTrading"]</a>
+        <a class="btn btn-outline-primary quick-action-btn" href="/history"><i class="bi bi-list-ul me-1"></i>@Loc["Common_History"]</a>
     </div>
 
     @* ── Sync Status ── *@
@@ -181,15 +301,15 @@ else
                     {
                         <span class="d-flex align-items-center gap-1">
                             <span class="spinner-border spinner-border-sm text-primary"></span>
-                            <span class="small">Syncing...</span>
+                            <span class="small">@Loc["Common_Syncing"]</span>
                         </span>
                     }
                     else
                     {
-                        <span class="small text-muted"><strong class="text-body">@WalletStorage.TransactionCount</strong> transactions, <strong class="text-body">@WalletStorage.LogEventCount</strong> log events</span>
+                        <span class="small text-muted"><strong class="text-body">@WalletStorage.TransactionCount</strong> @Loc["Home_TransactionsWord"], <strong class="text-body">@WalletStorage.LogEventCount</strong> @Loc["Home_LogEventsWord"]</span>
                     }
-                    <span class="small">@StreamIcon(sync.RpcStatus) RPC: <span class="text-muted">@(sync.RpcStatusMessage ?? "Idle")</span></span>
-                    <span class="small">@StreamIcon(sync.BobLogStatus) Logs: <span class="text-muted">@(sync.BobLogStatusMessage ?? "Idle")</span></span>
+                    <span class="small">@StreamIcon(sync.RpcStatus) RPC: <span class="text-muted">@(sync.RpcStatusMessage ?? Loc["Common_Idle"])</span></span>
+                    <span class="small">@StreamIcon(sync.BobLogStatus) Logs: <span class="text-muted">@(sync.BobLogStatusMessage ?? Loc["Common_Idle"])</span></span>
                     @if (sync.LastError != null)
                     {
                         <span class="text-danger small"><i class="bi bi-exclamation-triangle me-1"></i>@sync.LastError</span>
@@ -204,20 +324,20 @@ else
         <div class="col-md-6">
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Owned Assets</span>
-                    <a class="btn btn-sm btn-outline-primary" href="/assets">View All</a>
+                    <span>@Loc["Home_OwnedAssets"]</span>
+                    <a class="btn btn-sm btn-outline-primary" href="/assets">@Loc["Common_ViewAll"]</a>
                 </div>
                 <div class="card-body">
                     @if (_assetsLoading)
                     {
-                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading assets...</span>
+                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> @Loc["Home_LoadingAssets"]</span>
                     }
                     else if (_ownedAssets != null && _ownedAssets.Any(a => a.Data.NumberOfUnits != "0"))
                     {
                         <div class="table-responsive">
                             <table class="table table-sm table-hover mb-0">
                                 <thead>
-                                    <tr><th>Asset</th><th>Shares</th><th>Contract</th></tr>
+                                    <tr><th>@Loc["Common_Asset"]</th><th>@Loc["Common_Shares"]</th><th>@Loc["Common_Contract"]</th></tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var a in _ownedAssets.Where(a => a.Data.NumberOfUnits != "0"))
@@ -238,7 +358,7 @@ else
                     }
                     else
                     {
-                        <span class="text-muted">No owned assets.</span>
+                        <span class="text-muted">@Loc["Home_NoOwnedAssets"]</span>
                     }
                 </div>
             </div>
@@ -246,20 +366,20 @@ else
         <div class="col-md-6">
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Open QX Orders</span>
+                    <span>@Loc["Home_OpenQxOrders"]</span>
                     <a class="btn btn-sm btn-outline-primary" href="/qx">View All</a>
                 </div>
                 <div class="card-body">
                     @if (_ordersLoading)
                     {
-                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Loading orders...</span>
+                        <span class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> @Loc["Home_LoadingOrders"]</span>
                     }
                     else if ((_askOrders != null && _askOrders.Count > 0) || (_bidOrders != null && _bidOrders.Count > 0))
                     {
                         <div class="table-responsive">
                             <table class="table table-sm table-hover mb-0">
                                 <thead>
-                                    <tr><th>Type</th><th>Asset</th><th>Price</th><th>Shares</th></tr>
+                                    <tr><th>@Loc["Common_Type"]</th><th>@Loc["Common_Asset"]</th><th>@Loc["Common_Price"]</th><th>@Loc["Common_Shares"]</th></tr>
                                 </thead>
                                 <tbody>
                                     @if (_askOrders != null)
@@ -267,7 +387,7 @@ else
                                         @foreach (var o in _askOrders)
                                         {
                                             <tr>
-                                                <td><span class="badge-qb-danger">Ask</span></td>
+                                                <td><span class="badge-qb-danger">@Loc["Common_Ask"]</span></td>
                                                 <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                                 <td class="mono">@o.Price.ToString("N0")</td>
                                                 <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -279,7 +399,7 @@ else
                                         @foreach (var o in _bidOrders)
                                         {
                                             <tr>
-                                                <td><span class="badge-qb-success">Bid</span></td>
+                                                <td><span class="badge-qb-success">@Loc["Common_Bid"]</span></td>
                                                 <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                                 <td class="mono">@o.Price.ToString("N0")</td>
                                                 <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -296,7 +416,7 @@ else
                     }
                     else
                     {
-                        <span class="text-muted">No open orders.</span>
+                        <span class="text-muted">@Loc["Home_NoOpenOrders"]</span>
                     }
                 </div>
             </div>
@@ -324,20 +444,65 @@ else
     private bool _ordersLoading;
     private string? _ordersError;
 
+    // Vault total (sum across all identities)
+    private long? _vaultTotal;
+    private bool _vaultTotalPartial;
+
+    private VaultSwitchDialog? _vaultDlg;
+
+    private async Task OnVaultChangedFromDialog()
+    {
+        _vaultTotal = null;
+        if (Seed.HasSeed) BalanceSvc.RequestRefresh();
+        await LoadVaultTotal();
+        StateHasChanged();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         TickMonitor.OnTickChanged += OnTickChanged;
         Seed.OnSeedChanged += OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged += OnSyncChanged;
         BalanceSvc.OnBalanceChanged += OnBalanceChanged;
+        TxTracker.OnChanged += OnTxChanged;
 
         if (Seed.HasSeed)
         {
             BalanceSvc.RequestRefresh();
             var assetsTask = LoadAssets();
             var ordersTask = LoadOrders();
-            await Task.WhenAll(assetsTask, ordersTask);
+            var totalTask = LoadVaultTotal();
+            await Task.WhenAll(assetsTask, ordersTask, totalTask);
         }
+    }
+
+    private void OnTxChanged()
+    {
+        if (_disposed) return;
+        InvokeAsync(() => { if (!_disposed) StateHasChanged(); });
+    }
+
+    private async Task LoadVaultTotal()
+    {
+        if (!Vault.IsUnlocked || Vault.Entries.Count == 0) { _vaultTotal = null; return; }
+        var identities = Vault.Entries.Select(e => e.Identity).ToList();
+        long sum = 0;
+        var partial = false;
+        using var gate = new SemaphoreSlim(4);
+        await Task.WhenAll(identities.Select(async id =>
+        {
+            await gate.WaitAsync();
+            try
+            {
+                var bal = await Backend.GetBalanceAsync(Qubic.Core.Entities.QubicIdentity.FromIdentity(id));
+                System.Threading.Interlocked.Add(ref sum, bal.Amount);
+            }
+            catch { partial = true; }
+            finally { gate.Release(); }
+        }));
+        _vaultTotal = sum;
+        _vaultTotalPartial = partial;
+        if (!_disposed) await InvokeAsync(StateHasChanged);
     }
 
     private void OnTickChanged()
@@ -363,11 +528,13 @@ else
             _askOrders = null;
             _bidOrders = null;
             _ordersError = null;
+            _vaultTotal = null;
             if (Seed.HasSeed)
             {
                 var t1 = LoadAssets();
                 var t2 = LoadOrders();
-                await Task.WhenAll(t1, t2);
+                var t3 = LoadVaultTotal();
+                await Task.WhenAll(t1, t2, t3);
             }
             StateHasChanged();
         });
@@ -469,13 +636,7 @@ else
 
     private void ActivateFromHome(VaultEntry entry)
     {
-        try
-        {
-            Seed.SetSeed(entry.Seed, entry.Label);
-            WalletStorage.SetSeed(entry.Seed, entry.Identity, TickMonitor.Epoch);
-            TxTracker.SetEncryptionKey(entry.Seed);
-            Settings.SetCustom("vault_last_identity", entry.Identity);
-        }
+        try { VaultActivation.Activate(entry); }
         catch { }
     }
 
@@ -500,5 +661,6 @@ else
         Seed.OnSeedChanged -= OnSeedChanged;
         WalletStorage.Sync.OnSyncStateChanged -= OnSyncChanged;
         BalanceSvc.OnBalanceChanged -= OnBalanceChanged;
+        TxTracker.OnChanged -= OnTxChanged;
     }
 }

@@ -1,0 +1,3524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Nav_VaultOverview" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="Nav_Section_Transactions" xml:space="preserve">
+    <value>Transaktionen</value>
+  </data>
+  <data name="Nav_Send" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="Nav_SendToMany" xml:space="preserve">
+    <value>An viele senden</value>
+  </data>
+  <data name="Nav_Receive" xml:space="preserve">
+    <value>Empfangen</value>
+  </data>
+  <data name="Nav_UnlockToSend" xml:space="preserve">
+    <value>Zum Senden entsperren</value>
+  </data>
+  <data name="Nav_Section_Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="Nav_Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="Nav_Section_Defi" xml:space="preserve">
+    <value>DeFi</value>
+  </data>
+  <data name="Nav_QxTrading" xml:space="preserve">
+    <value>QX-Handel</value>
+  </data>
+  <data name="Nav_ScAuctions" xml:space="preserve">
+    <value>SC-Auktionen</value>
+  </data>
+  <data name="Nav_Voting" xml:space="preserve">
+    <value>Abstimmung</value>
+  </data>
+  <data name="Nav_Section_History" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="Nav_Watchlist" xml:space="preserve">
+    <value>Beobachtungsliste</value>
+  </data>
+  <data name="Nav_TxHistory" xml:space="preserve">
+    <value>Transaktionsverlauf</value>
+  </data>
+  <data name="Nav_LogEvents" xml:space="preserve">
+    <value>Log-Ereignisse</value>
+  </data>
+  <data name="Nav_Section_Tools" xml:space="preserve">
+    <value>Werkzeuge</value>
+  </data>
+  <data name="Nav_SignVerify" xml:space="preserve">
+    <value>Signieren / Prüfen</value>
+  </data>
+  <data name="Nav_LocalEndpoint" xml:space="preserve">
+    <value>Lokaler Endpunkt</value>
+  </data>
+  <data name="Nav_Section_Developer" xml:space="preserve">
+    <value>Entwickler</value>
+  </data>
+  <data name="Nav_DevTools" xml:space="preserve">
+    <value>Dev-Tools</value>
+  </data>
+  <data name="Nav_ContractConsole" xml:space="preserve">
+    <value>Vertragskonsole</value>
+  </data>
+  <data name="Nav_SyncManager" xml:space="preserve">
+    <value>Sync-Manager</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Language_Title" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Language_Description" xml:space="preserve">
+    <value>Wähle die Anzeigesprache. Die Wallet startet neu, um die Änderung zu übernehmen.</value>
+  </data>
+  <data name="Language_Label" xml:space="preserve">
+    <value>Anzeigesprache</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Common_Lock" xml:space="preserve">
+    <value>Sperren</value>
+  </data>
+  <data name="Common_Unlock" xml:space="preserve">
+    <value>Entsperren</value>
+  </data>
+  <data name="Common_Clear" xml:space="preserve">
+    <value>Leeren</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Shell_Vault" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="Shell_CopyIdentity" xml:space="preserve">
+    <value>Vollständige Identität kopieren</value>
+  </data>
+  <data name="Shell_LockAndClear" xml:space="preserve">
+    <value>Tresor sperren und Seed löschen</value>
+  </data>
+  <data name="Shell_VaultPasswordPlaceholder" xml:space="preserve">
+    <value>Tresor-Passwort...</value>
+  </data>
+  <data name="Shell_UnlockVault" xml:space="preserve">
+    <value>Tresor entsperren</value>
+  </data>
+  <data name="Shell_OpenAnotherVaultFile" xml:space="preserve">
+    <value>Andere Tresordatei öffnen</value>
+  </data>
+  <data name="Shell_EnterSeedWithoutVault" xml:space="preserve">
+    <value>Seed ohne Tresor eingeben</value>
+  </data>
+  <data name="Shell_UseSeedDirectly" xml:space="preserve">
+    <value>Seed direkt verwenden</value>
+  </data>
+  <data name="Shell_SeedActive" xml:space="preserve">
+    <value>Seed aktiv</value>
+  </data>
+  <data name="Shell_SaveToVault" xml:space="preserve">
+    <value>Im Tresor speichern</value>
+  </data>
+  <data name="Shell_SaveToVaultTitle" xml:space="preserve">
+    <value>Diesen Seed in einem Tresor speichern</value>
+  </data>
+  <data name="Shell_AddToVault" xml:space="preserve">
+    <value>Zum Tresor hinzufügen</value>
+  </data>
+  <data name="Shell_AddToVaultTitle" xml:space="preserve">
+    <value>Diesen Seed zum bestehenden Tresor hinzufügen</value>
+  </data>
+  <data name="Shell_OpenVaultDots" xml:space="preserve">
+    <value>Tresor öffnen...</value>
+  </data>
+  <data name="Shell_LockVaultTitle" xml:space="preserve">
+    <value>Tresor sperren</value>
+  </data>
+  <data name="Shell_SeedPlaceholder" xml:space="preserve">
+    <value>55-Zeichen-Seed eingeben, um zu signieren...</value>
+  </data>
+  <data name="Shell_SaveSeedToVaultTitle" xml:space="preserve">
+    <value>Seed im Tresor speichern</value>
+  </data>
+  <data name="Shell_VaultFileLocation" xml:space="preserve">
+    <value>Speicherort der Tresordatei</value>
+  </data>
+  <data name="Shell_VaultPathPlaceholder" xml:space="preserve">
+    <value>Pfad zum Speichern der Tresordatei...</value>
+  </data>
+  <data name="Shell_VaultPathHelp" xml:space="preserve">
+    <value>Wähle, wo deine verschlüsselte Tresordatei gespeichert wird.</value>
+  </data>
+  <data name="Shell_LabelForSeed" xml:space="preserve">
+    <value>Bezeichnung für diesen Seed</value>
+  </data>
+  <data name="Shell_LabelPlaceholder" xml:space="preserve">
+    <value>z. B. Haupt, Trading, Sparen</value>
+  </data>
+  <data name="Shell_VaultPassword" xml:space="preserve">
+    <value>Tresor-Passwort</value>
+  </data>
+  <data name="Shell_PasswordHelp" xml:space="preserve">
+    <value>Mindestens 12 Zeichen. Lange Passphrasen schlagen komplexe – eine Folge zusammenhangloser Wörter ist leichter zu merken und schwerer zu knacken.</value>
+  </data>
+  <data name="Shell_ConfirmPassword" xml:space="preserve">
+    <value>Passwort bestätigen</value>
+  </data>
+  <data name="Shell_PasswordsNoMatch" xml:space="preserve">
+    <value>Passwörter stimmen nicht überein.</value>
+  </data>
+  <data name="Shell_CreateVault" xml:space="preserve">
+    <value>Tresor erstellen</value>
+  </data>
+  <data name="Shell_AddSeedToVaultTitle" xml:space="preserve">
+    <value>Seed zum Tresor hinzufügen</value>
+  </data>
+  <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
+    <value>Tresor-Passwort eingeben, um zu entsperren und hinzuzufügen...</value>
+  </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>Erzeugen</value>
+  </data>
+  <data name="Common_Hide" xml:space="preserve">
+    <value>Verbergen</value>
+  </data>
+  <data name="Common_Reveal" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="Common_CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
+  </data>
+  <data name="Common_Identity" xml:space="preserve">
+    <value>Identität</value>
+  </data>
+  <data name="Common_Balance" xml:space="preserve">
+    <value>Guthaben</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Wird geladen...</value>
+  </data>
+  <data name="Common_Epoch" xml:space="preserve">
+    <value>Epoche</value>
+  </data>
+  <data name="Common_Tick" xml:space="preserve">
+    <value>Tick</value>
+  </data>
+  <data name="Common_NotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="Common_History" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="Common_Syncing" xml:space="preserve">
+    <value>Wird synchronisiert...</value>
+  </data>
+  <data name="Common_Idle" xml:space="preserve">
+    <value>Leerlauf</value>
+  </data>
+  <data name="Common_ViewAll" xml:space="preserve">
+    <value>Alle anzeigen</value>
+  </data>
+  <data name="Common_Asset" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="Common_Shares" xml:space="preserve">
+    <value>Anteile</value>
+  </data>
+  <data name="Common_Contract" xml:space="preserve">
+    <value>Vertrag</value>
+  </data>
+  <data name="Common_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Common_Price" xml:space="preserve">
+    <value>Preis</value>
+  </data>
+  <data name="Common_Ask" xml:space="preserve">
+    <value>Verkauf</value>
+  </data>
+  <data name="Common_Bid" xml:space="preserve">
+    <value>Kauf</value>
+  </data>
+  <data name="Common_Tip" xml:space="preserve">
+    <value>Tipp:</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>Willkommen bei Qubic.Net Wallet</value>
+  </data>
+  <data name="Home_SelectIdentity" xml:space="preserve">
+    <value>Identität auswählen</value>
+  </data>
+  <data name="Home_SelectIdentityHint" xml:space="preserve">
+    <value>Dein Tresor ist entsperrt. Wähle eine Identität zum Aktivieren oder sieh alle Identitäten mit ihren Guthaben in der</value>
+  </data>
+  <data name="Home_Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="Home_GetStarted" xml:space="preserve">
+    <value>Erste Schritte</value>
+  </data>
+  <data name="Home_GetStartedDesc" xml:space="preserve">
+    <value>Gib deinen 55-Zeichen-Seed in der oberen Leiste ein, um deine Wallet zu entsperren.</value>
+  </data>
+  <data name="Home_SeedMemoryNote" xml:space="preserve">
+    <value>Dein Seed wird nur im Arbeitsspeicher gehalten und beim Schließen der App gelöscht.</value>
+  </data>
+  <data name="Home_CreateNewWallet" xml:space="preserve">
+    <value>Neue Wallet erstellen</value>
+  </data>
+  <data name="Home_NoSeedYet" xml:space="preserve">
+    <value>Noch keinen Seed? Erzeuge einen neuen, um eine Wallet zu erstellen.</value>
+  </data>
+  <data name="Home_GenerateNewSeed" xml:space="preserve">
+    <value>Neuen Seed erzeugen</value>
+  </data>
+  <data name="Home_WriteDownSeed" xml:space="preserve">
+    <value>Schreibe deinen Seed auf und bewahre ihn sicher auf!</value>
+  </data>
+  <data name="Home_SeedBullet1" xml:space="preserve">
+    <value>Dein Seed ist der einzige Schlüssel zu deiner Wallet und deinen Geldern.</value>
+  </data>
+  <data name="Home_SeedBullet2" xml:space="preserve">
+    <value>Wenn du ihn verlierst, gibt es keine Wiederherstellung – deine Gelder sind für immer verloren.</value>
+  </data>
+  <data name="Home_SeedBullet3" xml:space="preserve">
+    <value>Teile deinen Seed mit niemandem. Wer deinen Seed hat, kontrolliert deine Gelder vollständig.</value>
+  </data>
+  <data name="Home_SeedBullet4" xml:space="preserve">
+    <value>Bewahre ihn offline auf (Papier, Hardware) – nicht in einer Textdatei, E-Mail oder Cloud.</value>
+  </data>
+  <data name="Home_YourNewSeed" xml:space="preserve">
+    <value>Dein neuer Seed</value>
+  </data>
+  <data name="Home_SeedConfirmCheck" xml:space="preserve">
+    <value>Ich habe meinen Seed notiert und sicher aufbewahrt</value>
+  </data>
+  <data name="Home_UseThisSeed" xml:space="preserve">
+    <value>Diesen Seed verwenden</value>
+  </data>
+  <data name="Home_GenerateAnother" xml:space="preserve">
+    <value>Weiteren erzeugen</value>
+  </data>
+  <data name="Home_TipSaveVault" xml:space="preserve">
+    <value>Du kannst diesen Seed über die Leiste oben in einem passwortgeschützten Tresor speichern.</value>
+  </data>
+  <data name="Home_LoadBalance" xml:space="preserve">
+    <value>Guthaben laden</value>
+  </data>
+  <data name="Home_TransactionsWord" xml:space="preserve">
+    <value>Transaktionen</value>
+  </data>
+  <data name="Home_LogEventsWord" xml:space="preserve">
+    <value>Log-Ereignisse</value>
+  </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>Tresor öffnen oder erstellen</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>Als Tresor speichern</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>Netzwerk</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>Gesamt im Tresor</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>Ausstehende Transaktionen</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>Keine ausstehenden Transaktionen</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>bei Tick</value>
+  </data>
+  <data name="Home_OwnedAssets" xml:space="preserve">
+    <value>Eigene Assets</value>
+  </data>
+  <data name="Home_LoadingAssets" xml:space="preserve">
+    <value>Assets werden geladen...</value>
+  </data>
+  <data name="Home_NoOwnedAssets" xml:space="preserve">
+    <value>Keine eigenen Assets.</value>
+  </data>
+  <data name="Home_OpenQxOrders" xml:space="preserve">
+    <value>Offene QX-Orders</value>
+  </data>
+  <data name="Home_LoadingOrders" xml:space="preserve">
+    <value>Orders werden geladen...</value>
+  </data>
+  <data name="Home_NoOpenOrders" xml:space="preserve">
+    <value>Keine offenen Orders.</value>
+  </data>
+  <data name="Common_Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Common_LabelField" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="Send_Title" xml:space="preserve">
+    <value>QU senden</value>
+  </data>
+  <data name="Send_NeedSeed" xml:space="preserve">
+    <value>Gib deinen Seed in der oberen Leiste ein, um senden zu können.</value>
+  </data>
+  <data name="Send_Transfer" xml:space="preserve">
+    <value>Überweisung</value>
+  </data>
+  <data name="Send_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="Send_LoadingBalance" xml:space="preserve">
+    <value>Guthaben wird geladen...</value>
+  </data>
+  <data name="Send_PaymentPlaceholder" xml:space="preserve">
+    <value>Zahlungsanforderung einfügen (qubic:…-Link oder QR-Bild), um das Formular auszufüllen</value>
+  </data>
+  <data name="Send_Destination" xml:space="preserve">
+    <value>Ziel (60-Zeichen-Identität)</value>
+  </data>
+  <data name="Send_Amount" xml:space="preserve">
+    <value>Betrag (QU)</value>
+  </data>
+  <data name="Send_TargetTick" xml:space="preserve">
+    <value>Ziel-Tick</value>
+  </data>
+  <data name="Send_Sending" xml:space="preserve">
+    <value>Wird gesendet...</value>
+  </data>
+  <data name="Send_ReviewSign" xml:space="preserve">
+    <value>Prüfen &amp; Signieren</value>
+  </data>
+  <data name="Send_ReviewNote" xml:space="preserve">
+    <value>Du siehst die vollständige Transaktion, bevor etwas signiert wird.</value>
+  </data>
+  <data name="Send_Broadcast" xml:space="preserve">
+    <value>Transaktion gesendet! Tx-ID:</value>
+  </data>
+  <data name="Send_ViewInHistory" xml:space="preserve">
+    <value>Im Transaktionsverlauf ansehen</value>
+  </data>
+  <data name="Send_SaveContactPre" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Send_SaveContactPost" xml:space="preserve">
+    <value>im Adressbuch speichern?</value>
+  </data>
+  <data name="Common_Copied" xml:space="preserve">
+    <value>Kopiert!</value>
+  </data>
+  <data name="Common_Message" xml:space="preserve">
+    <value>Nachricht</value>
+  </data>
+  <data name="Receive_Title" xml:space="preserve">
+    <value>QU empfangen</value>
+  </data>
+  <data name="Receive_NeedSeed" xml:space="preserve">
+    <value>Gib deinen Seed in der oberen Leiste ein, um deine Adresse zu sehen.</value>
+  </data>
+  <data name="Receive_YourIdentity" xml:space="preserve">
+    <value>Deine Identität</value>
+  </data>
+  <data name="Receive_ScanRequest" xml:space="preserve">
+    <value>Zum Bezahlen scannen. Der QR-Code enthält eine Zahlungsanforderung (qubic:-Link).</value>
+  </data>
+  <data name="Receive_ShareAddress" xml:space="preserve">
+    <value>Teile diese Adresse, um QU oder Assets zu empfangen.</value>
+  </data>
+  <data name="Receive_CopyLink" xml:space="preserve">
+    <value>Zahlungslink kopieren</value>
+  </data>
+  <data name="Receive_CopyAddress" xml:space="preserve">
+    <value>Adresse kopieren</value>
+  </data>
+  <data name="Receive_CopyQr" xml:space="preserve">
+    <value>QR kopieren</value>
+  </data>
+  <data name="Receive_PaymentRequest" xml:space="preserve">
+    <value>Zahlungsanforderung</value>
+  </data>
+  <data name="Receive_PaymentHelp" xml:space="preserve">
+    <value>Optional: einen bestimmten Betrag anfordern. Wallets, die</value>
+  </data>
+  <data name="Receive_PaymentHelpTail" xml:space="preserve">
+    <value>-Links verstehen, füllen die Zahlung vorab aus.</value>
+  </data>
+  <data name="Receive_MessagePlaceholder" xml:space="preserve">
+    <value>z. B. Rechnung 42</value>
+  </data>
+  <data name="Receive_LinkMarkedPre" xml:space="preserve">
+    <value>Der Link ist markiert für</value>
+  </data>
+  <data name="Receive_LinkMarkedYouAreOn" xml:space="preserve">
+    <value>(du bist auf</value>
+  </data>
+  <data name="Receive_ShowPlain" xml:space="preserve">
+    <value>Einfache Adresse anzeigen</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Common_Label" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>Transaktion gesendet</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>Wird gesendet — warten auf den Ziel-Tick</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>Transaktion bestätigt</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>Transaktion fehlgeschlagen</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>Status unbekannt — später im Verlauf prüfen</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>Ziel-Tick</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>Ticks verbleibend</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>Im Verlauf anzeigen</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>Tresor wechseln</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>Zuletzt verwendeten Tresor öffnen</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>Verwenden</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>Aktuell</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>Andere Datei öffnen…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>Beim Erstellen oder Öffnen eines anderen Tresors wird der aktuelle zuerst gesperrt.</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>Neuen Tresor erstellen</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>Seed hinzufügen</value>
+  </data>
+  <data name="VO_Title" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="VO_SubtitlePre" xml:space="preserve">
+    <value>Jede Identität in deinem Tresor, mit Guthaben von</value>
+  </data>
+  <data name="VO_SubtitlePost" xml:space="preserve">
+    <value>. Es muss kein Seed aktiv sein.</value>
+  </data>
+  <data name="VO_NoVault" xml:space="preserve">
+    <value>Es ist kein Tresor eingerichtet. Erstelle oder öffne einen unter</value>
+  </data>
+  <data name="VO_Locked" xml:space="preserve">
+    <value>Entsperre deinen Tresor in der oberen Leiste, um seine Identitäten zu sehen.</value>
+  </data>
+  <data name="VO_NoIdentities" xml:space="preserve">
+    <value>Dieser Tresor hat noch keine Identitäten. Füge eine unter</value>
+  </data>
+  <data name="VO_SettingsVault" xml:space="preserve">
+    <value>Einstellungen → Tresor</value>
+  </data>
+  <data name="VO_Identities" xml:space="preserve">
+    <value>Identitäten</value>
+  </data>
+  <data name="VO_TotalBalance" xml:space="preserve">
+    <value>Gesamtguthaben</value>
+  </data>
+  <data name="VO_NotAvailable" xml:space="preserve">
+    <value>auf diesem Netzwerk nicht verfügbar</value>
+  </data>
+  <data name="VO_OfLoadedPre" xml:space="preserve">
+    <value>von</value>
+  </data>
+  <data name="VO_OfLoadedPost" xml:space="preserve">
+    <value>geladen</value>
+  </data>
+  <data name="VO_Updated" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="VO_Active" xml:space="preserve">
+    <value>aktiv</value>
+  </data>
+  <data name="VO_More" xml:space="preserve">
+    <value>weitere</value>
+  </data>
+  <data name="VO_None" xml:space="preserve">
+    <value>keine</value>
+  </data>
+  <data name="Common_NeedSeedSigning" xml:space="preserve">
+    <value>Gib deinen Seed in der oberen Leiste ein, um signieren zu können.</value>
+  </data>
+  <data name="Common_Fee" xml:space="preserve">
+    <value>Gebühr:</value>
+  </data>
+  <data name="Common_FeeWord" xml:space="preserve">
+    <value>Gebühr</value>
+  </data>
+  <data name="Common_AmountField" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="Common_Load" xml:space="preserve">
+    <value>Laden</value>
+  </data>
+  <data name="Common_Overwrite" xml:space="preserve">
+    <value>Überschreiben</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Common_SaveAs" xml:space="preserve">
+    <value>Speichern unter</value>
+  </data>
+  <data name="Common_Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="Common_SignBroadcast" xml:space="preserve">
+    <value>Signieren &amp; Senden</value>
+  </data>
+  <data name="Common_TransactionHistory" xml:space="preserve">
+    <value>Transaktionsverlauf</value>
+  </data>
+  <data name="Common_RecipientsWord" xml:space="preserve">
+    <value>Empfänger</value>
+  </data>
+  <data name="S2M_Subtitle" xml:space="preserve">
+    <value>Sende QU an bis zu 25 Empfänger in einer einzigen Transaktion (QUTIL SendToManyV1).</value>
+  </data>
+  <data name="S2M_Recipients" xml:space="preserve">
+    <value>Empfänger</value>
+  </data>
+  <data name="S2M_AddRecipient" xml:space="preserve">
+    <value>+ Empfänger hinzufügen</value>
+  </data>
+  <data name="S2M_HideImport" xml:space="preserve">
+    <value>Import ausblenden</value>
+  </data>
+  <data name="S2M_ImportFromText" xml:space="preserve">
+    <value>Aus Text importieren</value>
+  </data>
+  <data name="S2M_TemplateOption" xml:space="preserve">
+    <value>-- Vorlage --</value>
+  </data>
+  <data name="S2M_TemplateNamePlaceholder" xml:space="preserve">
+    <value>Vorlagenname</value>
+  </data>
+  <data name="S2M_PasteHelpPre" xml:space="preserve">
+    <value>Empfänger einfügen (einer pro Zeile:</value>
+  </data>
+  <data name="S2M_PasteHelpOr" xml:space="preserve">
+    <value>oder</value>
+  </data>
+  <data name="S2M_Total" xml:space="preserve">
+    <value>Gesamt:</value>
+  </data>
+  <data name="Common_AssetName7" xml:space="preserve">
+    <value>Asset-Name (max. 7 Zeichen)</value>
+  </data>
+  <data name="Common_NumberOfShares" xml:space="preserve">
+    <value>Anzahl der Anteile</value>
+  </data>
+  <data name="Common_AmountOfShares" xml:space="preserve">
+    <value>Menge der Anteile</value>
+  </data>
+  <data name="Common_UnitOfMeasure7" xml:space="preserve">
+    <value>Maßeinheit (max. 7 Zeichen)</value>
+  </data>
+  <data name="Common_DecimalPlaces" xml:space="preserve">
+    <value>Dezimalstellen (0-18)</value>
+  </data>
+  <data name="Common_NewOwnerIdentity" xml:space="preserve">
+    <value>Identität des neuen Eigentümers</value>
+  </data>
+  <data name="Common_IssueAsset" xml:space="preserve">
+    <value>Asset ausgeben</value>
+  </data>
+  <data name="Common_Issuing" xml:space="preserve">
+    <value>Wird ausgegeben...</value>
+  </data>
+  <data name="Common_TransferAsset" xml:space="preserve">
+    <value>Asset übertragen</value>
+  </data>
+  <data name="Common_Transfer" xml:space="preserve">
+    <value>Übertragen</value>
+  </data>
+  <data name="Common_Transferring" xml:space="preserve">
+    <value>Wird übertragen...</value>
+  </data>
+  <data name="Common_Processing" xml:space="preserve">
+    <value>Wird verarbeitet...</value>
+  </data>
+  <data name="QSwap_Title" xml:space="preserve">
+    <value>QSwap AMM</value>
+  </data>
+  <data name="QSwap_Subtitle" xml:space="preserve">
+    <value>Assets ausgeben/übertragen, Pools erstellen, Liquidität hinzufügen/entfernen und auf dem QSwap-AMM tauschen.</value>
+  </data>
+  <data name="QSwap_Preview" xml:space="preserve">
+    <value>Diese Funktion ist eine Vorschau und kann sich in zukünftigen Updates ändern.</value>
+  </data>
+  <data name="QSwap_Tab_Issue" xml:space="preserve">
+    <value>Ausgeben</value>
+  </data>
+  <data name="QSwap_Tab_Transfer" xml:space="preserve">
+    <value>Übertragen</value>
+  </data>
+  <data name="QSwap_Tab_Pool" xml:space="preserve">
+    <value>Pool</value>
+  </data>
+  <data name="QSwap_Tab_Liquidity" xml:space="preserve">
+    <value>Liquidität</value>
+  </data>
+  <data name="QSwap_Tab_Swap" xml:space="preserve">
+    <value>Tauschen</value>
+  </data>
+  <data name="QSwap_IssueHdr" xml:space="preserve">
+    <value>Asset ausgeben (QSwap)</value>
+  </data>
+  <data name="QSwap_TransferHdr" xml:space="preserve">
+    <value>Asset übertragen (QSwap)</value>
+  </data>
+  <data name="Fmt_FeeQu" xml:space="preserve">
+    <value>Gebühr: {0} QU</value>
+  </data>
+  <data name="Fmt_QSwapNetworkFee" xml:space="preserve">
+    <value>Netzwerkgebühr: {0} QU (zusätzlich)</value>
+  </data>
+  <data name="Fmt_QSwapPoolFee" xml:space="preserve">
+    <value>Pool-Gebühr: {0}% (vom Swap abgezogen)</value>
+  </data>
+  <data name="QSwap_FeesUnavailable" xml:space="preserve">
+    <value>Gebühreninformationen noch nicht geladen. Bitte einen Moment warten und erneut versuchen.</value>
+  </data>
+  <data name="QSwap_CreatePool" xml:space="preserve">
+    <value>Pool erstellen</value>
+  </data>
+  <data name="QSwap_Creating" xml:space="preserve">
+    <value>Wird erstellt...</value>
+  </data>
+  <data name="QSwap_LiquidityHdr" xml:space="preserve">
+    <value>Liquidität hinzufügen / entfernen</value>
+  </data>
+  <data name="QSwap_AddLiquidity" xml:space="preserve">
+    <value>Liquidität hinzufügen</value>
+  </data>
+  <data name="QSwap_RemoveLiquidity" xml:space="preserve">
+    <value>Liquidität entfernen</value>
+  </data>
+  <data name="QSwap_QuAmountTx" xml:space="preserve">
+    <value>QU-Betrag (Tx-Betrag)</value>
+  </data>
+  <data name="QSwap_AssetAmountDesired" xml:space="preserve">
+    <value>Gewünschte Asset-Menge</value>
+  </data>
+  <data name="QSwap_QuAmountMin" xml:space="preserve">
+    <value>QU-Betrag min.</value>
+  </data>
+  <data name="QSwap_AssetAmountMin" xml:space="preserve">
+    <value>Asset-Menge min.</value>
+  </data>
+  <data name="QSwap_BurnLiquidity" xml:space="preserve">
+    <value>Zu verbrennende Liquiditätsmenge</value>
+  </data>
+  <data name="QSwap_SwapType" xml:space="preserve">
+    <value>Tausch-Typ</value>
+  </data>
+  <data name="QSwap_Opt_ExactQuForAsset" xml:space="preserve">
+    <value>Exakte QU → Asset</value>
+  </data>
+  <data name="QSwap_Opt_QuForExactAsset" xml:space="preserve">
+    <value>QU → Exaktes Asset</value>
+  </data>
+  <data name="QSwap_Opt_ExactAssetForQu" xml:space="preserve">
+    <value>Exaktes Asset → QU</value>
+  </data>
+  <data name="QSwap_Opt_AssetForExactQu" xml:space="preserve">
+    <value>Asset → Exakte QU</value>
+  </data>
+  <data name="QSwap_QuAmountInTx" xml:space="preserve">
+    <value>QU-Eingang (Tx-Betrag)</value>
+  </data>
+  <data name="QSwap_AssetOutMin" xml:space="preserve">
+    <value>Asset-Ausgang min.</value>
+  </data>
+  <data name="QSwap_MaxQuInTx" xml:space="preserve">
+    <value>Max. QU-Eingang (Tx-Betrag)</value>
+  </data>
+  <data name="QSwap_ExactAssetOut" xml:space="preserve">
+    <value>Exakte Asset-Ausgangsmenge</value>
+  </data>
+  <data name="QSwap_AssetAmountIn" xml:space="preserve">
+    <value>Asset-Eingangsmenge</value>
+  </data>
+  <data name="QSwap_QuOutMin" xml:space="preserve">
+    <value>QU-Ausgang min.</value>
+  </data>
+  <data name="QSwap_MaxAssetIn" xml:space="preserve">
+    <value>Max. Asset-Eingangsmenge</value>
+  </data>
+  <data name="QSwap_ExactQuOut" xml:space="preserve">
+    <value>Exakte QU-Ausgangsmenge</value>
+  </data>
+  <data name="QSwap_Swapping" xml:space="preserve">
+    <value>Wird getauscht...</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="Common_Issuer" xml:space="preserve">
+    <value>Emittent</value>
+  </data>
+  <data name="QX_Title" xml:space="preserve">
+    <value>QX-Asset-Operationen</value>
+  </data>
+  <data name="QX_Subtitle" xml:space="preserve">
+    <value>Gib Assets aus, übertrage Anteile und verwalte Orders an der dezentralen Börse QX.</value>
+  </data>
+  <data name="QX_YourOpenOrders" xml:space="preserve">
+    <value>Deine offenen Orders</value>
+  </data>
+  <data name="QX_Tab_Issue" xml:space="preserve">
+    <value>Ausgeben</value>
+  </data>
+  <data name="QX_Tab_Transfer" xml:space="preserve">
+    <value>Übertragen</value>
+  </data>
+  <data name="QX_Tab_Ask" xml:space="preserve">
+    <value>Verkauf</value>
+  </data>
+  <data name="QX_Tab_Bid" xml:space="preserve">
+    <value>Kauf</value>
+  </data>
+  <data name="QX_Tab_Rights" xml:space="preserve">
+    <value>Rechte</value>
+  </data>
+  <data name="QX_OrdersWord" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="QX_PricePerShare" xml:space="preserve">
+    <value>Preis pro Anteil (QU)</value>
+  </data>
+  <data name="QX_TradeFee" xml:space="preserve">
+    <value>Handelsgebühr:</value>
+  </data>
+  <data name="QX_TransferMgmtRights" xml:space="preserve">
+    <value>Verwaltungsrechte übertragen</value>
+  </data>
+  <data name="QX_NewManagingContract" xml:space="preserve">
+    <value>Neuer verwaltender Vertrag</value>
+  </data>
+  <data name="QX_Submitting" xml:space="preserve">
+    <value>Wird gesendet...</value>
+  </data>
+  <data name="QX_AddAskOrder" xml:space="preserve">
+    <value>Verkaufsorder hinzufügen</value>
+  </data>
+  <data name="QX_RemoveAskOrder" xml:space="preserve">
+    <value>Verkaufsorder entfernen</value>
+  </data>
+  <data name="QX_AddBidOrder" xml:space="preserve">
+    <value>Kauforder hinzufügen</value>
+  </data>
+  <data name="QX_RemoveBidOrder" xml:space="preserve">
+    <value>Kauforder entfernen</value>
+  </data>
+  <data name="QX_MarketOverview" xml:space="preserve">
+    <value>QX-Marktübersicht</value>
+  </data>
+  <data name="QX_BestAsk" xml:space="preserve">
+    <value>Bestes Verkaufsangebot</value>
+  </data>
+  <data name="QX_AskDepth" xml:space="preserve">
+    <value>Verkaufstiefe</value>
+  </data>
+  <data name="QX_BestBid" xml:space="preserve">
+    <value>Bestes Kaufangebot</value>
+  </data>
+  <data name="QX_BidDepth" xml:space="preserve">
+    <value>Kauftiefe</value>
+  </data>
+  <data name="QX_Spread" xml:space="preserve">
+    <value>Spread</value>
+  </data>
+  <data name="QX_NoActiveOrders" xml:space="preserve">
+    <value>Keine aktiven Orders gefunden.</value>
+  </data>
+  <data name="QX_LoadHintPre" xml:space="preserve">
+    <value>Klicke auf</value>
+  </data>
+  <data name="QX_LoadHintPost" xml:space="preserve">
+    <value>, um alle auf QX gehandelten Assets zu finden und abzufragen.</value>
+  </data>
+  <data name="QX_PortfolioHintPre" xml:space="preserve">
+    <value>Um eigene Assets zu verkaufen oder zu verwalten, gehe zur Seite</value>
+  </data>
+  <data name="QX_AssetPortfolio" xml:space="preserve">
+    <value>Asset-Portfolio</value>
+  </data>
+  <data name="QX_PortfolioHintPost" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="QE_Title" xml:space="preserve">
+    <value>QEarn-Staking</value>
+  </data>
+  <data name="QE_Subtitle" xml:space="preserve">
+    <value>QU sperren, um Belohnungen zu verdienen, entsperren und Staking-Infos abfragen.</value>
+  </data>
+  <data name="QE_LoadingInfo" xml:space="preserve">
+    <value>Deine Staking-Infos werden geladen...</value>
+  </data>
+  <data name="QE_StakingSummary" xml:space="preserve">
+    <value>Deine Staking-Übersicht</value>
+  </data>
+  <data name="QE_LockEpoch" xml:space="preserve">
+    <value>Sperr-Epoche</value>
+  </data>
+  <data name="QE_LockedAmount" xml:space="preserve">
+    <value>Gesperrter Betrag</value>
+  </data>
+  <data name="QE_EpochTotal" xml:space="preserve">
+    <value>Epochen-Summe</value>
+  </data>
+  <data name="QE_EpochTotalTitle" xml:space="preserve">
+    <value>Gesamte von allen Nutzern in dieser Epoche gesperrte QU</value>
+  </data>
+  <data name="QE_Week" xml:space="preserve">
+    <value>Woche</value>
+  </data>
+  <data name="QE_Remaining" xml:space="preserve">
+    <value>Verbleibend</value>
+  </data>
+  <data name="QE_Yield" xml:space="preserve">
+    <value>Rendite</value>
+  </data>
+  <data name="QE_EstFullReward" xml:space="preserve">
+    <value>Gesch. volle Belohnung</value>
+  </data>
+  <data name="QE_EarlyUnlock" xml:space="preserve">
+    <value>Vorzeitige Entsperrung</value>
+  </data>
+  <data name="QE_EarlyUnlockTitle" xml:space="preserve">
+    <value>Belohnung bei sofortiger Entsperrung gemäß Zeitplan für vorzeitige Entsperrung</value>
+  </data>
+  <data name="QE_Unlocking" xml:space="preserve">
+    <value>Wird entsperrt...</value>
+  </data>
+  <data name="QE_FullyUnlocked" xml:space="preserve">
+    <value>Vollständig entsperrt:</value>
+  </data>
+  <data name="QE_EarlyUnlocked" xml:space="preserve">
+    <value>Vorzeitig entsperrt:</value>
+  </data>
+  <data name="QE_TotalLocked" xml:space="preserve">
+    <value>Gesamt gesperrt:</value>
+  </data>
+  <data name="QE_Across" xml:space="preserve">
+    <value>über</value>
+  </data>
+  <data name="QE_EpochWord" xml:space="preserve">
+    <value>Epoche(n)</value>
+  </data>
+  <data name="QE_EstTotalReward" xml:space="preserve">
+    <value>| Gesch. Gesamtbelohnung bei voller Entsperrung:</value>
+  </data>
+  <data name="QE_Tab_Lock" xml:space="preserve">
+    <value>Sperren</value>
+  </data>
+  <data name="QE_Tab_Query" xml:space="preserve">
+    <value>Abfragen</value>
+  </data>
+  <data name="QE_LockDesc" xml:space="preserve">
+    <value>Sperre QU im QEarn-Smart-Contract, um Staking-Belohnungen zu verdienen.</value>
+  </data>
+  <data name="QE_AmountToLock" xml:space="preserve">
+    <value>Zu sperrender Betrag (QU)</value>
+  </data>
+  <data name="QE_LockHelp" xml:space="preserve">
+    <value>Der gesamte Betrag wird gesperrt. Keine zusätzliche Gebühr. Mind. 10.000.000 QU.</value>
+  </data>
+  <data name="QE_Locking" xml:space="preserve">
+    <value>Wird gesperrt...</value>
+  </data>
+  <data name="QE_QueryFunction" xml:space="preserve">
+    <value>Abfragefunktion</value>
+  </data>
+  <data name="QE_Q1" xml:space="preserve">
+    <value>Sperr-Info pro Epoche</value>
+  </data>
+  <data name="QE_Q2" xml:space="preserve">
+    <value>Nutzer-Sperr-Info</value>
+  </data>
+  <data name="QE_Q3" xml:space="preserve">
+    <value>Rundenstatus</value>
+  </data>
+  <data name="QE_Q4" xml:space="preserve">
+    <value>Nutzer-Sperrstatus (52-Wochen-Bitmaske)</value>
+  </data>
+  <data name="QE_Q5" xml:space="preserve">
+    <value>Abschlussstatus</value>
+  </data>
+  <data name="QE_Q6" xml:space="preserve">
+    <value>Statistik pro Epoche</value>
+  </data>
+  <data name="QE_Q7" xml:space="preserve">
+    <value>Burn- &amp; Boost-Statistik (global)</value>
+  </data>
+  <data name="QE_Q8" xml:space="preserve">
+    <value>Burn- &amp; Boost-Statistik pro Epoche</value>
+  </data>
+  <data name="QE_UserIdentity" xml:space="preserve">
+    <value>Nutzer-Identität</value>
+  </data>
+  <data name="QE_LockStatusLabel" xml:space="preserve">
+    <value>Sperrstatus (52 Wochen, Bit 0 = frühestes)</value>
+  </data>
+  <data name="QE_Querying" xml:space="preserve">
+    <value>Wird abgefragt...</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>Kopieren</value>
+  </data>
+  <data name="Common_Verify" xml:space="preserve">
+    <value>Prüfen</value>
+  </data>
+  <data name="Common_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Common_Amount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="Common_Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="Common_Updated" xml:space="preserve">
+    <value>Aktualisiert</value>
+  </data>
+  <data name="Common_Actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="Common_Units" xml:space="preserve">
+    <value>Einheiten</value>
+  </data>
+  <data name="Common_Possessor" xml:space="preserve">
+    <value>Besitzer</value>
+  </data>
+  <data name="Common_Decimals" xml:space="preserve">
+    <value>Dezimalstellen</value>
+  </data>
+  <data name="SV_Title" xml:space="preserve">
+    <value>Nachricht signieren / prüfen</value>
+  </data>
+  <data name="SV_Subtitle" xml:space="preserve">
+    <value>Signiere eine Nachricht mit deinem Seed oder prüfe eine signierte Nachricht.</value>
+  </data>
+  <data name="SV_SignMessage" xml:space="preserve">
+    <value>Nachricht signieren</value>
+  </data>
+  <data name="SV_SignPlaceholder" xml:space="preserve">
+    <value>Zu signierende Nachricht eingeben</value>
+  </data>
+  <data name="SV_Sign" xml:space="preserve">
+    <value>Signieren</value>
+  </data>
+  <data name="SV_SignedOutput" xml:space="preserve">
+    <value>Signierte Ausgabe (JSON)</value>
+  </data>
+  <data name="SV_VerifyMessage" xml:space="preserve">
+    <value>Nachricht prüfen</value>
+  </data>
+  <data name="SV_SignedJson" xml:space="preserve">
+    <value>Signiertes JSON</value>
+  </data>
+  <data name="SV_ValidSig" xml:space="preserve">
+    <value>Gültige Signatur</value>
+  </data>
+  <data name="SV_InvalidSig" xml:space="preserve">
+    <value>Ungültige Signatur</value>
+  </data>
+  <data name="SV_SignInValid" xml:space="preserve">
+    <value>Die Nachricht ist wohlgeformt und aktuell gültig.</value>
+  </data>
+  <data name="WL_Subtitle" xml:space="preserve">
+    <value>Überwache Guthaben und Assets externer Adressen.</value>
+  </data>
+  <data name="WL_LastUpdated" xml:space="preserve">
+    <value>Zuletzt aktualisiert:</value>
+  </data>
+  <data name="WL_Refreshing" xml:space="preserve">
+    <value>Wird aktualisiert...</value>
+  </data>
+  <data name="WL_RefreshAll" xml:space="preserve">
+    <value>Alle aktualisieren</value>
+  </data>
+  <data name="WL_Empty" xml:space="preserve">
+    <value>Keine Adressen in der Beobachtungsliste. Füge unten eine hinzu.</value>
+  </data>
+  <data name="WL_InOut" xml:space="preserve">
+    <value>Eingehend / Ausgehend</value>
+  </data>
+  <data name="WL_LastUpdatedLabel" xml:space="preserve">
+    <value>Zuletzt aktualisiert</value>
+  </data>
+  <data name="WL_ClickRefresh" xml:space="preserve">
+    <value>Klicke auf Aktualisieren, um Daten zu laden.</value>
+  </data>
+  <data name="WL_AddToWatchlist" xml:space="preserve">
+    <value>Zur Beobachtungsliste hinzufügen</value>
+  </data>
+  <data name="WL_LabelPlaceholder" xml:space="preserve">
+    <value>z. B. Treasury-Wallet</value>
+  </data>
+  <data name="WL_AddressLabel" xml:space="preserve">
+    <value>Adresse (60-Zeichen-Identität)</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Common_ClearAll" xml:space="preserve">
+    <value>Alle löschen</value>
+  </data>
+  <data name="Common_Time" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="Common_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="Common_To" xml:space="preserve">
+    <value>An</value>
+  </data>
+  <data name="Common_Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Common_Created" xml:space="preserve">
+    <value>Erstellt</value>
+  </data>
+  <data name="Common_Connecting" xml:space="preserve">
+    <value>Wird verbunden...</value>
+  </data>
+  <data name="TH_Title" xml:space="preserve">
+    <value>Transaktionsverlauf</value>
+  </data>
+  <data name="TH_Subtitle" xml:space="preserve">
+    <value>Verfolge gesendete Transaktionen und sieh den synchronisierten Verlauf. Daten werden lokal pro Seed verschlüsselt.</value>
+  </data>
+  <data name="TH_ExportJson" xml:space="preserve">
+    <value>JSON exportieren</value>
+  </data>
+  <data name="TH_HideImport" xml:space="preserve">
+    <value>Import ausblenden</value>
+  </data>
+  <data name="TH_ImportJson" xml:space="preserve">
+    <value>JSON importieren</value>
+  </data>
+  <data name="TH_NoTracked" xml:space="preserve">
+    <value>Noch keine Transaktionen verfolgt. Sie erscheinen hier, nachdem du sie gesendet hast.</value>
+  </data>
+  <data name="TH_St_Pending" xml:space="preserve">
+    <value>Ausstehend</value>
+  </data>
+  <data name="TH_St_Confirmed" xml:space="preserve">
+    <value>Bestätigt</value>
+  </data>
+  <data name="TH_St_Failed" xml:space="preserve">
+    <value>Fehlgeschlagen</value>
+  </data>
+  <data name="TH_LoadFile" xml:space="preserve">
+    <value>Datei laden</value>
+  </data>
+  <data name="TH_PasteJson" xml:space="preserve">
+    <value>Exportiertes JSON einfügen oder aus Datei laden:</value>
+  </data>
+  <data name="LE_Title" xml:space="preserve">
+    <value>Log-Ereignisse</value>
+  </data>
+  <data name="LE_Subtitle" xml:space="preserve">
+    <value>Durchsuche die aus dem Netzwerk synchronisierten Log-Ereignisse für deine Identität.</value>
+  </data>
+  <data name="LE_NeedSeed" xml:space="preserve">
+    <value>Gib deinen Seed ein, um die Wallet-Datenbank zu öffnen und Log-Ereignisse zu synchronisieren.</value>
+  </data>
+  <data name="LE_NoLogs" xml:space="preserve">
+    <value>Keine Log-Ereignisse gefunden. Die Synchronisation füllt diese Ansicht, sobald Logs abgerufen werden.</value>
+  </data>
+  <data name="LE_Filter" xml:space="preserve">
+    <value>Filtern</value>
+  </data>
+  <data name="LE_LogType" xml:space="preserve">
+    <value>Log-Typ</value>
+  </data>
+  <data name="LE_MinTick" xml:space="preserve">
+    <value>Min-Tick</value>
+  </data>
+  <data name="LE_MaxTick" xml:space="preserve">
+    <value>Max-Tick</value>
+  </data>
+  <data name="LE_TxHash" xml:space="preserve">
+    <value>Tx-Hash</value>
+  </data>
+  <data name="LE_AmountDetail" xml:space="preserve">
+    <value>Betrag / Detail</value>
+  </data>
+  <data name="SM_Title" xml:space="preserve">
+    <value>Sync-Manager</value>
+  </data>
+  <data name="SM_Subtitle" xml:space="preserve">
+    <value>Überwache und steuere die Datensynchronisation von RPC und Bob-WebSocket.</value>
+  </data>
+  <data name="SM_NeedSeed" xml:space="preserve">
+    <value>Gib deinen Seed ein, um die Wallet-Datenbank zu öffnen und die Synchronisation zu starten.</value>
+  </data>
+  <data name="SM_Connection" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="SM_OverallState" xml:space="preserve">
+    <value>Gesamtstatus</value>
+  </data>
+  <data name="SM_InitialSync" xml:space="preserve">
+    <value>Erstsynchronisation</value>
+  </data>
+  <data name="SM_Complete" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="SM_InProgress" xml:space="preserve">
+    <value>Läuft...</value>
+  </data>
+  <data name="SM_BackendTick" xml:space="preserve">
+    <value>Backend-Tick-Vergleich</value>
+  </data>
+  <data name="SM_Backend" xml:space="preserve">
+    <value>Backend</value>
+  </data>
+  <data name="SM_LastCheck" xml:space="preserve">
+    <value>Letzte Prüfung</value>
+  </data>
+  <data name="SM_Database" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="LEP_Title" xml:space="preserve">
+    <value>Lokaler Signier-Endpunkt</value>
+  </data>
+  <data name="LEP_Off" xml:space="preserve">
+    <value>Der lokale Endpunkt ist aus. Aktiviere ihn unter</value>
+  </data>
+  <data name="Common_SettingsFeatures" xml:space="preserve">
+    <value>Einstellungen → Funktionen</value>
+  </data>
+  <data name="LEP_ConnectionFile" xml:space="preserve">
+    <value>Verbindungsdatei</value>
+  </data>
+  <data name="LEP_Port" xml:space="preserve">
+    <value>Port (0 = zufällig)</value>
+  </data>
+  <data name="LEP_ApplyRestart" xml:space="preserve">
+    <value>Anwenden &amp; neu starten</value>
+  </data>
+  <data name="LEP_NewToken" xml:space="preserve">
+    <value>Neues Token</value>
+  </data>
+  <data name="LEP_AutoApprove" xml:space="preserve">
+    <value>Dev-Konten automatisch genehmigen</value>
+  </data>
+  <data name="WC_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="WC_Off" xml:space="preserve">
+    <value>WalletConnect ist aus. Aktiviere es unter</value>
+  </data>
+  <data name="WC_NoProjectId" xml:space="preserve">
+    <value>In diesem Build ist keine WalletConnect-Projekt-ID konfiguriert.</value>
+  </data>
+  <data name="WC_PairWithDapp" xml:space="preserve">
+    <value>Mit einer dApp koppeln</value>
+  </data>
+  <data name="WC_Pair" xml:space="preserve">
+    <value>Koppeln</value>
+  </data>
+  <data name="WC_ConnectedDapps" xml:space="preserve">
+    <value>Verbundene dApps</value>
+  </data>
+  <data name="WC_NoSessions" xml:space="preserve">
+    <value>Keine aktiven Sitzungen.</value>
+  </data>
+  <data name="WC_Disconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="Common_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Common_Preview" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
+  <data name="Common_Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="SCA_Subtitle" xml:space="preserve">
+    <value>Durchsuche aktive Auktionen von Vertragsanteilen, prüfe den Gebotsstatus und gib Gebote ab.</value>
+  </data>
+  <data name="SCA_Tab_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="SCA_Tab_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SCA_Tab_Bid" xml:space="preserve">
+    <value>Bieten</value>
+  </data>
+  <data name="SCA_ActiveAuctions" xml:space="preserve">
+    <value>Aktive Auktionen</value>
+  </data>
+  <data name="SCA_ContractIndex" xml:space="preserve">
+    <value>Vertragsindex</value>
+  </data>
+  <data name="SCA_ContractIdentity" xml:space="preserve">
+    <value>Vertragsidentität</value>
+  </data>
+  <data name="SCA_ViewStatus" xml:space="preserve">
+    <value>Status ansehen →</value>
+  </data>
+  <data name="SCA_NoAuctions" xml:space="preserve">
+    <value>Keine aktiven Auktionen gefunden.</value>
+  </data>
+  <data name="SCA_NetworkSettings" xml:space="preserve">
+    <value>Netzwerkeinstellungen</value>
+  </data>
+  <data name="SCA_SummaryContract" xml:space="preserve">
+    <value>Zusammenfassung — Vertrag</value>
+  </data>
+  <data name="SCA_FilledSlots" xml:space="preserve">
+    <value>Belegte Plätze</value>
+  </data>
+  <data name="SCA_MinBid" xml:space="preserve">
+    <value>Mindestgebot</value>
+  </data>
+  <data name="SCA_MaxBid" xml:space="preserve">
+    <value>Höchstgebot</value>
+  </data>
+  <data name="SCA_AvgBid" xml:space="preserve">
+    <value>Durchschnittsgebot</value>
+  </data>
+  <data name="SCA_TotalBid" xml:space="preserve">
+    <value>Gesamt-QU-Gebot</value>
+  </data>
+  <data name="SCA_MyBids" xml:space="preserve">
+    <value>Meine Gebote</value>
+  </data>
+  <data name="SCA_AtRisk" xml:space="preserve">
+    <value>Gefährdet</value>
+  </data>
+  <data name="SCA_Slot" xml:space="preserve">
+    <value>Platz Nr.</value>
+  </data>
+  <data name="SCA_BidAmount" xml:space="preserve">
+    <value>Gebotsbetrag</value>
+  </data>
+  <data name="SCA_Rank" xml:space="preserve">
+    <value>Rang</value>
+  </data>
+  <data name="SCA_AllBids" xml:space="preserve">
+    <value>Alle Gebote</value>
+  </data>
+  <data name="SCA_NoBids" xml:space="preserve">
+    <value>Noch keine Gebote abgegeben.</value>
+  </data>
+  <data name="SCA_NoMyBids" xml:space="preserve">
+    <value>Du hast keine Gebote in dieser Auktion.</value>
+  </data>
+  <data name="SCA_NeedSeedBid" xml:space="preserve">
+    <value>Gib deinen Seed in der oberen Leiste ein, um zu bieten.</value>
+  </data>
+  <data name="SCA_PlaceBid" xml:space="preserve">
+    <value>Auktionsgebot abgeben</value>
+  </data>
+  <data name="SCA_ContractIndexPlaceholder" xml:space="preserve">
+    <value>Oder Vertragsindex eingeben</value>
+  </data>
+  <data name="SCA_SharesRange" xml:space="preserve">
+    <value>Anzahl der Anteile (1-676)</value>
+  </data>
+  <data name="SCA_PreviewBid" xml:space="preserve">
+    <value>Gebot-Vorschau</value>
+  </data>
+  <data name="VOT_Title" xml:space="preserve">
+    <value>Community-Abstimmung</value>
+  </data>
+  <data name="VOT_Subtitle" xml:space="preserve">
+    <value>Durchsuche, stimme ab und erstelle Community-Umfragen über den QUtil-Vertrag.</value>
+  </data>
+  <data name="VOT_Tab_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="VOT_Tab_Vote" xml:space="preserve">
+    <value>Abstimmen</value>
+  </data>
+  <data name="VOT_Tab_Results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="VOT_Tab_Create" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="VOT_ActivePolls" xml:space="preserve">
+    <value>Aktive Umfragen</value>
+  </data>
+  <data name="VOT_Creator" xml:space="preserve">
+    <value>Ersteller</value>
+  </data>
+  <data name="VOT_Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="VOT_Closed" xml:space="preserve">
+    <value>Geschlossen</value>
+  </data>
+  <data name="VOT_AllowedAssets" xml:space="preserve">
+    <value>Erlaubte Assets:</value>
+  </data>
+  <data name="VOT_CreatorLabel" xml:space="preserve">
+    <value>Ersteller:</value>
+  </data>
+  <data name="VOT_NoPolls" xml:space="preserve">
+    <value>Keine aktiven Umfragen gefunden.</value>
+  </data>
+  <data name="VOT_ClickLoadPre" xml:space="preserve">
+    <value>Klicke auf</value>
+  </data>
+  <data name="VOT_ClickLoadPost" xml:space="preserve">
+    <value>, um aktive Community-Umfragen vom QUtil-Vertrag abzurufen.</value>
+  </data>
+  <data name="VOT_NeedSeed" xml:space="preserve">
+    <value>Gib deinen Seed in der oberen Leiste ein, um abzustimmen.</value>
+  </data>
+  <data name="VOT_PollId" xml:space="preserve">
+    <value>Umfrage-ID</value>
+  </data>
+  <data name="VOT_LoadPoll" xml:space="preserve">
+    <value>Umfrage laden</value>
+  </data>
+  <data name="VOT_ChosenOption" xml:space="preserve">
+    <value>Gewählte Option</value>
+  </data>
+  <data name="VOT_OptionWord" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="VOT_NoChange" xml:space="preserve">
+    <value>(Keine Änderung)</value>
+  </data>
+  <data name="VOT_VotingPowerNote" xml:space="preserve">
+    <value>Die Stimmkraft wird vom Vertrag automatisch anhand deines Guthabens berechnet.</value>
+  </data>
+  <data name="VOT_ConfirmVote" xml:space="preserve">
+    <value>Abstimmung bestätigen</value>
+  </data>
+  <data name="VOT_PollResults" xml:space="preserve">
+    <value>Umfrageergebnisse</value>
+  </data>
+  <data name="VOT_LoadResults" xml:space="preserve">
+    <value>Ergebnisse laden</value>
+  </data>
+  <data name="VOT_CreatePoll" xml:space="preserve">
+    <value>Neue Umfrage erstellen</value>
+  </data>
+  <data name="VOT_PollName" xml:space="preserve">
+    <value>Umfragename (max. 32 Zeichen)</value>
+  </data>
+  <data name="VOT_PollType" xml:space="preserve">
+    <value>Umfragetyp</value>
+  </data>
+  <data name="VOT_QuBased" xml:space="preserve">
+    <value>QU-basiert (1)</value>
+  </data>
+  <data name="VOT_AssetBased" xml:space="preserve">
+    <value>Asset-basiert (2)</value>
+  </data>
+  <data name="VOT_MinAmount" xml:space="preserve">
+    <value>Mindestbetrag</value>
+  </data>
+  <data name="VOT_GithubLink" xml:space="preserve">
+    <value>GitHub-Link (max. 256 Zeichen)</value>
+  </data>
+  <data name="VOT_GithubHelp" xml:space="preserve">
+    <value>Muss mit https://github.com/ beginnen</value>
+  </data>
+  <data name="VOT_AllowedAssetsLabel" xml:space="preserve">
+    <value>Erlaubte Assets (bis zu 16)</value>
+  </data>
+  <data name="VOT_AssetNamePlaceholder" xml:space="preserve">
+    <value>Asset-Name</value>
+  </data>
+  <data name="VOT_AddAsset" xml:space="preserve">
+    <value>+ Asset hinzufügen</value>
+  </data>
+  <data name="VOT_PollClosed" xml:space="preserve">
+    <value>Diese Umfrage ist geschlossen.</value>
+  </data>
+  <data name="VOT_BadgeAsset" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="Common_Sending" xml:space="preserve">
+    <value>Wird gesendet...</value>
+  </data>
+  <data name="Common_Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Common_Placing" xml:space="preserve">
+    <value>Wird platziert...</value>
+  </data>
+  <data name="AS_Title" xml:space="preserve">
+    <value>Asset-Portfolio</value>
+  </data>
+  <data name="AS_Subtitle" xml:space="preserve">
+    <value>Sieh eigene, ausgegebene und besessene Assets einer beliebigen Identität. Übertrage Assets und ändere Verwaltungsrechte.</value>
+  </data>
+  <data name="AS_IdentityPlaceholder" xml:space="preserve">
+    <value>60-Zeichen-Identität eingeben</value>
+  </data>
+  <data name="AS_LookupAssets" xml:space="preserve">
+    <value>Assets suchen</value>
+  </data>
+  <data name="AS_YourOpenOrders" xml:space="preserve">
+    <value>Deine offenen QX-Orders</value>
+  </data>
+  <data name="AS_PossessedAssets" xml:space="preserve">
+    <value>Besessene Assets</value>
+  </data>
+  <data name="AS_NoPossessed" xml:space="preserve">
+    <value>Keine besessenen Assets.</value>
+  </data>
+  <data name="AS_IssuedAssets" xml:space="preserve">
+    <value>Ausgegebene Assets</value>
+  </data>
+  <data name="AS_NoIssued" xml:space="preserve">
+    <value>Keine ausgegebenen Assets.</value>
+  </data>
+  <data name="AS_TransferAsset" xml:space="preserve">
+    <value>Asset übertragen</value>
+  </data>
+  <data name="AS_ChangeRights" xml:space="preserve">
+    <value>Verwaltungsrechte ändern</value>
+  </data>
+  <data name="AS_SellQx" xml:space="preserve">
+    <value>Auf QX verkaufen</value>
+  </data>
+  <data name="AS_BuyQx" xml:space="preserve">
+    <value>Auf QX kaufen</value>
+  </data>
+  <data name="AS_OrderBook" xml:space="preserve">
+    <value>Orderbuch</value>
+  </data>
+  <data name="AS_LoadingOrderBook" xml:space="preserve">
+    <value>Orderbuch wird geladen...</value>
+  </data>
+  <data name="AS_ClickRow" xml:space="preserve">
+    <value>Klicke auf eine Zeile, um eine Kauf- oder Verkaufsorder vorzubefüllen.</value>
+  </data>
+  <data name="AS_AsksSellers" xml:space="preserve">
+    <value>Verkauf (Verkäufer)</value>
+  </data>
+  <data name="AS_BidsBuyers" xml:space="preserve">
+    <value>Kauf (Käufer)</value>
+  </data>
+  <data name="AS_NoAsks" xml:space="preserve">
+    <value>Keine Verkaufsangebote.</value>
+  </data>
+  <data name="AS_NoBids" xml:space="preserve">
+    <value>Keine Kaufangebote.</value>
+  </data>
+  <data name="AS_DestinationIdentity" xml:space="preserve">
+    <value>Zielidentität</value>
+  </data>
+  <data name="AS_SharesMaxPre" xml:space="preserve">
+    <value>Anzahl der Anteile (max.:</value>
+  </data>
+  <data name="AS_TransferViaQx" xml:space="preserve">
+    <value>Über QX übertragen</value>
+  </data>
+  <data name="AS_PlaceSellOrder" xml:space="preserve">
+    <value>Verkaufsorder platzieren</value>
+  </data>
+  <data name="AS_PlaceBuyOrder" xml:space="preserve">
+    <value>Kauforder platzieren</value>
+  </data>
+  <data name="AS_ChangeRightsVia" xml:space="preserve">
+    <value>Rechte ändern über</value>
+  </data>
+  <data name="AS_Each" xml:space="preserve">
+    <value>je</value>
+  </data>
+  <data name="AS_OnMatch" xml:space="preserve">
+    <value>bei Ausführung</value>
+  </data>
+  <data name="Common_Remove2" xml:space="preserve">
+    <value>entfernen</value>
+  </data>
+  <data name="DT_Title" xml:space="preserve">
+    <value>Entwickler-Tools</value>
+  </data>
+  <data name="DT_Subtitle" xml:space="preserve">
+    <value>Für lokale AIO-/core-lite-Testnetze: öffentliche Dev-Konten, ein Faucet, Asset-Ausgabe und Genesis-Finanzierung.</value>
+  </data>
+  <data name="DT_Identify" xml:space="preserve">
+    <value>Netzwerk identifizieren</value>
+  </data>
+  <data name="DT_EnableAnywayPre" xml:space="preserve">
+    <value>Trotzdem aktivieren für</value>
+  </data>
+  <data name="DT_EnableAnywayPost" xml:space="preserve">
+    <value>(mein eigener core-lite-Build mit anderen Seeds)</value>
+  </data>
+  <data name="DT_DevWarn1" xml:space="preserve">
+    <value>Dev-Konten verwenden</value>
+  </data>
+  <data name="DT_DevWarnBold" xml:space="preserve">
+    <value>öffentlich bekannte Seeds</value>
+  </data>
+  <data name="DT_DevWarn2" xml:space="preserve">
+    <value>. Sie sind nur für dieses Testnetz — sende ihnen niemals Mainnet-Gelder.</value>
+  </data>
+  <data name="DT_Faucet" xml:space="preserve">
+    <value>Faucet</value>
+  </data>
+  <data name="DT_FundIdentity" xml:space="preserve">
+    <value>Identität finanzieren</value>
+  </data>
+  <data name="DT_DestinationPlaceholder" xml:space="preserve">
+    <value>Zielidentität</value>
+  </data>
+  <data name="DT_FundBtn" xml:space="preserve">
+    <value>Aus Dev-Konto finanzieren</value>
+  </data>
+  <data name="DT_Sent" xml:space="preserve">
+    <value>Gesendet:</value>
+  </data>
+  <data name="DT_IssueCard" xml:space="preserve">
+    <value>Ein QX-Asset von einem Dev-Konto ausgeben</value>
+  </data>
+  <data name="DT_DevAccountNum" xml:space="preserve">
+    <value>Dev-Konto Nr.</value>
+  </data>
+  <data name="DT_IssueBtn" xml:space="preserve">
+    <value>Ausgeben (QX-Gebühr vom Node)</value>
+  </data>
+  <data name="DT_GenesisCard" xml:space="preserve">
+    <value>Genesis-Finanzierung (AIO-Kit)</value>
+  </data>
+  <data name="DT_GenesisNotePre" xml:space="preserve">
+    <value>Guthaben und Assets können auch in die Genesis-Statusdateien geschrieben werden. Führe dies im Ordner</value>
+  </data>
+  <data name="DT_GenesisNotePost" xml:space="preserve">
+    <value>aus — es startet die Chain neu.</value>
+  </data>
+  <data name="DT_AssetOpt" xml:space="preserve">
+    <value>Asset (opt.)</value>
+  </data>
+  <data name="DT_SharesPh" xml:space="preserve">
+    <value>Anteile</value>
+  </data>
+  <data name="DT_CopyCommands" xml:space="preserve">
+    <value>Befehle kopieren</value>
+  </data>
+  <data name="DT_DevAccounts" xml:space="preserve">
+    <value>Dev-Konten</value>
+  </data>
+  <data name="DT_Use" xml:space="preserve">
+    <value>verwenden</value>
+  </data>
+  <data name="DT_UseTitle" xml:space="preserve">
+    <value>Als aktive Identität verwenden</value>
+  </data>
+  <data name="CC_Subtitle" xml:space="preserve">
+    <value>Rufe jede Smart-Contract-Funktion oder -Prozedur auf — auch deinen eigenen Vertrag, importiert aus seinem C++-Header.</value>
+  </data>
+  <data name="CC_FeatureOffPre" xml:space="preserve">
+    <value>Die Vertragskonsole ist Teil der</value>
+  </data>
+  <data name="CC_DeveloperTools" xml:space="preserve">
+    <value>Entwickler-Tools</value>
+  </data>
+  <data name="CC_TurnOnIn" xml:space="preserve">
+    <value>Aktiviere sie unter</value>
+  </data>
+  <data name="CC_Call" xml:space="preserve">
+    <value>Aufruf</value>
+  </data>
+  <data name="CC_Kind" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="CC_FunctionRead" xml:space="preserve">
+    <value>Funktion (Lesen)</value>
+  </data>
+  <data name="CC_ProcedureTx" xml:space="preserve">
+    <value>Prozedur (tx)</value>
+  </data>
+  <data name="CC_Function" xml:space="preserve">
+    <value>Funktion</value>
+  </data>
+  <data name="CC_Procedure" xml:space="preserve">
+    <value>Prozedur</value>
+  </data>
+  <data name="CC_Input" xml:space="preserve">
+    <value>Eingabe</value>
+  </data>
+  <data name="CC_RawInputHex" xml:space="preserve">
+    <value>Roheingabe (hex)</value>
+  </data>
+  <data name="CC_AmountCall" xml:space="preserve">
+    <value>Betrag (mit dem Aufruf gesendete QU)</value>
+  </data>
+  <data name="CC_Querying" xml:space="preserve">
+    <value>Wird abgefragt…</value>
+  </data>
+  <data name="CC_Query" xml:space="preserve">
+    <value>Abfragen</value>
+  </data>
+  <data name="CC_UnlockProc" xml:space="preserve">
+    <value>Entsperre einen Seed, um Prozeduren zu senden.</value>
+  </data>
+  <data name="CC_Result" xml:space="preserve">
+    <value>Ergebnis</value>
+  </data>
+  <data name="CC_CheckResult" xml:space="preserve">
+    <value>Ergebnis prüfen</value>
+  </data>
+  <data name="CC_StatusLabel" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="CC_Executed" xml:space="preserve">
+    <value>ausgeführt</value>
+  </data>
+  <data name="CC_NotExecuted" xml:space="preserve">
+    <value>fehlgeschlagen / nicht ausgeführt</value>
+  </data>
+  <data name="CC_ImportHeader" xml:space="preserve">
+    <value>Vertrags-Header importieren</value>
+  </data>
+  <data name="CC_Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="CC_NameOptional" xml:space="preserve">
+    <value>Name (optional)</value>
+  </data>
+  <data name="CC_ImportedOnNetwork" xml:space="preserve">
+    <value>Auf diesem Netzwerk importiert</value>
+  </data>
+  <data name="CC_ContractsOnNode" xml:space="preserve">
+    <value>Verträge auf diesem Node</value>
+  </data>
+  <data name="CC_SinceEpoch" xml:space="preserve">
+    <value>Seit Epoche</value>
+  </data>
+  <data name="CC_State" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Common_NetworkWord" xml:space="preserve">
+    <value>Netzwerk</value>
+  </data>
+  <data name="SRH_More" xml:space="preserve">
+    <value>weitere warten</value>
+  </data>
+  <data name="SRH_PublicDevKey" xml:space="preserve">
+    <value>ÖFFENTLICHER DEV-KEY</value>
+  </data>
+  <data name="SRH_TargetTick" xml:space="preserve">
+    <value>Ziel-Tick</value>
+  </data>
+  <data name="SRH_InputType" xml:space="preserve">
+    <value>Eingabetyp</value>
+  </data>
+  <data name="SRH_Site" xml:space="preserve">
+    <value>Seite</value>
+  </data>
+  <data name="SRH_Statement" xml:space="preserve">
+    <value>Erklärung</value>
+  </data>
+  <data name="SRH_Issued" xml:space="preserve">
+    <value>Ausgestellt</value>
+  </data>
+  <data name="SRH_Expires" xml:space="preserve">
+    <value>Läuft ab</value>
+  </data>
+  <data name="SRH_Nonce" xml:space="preserve">
+    <value>Nonce</value>
+  </data>
+  <data name="SRH_RawInputPre" xml:space="preserve">
+    <value>Roheingabe (</value>
+  </data>
+  <data name="SRH_Bytes" xml:space="preserve">
+    <value>Bytes)</value>
+  </data>
+  <data name="SRH_Acknowledge" xml:space="preserve">
+    <value>Ich verstehe die obigen Warnungen</value>
+  </data>
+  <data name="SRH_Reject" xml:space="preserve">
+    <value>Ablehnen</value>
+  </data>
+  <data name="SRH_O_LocalEndpoint" xml:space="preserve">
+    <value>Lokaler Endpunkt</value>
+  </data>
+  <data name="SRH_O_DevTools" xml:space="preserve">
+    <value>Dev-Tools</value>
+  </data>
+  <data name="SRH_O_Repeat" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="SRH_O_InApp" xml:space="preserve">
+    <value>Diese Wallet</value>
+  </data>
+  <data name="NB_Devnet" xml:space="preserve">
+    <value>lokales Entwicklungsnetzwerk</value>
+  </data>
+  <data name="NB_Testnet" xml:space="preserve">
+    <value>Testnetzwerk</value>
+  </data>
+  <data name="NB_Custom" xml:space="preserve">
+    <value>benutzerdefiniertes Netzwerk</value>
+  </data>
+  <data name="NB_NotMainnet" xml:space="preserve">
+    <value>Nicht Mainnet.</value>
+  </data>
+  <data name="NB_NoNetworkId" xml:space="preserve">
+    <value>Qubic-Transaktionen haben keine Netzwerk-ID: Verwende für Testnetze eigene Seeds.</value>
+  </data>
+  <data name="NB_Mismatch" xml:space="preserve">
+    <value>Netzwerk-Konflikt:</value>
+  </data>
+  <data name="NB_IsSetupAs" xml:space="preserve">
+    <value>ist eingerichtet als</value>
+  </data>
+  <data name="NB_ButChainIs" xml:space="preserve">
+    <value>, aber die verbundene Chain ist</value>
+  </data>
+  <data name="NB_CoreliteDevnet" xml:space="preserve">
+    <value>ein core-lite-Devnet</value>
+  </data>
+  <data name="NB_ArbitratorSigned" xml:space="preserve">
+    <value>vom Mainnet-Arbitrator signiert</value>
+  </data>
+  <data name="NB_Unrecognized" xml:space="preserve">
+    <value>nicht erkannt</value>
+  </data>
+  <data name="NB_CheckSettings" xml:space="preserve">
+    <value>Netzwerkeinstellungen prüfen</value>
+  </data>
+  <data name="NB_ChainReset" xml:space="preserve">
+    <value>Chain-Reset erkannt auf</value>
+  </data>
+  <data name="NB_HistoryCleared" xml:space="preserve">
+    <value>Der zwischengespeicherte Verlauf dieses Netzwerks wurde gelöscht.</value>
+  </data>
+  <data name="NB_BlockedPre" xml:space="preserve">
+    <value>Verbindung blockiert zu</value>
+  </data>
+  <data name="NB_BlockedPost" xml:space="preserve">
+    <value>es gehört nicht zu</value>
+  </data>
+  <data name="NS_Manage" xml:space="preserve">
+    <value>Netzwerke verwalten…</value>
+  </data>
+  <data name="FD_Title" xml:space="preserve">
+    <value>Optionale Funktionen wählen</value>
+  </data>
+  <data name="FD_Intro" xml:space="preserve">
+    <value>Diese Funktionen sind aus, bis du sie einschaltest. Ausgeschaltete Funktionen laufen gar nicht — keine Verbindungen, keine Listener, keine Hintergrund-Downloads.</value>
+  </data>
+  <data name="FD_ChangeAnytime" xml:space="preserve">
+    <value>Du kannst dies jederzeit ändern unter</value>
+  </data>
+  <data name="FD_SaveChoices" xml:space="preserve">
+    <value>Auswahl speichern</value>
+  </data>
+  <data name="ST_Title" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="ST_Tab_General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="ST_Tab_Networks" xml:space="preserve">
+    <value>Netzwerke</value>
+  </data>
+  <data name="ST_Tab_Features" xml:space="preserve">
+    <value>Funktionen</value>
+  </data>
+  <data name="ST_Tab_Transactions" xml:space="preserve">
+    <value>Transaktionen</value>
+  </data>
+  <data name="ST_Tab_Labels" xml:space="preserve">
+    <value>Bezeichnungen</value>
+  </data>
+  <data name="ST_Tab_Data" xml:space="preserve">
+    <value>Daten</value>
+  </data>
+  <data name="ST_Tab_Vault" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="ST_Theme" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="ST_ThemeLight" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <data name="ST_ThemeDark" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="ST_AutoLock" xml:space="preserve">
+    <value>Auto-Sperre</value>
+  </data>
+  <data name="ST_LockAfter" xml:space="preserve">
+    <value>Tresor nach Inaktivität sperren (Minuten)</value>
+  </data>
+  <data name="ST_LockAfterHelp" xml:space="preserve">
+    <value>Auf 0 setzen, um die Auto-Sperre zu deaktivieren. Standard: 15 Minuten.</value>
+  </data>
+  <data name="ST_FeaturesIntro" xml:space="preserve">
+    <value>Optionale Funktionen sind aus, bis sie hier aktiviert werden. Ausgeschaltete Funktionen laufen gar nicht.</value>
+  </data>
+  <data name="ST_RefreshLabels" xml:space="preserve">
+    <value>Bezeichnungen aktualisieren</value>
+  </data>
+  <data name="ST_RemoteLabels" xml:space="preserve">
+    <value>Bezeichnungen aus Remote-Registry laden</value>
+  </data>
+  <data name="ST_AutoResend" xml:space="preserve">
+    <value>Fehlgeschlagene Transaktionen automatisch erneut senden</value>
+  </data>
+  <data name="ST_MaxResend" xml:space="preserve">
+    <value>Max. Wiederhol-Versuche</value>
+  </data>
+  <data name="ST_ExportDb" xml:space="preserve">
+    <value>Datenbank exportieren</value>
+  </data>
+  <data name="ST_ImportDb" xml:space="preserve">
+    <value>Datenbank importieren</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>Absenden</value>
+  </data>
+  <data name="MV_Subtitle" xml:space="preserve">
+    <value>Multisig-Tresore verwalten: registrieren, einzahlen, freigeben und über Gebührenänderungen abstimmen.</value>
+  </data>
+  <data name="MV_YourVaults" xml:space="preserve">
+    <value>Deine Tresore</value>
+  </data>
+  <data name="MV_OwnersColon" xml:space="preserve">
+    <value>Eigentümer:</value>
+  </data>
+  <data name="MV_RequiredApprovalsColon" xml:space="preserve">
+    <value>Erforderliche Freigaben:</value>
+  </data>
+  <data name="MV_Approvals" xml:space="preserve">
+    <value>Freigaben</value>
+  </data>
+  <data name="MV_ReleasePre" xml:space="preserve">
+    <value>Freigeben</value>
+  </data>
+  <data name="MV_ReleaseToSuffix" xml:space="preserve">
+    <value>an</value>
+  </data>
+  <data name="MV_ReleasePending" xml:space="preserve">
+    <value>Freigabe-Transaktion ausstehend...</value>
+  </data>
+  <data name="MV_ApproveRelease" xml:space="preserve">
+    <value>Freigabe genehmigen</value>
+  </data>
+  <data name="MV_ShowOwners" xml:space="preserve">
+    <value>Eigentümer anzeigen</value>
+  </data>
+  <data name="MV_DepositQu" xml:space="preserve">
+    <value>QU einzahlen</value>
+  </data>
+  <data name="MV_DepositAsset" xml:space="preserve">
+    <value>Asset einzahlen</value>
+  </data>
+  <data name="MV_ReleaseQu" xml:space="preserve">
+    <value>QU freigeben</value>
+  </data>
+  <data name="MV_ReleaseAsset" xml:space="preserve">
+    <value>Asset freigeben</value>
+  </data>
+  <data name="MV_Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="MV_Tab_Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="MV_Tab_Deposit" xml:space="preserve">
+    <value>Einzahlen</value>
+  </data>
+  <data name="MV_Tab_Release" xml:space="preserve">
+    <value>Freigeben</value>
+  </data>
+  <data name="MV_Tab_Assets" xml:space="preserve">
+    <value>Assets</value>
+  </data>
+  <data name="MV_Tab_Query" xml:space="preserve">
+    <value>Abfragen</value>
+  </data>
+  <data name="MV_RegisterVault" xml:space="preserve">
+    <value>Tresor registrieren</value>
+  </data>
+  <data name="MV_Registering" xml:space="preserve">
+    <value>Wird registriert...</value>
+  </data>
+  <data name="MV_VaultName" xml:space="preserve">
+    <value>Tresorname</value>
+  </data>
+  <data name="MV_NameHelp" xml:space="preserve">
+    <value>Beliebiger Name bis zu 32 Zeichen.</value>
+  </data>
+  <data name="MV_OwnersLabel" xml:space="preserve">
+    <value>Eigentümer (min. 2, max. 16 Identitäten)</value>
+  </data>
+  <data name="MV_AddOwner" xml:space="preserve">
+    <value>+ Eigentümer hinzufügen</value>
+  </data>
+  <data name="MV_OwnerHint" xml:space="preserve">
+    <value>Die aktuelle Wallet-Identität kann einer der Eigentümer sein.</value>
+  </data>
+  <data name="MV_RequiredApprovals" xml:space="preserve">
+    <value>Erforderliche Freigaben (min. 2)</value>
+  </data>
+  <data name="MV_DepositToVault" xml:space="preserve">
+    <value>In Tresor einzahlen</value>
+  </data>
+  <data name="MV_Vault" xml:space="preserve">
+    <value>Tresor</value>
+  </data>
+  <data name="MV_VaultIdPlaceholder" xml:space="preserve">
+    <value>Oder Tresor-ID manuell eingeben</value>
+  </data>
+  <data name="MV_Depositing" xml:space="preserve">
+    <value>Wird eingezahlt...</value>
+  </data>
+  <data name="MV_Deposit" xml:space="preserve">
+    <value>Einzahlen</value>
+  </data>
+  <data name="MV_ReleaseReset" xml:space="preserve">
+    <value>Freigeben / Zurücksetzen</value>
+  </data>
+  <data name="MV_ReleaseToRadio" xml:space="preserve">
+    <value>Freigeben an</value>
+  </data>
+  <data name="MV_ResetRelease" xml:space="preserve">
+    <value>Freigabe zurücksetzen</value>
+  </data>
+  <data name="MV_VaultId" xml:space="preserve">
+    <value>Tresor-ID</value>
+  </data>
+  <data name="MV_AssetOps" xml:space="preserve">
+    <value>Asset-Operationen</value>
+  </data>
+  <data name="MV_AssetOp_Deposit" xml:space="preserve">
+    <value>Asset einzahlen</value>
+  </data>
+  <data name="MV_AssetOp_Release" xml:space="preserve">
+    <value>Asset freigeben an</value>
+  </data>
+  <data name="MV_AssetOp_Reset" xml:space="preserve">
+    <value>Asset-Freigabe zurücksetzen</value>
+  </data>
+  <data name="MV_AssetOp_Revoke" xml:space="preserve">
+    <value>Asset-Verwaltungsrechte widerrufen</value>
+  </data>
+  <data name="MV_VoteFeeChange" xml:space="preserve">
+    <value>Über Gebührenänderung abstimmen</value>
+  </data>
+  <data name="MV_Voting" xml:space="preserve">
+    <value>Wird abgestimmt...</value>
+  </data>
+  <data name="MV_VoteDesc" xml:space="preserve">
+    <value>Schlage neue Gebührenwerte für Tresor-Operationen vor.</value>
+  </data>
+  <data name="MV_FeeBurn" xml:space="preserve">
+    <value>Burn-Gebühr</value>
+  </data>
+  <data name="MV_FeeDeposit" xml:space="preserve">
+    <value>Neue Einzahlungsgebühr</value>
+  </data>
+  <data name="MV_FeeHolding" xml:space="preserve">
+    <value>Neue Haltegebühr</value>
+  </data>
+  <data name="MV_FeeRegistering" xml:space="preserve">
+    <value>Neue Registrierungsgebühr</value>
+  </data>
+  <data name="MV_FeeRelease" xml:space="preserve">
+    <value>Neue Freigabegebühr</value>
+  </data>
+  <data name="MV_FeeReset" xml:space="preserve">
+    <value>Neue Reset-Gebühr</value>
+  </data>
+  <data name="MV_NoVoteFee" xml:space="preserve">
+    <value>Keine Gebühr für die Abstimmung.</value>
+  </data>
+  <data name="MV_QueryMsvault" xml:space="preserve">
+    <value>MSVault abfragen</value>
+  </data>
+  <data name="MV_Querying" xml:space="preserve">
+    <value>Wird abgefragt...</value>
+  </data>
+  <data name="MV_Q5" xml:space="preserve">
+    <value>Tresore abrufen (nach Eigentümer)</value>
+  </data>
+  <data name="MV_Q6" xml:space="preserve">
+    <value>Freigabestatus abrufen</value>
+  </data>
+  <data name="MV_Q7" xml:space="preserve">
+    <value>Guthaben abrufen</value>
+  </data>
+  <data name="MV_Q8" xml:space="preserve">
+    <value>Tresornamen abrufen</value>
+  </data>
+  <data name="MV_Q10" xml:space="preserve">
+    <value>Gebühren abrufen</value>
+  </data>
+  <data name="MV_Q11" xml:space="preserve">
+    <value>Tresor-Eigentümer abrufen</value>
+  </data>
+  <data name="MV_Q12" xml:space="preserve">
+    <value>Ist Anteilseigner</value>
+  </data>
+  <data name="MV_NoEvents" xml:space="preserve">
+    <value>Keine MSVault-Ereignisse gefunden. Ereignisse werden im Hintergrund aus dem Netzwerk synchronisiert.</value>
+  </data>
+  <data name="MV_OpenToView" xml:space="preserve">
+    <value>Öffne die Wallet, um den Verlauf zu sehen (synchronisierte Log-Ereignisse).</value>
+  </data>
+  <data name="MV_ShowAll" xml:space="preserve">
+    <value>Alle anzeigen</value>
+  </data>
+  <data name="MV_VaultHash" xml:space="preserve">
+    <value>Tresor Nr.</value>
+  </data>
+  <data name="CG_SettingsNetworks" xml:space="preserve">
+    <value>Einstellungen → Netzwerke</value>
+  </data>
+  <data name="WCP_FlaggedPre" xml:space="preserve">
+    <value>WalletConnect Verify hat diese Seite markiert als</value>
+  </data>
+  <data name="WCP_FlaggedBold" xml:space="preserve">
+    <value>nicht übereinstimmend mit</value>
+  </data>
+  <data name="WCP_FlaggedPost" xml:space="preserve">
+    <value>seiner angegebenen Domain.</value>
+  </data>
+  <data name="WCP_ChainMismatchPre" xml:space="preserve">
+    <value>Es fragt nach</value>
+  </data>
+  <data name="WCP_ButWalletOn" xml:space="preserve">
+    <value>, aber die Wallet ist auf</value>
+  </data>
+  <data name="WCP_SwitchOrReject" xml:space="preserve">
+    <value>Wechsle zuerst das Netzwerk, oder lehne ab.</value>
+  </data>
+  <data name="WCP_AccountsToShare" xml:space="preserve">
+    <value>Zu teilende Konten</value>
+  </data>
+  <data name="WCP_NoAccount" xml:space="preserve">
+    <value>Kein Konto verfügbar — entsperre zuerst deinen Tresor oder gib einen Seed ein.</value>
+  </data>
+  <data name="WCP_DappSees" xml:space="preserve">
+    <value>Die dApp sieht diese Adressen und Guthaben. Sie kann Signaturen anfordern; jede Anfrage wird dir zuerst gezeigt.</value>
+  </data>
+  <data name="WCP_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="CG_NotAvailable" xml:space="preserve">
+    <value>Auf diesem Netzwerk nicht verfügbar</value>
+  </data>
+  <data name="CG_NoMethodPre" xml:space="preserve">
+    <value>hat keine Methode, die Folgendes bereitstellt:</value>
+  </data>
+  <data name="CG_AddPre" xml:space="preserve">
+    <value>Füge eine</value>
+  </data>
+  <data name="CG_AddPost" xml:space="preserve">
+    <value>Methode zu diesem Netzwerk hinzu unter</value>
+  </data>
+  <data name="TTP_TimeBased" xml:space="preserve">
+    <value>Zeitbasiertes Ziel (pro Netzwerk festgelegt)</value>
+  </data>
+  <data name="TTP_FixedOffset" xml:space="preserve">
+    <value>Fester Tick-Offset (pro Netzwerk festgelegt)</value>
+  </data>
+  <data name="ASel_Issuer" xml:space="preserve">
+    <value>Identität des Asset-Emittenten</value>
+  </data>
+  <data name="ASel_Name" xml:space="preserve">
+    <value>Asset-Name (bis zu 7 Zeichen)</value>
+  </data>
+  <data name="SE_NoInputs" xml:space="preserve">
+    <value>Keine Eingabefelder.</value>
+  </data>
+  <data name="SE_HexPost" xml:space="preserve">
+    <value>] als Hex</value>
+  </data>
+  <data name="SE_ElementsPre" xml:space="preserve">
+    <value>Elemente</value>
+  </data>
+  <data name="SE_ElementsPost" xml:space="preserve">
+    <value>bleiben null.</value>
+  </data>
+  <data name="NS_Discard" xml:space="preserve">
+    <value>Änderungen verwerfen</value>
+  </data>
+  <data name="NS_Checking" xml:space="preserve">
+    <value>Wird geprüft…</value>
+  </data>
+  <data name="NS_PortPlaceholder" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="NS_PeerDiscovery" xml:space="preserve">
+    <value>Peer-Discovery (automatisch zu besseren Peers wechseln)</value>
+  </data>
+  <data name="NS_WebSocket" xml:space="preserve">
+    <value>WebSocket (Live-Ticks und Log-Sync)</value>
+  </data>
+  <data name="NS_UseBundle" xml:space="preserve">
+    <value>Mainnet-Datenbundle verwenden (Bezeichnungen, Gebühren)</value>
+  </data>
+  <data name="NS_BadgeColour" xml:space="preserve">
+    <value>Badge-Farbe</value>
+  </data>
+  <data name="NS_ExpectedNetwork" xml:space="preserve">
+    <value>Erwartetes Netzwerk</value>
+  </data>
+  <data name="NS_ExpectedHint" xml:space="preserve">
+    <value>(gegen die Computor-Liste geprüft)</value>
+  </data>
+  <data name="NS_ExplorerLink" xml:space="preserve">
+    <value>Explorer-Link für Transaktionen</value>
+  </data>
+  <data name="NS_ExplorerHint" xml:space="preserve">
+    <value>({hash}-Platzhalter, leer = keine Links)</value>
+  </data>
+  <data name="NS_Methods" xml:space="preserve">
+    <value>Methoden</value>
+  </data>
+  <data name="NS_MethodsHint" xml:space="preserve">
+    <value>(Prioritätsreihenfolge — die erste aktivierte Methode, die eine Operation unterstützt, bedient sie)</value>
+  </data>
+  <data name="NS_PendingWindow" xml:space="preserve">
+    <value>Ausstehendes Fenster (Ticks)</value>
+  </data>
+  <data name="NS_EmptyEq" xml:space="preserve">
+    <value>leer =</value>
+  </data>
+  <data name="NS_SecondsAhead" xml:space="preserve">
+    <value>Sekunden voraus</value>
+  </data>
+  <data name="NS_DriftThreshold" xml:space="preserve">
+    <value>Tick-Drift-Schwelle (Ticks zwischen Methoden dieses Netzwerks)</value>
+  </data>
+  <data name="NS_TicksAhead" xml:space="preserve">
+    <value>Ticks voraus</value>
+  </data>
+  <data name="NS_AddNetwork" xml:space="preserve">
+    <value>+ Netzwerk hinzufügen…</value>
+  </data>
+  <data name="NS_EmptyCustom" xml:space="preserve">
+    <value>Leeres benutzerdefiniertes Netzwerk</value>
+  </data>
+  <data name="NS_Off" xml:space="preserve">
+    <value> (aus)</value>
+  </data>
+  <data name="NS_ArbitratorSigned" xml:space="preserve">
+    <value>Vom Mainnet-Arbitrator signiert</value>
+  </data>
+  <data name="NS_CoreliteDevnet" xml:space="preserve">
+    <value>core-lite-Devnet (öffentliche Dev-Computors)</value>
+  </data>
+  <data name="NS_NoExpectation" xml:space="preserve">
+    <value>Keine Erwartung</value>
+  </data>
+  <data name="NS_Kind_Mainnet" xml:space="preserve">
+    <value>Mainnet</value>
+  </data>
+  <data name="NS_Kind_Testnet" xml:space="preserve">
+    <value>Testnet</value>
+  </data>
+  <data name="NS_Kind_Devnet" xml:space="preserve">
+    <value>Devnet (lokal / AIO)</value>
+  </data>
+  <data name="NS_Kind_Custom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="NS_Preset_AioLocal" xml:space="preserve">
+    <value>AIO-Dev-Kit (dieser Rechner)</value>
+  </data>
+  <data name="NS_Preset_AioRemote" xml:space="preserve">
+    <value>AIO-Dev-Kit (Remote-Host)</value>
+  </data>
+  <data name="NS_FixedOffset" xml:space="preserve">
+    <value>Fester Tick-Offset</value>
+  </data>
+  <data name="NS_TimeBased" xml:space="preserve">
+    <value>In ~N Sekunden ausführen</value>
+  </data>
+  <data name="NS_RestorePresets" xml:space="preserve">
+    <value>Gelöschte Voreinstellungen wiederherstellen</value>
+  </data>
+  <data name="NS_ResetTitle" xml:space="preserve">
+    <value>Auf Voreinstellungs-Standard zurücksetzen</value>
+  </data>
+  <data name="NS_AndReconnect" xml:space="preserve">
+    <value> und neu verbinden</value>
+  </data>
+  <data name="NS_MethodPerOp" xml:space="preserve">
+    <value>Methode pro Operation</value>
+  </data>
+  <data name="NS_AutoFollows" xml:space="preserve">
+    <value>— „Auto" folgt der obigen Prioritätsreihenfolge</value>
+  </data>
+  <data name="NS_Only" xml:space="preserve">
+    <value>nur</value>
+  </data>
+  <data name="NS_ActiveNetwork" xml:space="preserve">
+    <value>Aktives Netzwerk:</value>
+  </data>
+  <data name="NS_BlockedConnections" xml:space="preserve">
+    <value>Blockierte Verbindungen</value>
+  </data>
+  <data name="NS_AllowedHosts" xml:space="preserve">
+    <value>Erlaubte Hosts:</value>
+  </data>
+  <data name="NS_ClearLower" xml:space="preserve">
+    <value>leeren</value>
+  </data>
+  <data name="ST_CreateNewVault" xml:space="preserve">
+    <value>Neuen Tresor erstellen</value>
+  </data>
+  <data name="ST_OpenExistingVault" xml:space="preserve">
+    <value>Bestehenden Tresor öffnen</value>
+  </data>
+  <data name="ST_StorageInfo" xml:space="preserve">
+    <value>Speicher-Info</value>
+  </data>
+  <data name="ST_VaultFilePath" xml:space="preserve">
+    <value>Pfad der Tresordatei</value>
+  </data>
+  <data name="ST_Seed55" xml:space="preserve">
+    <value>Seed (55 Zeichen)</value>
+  </data>
+  <data name="ST_Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="ST_OpenVault" xml:space="preserve">
+    <value>Tresor öffnen</value>
+  </data>
+  <data name="ST_Disconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="ST_DeleteVault" xml:space="preserve">
+    <value>Tresor löschen</value>
+  </data>
+  <data name="ST_Generate" xml:space="preserve">
+    <value>Erzeugen</value>
+  </data>
+  <data name="ST_WriteDownBold" xml:space="preserve">
+    <value>Schreibe diesen Seed auf und bewahre ihn sicher auf!</value>
+  </data>
+  <data name="ST_WriteDownPost" xml:space="preserve">
+    <value>Wenn du ihn verlierst, gibt es keine Wiederherstellung.</value>
+  </data>
+  <data name="ST_AreYouSureBold" xml:space="preserve">
+    <value>Bist du sicher?</value>
+  </data>
+  <data name="ST_DeleteConfirmPost" xml:space="preserve">
+    <value>Dies löscht deinen Tresor und alle gespeicherten Seeds dauerhaft.</value>
+  </data>
+  <data name="ST_DatabasePath" xml:space="preserve">
+    <value>Datenbankpfad:</value>
+  </data>
+  <data name="ST_TransactionsCount" xml:space="preserve">
+    <value>Transaktionen:</value>
+  </data>
+  <data name="ST_LogEventsCount" xml:space="preserve">
+    <value>Log-Ereignisse:</value>
+  </data>
+  <data name="ST_NoSeeds" xml:space="preserve">
+    <value>Keine Seeds gespeichert.</value>
+  </data>
+  <data name="ST_SeedShort" xml:space="preserve">
+    <value>Seed</value>
+  </data>
+  <data name="FP_New" xml:space="preserve">
+    <value>neu</value>
+  </data>
+  <data name="FP_ConnectsTo" xml:space="preserve">
+    <value>Verbindet sich mit:</value>
+  </data>
+  <data name="ST_Subtitle" xml:space="preserve">
+    <value>Verhalten von Qubic.Net Wallet konfigurieren.</value>
+  </data>
+  <data name="Msg_AddAddress" xml:space="preserve">
+    <value>Füge mindestens eine Adresse hinzu.</value>
+  </data>
+  <data name="Msg_AddRecipientAmount" xml:space="preserve">
+    <value>Füge mindestens einen Empfänger mit einem Betrag hinzu.</value>
+  </data>
+  <data name="Msg_OwnersUnique" xml:space="preserve">
+    <value>Alle Eigentümer müssen eindeutige Identitäten sein.</value>
+  </data>
+  <data name="Msg_AmountPositive" xml:space="preserve">
+    <value>Der Betrag muss positiv sein.</value>
+  </data>
+  <data name="Msg_AssetNameRequired" xml:space="preserve">
+    <value>Der Asset-Name ist erforderlich.</value>
+  </data>
+  <data name="Msg_AssetNameRequired2" xml:space="preserve">
+    <value>Asset-Name erforderlich.</value>
+  </data>
+  <data name="Msg_AssetNotOwned" xml:space="preserve">
+    <value>Asset nicht unter deinen Assets gefunden. Stelle sicher, dass du das angegebene Asset besitzt.</value>
+  </data>
+  <data name="Msg_MinTwoOwners" xml:space="preserve">
+    <value>Mindestens 2 Eigentümer erforderlich.</value>
+  </data>
+  <data name="Msg_BroadcastCheck" xml:space="preserve">
+    <value>Gesendet. Verwende „Ergebnis prüfen", sobald der Ziel-Tick vorbei ist.</value>
+  </data>
+  <data name="Msg_ContractIndexRange" xml:space="preserve">
+    <value>Der Vertragsindex muss zwischen 1 und 1023 liegen.</value>
+  </data>
+  <data name="Msg_LoadContractsFailed" xml:space="preserve">
+    <value>Vertragsliste des Nodes konnte nicht geladen werden.</value>
+  </data>
+  <data name="Msg_CouldNotReadFile" xml:space="preserve">
+    <value>Datei konnte nicht gelesen werden: </value>
+  </data>
+  <data name="Msg_DestInvalid" xml:space="preserve">
+    <value>Das Ziel muss eine gültige 60-Zeichen-Identität sein.</value>
+  </data>
+  <data name="Msg_ExportFailed" xml:space="preserve">
+    <value>Export fehlgeschlagen: </value>
+  </data>
+  <data name="Msg_FeesNotLoaded" xml:space="preserve">
+    <value>Gebühren noch nicht geladen. Bitte warten.</value>
+  </data>
+  <data name="Msg_FileLocationRequired" xml:space="preserve">
+    <value>Der Dateispeicherort ist erforderlich.</value>
+  </data>
+  <data name="Msg_FilePathRequired" xml:space="preserve">
+    <value>Der Dateipfad ist erforderlich.</value>
+  </data>
+  <data name="Msg_GithubMax256" xml:space="preserve">
+    <value>Der GitHub-Link darf höchstens 256 Zeichen haben.</value>
+  </data>
+  <data name="Msg_GithubPrefix" xml:space="preserve">
+    <value>Der GitHub-Link muss mit https://github.com/ beginnen.</value>
+  </data>
+  <data name="Msg_IpoNeedsDirect" xml:space="preserve">
+    <value>Der IPO-Status benötigt eine Direct-(Node-)Methode in diesem Netzwerk.</value>
+  </data>
+  <data name="Msg_InvalidJsonExpected" xml:space="preserve">
+    <value>Ungültiges JSON-Format. Erwartet: {"identity":"...","message":"...","signature":"..."}</value>
+  </data>
+  <data name="Msg_InvalidJson" xml:space="preserve">
+    <value>Ungültiges JSON: </value>
+  </data>
+  <data name="Msg_InvalidShareCount" xml:space="preserve">
+    <value>Ungültige Anteilsanzahl.</value>
+  </data>
+  <data name="Msg_IssuerPrefix" xml:space="preserve">
+    <value>Emittent: </value>
+  </data>
+  <data name="Msg_LabelRequired" xml:space="preserve">
+    <value>Die Bezeichnung ist erforderlich.</value>
+  </data>
+  <data name="Msg_LoadPollFirst" xml:space="preserve">
+    <value>Lade zuerst eine Umfrage.</value>
+  </data>
+  <data name="Msg_NameRequired" xml:space="preserve">
+    <value>Der Name ist erforderlich.</value>
+  </data>
+  <data name="Msg_NewOwnerPrefix" xml:space="preserve">
+    <value>Neuer Eigentümer: </value>
+  </data>
+  <data name="Msg_NoAssetsRpc" xml:space="preserve">
+    <value>Keine Assets gefunden. Prüfe deine RPC-Verbindung.</value>
+  </data>
+  <data name="Msg_NoReceiptYet" xml:space="preserve">
+    <value>Noch keine Quittung — die Transaktion wurde (noch) nicht aufgenommen.</value>
+  </data>
+  <data name="Msg_NoValidEntries" xml:space="preserve">
+    <value>Keine gültigen Einträge gefunden.</value>
+  </data>
+  <data name="Msg_NothingToImport" xml:space="preserve">
+    <value>Nichts zu importieren.</value>
+  </data>
+  <data name="Msg_SharesRange676" xml:space="preserve">
+    <value>Die Anzahl der Anteile muss 1-676 sein.</value>
+  </data>
+  <data name="Msg_SharesPositive" xml:space="preserve">
+    <value>Die Anzahl der Anteile muss positiv sein.</value>
+  </data>
+  <data name="Msg_PasswordRequired" xml:space="preserve">
+    <value>Das Passwort ist erforderlich.</value>
+  </data>
+  <data name="Msg_PasswordsNoMatch" xml:space="preserve">
+    <value>Passwörter stimmen nicht überein.</value>
+  </data>
+  <data name="Msg_PasteSignedJson" xml:space="preserve">
+    <value>Signiertes JSON zum Prüfen einfügen.</value>
+  </data>
+  <data name="Msg_PollNameRequired" xml:space="preserve">
+    <value>Der Umfragename ist erforderlich.</value>
+  </data>
+  <data name="Msg_PollNameMax32" xml:space="preserve">
+    <value>Der Umfragename darf höchstens 32 Zeichen haben.</value>
+  </data>
+  <data name="Msg_PricePositive" xml:space="preserve">
+    <value>Der Preis muss positiv sein.</value>
+  </data>
+  <data name="Msg_PricePerSharePositive" xml:space="preserve">
+    <value>Der Preis pro Anteil muss positiv sein.</value>
+  </data>
+  <data name="Msg_Seed55" xml:space="preserve">
+    <value>Der Seed muss 55 Zeichen lang sein.</value>
+  </data>
+  <data name="Msg_Seed55Exact" xml:space="preserve">
+    <value>Der Seed muss genau 55 Zeichen lang sein.</value>
+  </data>
+  <data name="Msg_ShareCountPositive" xml:space="preserve">
+    <value>Die Anteilsanzahl muss positiv sein.</value>
+  </data>
+  <data name="Msg_SharesPositive2" xml:space="preserve">
+    <value>Die Anteile müssen positiv sein.</value>
+  </data>
+  <data name="Msg_SigningCancelled" xml:space="preserve">
+    <value>Signierung abgebrochen.</value>
+  </data>
+  <data name="Msg_TemplateNotFound" xml:space="preserve">
+    <value>Vorlage nicht gefunden.</value>
+  </data>
+  <data name="Msg_QrNoAddress" xml:space="preserve">
+    <value>Der QR-Code enthält keine Qubic-Adresse.</value>
+  </data>
+  <data name="Msg_QrNotWalletConnect" xml:space="preserve">
+    <value>Dieser QR-Code ist kein WalletConnect-Link.</value>
+  </data>
+  <data name="Msg_SignInNeedsFeature" xml:space="preserve">
+    <value>Dies ist eine Sign-In-with-Qubic-Anfrage. Aktiviere „Sign-In with Qubic" unter Einstellungen → Funktionen, um sie zu signieren.</value>
+  </data>
+  <data name="Msg_PollClosed" xml:space="preserve">
+    <value>Diese Umfrage ist geschlossen.</value>
+  </data>
+  <data name="Msg_VaultFileNotFound" xml:space="preserve">
+    <value>Tresordatei nicht gefunden.</value>
+  </data>
+  <data name="Msg_VaultNameRequired" xml:space="preserve">
+    <value>Der Tresorname ist erforderlich.</value>
+  </data>
+  <data name="Msg_VaultNameTooLong" xml:space="preserve">
+    <value>Tresorname zu lang (max. 32 Byte UTF-8).</value>
+  </data>
+  <data name="Msg_RequestsAssetPre" xml:space="preserve">
+    <value>Dies fordert</value>
+  </data>
+  <data name="Msg_RequestsAssetPost" xml:space="preserve">
+    <value>Anteile — verwende die Assets-Seite, um Assets zu übertragen.</value>
+  </data>
+  <data name="Msg_ContractCallNote" xml:space="preserve">
+    <value>Diese Anfrage ist ein Vertragsaufruf — auf dieser Seite nicht unterstützt.</value>
+  </data>
+  <data name="Msg_FilledFrom" xml:space="preserve">
+    <value>Aus Zahlungsanforderung ausgefüllt</value>
+  </data>
+  <data name="Msg_MeantForPre" xml:space="preserve">
+    <value>Sie ist bestimmt für</value>
+  </data>
+  <data name="Msg_MeantForMid" xml:space="preserve">
+    <value>, aber du bist auf</value>
+  </data>
+  <data name="Msg_MissingIdentity" xml:space="preserve">
+    <value>Feld 'identity' fehlt</value>
+  </data>
+  <data name="Msg_MissingMessage" xml:space="preserve">
+    <value>Feld 'message' fehlt</value>
+  </data>
+  <data name="Msg_MissingSignature" xml:space="preserve">
+    <value>Feld 'signature' fehlt</value>
+  </data>
+  <data name="Msg_SigLen64" xml:space="preserve">
+    <value>Die Signatur muss 64 Byte haben</value>
+  </data>
+  <data name="Msg_SigChecksum" xml:space="preserve">
+    <value>Die Prüfsumme der Signatur ist ungültig.</value>
+  </data>
+  <data name="Fmt_AmountBetween" xml:space="preserve">
+    <value>Der Betrag muss zwischen 1 und {0:N0} liegen.</value>
+  </data>
+  <data name="Fmt_AssetNIssuer" xml:space="preserve">
+    <value>Asset #{0} Emittent: {1}</value>
+  </data>
+  <data name="Fmt_AssetNNameReq" xml:space="preserve">
+    <value>Asset #{0}: Der Asset-Name ist erforderlich.</value>
+  </data>
+  <data name="Fmt_AssetNIssuerReq" xml:space="preserve">
+    <value>Asset #{0}: Die Emittenten-Identität ist erforderlich.</value>
+  </data>
+  <data name="Fmt_AssetIssuer" xml:space="preserve">
+    <value>Asset-Emittent: {0}</value>
+  </data>
+  <data name="Fmt_AssetManagedBy" xml:space="preserve">
+    <value>Das Asset wird von {0} verwaltet, das keine Rechteübertragung unterstützt.</value>
+  </data>
+  <data name="Fmt_Destination" xml:space="preserve">
+    <value>Ziel: {0}</value>
+  </data>
+  <data name="Fmt_DevAccountHistory" xml:space="preserve">
+    <value>Dev-Konto #{0} ist aktiv, aber seine Verlaufsdatenbank konnte nicht geöffnet werden: {1}</value>
+  </data>
+  <data name="Fmt_Exported" xml:space="preserve">
+    <value>{0} Transaktion(en) nach {1} exportiert</value>
+  </data>
+  <data name="Fmt_FailedLookupAsset" xml:space="preserve">
+    <value>Asset konnte nicht abgefragt werden: {0}</value>
+  </data>
+  <data name="Fmt_Imported" xml:space="preserve">
+    <value>{0} als #{1} importiert: {2} Funktionen, {3} Prozeduren.</value>
+  </data>
+  <data name="Fmt_InsufficientBalance" xml:space="preserve">
+    <value>Unzureichendes Guthaben ({0} QU).</value>
+  </data>
+  <data name="Fmt_LineInvalidFormat" xml:space="preserve">
+    <value>Zeile {0}: Ungültiges Format. Erwartet 'IDENTITY,AMOUNT'.</value>
+  </data>
+  <data name="Fmt_LineErr" xml:space="preserve">
+    <value>Zeile {0}: {1}</value>
+  </data>
+  <data name="Fmt_OwnerNIdReq" xml:space="preserve">
+    <value>Eigentümer #{0}: Identität erforderlich.</value>
+  </data>
+  <data name="Fmt_OwnerNErr" xml:space="preserve">
+    <value>Eigentümer #{0}: {1}</value>
+  </data>
+  <data name="Fmt_PollNotFound" xml:space="preserve">
+    <value>Umfrage {0} nicht gefunden.</value>
+  </data>
+  <data name="Fmt_RecipientNErr" xml:space="preserve">
+    <value>Empfänger {0}: {1}</value>
+  </data>
+  <data name="Fmt_RequiredApprovals" xml:space="preserve">
+    <value>Erforderliche Freigaben müssen 2-{0} sein.</value>
+  </data>
+  <data name="Fmt_SharesBetween" xml:space="preserve">
+    <value>Die Anteile müssen zwischen 1 und {0:N0} liegen.</value>
+  </data>
+  <data name="Fmt_TargetTickNotReached" xml:space="preserve">
+    <value>Ziel-Tick {0:N0} noch nicht erreicht (jetzt {1:N0}).</value>
+  </data>
+  <data name="Fmt_TooManyRecipients" xml:space="preserve">
+    <value>Zu viele Empfänger ({0}). Maximal 25.</value>
+  </data>
+  <data name="Fmt_RespSize1032" xml:space="preserve">
+    <value>Unerwartete Antwortgröße ({0} Byte, erwartet 1032).</value>
+  </data>
+  <data name="Fmt_RespSize528" xml:space="preserve">
+    <value>Unerwartete Antwortgröße ({0} Byte, erwartet 528).</value>
+  </data>
+  <data name="CD_Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="S2M_DeleteTemplate" xml:space="preserve">
+    <value>Vorlage löschen</value>
+  </data>
+  <data name="Fmt_DeleteTemplate" xml:space="preserve">
+    <value>Vorlage „{0}" löschen?</value>
+  </data>
+  <data name="TH_RemoveAllConfirm" xml:space="preserve">
+    <value>Alle verfolgten Transaktionen entfernen?</value>
+  </data>
+  <data name="MV_Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="MV_Vote" xml:space="preserve">
+    <value>Abstimmen</value>
+  </data>
+  <data name="MV_Approve" xml:space="preserve">
+    <value>Genehmigen</value>
+  </data>
+  <data name="MV_ApproveAssetRelease" xml:space="preserve">
+    <value>Asset-Freigabe genehmigen</value>
+  </data>
+  <data name="Fmt_MvRegister" xml:space="preserve">
+    <value>Tresor „{0}" mit {1} Eigentümern, {2} erforderlichen Freigaben registrieren?
+
+Gebühr: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvDeposit" xml:space="preserve">
+    <value>{0:N0} QU in Tresor #{1} einzahlen?</value>
+  </data>
+  <data name="Fmt_MvResetRelease" xml:space="preserve">
+    <value>Alle ausstehenden Freigaben für Tresor #{0} zurücksetzen?
+
+Gebühr: {1:N0} QU</value>
+  </data>
+  <data name="Fmt_MvRelease" xml:space="preserve">
+    <value>{0:N0} QU aus Tresor #{1} an {2}... freigeben?
+
+Gebühr: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvVote" xml:space="preserve">
+    <value>Für neue Gebühren stimmen?
+
+Registrierung: {0:N0}
+Freigabe: {1:N0}
+Reset: {2:N0}
+Halten: {3:N0}
+Einzahlung: {4:N0}
+Burn: {5:N0}</value>
+  </data>
+  <data name="Fmt_MvApproveRelease" xml:space="preserve">
+    <value>Freigabe von {0:N0} QU aus Tresor #{1} an {2}... genehmigen?
+
+Gebühr: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvApproveAssetRelease" xml:space="preserve">
+    <value>Freigabe von {0:N0} {1} aus Tresor #{2} an {3}... genehmigen?
+
+Gebühr: {4:N0} QU</value>
+  </data>
+  <data name="MV_RevokeMgmt" xml:space="preserve">
+    <value>Verwaltungsrechte widerrufen</value>
+  </data>
+  <data name="MV_AssetOperation" xml:space="preserve">
+    <value>Asset-Operation</value>
+  </data>
+  <data name="MV_ProceedAssetOp" xml:space="preserve">
+    <value>Mit der Asset-Operation fortfahren?</value>
+  </data>
+  <data name="Fmt_FeeFragment" xml:space="preserve">
+    <value> (Gebühr: {0:N0} QU)</value>
+  </data>
+  <data name="Fmt_AssetDepositRights" xml:space="preserve">
+    <value>{0:N0} {1} in Tresor #{2} einzahlen?
+
+Dies sendet 2 Transaktionen:
+1. Verwaltungsrechte von {3} an MSVault übertragen{4}
+2. Asset in Tresor einzahlen (Gebühr: {5:N0} QU)</value>
+  </data>
+  <data name="Fmt_AssetDeposit" xml:space="preserve">
+    <value>{0:N0} {1} in Tresor #{2} einzahlen?
+
+Gebühr: {3:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRelease" xml:space="preserve">
+    <value>{0:N0} {1} aus Tresor #{2} an {3}... freigeben?
+
+Gebühr: {4:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetReset" xml:space="preserve">
+    <value>Alle ausstehenden Asset-Freigaben für Tresor #{0} zurücksetzen?
+
+Gebühr: {1:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRevoke" xml:space="preserve">
+    <value>Verwaltungsrechte für {0:N0} {1}-Anteile widerrufen?
+
+Gebühr: 100 QU</value>
+  </data>
+  <data name="Cap_TickInfo" xml:space="preserve">
+    <value>Tick-Info</value>
+  </data>
+  <data name="Cap_Balance" xml:space="preserve">
+    <value>Guthaben</value>
+  </data>
+  <data name="Cap_Broadcast" xml:space="preserve">
+    <value>Broadcast</value>
+  </data>
+  <data name="Cap_SmartContractQuery" xml:space="preserve">
+    <value>Vertragsabfragen</value>
+  </data>
+  <data name="Cap_Computors" xml:space="preserve">
+    <value>Computor-Liste</value>
+  </data>
+  <data name="Cap_TransactionLookup" xml:space="preserve">
+    <value>Transaktionssuche</value>
+  </data>
+  <data name="Cap_TransactionReceipt" xml:space="preserve">
+    <value>Transaktionsquittungen</value>
+  </data>
+  <data name="Cap_TransferHistory" xml:space="preserve">
+    <value>Überweisungsverlauf</value>
+  </data>
+  <data name="Cap_TransactionArchive" xml:space="preserve">
+    <value>Transaktionsarchiv</value>
+  </data>
+  <data name="Cap_Logs" xml:space="preserve">
+    <value>Log-Ereignisse</value>
+  </data>
+  <data name="Cap_AssetListings" xml:space="preserve">
+    <value>Asset-Auflistungen</value>
+  </data>
+  <data name="Cap_Issuances" xml:space="preserve">
+    <value>Asset-Ausgaben</value>
+  </data>
+  <data name="Cap_AssetBalance" xml:space="preserve">
+    <value>Asset-Guthaben</value>
+  </data>
+  <data name="Cap_ActiveIpos" xml:space="preserve">
+    <value>Aktive IPOs</value>
+  </data>
+  <data name="Cap_IpoStatus" xml:space="preserve">
+    <value>IPO-Status</value>
+  </data>
+  <data name="Cap_TickData" xml:space="preserve">
+    <value>Tick-Daten</value>
+  </data>
+  <data name="Cap_ChainInfo" xml:space="preserve">
+    <value>Chain-Info</value>
+  </data>
+  <data name="Cap_RawJsonRpc" xml:space="preserve">
+    <value>JSON-RPC-Playground</value>
+  </data>
+  <data name="Cap_Peers" xml:space="preserve">
+    <value>Peers</value>
+  </data>
+  <data name="Cap_NodeCommands" xml:space="preserve">
+    <value>Node-Befehle</value>
+  </data>
+  <data name="Cap_TickTransactionCheck" xml:space="preserve">
+    <value>Tick-Einschluss-Prüfung</value>
+  </data>
+  <data name="Cap_Oracle" xml:space="preserve">
+    <value>Oracle-Abfragen</value>
+  </data>
+  <data name="Cap_ContractRegistry" xml:space="preserve">
+    <value>Vertragsregister</value>
+  </data>
+  <data name="Feat_RemoteLabels_Title" xml:space="preserve">
+    <value>Remote-Bezeichnungen</value>
+  </data>
+  <data name="Feat_RemoteLabels_Desc" xml:space="preserve">
+    <value>Zeigt Namen für Börsen, Token und Smart Contracts und ergänzt Vertragsprozedur-Gebühren über das öffentliche Qubic-Datenbundle. Nur auf Mainnet.</value>
+  </data>
+  <data name="Feat_RemoteLabels_Connects" xml:space="preserve">
+    <value>static.qubic.org</value>
+  </data>
+  <data name="Feat_RemoteLabels_Risk" xml:space="preserve">
+    <value>Verrät static.qubic.org, dass du eine Qubic-Wallet nutzt (es werden keine Adressen gesendet).</value>
+  </data>
+  <data name="Feat_DeveloperTools_Title" xml:space="preserve">
+    <value>Entwickler-Tools</value>
+  </data>
+  <data name="Feat_DeveloperTools_Desc" xml:space="preserve">
+    <value>Auf einem lokalen AIO-/core-lite-Testnetz: öffentliche Dev-Konten, ein integrierter Faucet, ein Asset-Helfer und eine Konsole, um jeden Vertrag aufzurufen — auch deinen eigenen, importiert aus seinem C++-Header.</value>
+  </data>
+  <data name="Feat_DeveloperTools_Connects" xml:space="preserve">
+    <value>Nur das aktive Devnet</value>
+  </data>
+  <data name="Feat_DeveloperTools_Risk" xml:space="preserve">
+    <value>Dev-Konten verwenden öffentlich bekannte Seeds. Nutze sie niemals auf Mainnet und sende ihnen keine Gelder.</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Title" xml:space="preserve">
+    <value>Sign-In with Qubic</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Desc" xml:space="preserve">
+    <value>Lässt Websites dich auffordern, den Besitz einer Identität durch Signieren einer strukturierten Login-Nachricht (Domain, Nonce, Ablauf) zu beweisen. Es wird nichts on-chain gesendet.</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Connects" xml:space="preserve">
+    <value>Von sich aus nichts</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Risk" xml:space="preserve">
+    <value>Ein signierter Login beweist der Seite den Besitz. Prüfe immer die in der Anfrage angezeigte Domain.</value>
+  </data>
+  <data name="Feat_WalletConnect_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="Feat_WalletConnect_Desc" xml:space="preserve">
+    <value>Verbinde dich mit dApps (z. B. mit @qubic/react gebaut), indem du einen WalletConnect-QR-Code scannst. Jede Anfrage wird vor dem Signieren zur Genehmigung angezeigt.</value>
+  </data>
+  <data name="Feat_WalletConnect_Connects" xml:space="preserve">
+    <value>WalletConnect-Relay (relay.walletconnect.org) und die dApps, mit denen du dich koppelst</value>
+  </data>
+  <data name="Feat_WalletConnect_Risk" xml:space="preserve">
+    <value>Gekoppelte dApps können Signaturen anfordern; sie können niemals ohne deine Genehmigung signieren.</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Title" xml:space="preserve">
+    <value>Lokaler Signier-Endpunkt</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Desc" xml:space="preserve">
+    <value>Öffnet einen JSON-RPC-Endpunkt auf 127.0.0.1 (zufälliger Port, geheimes Token), damit Skripte und Tests die Wallet zum Signieren auffordern können. Jede Anfrage erfordert deine Genehmigung.</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Connects" xml:space="preserve">
+    <value>Nichts Externes — lauscht nur auf 127.0.0.1</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Risk" xml:space="preserve">
+    <value>Jedes lokale Programm mit dem Token kann Signaturen anfordern.</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Title" xml:space="preserve">
+    <value>Dev-Konten automatisch genehmigen</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Desc" xml:space="preserve">
+    <value>Lässt den lokalen Endpunkt mit öffentlichen Dev-Konten auf einem core-lite-Devnet ohne Nachfrage signieren — für automatisierte Vertragstests.</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Connects" xml:space="preserve">
+    <value>Nur das aktive Devnet</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Risk" xml:space="preserve">
+    <value>Gilt nur für öffentliche Dev-Keys auf einem geprüften core-lite-Devnet; niemals für deine eigenen Seeds.</value>
+  </data>
+  <data name="Warn_NetworkMismatch" xml:space="preserve">
+    <value>Netzwerk-Konflikt</value>
+  </data>
+  <data name="Warn_PublicDevSource" xml:space="preserve">
+    <value>Öffentlicher Dev-Key auf Mainnet</value>
+  </data>
+  <data name="Warn_PublicDevDestination" xml:space="preserve">
+    <value>Ziel ist ein öffentlicher Dev-Key</value>
+  </data>
+  <data name="Warn_TickWindow" xml:space="preserve">
+    <value>Ziel-Tick zu weit voraus</value>
+  </data>
+  <data name="Warn_TickPassed" xml:space="preserve">
+    <value>Ziel-Tick bereits vorbei</value>
+  </data>
+  <data name="Warn_NotDecoded" xml:space="preserve">
+    <value>Aufruf nicht dekodiert</value>
+  </data>
+  <data name="Warn_SizeMismatch" xml:space="preserve">
+    <value>Eingabegröße stimmt nicht überein</value>
+  </data>
+  <data name="Warn_Signin" xml:space="preserve">
+    <value>Anmeldeproblem</value>
+  </data>
+  <data name="Warn_SigninIdentity" xml:space="preserve">
+    <value>Falsche Identität</value>
+  </data>
+  <data name="Warn_WcPrefix" xml:space="preserve">
+    <value>WalletConnect-Nachricht</value>
+  </data>
+  <data name="Warn_CrossNetwork" xml:space="preserve">
+    <value>Seed auf anderem Netzwerk verwendet</value>
+  </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>ausstehend (Tick noch nicht verifiziert)</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>Tresordatei importieren…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>Aus Web-/Mobil-Wallet importieren</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>Importiere Konten aus einer Tresordatei, die von der Qubic-Web-Wallet oder der Qubic-Mobile-App exportiert wurde. Wähle die Datei und gib das dort verwendete Passwort ein.</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>Passwort der Tresordatei</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>Datei lesen</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>Wird gelesen…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>Wähle, welche Konten importiert werden:</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>nur beobachten (kein Seed)</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>bereits im Tresor</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>Auswahl importieren</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>In dieser Datei wurden keine importierbaren Konten gefunden.</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>{0} Konto/Konten importiert.</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. Exportierte Tresordatei auswählen</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. Passwort der Datei eingeben und lesen</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. Konten wählen, Namen anpassen und importieren</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>Name in deinem Tresor</value>
+  </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>(keine)</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Common_TxBroadcast" xml:space="preserve">
+    <value>Transaktion gesendet! Tx-ID:</value>
+  </data>
+  <data name="Mod_PagesTitle" xml:space="preserve">
+    <value>Seiten &amp; Bereiche</value>
+  </data>
+  <data name="Mod_PagesIntro" xml:space="preserve">
+    <value>Zeige nur die Seiten, die du nutzt. Ausgeblendete Seiten verschwinden aus dem Menü — sonst ändert sich nichts, und du kannst sie jederzeit wieder einblenden.</value>
+  </data>
+  <data name="Mod_EnableAll" xml:space="preserve">
+    <value>Alle aktivieren</value>
+  </data>
+  <data name="Mod_DisableAll" xml:space="preserve">
+    <value>Alle deaktivieren</value>
+  </data>
+  <data name="ModDesc_Assets" xml:space="preserve">
+    <value>Deine Token und Anteile, mit Übertragungen.</value>
+  </data>
+  <data name="ModDesc_Watchlist" xml:space="preserve">
+    <value>Verfolge die Guthaben beobachteter Adressen.</value>
+  </data>
+  <data name="ModDesc_SignVerify" xml:space="preserve">
+    <value>Beliebige Nachrichten signieren und prüfen.</value>
+  </data>
+  <data name="ModDesc_SendMany" xml:space="preserve">
+    <value>An viele Empfänger in einem Stapel senden.</value>
+  </data>
+  <data name="ModDesc_Qx" xml:space="preserve">
+    <value>Assets an der dezentralen Börse QX handeln.</value>
+  </data>
+  <data name="ModDesc_Qswap" xml:space="preserve">
+    <value>Token über den QSwap-AMM tauschen.</value>
+  </data>
+  <data name="ModDesc_Qearn" xml:space="preserve">
+    <value>QUBIC sperren und Staking-Belohnungen verdienen (QEarn).</value>
+  </data>
+  <data name="ModDesc_Msvault" xml:space="preserve">
+    <value>Gemeinsame Multisignatur-Tresore (MSVault).</value>
+  </data>
+  <data name="ModDesc_ScAuctions" xml:space="preserve">
+    <value>Bei Auktionen auf Smart-Contract-Slots bieten.</value>
+  </data>
+  <data name="ModDesc_Voting" xml:space="preserve">
+    <value>Community-Umfragen (QUtil): ansehen, abstimmen, erstellen.</value>
+  </data>
+  <data name="ModDesc_Governance" xml:space="preserve">
+    <value>Computor-Governance-Vorschläge (GQMPROP).</value>
+  </data>
+  <data name="ModDesc_Ccf" xml:space="preserve">
+    <value>Vorschläge und Abstimmungen des Community Contribution Fund.</value>
+  </data>
+  <data name="Nav_Governance" xml:space="preserve">
+    <value>Governance</value>
+  </data>
+  <data name="Nav_Ccf" xml:space="preserve">
+    <value>CCF</value>
+  </data>
+  <data name="GOV_Title" xml:space="preserve">
+    <value>Governance</value>
+  </data>
+  <data name="GOV_Subtitle" xml:space="preserve">
+    <value>Allgemeine Quorum-Vorschläge (GQMProp) – Ertragsspende und Governance-Abstimmung.</value>
+  </data>
+  <data name="GOV_Tab_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="GOV_Tab_Propose" xml:space="preserve">
+    <value>Vorschlagen</value>
+  </data>
+  <data name="GOV_Tab_Vote" xml:space="preserve">
+    <value>Abstimmen</value>
+  </data>
+  <data name="GOV_Tab_Results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="GOV_Tab_GetVote" xml:space="preserve">
+    <value>Stimme abrufen</value>
+  </data>
+  <data name="GOV_Tab_Revenue" xml:space="preserve">
+    <value>Erträge</value>
+  </data>
+  <data name="GOV_BrowseActive" xml:space="preserve">
+    <value>Aktiv (aktuelle Epoche)</value>
+  </data>
+  <data name="GOV_BrowsePrior" xml:space="preserve">
+    <value>Frühere Epochen</value>
+  </data>
+  <data name="GOV_LoadProposals" xml:space="preserve">
+    <value>Vorschläge laden</value>
+  </data>
+  <data name="GOV_NoProposals" xml:space="preserve">
+    <value>Keine Vorschläge gefunden.</value>
+  </data>
+  <data name="GOV_ColIndex" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="GOV_Proposer" xml:space="preserve">
+    <value>Antragsteller</value>
+  </data>
+  <data name="GOV_Url" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="GOV_LoadMore" xml:space="preserve">
+    <value>Mehr laden</value>
+  </data>
+  <data name="GOV_Destination" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="GOV_ProposalType" xml:space="preserve">
+    <value>Vorschlagstyp</value>
+  </data>
+  <data name="GOV_Grp_General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="GOV_Grp_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="GOV_Grp_Variable" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="GOV_Grp_MultiVar" xml:space="preserve">
+    <value>Multi-Variablen</value>
+  </data>
+  <data name="GOV_Grp_TransferEpoch" xml:space="preserve">
+    <value>Transfer in Epoche</value>
+  </data>
+  <data name="GOV_TL_0002" xml:space="preserve">
+    <value>Allgemein: Ja/Nein</value>
+  </data>
+  <data name="GOV_TL_0003" xml:space="preserve">
+    <value>Allgemein: 3 Optionen</value>
+  </data>
+  <data name="GOV_TL_0004" xml:space="preserve">
+    <value>Allgemein: 4 Optionen</value>
+  </data>
+  <data name="GOV_TL_0005" xml:space="preserve">
+    <value>Allgemein: 5 Optionen</value>
+  </data>
+  <data name="GOV_TL_0006" xml:space="preserve">
+    <value>Allgemein: 6 Optionen</value>
+  </data>
+  <data name="GOV_TL_0007" xml:space="preserve">
+    <value>Allgemein: 7 Optionen</value>
+  </data>
+  <data name="GOV_TL_0008" xml:space="preserve">
+    <value>Allgemein: 8 Optionen</value>
+  </data>
+  <data name="GOV_TL_0102" xml:space="preserve">
+    <value>Transfer: Ja/Nein</value>
+  </data>
+  <data name="GOV_TL_0103" xml:space="preserve">
+    <value>Transfer: 2 Beträge</value>
+  </data>
+  <data name="GOV_TL_0104" xml:space="preserve">
+    <value>Transfer: 3 Beträge</value>
+  </data>
+  <data name="GOV_TL_0105" xml:space="preserve">
+    <value>Transfer: 4 Beträge</value>
+  </data>
+  <data name="GOV_TL_0200" xml:space="preserve">
+    <value>Variable: Skalarmittel</value>
+  </data>
+  <data name="GOV_TL_0202" xml:space="preserve">
+    <value>Variable: Ja/Nein</value>
+  </data>
+  <data name="GOV_TL_0203" xml:space="preserve">
+    <value>Variable: 2 Werte</value>
+  </data>
+  <data name="GOV_TL_0204" xml:space="preserve">
+    <value>Variable: 3 Werte</value>
+  </data>
+  <data name="GOV_TL_0205" xml:space="preserve">
+    <value>Variable: 4 Werte</value>
+  </data>
+  <data name="GOV_TL_0302" xml:space="preserve">
+    <value>Multi-Var: Ja/Nein</value>
+  </data>
+  <data name="GOV_TL_0303" xml:space="preserve">
+    <value>Multi-Var: 3 Optionen</value>
+  </data>
+  <data name="GOV_TL_0304" xml:space="preserve">
+    <value>Multi-Var: 4 Optionen</value>
+  </data>
+  <data name="GOV_TL_0402" xml:space="preserve">
+    <value>Transfer in Epoche: Ja/Nein</value>
+  </data>
+  <data name="GOV_TL_Unknown" xml:space="preserve">
+    <value>Unbekannt (0x{0})</value>
+  </data>
+  <data name="GOV_ProposalUrl" xml:space="preserve">
+    <value>Vorschlags-URL</value>
+  </data>
+  <data name="GOV_UrlHelp255" xml:space="preserve">
+    <value>(max. 255 Zeichen, beschreibt den Vorschlag)</value>
+  </data>
+  <data name="GOV_AutoDetected" xml:space="preserve">
+    <value>automatisch erkannt</value>
+  </data>
+  <data name="GOV_DestIdentity" xml:space="preserve">
+    <value>Ziel-Identität</value>
+  </data>
+  <data name="GOV_Amounts" xml:space="preserve">
+    <value>Beträge</value>
+  </data>
+  <data name="GOV_AmountsHelp" xml:space="preserve">
+    <value>(Millionstel des Ertrags; 1.000.000 = 100 %)</value>
+  </data>
+  <data name="GOV_OptionWord" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="GOV_Millionths" xml:space="preserve">
+    <value>(Millionstel)</value>
+  </data>
+  <data name="GOV_TargetEpoch" xml:space="preserve">
+    <value>Ziel-Epoche</value>
+  </data>
+  <data name="GOV_VariableId" xml:space="preserve">
+    <value>Variablen-ID</value>
+  </data>
+  <data name="GOV_MinValue" xml:space="preserve">
+    <value>Min.-Wert</value>
+  </data>
+  <data name="GOV_MaxValue" xml:space="preserve">
+    <value>Max.-Wert</value>
+  </data>
+  <data name="GOV_ProposedValue" xml:space="preserve">
+    <value>Vorgeschlagener Wert</value>
+  </data>
+  <data name="GOV_Values" xml:space="preserve">
+    <value>Werte</value>
+  </data>
+  <data name="GOV_SetProposal" xml:space="preserve">
+    <value>Vorschlag festlegen</value>
+  </data>
+  <data name="GOV_ClearMyProposal" xml:space="preserve">
+    <value>Meinen Vorschlag löschen</value>
+  </data>
+  <data name="GOV_ProposalIndex" xml:space="preserve">
+    <value>Vorschlagsindex</value>
+  </data>
+  <data name="GOV_LoadProposal" xml:space="preserve">
+    <value>Vorschlag laden</value>
+  </data>
+  <data name="GOV_VoteValue" xml:space="preserve">
+    <value>Abstimmungswert</value>
+  </data>
+  <data name="GOV_ScalarValuePlaceholder" xml:space="preserve">
+    <value>Skalarwert</value>
+  </data>
+  <data name="GOV_ScalarVoteHelp" xml:space="preserve">
+    <value>Skalare Abstimmung: Gib deinen vorgeschlagenen Wert ein.</value>
+  </data>
+  <data name="GOV_NoChange" xml:space="preserve">
+    <value>Keine Änderung</value>
+  </data>
+  <data name="GOV_CastVote" xml:space="preserve">
+    <value>Stimme abgeben</value>
+  </data>
+  <data name="GOV_ClearVote" xml:space="preserve">
+    <value>Stimme löschen</value>
+  </data>
+  <data name="GOV_ViewResults" xml:space="preserve">
+    <value>Aktuelle Ergebnisse anzeigen</value>
+  </data>
+  <data name="GOV_LoadResults" xml:space="preserve">
+    <value>Ergebnisse laden</value>
+  </data>
+  <data name="GOV_AuthorizedVoters" xml:space="preserve">
+    <value>Stimmberechtigte</value>
+  </data>
+  <data name="GOV_VotesCast" xml:space="preserve">
+    <value>Abgegebene Stimmen</value>
+  </data>
+  <data name="GOV_OptionVotes" xml:space="preserve">
+    <value>Stimmen je Option</value>
+  </data>
+  <data name="GOV_ScalarResult" xml:space="preserve">
+    <value>Skalarergebnis</value>
+  </data>
+  <data name="GOV_VoterIdentity" xml:space="preserve">
+    <value>Wähler-Identität</value>
+  </data>
+  <data name="GOV_BlankYourIdentity" xml:space="preserve">
+    <value>(leer = deine Identität)</value>
+  </data>
+  <data name="GOV_LoadVote" xml:space="preserve">
+    <value>Stimme laden</value>
+  </data>
+  <data name="GOV_ProposalTick" xml:space="preserve">
+    <value>Vorschlags-Tick</value>
+  </data>
+  <data name="GOV_NoVoteCleared" xml:space="preserve">
+    <value>Keine Stimme / gelöscht</value>
+  </data>
+  <data name="GOV_ZeroNoChange" xml:space="preserve">
+    <value>0 (keine Änderung)</value>
+  </data>
+  <data name="GOV_RevenueDesc" xml:space="preserve">
+    <value>Ertragsspenden-Einträge definieren laufende Transfers aus dem Netzwerk-Ertragspool.</value>
+  </data>
+  <data name="GOV_LoadRevenue" xml:space="preserve">
+    <value>Ertragsspenden-Tabelle laden</value>
+  </data>
+  <data name="GOV_NoRevenue" xml:space="preserve">
+    <value>Keine aktiven Ertragsspenden.</value>
+  </data>
+  <data name="GOV_FirstEpoch" xml:space="preserve">
+    <value>Erste Epoche</value>
+  </data>
+  <data name="GOV_AmountN" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="GOV_ValueN" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="GOV_Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="GOV_Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="GOV_Proposed" xml:space="preserve">
+    <value>Vorgeschlagen</value>
+  </data>
+  <data name="GOV_ComputorOnly" xml:space="preserve">
+    <value>Nur Computors können Vorschläge erstellen oder abstimmen. Durchsuchen und Ergebnisse stehen allen offen.</value>
+  </data>
+  <data name="GOV_ErrUrlTooLong" xml:space="preserve">
+    <value>URL zu lang (max. 255 Zeichen).</value>
+  </data>
+  <data name="GOV_ErrNoEpoch" xml:space="preserve">
+    <value>Aktuelle Epoche kann nicht bestimmt werden. Bitte mit dem Netzwerk verbinden.</value>
+  </data>
+  <data name="GOV_ErrInvalidDest" xml:space="preserve">
+    <value>Ungültiges Ziel: {0}</value>
+  </data>
+  <data name="GOV_ErrParseDest" xml:space="preserve">
+    <value>Ziel-Identität konnte nicht gelesen werden.</value>
+  </data>
+  <data name="GOV_ErrProposalNotFound" xml:space="preserve">
+    <value>Vorschlag nicht gefunden oder ungültig.</value>
+  </data>
+  <data name="GOV_ErrLoadProposalFirst" xml:space="preserve">
+    <value>Zuerst den Vorschlag laden.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoteValue" xml:space="preserve">
+    <value>Ungültiger Abstimmungswert.</value>
+  </data>
+  <data name="GOV_ErrNoResults" xml:space="preserve">
+    <value>Keine Ergebnisse für diesen Vorschlag gefunden.</value>
+  </data>
+  <data name="GOV_ErrNoVote" xml:space="preserve">
+    <value>Keine Stimme gefunden.</value>
+  </data>
+  <data name="GOV_ErrEnterVoterOrSeed" xml:space="preserve">
+    <value>Wähler-Identität eingeben oder Seed verbinden.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoter" xml:space="preserve">
+    <value>Ungültige Wähler-Identität.</value>
+  </data>
+  <data name="CCF_Title" xml:space="preserve">
+    <value>Computor-kontrollierter Fonds (CCF)</value>
+  </data>
+  <data name="CCF_Subtitle" xml:space="preserve">
+    <value>CCF-Vorschläge, Abstimmung, Transfers und Abo-Verwaltung (Vertrag 8).</value>
+  </data>
+  <data name="CCF_Tab_Browse" xml:space="preserve">
+    <value>Durchsuchen</value>
+  </data>
+  <data name="CCF_Tab_Propose" xml:space="preserve">
+    <value>Vorschlagen</value>
+  </data>
+  <data name="CCF_Tab_Vote" xml:space="preserve">
+    <value>Abstimmen</value>
+  </data>
+  <data name="CCF_Tab_Results" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="CCF_Tab_GetVote" xml:space="preserve">
+    <value>Stimme abrufen</value>
+  </data>
+  <data name="CCF_Tab_Subscriptions" xml:space="preserve">
+    <value>Abos</value>
+  </data>
+  <data name="CCF_Tab_Transfers" xml:space="preserve">
+    <value>Transfers</value>
+  </data>
+  <data name="CCF_Tab_Payments" xml:space="preserve">
+    <value>Zahlungen</value>
+  </data>
+  <data name="CCF_BrowseActive" xml:space="preserve">
+    <value>Aktiv (aktuelle Epoche)</value>
+  </data>
+  <data name="CCF_BrowseFinished" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="CCF_BrowseByIndex" xml:space="preserve">
+    <value>Nach Index</value>
+  </data>
+  <data name="CCF_ProposalIndexPlaceholder" xml:space="preserve">
+    <value>Vorschlagsindex</value>
+  </data>
+  <data name="CCF_LoadProposal" xml:space="preserve">
+    <value>Vorschlag laden</value>
+  </data>
+  <data name="CCF_LoadProposals" xml:space="preserve">
+    <value>Vorschläge laden</value>
+  </data>
+  <data name="CCF_NoProposals" xml:space="preserve">
+    <value>Keine Vorschläge gefunden.</value>
+  </data>
+  <data name="CCF_AmountQu" xml:space="preserve">
+    <value>Betrag (QU)</value>
+  </data>
+  <data name="CCF_SubscriptionProposal" xml:space="preserve">
+    <value>Abo-Vorschlag</value>
+  </data>
+  <data name="CCF_SubProposer" xml:space="preserve">
+    <value>Abo-Antragsteller</value>
+  </data>
+  <data name="CCF_SubDestination" xml:space="preserve">
+    <value>Abo-Ziel</value>
+  </data>
+  <data name="CCF_WeeksPerPeriod" xml:space="preserve">
+    <value>Wochen/Periode</value>
+  </data>
+  <data name="CCF_Periods" xml:space="preserve">
+    <value>Perioden</value>
+  </data>
+  <data name="CCF_AmountPerPeriod" xml:space="preserve">
+    <value>Betrag/Periode</value>
+  </data>
+  <data name="CCF_StartEpoch" xml:space="preserve">
+    <value>Start-Epoche</value>
+  </data>
+  <data name="CCF_ActiveSubscription" xml:space="preserve">
+    <value>Aktives Abo</value>
+  </data>
+  <data name="CCF_CurrentPeriod" xml:space="preserve">
+    <value>Aktuelle Periode</value>
+  </data>
+  <data name="CCF_ProposalFeeInfo" xml:space="preserve">
+    <value>Vorschlagsgebühr: {0} QU (automatisch abgerufen, als Transaktionsbetrag gesendet)</value>
+  </data>
+  <data name="CCF_LoadProposalFee" xml:space="preserve">
+    <value>Vorschlagsgebühr laden</value>
+  </data>
+  <data name="CCF_OnlyYesNo" xml:space="preserve">
+    <value>Der CCF unterstützt nur Transfer: Ja/Nein (0x0102)-Vorschläge.</value>
+  </data>
+  <data name="CCF_UrlHelp255" xml:space="preserve">
+    <value>(max. 255 Zeichen)</value>
+  </data>
+  <data name="CCF_AmountPerPeriodQu" xml:space="preserve">
+    <value>Betrag/Periode (QU)</value>
+  </data>
+  <data name="CCF_NumPeriods" xml:space="preserve">
+    <value>Anzahl Perioden</value>
+  </data>
+  <data name="CCF_DurationExceeds" xml:space="preserve">
+    <value>Gesamtdauer von {0} Epochen überschreitet das Maximum von 52.</value>
+  </data>
+  <data name="CCF_YesApprove" xml:space="preserve">
+    <value>Ja (Zustimmen)</value>
+  </data>
+  <data name="CCF_OneYesApprove" xml:space="preserve">
+    <value>1 (Ja / Zustimmen)</value>
+  </data>
+  <data name="CCF_SubLookupDesc" xml:space="preserve">
+    <value>Aktives Abo anhand seiner Ziel-Identität nachschlagen.</value>
+  </data>
+  <data name="CCF_Lookup" xml:space="preserve">
+    <value>Nachschlagen</value>
+  </data>
+  <data name="CCF_NoSubscription" xml:space="preserve">
+    <value>Kein aktives Abo für dieses Ziel gefunden.</value>
+  </data>
+  <data name="CCF_TransfersDesc" xml:space="preserve">
+    <value>Aktuelle einmalige Transfers, die vom Quorum genehmigt wurden.</value>
+  </data>
+  <data name="CCF_LoadTransfers" xml:space="preserve">
+    <value>Neueste Transfers laden</value>
+  </data>
+  <data name="CCF_NoTransfers" xml:space="preserve">
+    <value>Keine Transfers gefunden.</value>
+  </data>
+  <data name="CCF_Success" xml:space="preserve">
+    <value>Erfolg</value>
+  </data>
+  <data name="CCF_PaymentsDesc" xml:space="preserve">
+    <value>Aktuelle (regelmäßige) Abo-Zahlungen des CCF-Vertrags.</value>
+  </data>
+  <data name="CCF_LoadPayments" xml:space="preserve">
+    <value>Regelmäßige Zahlungen laden</value>
+  </data>
+  <data name="CCF_NoPayments" xml:space="preserve">
+    <value>Keine regelmäßigen Zahlungen gefunden.</value>
+  </data>
+  <data name="CCF_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="CCF_TL_0102" xml:space="preserve">
+    <value>Transfer: Ja/Nein</value>
+  </data>
+  <data name="CCF_TL_Unknown" xml:space="preserve">
+    <value>Typ 0x{0}</value>
+  </data>
+  <data name="CCF_ComputorOnly" xml:space="preserve">
+    <value>Nur Computors können Vorschläge erstellen oder abstimmen. Durchsuchen und Ergebnisse stehen allen offen.</value>
+  </data>
+  <data name="CCF_UrlWarning" xml:space="preserve">
+    <value>Dieser Link stammt aus einem CCF-Vorschlag und könnte gefährlich sein.
+
+{0}</value>
+  </data>
+  <data name="CCF_ErrNoFee" xml:space="preserve">
+    <value>Vorschlagsgebühr konnte nicht ermittelt werden.</value>
+  </data>
+  <data name="CCF_ErrInvalidDest" xml:space="preserve">
+    <value>Ungültige Ziel-Identität.</value>
+  </data>
+</root>

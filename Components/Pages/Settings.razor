@@ -6,73 +6,77 @@
 @inject Qubic.Services.Storage.WalletStorageService WalletStorage
 @inject SeedSessionService Seed
 @inject IJSRuntime JS
-@inject VaultService Vault
-@inject TransactionTrackerService TxTracker
 @inject AutoLockService AutoLock
-@inject FileDialogService DialogService
 @inject Qubic.Services.Features.FeatureService Features
 @inject NavigationManager Nav
+@inject Qubic.Net.Wallet.Localization.LanguageService Language
+@inject Qubic.Net.Wallet.Services.AppRestartService AppRestart
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>Settings</h4>
-<p class="text-muted">Configure Qubic.Net Wallet behavior.</p>
+<h4>@Loc["ST_Title"]</h4>
+<p class="text-muted">@Loc["ST_Subtitle"]</p>
 
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "general" ? "active" : "")" href="" @onclick="@(() => SetTab("general"))" @onclick:preventDefault>
-            <i class="bi bi-gear me-1"></i>General
-        </a>
+            <i class="bi bi-gear me-1"></i>@Loc["ST_Tab_General"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "networks" ? "active" : "")" href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>
-            <i class="bi bi-hdd-network me-1"></i>Networks</a>
+            <i class="bi bi-hdd-network me-1"></i>@Loc["ST_Tab_Networks"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "features" ? "active" : "")" href="" @onclick="@(() => SetTab("features"))" @onclick:preventDefault>
-            <i class="bi bi-toggles me-1"></i>Features
-        </a>
+            <i class="bi bi-toggles me-1"></i>@Loc["ST_Tab_Features"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "transactions" ? "active" : "")" href="" @onclick="@(() => SetTab("transactions"))" @onclick:preventDefault>
-            <i class="bi bi-arrow-left-right me-1"></i>Transactions
-        </a>
+            <i class="bi bi-arrow-left-right me-1"></i>@Loc["ST_Tab_Transactions"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "labels" ? "active" : "")" href="" @onclick="@(() => SetTab("labels"))" @onclick:preventDefault>
-            <i class="bi bi-tags me-1"></i>Labels
-        </a>
+            <i class="bi bi-tags me-1"></i>@Loc["ST_Tab_Labels"]</a>
     </li>
     <li class="nav-item">
         <a class="nav-link @(_activeTab == "data" ? "active" : "")" href="" @onclick="@(() => SetTab("data"))" @onclick:preventDefault>
-            <i class="bi bi-database me-1"></i>Data
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(_activeTab == "vault" ? "active" : "")" href="" @onclick="@(() => SetTab("vault"))" @onclick:preventDefault>
-            <i class="bi bi-shield-lock me-1"></i>Vault
-        </a>
+            <i class="bi bi-database me-1"></i>@Loc["ST_Tab_Data"]</a>
     </li>
 </ul>
 
 @if (_activeTab == "general")
 {
     <div class="row"><div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header"><i class="bi bi-translate me-1"></i>@Loc["Language_Title"]</div>
+            <div class="card-body">
+                <p class="small text-muted mb-2">@Loc["Language_Description"]</p>
+                <label class="form-label small">@Loc["Language_Label"]</label>
+                <select class="form-select" value="@Language.CurrentCode" @onchange="OnLanguageChanged">
+                    @foreach (var lang in Qubic.Net.Wallet.Localization.LanguageService.Supported)
+                    {
+                        <option value="@lang.Code">@lang.NativeName@(lang.Code == "en" ? "" : $" ({lang.EnglishName})")</option>
+                    }
+                </select>
+            </div>
+        </div>
+
         <div class="mb-3">
-            <label class="form-label">Theme</label>
+            <label class="form-label">@Loc["ST_Theme"]</label>
             <select class="form-select" value="@_theme" @onchange="OnThemeChanged">
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
+                <option value="light">@Loc["ST_ThemeLight"]</option>
+                <option value="dark">@Loc["ST_ThemeDark"]</option>
             </select>
         </div>
 
         <div class="card mb-3">
-            <div class="card-header"><i class="bi bi-clock me-1"></i>Auto-Lock</div>
+            <div class="card-header"><i class="bi bi-clock me-1"></i>@Loc["ST_AutoLock"]</div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label small">Lock vault after inactivity (minutes)</label>
+                    <label class="form-label small">@Loc["ST_LockAfter"]</label>
                     <input type="number" class="form-control form-control-sm" min="0" max="480"
                            value="@AutoLock.TimeoutMinutes"
                            @onchange="e => { if (int.TryParse(e.Value?.ToString(), out var m)) AutoLock.TimeoutMinutes = m; }" />
-                    <div class="form-text">Set to 0 to disable auto-lock. Default: 15 minutes.</div>
+                    <div class="form-text">@Loc["ST_LockAfterHelp"]</div>
                 </div>
             </div>
         </div>
@@ -85,8 +89,12 @@ else if (_activeTab == "networks")
 else if (_activeTab == "features")
 {
     <div class="row"><div class="col-lg-8">
-        <p class="small text-muted">Optional features are off unless enabled here. Features that are off do not run at all.</p>
+        <p class="small text-muted">@Loc["ST_FeaturesIntro"]</p>
         <FeaturesPanel OnChanged="OnFeatureChanged" />
+
+        <h6 class="mt-4"><i class="bi bi-window-stack me-1"></i>@Loc["Mod_PagesTitle"]</h6>
+        <p class="small text-muted">@Loc["Mod_PagesIntro"]</p>
+        <ModulesPanel />
     </div></div>
 }
 else if (_activeTab == "transactions")
@@ -95,7 +103,7 @@ else if (_activeTab == "transactions")
         <div class="alert alert-secondary small py-2">
             <i class="bi bi-info-circle me-1"></i>
             The target tick (fixed offset or "execute in ~N seconds") is set per network in
-            <a href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>Networks</a>.
+            <a href="" @onclick="@(() => SetTab("networks"))" @onclick:preventDefault>@Loc["ST_Tab_Networks"]</a>.
         </div>
 
         <div class="mb-3">
@@ -104,7 +112,7 @@ else if (_activeTab == "transactions")
                        checked="@Cfg.AutoResend"
                        @onchange="e => Cfg.AutoResend = (bool)(e.Value ?? false)" />
                 <label class="form-check-label" for="autoResend">
-                    Auto-Resend Failed Transactions
+                    @Loc["ST_AutoResend"]
                 </label>
             </div>
             <div class="form-text">
@@ -115,7 +123,7 @@ else if (_activeTab == "transactions")
         @if (Cfg.AutoResend)
         {
             <div class="mb-3">
-                <label class="form-label">Max Resend Attempts</label>
+                <label class="form-label">@Loc["ST_MaxResend"]</label>
                 <input type="number" class="form-control" min="1" max="20"
                        value="@Cfg.AutoResendMaxRetries"
                        @onchange="e => Cfg.AutoResendMaxRetries = int.TryParse(e.Value?.ToString(), out var v) ? v : 3" />
@@ -132,7 +140,7 @@ else if (_activeTab == "labels")
                        checked="@Features.IsEnabled(Qubic.Services.Features.WalletFeature.RemoteLabels)"
                        @onchange="OnRemoteLabelsToggled" />
                 <label class="form-check-label" for="remoteLabels">
-                    Load labels from remote registry
+                    @Loc["ST_RemoteLabels"]
                 </label>
             </div>
             <div class="form-text">
@@ -145,7 +153,7 @@ else if (_activeTab == "labels")
         {
             <div class="d-flex align-items-center gap-2 mb-2">
                 <button class="btn btn-outline-primary btn-sm" @onclick="RefreshLabels" disabled="@StaticData.IsLoading">
-                    <i class="bi bi-arrow-clockwise me-1"></i>@(StaticData.IsLoading ? "Loading..." : "Refresh Labels")
+                    <i class="bi bi-arrow-clockwise me-1"></i>@(StaticData.IsLoading ? Loc["Common_Loading"] : Loc["ST_RefreshLabels"])
                 </button>
                 @if (StaticData.LastFetched != null)
                 {
@@ -178,7 +186,7 @@ else if (_activeTab == "data")
         else
         {
             <div class="card mb-3">
-                <div class="card-header">Export Database</div>
+                <div class="card-header">@Loc["ST_ExportDb"]</div>
                 <div class="card-body">
                     <p class="small text-muted mb-2">
                         Download a backup of your wallet database. This includes all synced transactions,
@@ -189,7 +197,7 @@ else if (_activeTab == "data")
                         {
                             <span class="spinner-border spinner-border-sm me-1"></span>
                         }
-                        <i class="bi bi-download me-1"></i>Export Database
+                        <i class="bi bi-download me-1"></i>@Loc["ST_ExportDb"]
                     </button>
                     @if (_exportError != null)
                     {
@@ -199,7 +207,7 @@ else if (_activeTab == "data")
             </div>
 
             <div class="card mb-3">
-                <div class="card-header">Import Database</div>
+                <div class="card-header">@Loc["ST_ImportDb"]</div>
                 <div class="card-body">
                     <p class="small text-muted mb-2">
                         Restore a previously exported database. This will <strong>replace</strong> your current database
@@ -234,443 +242,13 @@ else if (_activeTab == "data")
             </div>
 
             <div class="card">
-                <div class="card-header">Storage Info</div>
+                <div class="card-header">@Loc["ST_StorageInfo"]</div>
                 <div class="card-body small">
-                    <div class="mb-1"><strong>Database path:</strong> <code>@WalletStorage.Database.DatabasePath</code></div>
-                    <div class="mb-1"><strong>Transactions:</strong> @WalletStorage.TransactionCount</div>
-                    <div><strong>Log events:</strong> @WalletStorage.LogEventCount</div>
+                    <div class="mb-1"><strong>@Loc["ST_DatabasePath"]</strong> <code>@WalletStorage.Database.DatabasePath</code></div>
+                    <div class="mb-1"><strong>@Loc["ST_TransactionsCount"]</strong> @WalletStorage.TransactionCount</div>
+                    <div><strong>@Loc["ST_LogEventsCount"]</strong> @WalletStorage.LogEventCount</div>
                 </div>
             </div>
-        }
-    </div></div>
-}
-else if (_activeTab == "vault")
-{
-    <div class="row"><div class="col-md-8">
-        @if (!Vault.VaultConfigured)
-        {
-            <div class="alert alert-info py-2 mb-3">
-                <i class="bi bi-info-circle me-1"></i>
-                No vault configured. Create a new vault or open an existing vault file.
-            </div>
-            <div class="card mb-3">
-                <div class="card-header">Create New Vault</div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label class="form-label small">Vault File Location</label>
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control"
-                                   @bind="_vaultCreatePath" placeholder="Path to save vault file..." />
-                            @if (DialogService.IsAvailable)
-                            {
-                                <button class="btn btn-outline-secondary" type="button" @onclick="BrowseCreateVaultPath">
-                                    <i class="bi bi-folder2-open"></i>
-                                </button>
-                            }
-                        </div>
-                        <div class="form-text">Choose where to save your encrypted vault file.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Seed (55 characters)</label>
-                        <input type="password" class="form-control form-control-sm"
-                               @bind="_vaultCreateSeed" placeholder="Enter 55-char seed..." />
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Label</label>
-                        <input type="text" class="form-control form-control-sm"
-                               @bind="_vaultCreateLabel" placeholder="e.g. Main" />
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Password</label>
-                        <input type="password" class="form-control form-control-sm"
-                               @bind="_vaultCreatePassword" @bind:event="oninput" />
-                        <PasswordStrengthMeter Password="@_vaultCreatePassword" />
-                        <div class="form-text">Min 12 characters. Longer passphrases beat complex ones — a string of unrelated words is easier to remember and harder to crack.</div>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Confirm Password</label>
-                        <input type="password" class="form-control form-control-sm"
-                               @bind="_vaultCreatePasswordConfirm" />
-                    </div>
-                    @if (_vaultCreateError != null)
-                    {
-                        <div class="text-danger small mb-2">@_vaultCreateError</div>
-                    }
-                    <button class="btn btn-primary btn-sm" @onclick="CreateVaultFromSettings">
-                        <i class="bi bi-shield-plus me-1"></i>Create Vault
-                    </button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">Open Existing Vault</div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label class="form-label small">Vault File Path</label>
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control"
-                                   @bind="_vaultOpenPath" placeholder="Path to existing vault file..." />
-                            @if (DialogService.IsAvailable)
-                            {
-                                <button class="btn btn-outline-secondary" type="button" @onclick="BrowseOpenVaultPath">
-                                    <i class="bi bi-folder2-open"></i>
-                                </button>
-                            }
-                        </div>
-                    </div>
-                    @if (_vaultOpenError != null)
-                    {
-                        <div class="text-danger small mb-2">@_vaultOpenError</div>
-                    }
-                    <button class="btn btn-outline-primary btn-sm" @onclick="OpenExistingVault">
-                        <i class="bi bi-folder2-open me-1"></i>Open Vault
-                    </button>
-                </div>
-            </div>
-        }
-        else if (Vault.IsUnlocked)
-        {
-            <div class="alert alert-success py-2 mb-3">
-                <i class="bi bi-unlock me-1"></i>
-                Vault is unlocked. File: <code>@Vault.VaultPath</code>
-                <button class="btn btn-sm btn-outline-secondary ms-2" @onclick="BrowseMoveVault">
-                    <i class="bi bi-folder2-open me-1"></i>Change Location
-                </button>
-                @if (_moveVaultError != null)
-                {
-                    <div class="text-danger small mt-1">@_moveVaultError</div>
-                }
-            </div>
-
-            @* ── Seeds ── *@
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-key-fill me-1"></i>Seeds</span>
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => _showVaultAddSeed = !_showVaultAddSeed">
-                        <i class="bi @(_showVaultAddSeed ? "bi-x" : "bi-plus")"></i>
-                    </button>
-                </div>
-                <div class="card-body p-0">
-                    @if (_showVaultAddSeed)
-                    {
-                        <div class="p-3 border-bottom" style="border-color:var(--qb-border)!important">
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Seed (55 characters)</label>
-                                <div class="input-group input-group-sm">
-                                    <input type="@(_vaultAddSeedRevealed ? "text" : "password")" class="form-control form-control-sm mono"
-                                           @bind="_vaultAddSeed" placeholder="Enter or generate a 55-char seed..." />
-                                    <button class="btn btn-outline-secondary" type="button"
-                                            @onclick="() => _vaultAddSeedRevealed = !_vaultAddSeedRevealed"
-                                            title="@(_vaultAddSeedRevealed ? "Hide" : "Reveal")">
-                                        <i class="bi @(_vaultAddSeedRevealed ? "bi-eye-slash" : "bi-eye")"></i>
-                                    </button>
-                                    <button class="btn btn-outline-primary" type="button" @onclick="GenerateVaultAddSeed"
-                                            title="Generate random seed">
-                                        <i class="bi bi-shuffle me-1"></i>Generate
-                                    </button>
-                                </div>
-                            </div>
-                            @if (_vaultAddSeedGenerated)
-                            {
-                                <div class="alert alert-danger small py-2 mb-2">
-                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
-                                    <strong>Write down this seed and store it safely!</strong> If you lose it, there is no recovery.
-                                </div>
-                            }
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Label</label>
-                                <input type="text" class="form-control form-control-sm"
-                                       @bind="_vaultAddLabel" placeholder="e.g. Trading" />
-                            </div>
-                            @if (_vaultAddError != null)
-                            {
-                                <div class="text-danger small mb-2">@_vaultAddError</div>
-                            }
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary btn-sm" @onclick="AddVaultEntry">
-                                    <i class="bi bi-plus-circle me-1"></i>Add Entry
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="() => _showVaultAddSeed = false">Cancel</button>
-                            </div>
-                        </div>
-                    }
-
-                    @if (Vault.Entries.Count == 0)
-                    {
-                        <div class="text-center text-muted py-3 small">No seeds stored.</div>
-                    }
-                    else
-                    {
-                        <table class="table table-sm table-striped mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Label</th>
-                                    <th>Identity</th>
-                                    <th style="width:150px">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var entry in Vault.Entries)
-                                {
-                                    <tr>
-                                        <td>
-                                            @if (_renamingIdentity == entry.Identity)
-                                            {
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                           @bind="_renameLabel" />
-                                                    <button class="btn btn-outline-success btn-sm" @onclick="() => ConfirmRename(entry.Identity)">
-                                                        <i class="bi bi-check"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="CancelRename">
-                                                        <i class="bi bi-x"></i>
-                                                    </button>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                @entry.Label
-                                            }
-                                        </td>
-                                        <td><code class="small">@entry.Identity</code></td>
-                                        <td>
-                                            @if (_renamingIdentity != entry.Identity)
-                                            {
-                                                <button class="btn btn-outline-secondary btn-sm me-1"
-                                                        @onclick="() => ToggleRevealSeed(entry.Identity)"
-                                                        title="@(_revealedSeedIdentity == entry.Identity ? "Hide seed" : "Reveal seed")">
-                                                    <i class="bi @(_revealedSeedIdentity == entry.Identity ? "bi-eye-slash" : "bi-eye")"></i>
-                                                </button>
-                                                <button class="btn btn-outline-secondary btn-sm me-1" @onclick="() => StartRename(entry)"
-                                                        title="Rename">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm" @onclick="() => RemoveVaultEntry(entry)"
-                                                        title="Remove">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                    @if (_confirmRevealIdentity == entry.Identity && _revealedSeedIdentity != entry.Identity)
-                                    {
-                                        <tr>
-                                            <td colspan="3" class="py-1 px-3" style="background:var(--qb-bg-alt,#1a1a2e)">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="small text-warning">
-                                                        <i class="bi bi-exclamation-triangle me-1"></i>
-                                                        Anyone who sees your seed can steal your funds. Make sure no one is watching your screen.
-                                                    </span>
-                                                    <button class="btn btn-outline-warning btn-sm" @onclick="() => ConfirmRevealSeed(entry.Identity)">
-                                                        Reveal
-                                                    </button>
-                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="CancelRevealSeed">
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                    @if (_revealedSeedIdentity == entry.Identity)
-                                    {
-                                        <tr>
-                                            <td colspan="3" class="py-1 px-3" style="background:var(--qb-bg-alt,#1a1a2e)">
-                                                <div class="input-group input-group-sm">
-                                                    <span class="input-group-text small">Seed</span>
-                                                    <input type="text" class="form-control form-control-sm mono" value="@entry.Seed" readonly />
-                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="() => CopyRevealedSeed(entry.Seed)"
-                                                            title="Copy to clipboard">
-                                                        <i class="bi @(_revealedSeedCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-
-            @* ── Address Book ── *@
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-person-lines-fill me-1"></i>Address Book</span>
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => _showVaultAddContact = !_showVaultAddContact">
-                        <i class="bi @(_showVaultAddContact ? "bi-x" : "bi-plus")"></i>
-                    </button>
-                </div>
-                <div class="card-body p-0">
-                    @if (_showVaultAddContact)
-                    {
-                        <div class="p-3 border-bottom" style="border-color:var(--qb-border)!important">
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Label</label>
-                                <input type="text" class="form-control form-control-sm"
-                                       @bind="_contactAddLabel" placeholder="e.g. Exchange Hot Wallet" />
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Address (60-character identity)</label>
-                                <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_contactAddAddress)"
-                                       @bind="_contactAddAddress" @bind:event="oninput" placeholder="IDENTITY..." />
-                            </div>
-                            @if (_contactAddError != null)
-                            {
-                                <div class="text-danger small mb-2">@_contactAddError</div>
-                            }
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary btn-sm" @onclick="AddContact">
-                                    <i class="bi bi-plus-circle me-1"></i>Add Contact
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="() => _showVaultAddContact = false">Cancel</button>
-                            </div>
-                        </div>
-                    }
-
-                    @if (Vault.Contacts.Count == 0)
-                    {
-                        <div class="text-center text-muted py-3 small">No contacts in address book.</div>
-                    }
-                    else
-                    {
-                        <table class="table table-sm table-striped mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Label</th>
-                                    <th>Address</th>
-                                    <th style="width:150px">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var contact in Vault.Contacts)
-                                {
-                                    <tr>
-                                        <td>
-                                            @if (_renamingContactAddr == contact.Address)
-                                            {
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                           @bind="_contactRenameLabel" />
-                                                    <button class="btn btn-outline-success btn-sm" @onclick="() => ConfirmContactRename(contact.Address)">
-                                                        <i class="bi bi-check"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline-secondary btn-sm" @onclick="CancelContactRename">
-                                                        <i class="bi bi-x"></i>
-                                                    </button>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                @contact.Label
-                                            }
-                                        </td>
-                                        <td><code class="small">@contact.Address[..12]...@contact.Address[^8..]</code></td>
-                                        <td>
-                                            @if (_renamingContactAddr != contact.Address)
-                                            {
-                                                <button class="btn btn-outline-secondary btn-sm me-1"
-                                                        @onclick="() => StartContactRename(contact)" title="Rename">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-sm"
-                                                        @onclick="() => RemoveContact(contact)" title="Remove">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-
-            @* ── Vault Settings ── *@
-            <div class="card mb-3">
-                <div class="card-header"><i class="bi bi-gear me-1"></i>Vault Settings</div>
-                <div class="card-body p-0">
-                    @* Change Password row *@
-                    <div class="d-flex align-items-center p-3 border-bottom" style="border-color:var(--qb-border)!important;cursor:pointer"
-                         @onclick="() => _showVaultChangePassword = !_showVaultChangePassword">
-                        <i class="bi bi-key me-2" style="color:var(--qb-accent-cyan)"></i>
-                        <span class="flex-grow-1 small fw-bold">Change Password</span>
-                        <i class="bi @(_showVaultChangePassword ? "bi-chevron-down" : "bi-chevron-right") text-muted" style="font-size:0.75rem"></i>
-                    </div>
-                    @if (_showVaultChangePassword)
-                    {
-                        <div class="p-3 border-bottom" style="border-color:var(--qb-border)!important;background:var(--qb-bg-card-alt)">
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Current Password</label>
-                                <input type="password" class="form-control form-control-sm"
-                                       @bind="_vaultOldPassword" />
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">New Password</label>
-                                <input type="password" class="form-control form-control-sm"
-                                       @bind="_vaultNewPassword" @bind:event="oninput" />
-                                <PasswordStrengthMeter Password="@_vaultNewPassword" />
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label small mb-1">Confirm New Password</label>
-                                <input type="password" class="form-control form-control-sm"
-                                       @bind="_vaultNewPasswordConfirm" />
-                            </div>
-                            @if (_vaultPasswordChangeError != null)
-                            {
-                                <div class="text-danger small mb-2">@_vaultPasswordChangeError</div>
-                            }
-                            @if (_vaultPasswordChanged)
-                            {
-                                <div class="text-success small mb-2"><i class="bi bi-check-circle me-1"></i>Password changed successfully.</div>
-                            }
-                            <button class="btn btn-outline-primary btn-sm" @onclick="ChangeVaultPassword">
-                                <i class="bi bi-key me-1"></i>Change Password
-                            </button>
-                        </div>
-                    }
-
-                    @* Delete Vault row *@
-                    <div class="p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <span class="small fw-bold text-danger"><i class="bi bi-trash me-1"></i>Delete Vault</span>
-                                <div class="text-muted" style="font-size:0.75rem">Permanently delete the vault file and all stored entries.</div>
-                            </div>
-                            @if (!_confirmDeleteVault)
-                            {
-                                <button class="btn btn-outline-danger btn-sm" @onclick="() => _confirmDeleteVault = true">
-                                    Delete
-                                </button>
-                            }
-                        </div>
-                        @if (_confirmDeleteVault)
-                        {
-                            <div class="alert alert-danger py-2 mt-2 mb-2">
-                                <strong>Are you sure?</strong> This will permanently delete your vault and all stored seeds.
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm" @onclick="DeleteVault">
-                                    <i class="bi bi-exclamation-triangle me-1"></i>Yes, Delete Vault
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm" @onclick="() => _confirmDeleteVault = false">
-                                    Cancel
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="alert alert-warning py-2 mb-3">
-                <i class="bi bi-lock me-1"></i>
-                Vault is locked. Unlock it from the toolbar to manage entries.
-            </div>
-            <button class="btn btn-outline-secondary btn-sm" @onclick="DisconnectVault">
-                <i class="bi bi-box-arrow-right me-1"></i>Disconnect Vault
-            </button>
         }
     </div></div>
 }
@@ -695,6 +273,17 @@ else if (_activeTab == "vault")
             }
             StateHasChanged();
         }
+    }
+
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        var code = e.Value?.ToString();
+        if (string.IsNullOrEmpty(code) || code == Language.CurrentCode) return;
+        Language.Save(code);
+        if (AppRestart.IsSupported)
+            AppRestart.Restart();                        // desktop: relaunch so the culture is applied at startup
+        else
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);    // server: a fresh reload re-renders in the new language
     }
 
     private async Task OnThemeChanged(ChangeEventArgs e)
@@ -808,299 +397,13 @@ else if (_activeTab == "vault")
         return $"{bytes / (1024.0 * 1024.0):F1} MB";
     }
 
-    // ── Vault settings ──
-    private string _vaultCreatePath = "";
-    private string? _vaultCreateSeed;
-    private string? _vaultCreateLabel;
-    private string? _vaultCreatePassword;
-    private string? _vaultCreatePasswordConfirm;
-    private string? _vaultCreateError;
-
-    private string? _vaultOpenPath;
-    private string? _vaultOpenError;
-    private string? _moveVaultError;
-
-    private bool _showVaultAddSeed;
-    private string? _vaultAddSeed;
-    private string? _vaultAddLabel;
-    private string? _vaultAddError;
-    private bool _vaultAddSeedRevealed;
-    private bool _vaultAddSeedGenerated;
-
-    private string? _confirmRevealIdentity;
-    private string? _revealedSeedIdentity;
-    private bool _revealedSeedCopied;
-
-    private bool _showVaultAddContact;
-    private bool _showVaultChangePassword;
-
-    private string? _renamingIdentity;
-    private string _renameLabel = "";
-
-    private string? _vaultOldPassword;
-    private string? _vaultNewPassword;
-    private string? _vaultNewPasswordConfirm;
-    private string? _vaultPasswordChangeError;
-    private bool _vaultPasswordChanged;
-
-    private bool _confirmDeleteVault;
-
-    // Address book
-    private string? _contactAddLabel;
-    private string? _contactAddAddress;
-    private string? _contactAddError;
-    private string? _renamingContactAddr;
-    private string _contactRenameLabel = "";
 
     protected override void OnInitialized()
     {
-        _vaultCreatePath = Path.Combine(Cfg.StorageDirectory, "vault.dat");
         var uri = Nav.ToAbsoluteUri(Nav.Uri);
         var tab = System.Web.HttpUtility.ParseQueryString(uri.Query)["tab"];
+        if (tab == "vault") { Nav.NavigateTo("/accounts"); return; } // vault management moved to the Vault page
         if (!string.IsNullOrEmpty(tab)) _activeTab = tab;
     }
-
-    private async Task BrowseCreateVaultPath()
-    {
-        var path = await DialogService.ShowSaveFileAsync("Create Vault File", _vaultCreatePath, ".dat",
-            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
-        if (path != null) _vaultCreatePath = path;
-    }
-
-    private async Task BrowseMoveVault()
-    {
-        _moveVaultError = null;
-        if (!DialogService.IsAvailable) return;
-        var path = await DialogService.ShowSaveFileAsync("Move Vault File", Vault.VaultPath ?? "", ".dat",
-            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
-        if (path == null) return;
-        try
-        {
-            var oldPath = Vault.VaultPath;
-            Vault.MoveVault(path);
-            VaultFileHistory.Remove(Cfg, oldPath);
-            VaultFileHistory.Add(Cfg, Vault.VaultPath);
-        }
-        catch (Exception ex) { _moveVaultError = ex.Message; }
-    }
-
-    private async Task BrowseOpenVaultPath()
-    {
-        var path = await DialogService.ShowOpenFileAsync("Open Vault File", _vaultOpenPath ?? "",
-            ("Vault files", new[] { "*.dat" }), ("All files", new[] { "*.*" }));
-        if (path != null) _vaultOpenPath = path;
-    }
-
-    private void CreateVaultFromSettings()
-    {
-        _vaultCreateError = null;
-        if (string.IsNullOrWhiteSpace(_vaultCreatePath)) { _vaultCreateError = "File path is required."; return; }
-        if (_vaultCreateSeed?.Length != 55) { _vaultCreateError = "Seed must be 55 characters."; return; }
-        if (string.IsNullOrWhiteSpace(_vaultCreateLabel)) { _vaultCreateError = "Label is required."; return; }
-        var pwError = VaultService.ValidatePassword(_vaultCreatePassword);
-        if (pwError != null) { _vaultCreateError = pwError; return; }
-        if (_vaultCreatePassword != _vaultCreatePasswordConfirm) { _vaultCreateError = "Passwords do not match."; return; }
-
-        try
-        {
-            var entries = new List<VaultEntry> { new() { Label = _vaultCreateLabel, Seed = _vaultCreateSeed } };
-            Vault.CreateVault(_vaultCreatePath, _vaultCreatePassword!, entries);
-            VaultFileHistory.Add(Cfg, Vault.VaultPath);
-            _vaultCreateSeed = null; _vaultCreateLabel = null;
-            _vaultCreatePassword = null; _vaultCreatePasswordConfirm = null;
-        }
-        catch (Exception ex) { _vaultCreateError = ex.Message; }
-    }
-
-    private void OpenExistingVault()
-    {
-        _vaultOpenError = null;
-        if (string.IsNullOrWhiteSpace(_vaultOpenPath)) { _vaultOpenError = "File path is required."; return; }
-        try
-        {
-            Vault.SetVaultPath(_vaultOpenPath);
-            VaultFileHistory.Add(Cfg, Vault.VaultPath);
-        }
-        catch (Exception ex) { _vaultOpenError = ex.Message; }
-    }
-
-    private void GenerateVaultAddSeed()
-    {
-        _vaultAddSeed = Qubic.Core.QubicSeed.Generate();
-        _vaultAddSeedGenerated = true;
-        _vaultAddError = null;
-    }
-
-    private void AddVaultEntry()
-    {
-        _vaultAddError = null;
-        if (string.IsNullOrWhiteSpace(_vaultAddSeed) || _vaultAddSeed.Length != 55)
-        {
-            _vaultAddError = "Seed must be exactly 55 characters.";
-            return;
-        }
-        if (string.IsNullOrWhiteSpace(_vaultAddLabel))
-        {
-            _vaultAddError = "Label is required.";
-            return;
-        }
-        try
-        {
-            Vault.AddEntry(_vaultAddLabel, _vaultAddSeed);
-            _vaultAddSeed = null; _vaultAddLabel = null;
-            _vaultAddSeedRevealed = false; _vaultAddSeedGenerated = false;
-            _showVaultAddSeed = false;
-        }
-        catch (Exception ex) { _vaultAddError = ex.Message; }
-    }
-
-    private void ToggleRevealSeed(string identity)
-    {
-        if (_revealedSeedIdentity == identity || _confirmRevealIdentity == identity)
-        {
-            _confirmRevealIdentity = null;
-            _revealedSeedIdentity = null;
-            _revealedSeedCopied = false;
-        }
-        else
-        {
-            _confirmRevealIdentity = identity;
-            _revealedSeedIdentity = null;
-            _revealedSeedCopied = false;
-        }
-    }
-
-    private void ConfirmRevealSeed(string identity)
-    {
-        _revealedSeedIdentity = identity;
-    }
-
-    private void CancelRevealSeed()
-    {
-        _confirmRevealIdentity = null;
-        _revealedSeedIdentity = null;
-        _revealedSeedCopied = false;
-    }
-
-    private async Task CopyRevealedSeed(string seed)
-    {
-        await JS.InvokeVoidAsync("navigator.clipboard.writeText", seed);
-        _revealedSeedCopied = true;
-        StateHasChanged();
-        await Task.Delay(2000);
-        _revealedSeedCopied = false;
-        StateHasChanged();
-    }
-
-    private void RemoveVaultEntry(VaultEntry entry)
-    {
-        if (Seed.HasSeed && Seed.Identity?.ToString() == entry.Identity)
-        {
-            ClearSession();
-        }
-        if (_revealedSeedIdentity == entry.Identity || _confirmRevealIdentity == entry.Identity)
-        {
-            _revealedSeedIdentity = null;
-            _confirmRevealIdentity = null;
-        }
-        Vault.RemoveEntry(entry.Identity);
-    }
-
-    private void StartRename(VaultEntry entry)
-    {
-        _renamingIdentity = entry.Identity;
-        _renameLabel = entry.Label;
-    }
-
-    private void ConfirmRename(string identity)
-    {
-        if (!string.IsNullOrWhiteSpace(_renameLabel))
-            Vault.RenameEntry(identity, _renameLabel);
-        _renamingIdentity = null;
-    }
-
-    private void CancelRename() => _renamingIdentity = null;
-
-    private void ChangeVaultPassword()
-    {
-        _vaultPasswordChangeError = null;
-        _vaultPasswordChanged = false;
-        var pwError = VaultService.ValidatePassword(_vaultNewPassword);
-        if (pwError != null) { _vaultPasswordChangeError = pwError; return; }
-        if (_vaultNewPassword != _vaultNewPasswordConfirm) { _vaultPasswordChangeError = "Passwords do not match."; return; }
-        try
-        {
-            Vault.ChangePassword(_vaultOldPassword!, _vaultNewPassword!);
-            _vaultOldPassword = null; _vaultNewPassword = null; _vaultNewPasswordConfirm = null;
-            _vaultPasswordChanged = true;
-            _showVaultChangePassword = false;
-        }
-        catch (Exception ex) { _vaultPasswordChangeError = ex.Message; }
-    }
-
-    private void DeleteVault()
-    {
-        // Delete (which also clears decrypted data) before the session teardown:
-        // stopping the sync and closing the database can throw, and must not leave
-        // the vault contents in memory.
-        var deletedPath = Vault.VaultPath;
-        Vault.DeleteVault();
-        VaultFileHistory.Remove(Cfg, deletedPath);
-        ClearSession();
-        _confirmDeleteVault = false;
-    }
-
-    private void DisconnectVault()
-    {
-        Vault.LockVault();
-        Cfg.RemoveCustom("vault_path");
-        ClearSession();
-    }
-
-    /// <summary>Tears down the seed session; each step isolated so one failure cannot skip the rest.</summary>
-    private void ClearSession()
-    {
-        try { Seed.ClearSeed(); } catch { }
-        try { WalletStorage.ClearSeed(); } catch { }
-        try { TxTracker.ClearEncryptionKey(); } catch { }
-    }
-
-    // ── Address book ──
-
-    private void AddContact()
-    {
-        _contactAddError = null;
-        if (string.IsNullOrWhiteSpace(_contactAddLabel))
-        { _contactAddError = "Label is required."; return; }
-        var err = IdentityValidation.Validate(_contactAddAddress);
-        if (err != null) { _contactAddError = err; return; }
-        try
-        {
-            Vault.AddContact(_contactAddLabel, _contactAddAddress!.Trim());
-            _contactAddLabel = null; _contactAddAddress = null;
-            _showVaultAddContact = false;
-        }
-        catch (Exception ex) { _contactAddError = ex.Message; }
-    }
-
-    private void RemoveContact(ContactEntry contact)
-    {
-        Vault.RemoveContact(contact.Address);
-    }
-
-    private void StartContactRename(ContactEntry contact)
-    {
-        _renamingContactAddr = contact.Address;
-        _contactRenameLabel = contact.Label;
-    }
-
-    private void ConfirmContactRename(string address)
-    {
-        if (!string.IsNullOrWhiteSpace(_contactRenameLabel))
-            Vault.RenameContact(address, _contactRenameLabel);
-        _renamingContactAddr = null;
-    }
-
-    private void CancelContactRename() => _renamingContactAddr = null;
 
 }

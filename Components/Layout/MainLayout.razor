@@ -10,6 +10,7 @@
 @inject QubicStaticService StaticData
 @inject AssetRegistryService AssetRegistry
 @inject VaultService Vault
+@inject Qubic.Net.Wallet.Services.VaultActivationService VaultActivation
 @inject NavigationManager Nav
 @inject LabelService Labels
 @inject AutoLockService AutoLock
@@ -23,6 +24,7 @@
 @inject Qubic.Services.Signing.SigningReviewService SigningReview
 @inject Qubic.WalletConnect.QubicWalletConnectService WalletConnectSvc
 @inject Qubic.Net.Wallet.LocalApi.LocalSigningEndpoint LocalEndpoint
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 <div class="d-flex flex-column vh-100">
     <nav class="qb-navbar">
@@ -35,9 +37,13 @@
             @if (Vault.IsUnlocked && Seed.HasSeed)
             {
                 @* ── Vault unlocked, seed active ── *@
-                <span class="badge-qb-gold">
-                    <i class="bi bi-shield-lock-fill me-1"></i>@(Seed.ActiveLabel ?? "Vault")
+                <span class="badge-qb-gold" title="@Vault.VaultPath">
+                    <i class="bi bi-shield-lock-fill me-1"></i>@VaultFileHistory.DisplayName(Vault.VaultPath ?? "")
                 </span>
+                <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="() => _switchDlg?.Open()"
+                        title="@Loc["VSw_Switch"]">
+                    <i class="bi bi-arrow-left-right"></i>
+                </button>
                 @if (Vault.Entries.Count > 1)
                 {
                     <select class="form-select form-select-sm mono" style="width:auto;max-width:220px"
@@ -54,7 +60,7 @@
                     <span class="badge-qb-cyan mono">@Seed.Identity?.ToString()[..12]...</span>
                 }
                 <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="CopyIdentity"
-                        title="Copy full identity">
+                        title="@Loc["Shell_CopyIdentity"]">
                     <i class="bi @(_identityCopied ? "bi-check-lg text-success" : "bi-clipboard")"></i>
                 </button>
                 @if (BalanceSvc.Balance != null)
@@ -62,8 +68,8 @@
                     <span class="badge-qb-cyan mono">@BalanceSvc.Balance.Value.ToString("N0") QU</span>
                 }
                 <button class="btn btn-sm btn-qb-ghost" @onclick="LockVault"
-                        title="Lock vault and clear seed">
-                    <i class="bi bi-lock me-1"></i>Lock
+                        title="@Loc["Shell_LockAndClear"]">
+                    <i class="bi bi-lock me-1"></i>@Loc["Common_Lock"]
                 </button>
             }
             else if (Vault.VaultConfigured && !Vault.IsUnlocked && !_showDirectSeedInput && !Seed.HasSeed)
@@ -90,31 +96,31 @@
                 @if (DialogService.IsAvailable)
                 {
                     <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="BrowseForVaultFile"
-                            title="Open another vault file">
+                            title="@Loc["Shell_OpenAnotherVaultFile"]">
                         <i class="bi bi-folder2-open"></i>
                     </button>
                 }
                 <input type="password" class="form-control form-control-sm"
-                       style="width:220px" placeholder="Vault password..."
+                       style="width:220px" placeholder="@Loc["Shell_VaultPasswordPlaceholder"]"
                        @bind="_vaultPassword" @bind:event="oninput"
                        @onkeydown="OnVaultPasswordKeyDown" />
                 <button class="btn btn-sm btn-qb-primary" @onclick="UnlockVault"
                         disabled="@(string.IsNullOrEmpty(_vaultPassword))">
-                    <i class="bi bi-unlock me-1"></i>Unlock Vault
+                    <i class="bi bi-unlock me-1"></i>@Loc["Shell_UnlockVault"]
                 </button>
                 @if (_vaultError != null)
                 {
                     <span class="text-danger small">@_vaultError</span>
                 }
                 <button class="btn btn-sm btn-qb-ghost" @onclick="() => _showDirectSeedInput = true"
-                        title="Enter seed without vault">
-                    <i class="bi bi-key me-1"></i>Use seed directly
+                        title="@Loc["Shell_EnterSeedWithoutVault"]">
+                    <i class="bi bi-key me-1"></i>@Loc["Shell_UseSeedDirectly"]
                 </button>
             }
             else if (Seed.HasSeed && !Vault.IsUnlocked)
             {
                 @* ── No vault (or bypassed), seed active ── *@
-                <span class="badge-qb-gold">Seed active</span>
+                <span class="badge-qb-gold">@Loc["Shell_SeedActive"]</span>
                 <span class="badge-qb-cyan mono">@Seed.Identity?.ToString()[..12]...</span>
                 <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="CopyIdentity"
                         title="Copy full identity">
@@ -127,18 +133,18 @@
                 @if (!Vault.VaultConfigured)
                 {
                     <button class="btn btn-sm btn-qb-ghost" @onclick="() => _showSaveToVault = true"
-                            title="Save this seed to a vault">
-                        <i class="bi bi-shield-plus me-1"></i>Save to Vault
+                            title="@Loc["Shell_SaveToVaultTitle"]">
+                        <i class="bi bi-shield-plus me-1"></i>@Loc["Shell_SaveToVault"]
                     </button>
                 }
                 else
                 {
                     <button class="btn btn-sm btn-qb-ghost" @onclick="() => _showAddToVault = true"
-                            title="Add this seed to the existing vault">
-                        <i class="bi bi-shield-plus me-1"></i>Add to Vault
+                            title="@Loc["Shell_AddToVaultTitle"]">
+                        <i class="bi bi-shield-plus me-1"></i>@Loc["Shell_AddToVault"]
                     </button>
                 }
-                <button class="btn btn-sm btn-qb-ghost" @onclick="ClearSeedAndResetBypass">Clear</button>
+                <button class="btn btn-sm btn-qb-ghost" @onclick="ClearSeedAndResetBypass">@Loc["Common_Clear"]</button>
             }
             else
             {
@@ -149,7 +155,7 @@
                     <select @key="_vaultSelectVersion" class="form-select form-select-sm"
                             style="width:auto;max-width:180px" value=""
                             @onchange="OnVaultFileSelected">
-                        <option value="">Open vault...</option>
+                        <option value="">@Loc["Shell_OpenVaultDots"]</option>
                         @foreach (var path in _vaultFiles)
                         {
                             <option value="@path">@VaultLabel(path)</option>
@@ -160,15 +166,15 @@
                 {
                     @* Vault open but no identity active (e.g. just created from settings) *@
                     <button class="btn btn-sm btn-qb-ghost" @onclick="LockVault"
-                            title="Lock vault">
-                        <i class="bi bi-lock me-1"></i>Lock
+                            title="@Loc["Shell_LockVaultTitle"]">
+                        <i class="bi bi-lock me-1"></i>@Loc["Common_Lock"]
                     </button>
                 }
                 <input type="password" class="form-control form-control-sm"
-                       style="width:280px" placeholder="Enter 55-char seed to enable signing..."
+                       style="width:280px" placeholder="@Loc["Shell_SeedPlaceholder"]"
                        @bind="_seedInput" @bind:event="oninput" />
                 <button class="btn btn-sm btn-qb-primary" @onclick="SetSeed"
-                        disabled="@(_seedInput?.Length != 55)">Unlock</button>
+                        disabled="@(_seedInput?.Length != 55)">@Loc["Common_Unlock"]</button>
                 @if (_showDirectSeedInput && Vault.VaultConfigured)
                 {
                     <button class="btn btn-sm btn-qb-ghost" @onclick="() => _showDirectSeedInput = false">
@@ -242,6 +248,8 @@
 
 <SigningReviewHost />
 <WalletConnectProposalHost />
+<TransactionProgressHost />
+<VaultSwitchDialog @ref="_switchDlg" OnChanged="OnVaultSwitched" />
 <FeaturesDialog OnSaved="OnFeaturesSaved" />
 
 @* ── Save-to-Vault Modal ── *@
@@ -251,15 +259,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title"><i class="bi bi-shield-plus me-2"></i>Save Seed to Vault</h6>
+                    <h6 class="modal-title"><i class="bi bi-shield-plus me-2"></i>@Loc["Shell_SaveSeedToVaultTitle"]</h6>
                     <button type="button" class="btn-close" @onclick="CloseSaveToVault"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small">Vault File Location</label>
+                        <label class="form-label small">@Loc["Shell_VaultFileLocation"]</label>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control"
-                                   placeholder="Path to save vault file..."
+                                   placeholder="@Loc["Shell_VaultPathPlaceholder"]"
                                    @bind="_saveVaultPath" />
                             @if (DialogService.IsAvailable)
                             {
@@ -268,28 +276,28 @@
                                 </button>
                             }
                         </div>
-                        <div class="form-text">Choose where to save your encrypted vault file.</div>
+                        <div class="form-text">@Loc["Shell_VaultPathHelp"]</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small">Label for this seed</label>
+                        <label class="form-label small">@Loc["Shell_LabelForSeed"]</label>
                         <input type="text" class="form-control form-control-sm"
-                               placeholder="e.g. Main, Trading, Savings"
+                               placeholder="@Loc["Shell_LabelPlaceholder"]"
                                @bind="_saveVaultLabel" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small">Vault Password</label>
+                        <label class="form-label small">@Loc["Shell_VaultPassword"]</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_saveVaultPassword" @bind:event="oninput" />
                         <PasswordStrengthMeter Password="@_saveVaultPassword" />
-                        <div class="form-text">Min 12 characters. Longer passphrases beat complex ones — a string of unrelated words is easier to remember and harder to crack.</div>
+                        <div class="form-text">@Loc["Shell_PasswordHelp"]</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small">Confirm Password</label>
+                        <label class="form-label small">@Loc["Shell_ConfirmPassword"]</label>
                         <input type="password" class="form-control form-control-sm"
                                @bind="_saveVaultPasswordConfirm" @bind:event="oninput" />
                         @if (!string.IsNullOrEmpty(_saveVaultPasswordConfirm) && _saveVaultPassword != _saveVaultPasswordConfirm)
                         {
-                            <div class="text-warning small mt-1">Passwords do not match.</div>
+                            <div class="text-warning small mt-1">@Loc["Shell_PasswordsNoMatch"]</div>
                         }
                     </div>
                     @if (_saveVaultError != null)
@@ -298,9 +306,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="CloseSaveToVault">Cancel</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="CloseSaveToVault">@Loc["Common_Cancel"]</button>
                     <button class="btn btn-sm btn-primary" @onclick="SaveCurrentSeedToVault">
-                        <i class="bi bi-shield-plus me-1"></i>Create Vault
+                        <i class="bi bi-shield-plus me-1"></i>@Loc["Shell_CreateVault"]
                     </button>
                 </div>
             </div>
@@ -315,20 +323,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title"><i class="bi bi-shield-plus me-2"></i>Add Seed to Vault</h6>
+                    <h6 class="modal-title"><i class="bi bi-shield-plus me-2"></i>@Loc["Shell_AddSeedToVaultTitle"]</h6>
                     <button type="button" class="btn-close" @onclick="CloseAddToVault"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label small">Label for this seed</label>
+                        <label class="form-label small">@Loc["Shell_LabelForSeed"]</label>
                         <input type="text" class="form-control form-control-sm"
-                               placeholder="e.g. Main, Trading, Savings"
+                               placeholder="@Loc["Shell_LabelPlaceholder"]"
                                @bind="_addToVaultLabel" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small">Vault Password</label>
+                        <label class="form-label small">@Loc["Shell_VaultPassword"]</label>
                         <input type="password" class="form-control form-control-sm"
-                               placeholder="Enter your vault password to unlock and add..."
+                               placeholder="@Loc["Shell_AddVaultPasswordPlaceholder"]"
                                @bind="_addToVaultPassword" @bind:event="oninput" />
                     </div>
                     @if (_addToVaultError != null)
@@ -337,9 +345,9 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="CloseAddToVault">Cancel</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="CloseAddToVault">@Loc["Common_Cancel"]</button>
                     <button class="btn btn-sm btn-primary" @onclick="AddCurrentSeedToVault">
-                        <i class="bi bi-shield-plus me-1"></i>Add to Vault
+                        <i class="bi bi-shield-plus me-1"></i>@Loc["Shell_AddToVault"]
                     </button>
                 </div>
             </div>
@@ -362,6 +370,9 @@
 
     // Vault file switcher (recently used vault files, current one first)
     private List<string> _vaultFiles = [];
+    private VaultSwitchDialog? _switchDlg;
+
+    private void OnVaultSwitched() => InvokeAsync(StateHasChanged);
     private Dictionary<string, string> _vaultLabels = [];
     private int _vaultSelectVersion;
 
@@ -553,7 +564,7 @@
         }
         else
         {
-            var lastIdentity = Settings.GetCustom<string>("vault_last_identity");
+            var lastIdentity = Settings.GetCustom<string>(Qubic.Net.Wallet.Services.VaultActivationService.LastIdentityKey);
             toActivate = entries.FirstOrDefault(e => e.Identity == lastIdentity) ?? entries[0];
         }
 
@@ -642,7 +653,7 @@
             }
             catch (FileNotFoundException)
             {
-                _vaultError = "Vault file not found.";
+                _vaultError = Loc["Msg_VaultFileNotFound"];
                 VaultFileHistory.Remove(Settings, path);
             }
             catch (Exception ex)
@@ -665,10 +676,7 @@
     {
         try
         {
-            Seed.SetSeed(entry.Seed, entry.Label);
-            WalletStorage.SetSeed(entry.Seed, entry.Identity, TickMonitor.Epoch);
-            TxTracker.SetEncryptionKey(entry.Seed);
-            Settings.SetCustom("vault_last_identity", entry.Identity);
+            VaultActivation.Activate(entry);
             _seedInput = null;
         }
         catch { }
@@ -682,12 +690,12 @@
 
         if (string.IsNullOrWhiteSpace(_saveVaultPath))
         {
-            _saveVaultError = "File location is required.";
+            _saveVaultError = Loc["Msg_FileLocationRequired"];
             return;
         }
         if (string.IsNullOrWhiteSpace(_saveVaultLabel))
         {
-            _saveVaultError = "Label is required.";
+            _saveVaultError = Loc["Msg_LabelRequired"];
             return;
         }
         var pwError = VaultService.ValidatePassword(_saveVaultPassword);
@@ -698,7 +706,7 @@
         }
         if (_saveVaultPassword != _saveVaultPasswordConfirm)
         {
-            _saveVaultError = "Passwords do not match.";
+            _saveVaultError = Loc["Msg_PasswordsNoMatch"];
             return;
         }
 
@@ -748,12 +756,12 @@
 
         if (string.IsNullOrWhiteSpace(_addToVaultLabel))
         {
-            _addToVaultError = "Label is required.";
+            _addToVaultError = Loc["Msg_LabelRequired"];
             return;
         }
         if (string.IsNullOrEmpty(_addToVaultPassword))
         {
-            _addToVaultError = "Password is required.";
+            _addToVaultError = Loc["Msg_PasswordRequired"];
             return;
         }
 

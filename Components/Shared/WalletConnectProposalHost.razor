@@ -3,6 +3,7 @@
 @inject QubicWalletConnectService WalletConnect
 @inject ExternalRequestService External
 @inject QubicBackendService Backend
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 @implements IDisposable
 
 @* Incoming WalletConnect connection requests, shown wherever the user is. *@
@@ -19,19 +20,19 @@
                     @if (!string.IsNullOrEmpty(p.Description)) { <p>@p.Description</p> }
                     @if (p.Verification == "Invalid")
                     {
-                        <div class="alert alert-danger py-1">WalletConnect Verify flagged this site as <strong>not matching</strong> its claimed domain.</div>
+                        <div class="alert alert-danger py-1">@Loc["WCP_FlaggedPre"] <strong>@Loc["WCP_FlaggedBold"]</strong> @Loc["WCP_FlaggedPost"]</div>
                     }
                     @if (!p.ChainSupported)
                     {
                         <div class="alert alert-warning py-1">
-                            It asks for @string.Join(", ", p.RequestedChains), but the wallet is on <strong>@Backend.Profile.ChainId</strong>
-                            (@Backend.Profile.Name). Switch network first, or reject.
+                            @Loc["WCP_ChainMismatchPre"] @string.Join(", ", p.RequestedChains)@Loc["WCP_ButWalletOn"] <strong>@Backend.Profile.ChainId</strong>
+                            (@Backend.Profile.Name). @Loc["WCP_SwitchOrReject"]
                         </div>
                     }
-                    <label class="form-label mb-1">Accounts to share</label>
+                    <label class="form-label mb-1">@Loc["WCP_AccountsToShare"]</label>
                     @if (_accounts.Count == 0)
                     {
-                        <div class="alert alert-secondary py-1">No account available — unlock your vault or enter a seed first.</div>
+                        <div class="alert alert-secondary py-1">@Loc["WCP_NoAccount"]</div>
                     }
                     @foreach (var (identity, label) in _accounts)
                     {
@@ -41,12 +42,12 @@
                             <label class="form-check-label" for="wc-@identity">@label <span class="mono text-muted">@identity[..12]…</span></label>
                         </div>
                     }
-                    <div class="text-muted mt-2">The dApp sees these addresses and balances. It can request signatures; every request is shown to you first.</div>
+                    <div class="text-muted mt-2">@Loc["WCP_DappSees"]</div>
                     @if (_error != null) { <div class="text-danger mt-2">@_error</div> }
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="Reject">Reject</button>
-                    <button class="btn btn-sm btn-primary" @onclick="Approve" disabled="@(_selected.Count == 0 || !p.ChainSupported)">Connect</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="Reject">@Loc["SRH_Reject"]</button>
+                    <button class="btn btn-sm btn-primary" @onclick="Approve" disabled="@(_selected.Count == 0 || !p.ChainSupported)">@Loc["WCP_Connect"]</button>
                 </div>
             </div>
         </div>

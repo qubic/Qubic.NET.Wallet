@@ -1,3 +1,31 @@
+# v0.8.1
+
+First public 0.8.x release. Brings multi-language support, a redesigned Vault page, computor governance, a send-progress dialog and a number of fixes. Covers everything since v0.7.1.
+
+## Features
+- **Multi-language support.** The wallet displays in **English, Spanish, French, German, Russian and Chinese**, chosen under *Settings → Language* (reachable without unlocking); the choice is saved. The entire interface is translated — every page, the app shell, navigation, the network banner and editor, the signing review, and in-code status/validation/error messages. Library-sourced strings (optional-feature descriptions, capability names, signing-review warning titles) are translated in the wallet, mapped by the stable identifiers the library exposes, so the library stays culture-agnostic. Changing the language restarts the app so the new language applies everywhere. Number formatting is left unchanged regardless of language, so amount entry is unaffected. (The only text still in English is the dynamic *detail* line of signing-review warnings, composed with live values inside the library — a separate follow-up.)
+- **One Vault page.** *Vault* (formerly *Vault Overview*, under Home) is now the single place for everything vault-related. It shows every identity with its full address, QU balance and assets, and the total — and also holds the management that used to live under *Settings → Vault*: add / rename / remove / reveal a seed, the address book, change password, change vault-file location and delete. The *Vault* tab was removed from Settings (old links redirect to the page). Balances refresh every 30 seconds; no seed needs to be active.
+- **Switch, open or create a vault anywhere.** A *Switch vault* dialog lets you open a recently-used vault, browse for another vault file, or create a new one (with a built-in **Generate seed** button). It is reachable from the Vault page, from Home, and from the header — and the header now shows **which vault file is open**. Switching locks the current vault first and lands on the new one's password prompt.
+- **Import from the web or mobile wallet.** Reads a vault file exported by the Qubic **web wallet** or the official **mobile app** (same format) through a stepped dialog: pick the file, enter its password, then choose which accounts to add and adjust their names. Watch-only accounts and ones already in your vault are skipped; the original file is only read, never modified.
+- **Create or open a vault from Home.** The *Get Started* screen can open or create a vault directly, and a freshly generated wallet can be saved as a vault in one step (**Save as a vault**).
+- **Home wallet status.** The Home screen shows network & connection health (active profile, connected/offline, epoch/tick), a vault summary (open file, identity count, total balance across the vault), and your pending transactions.
+- **Transaction progress dialog.** After you send a transaction, a central dialog shows its live status — broadcasting → confirmed / failed — with the target tick and a ticks-remaining countdown. You can hide it (it keeps tracking) or jump straight to history.
+- **Computors Governance & CCF.** Two new pages: **Governance** (General Quorum Proposals / GQMPROP) and **CCF** (Community Contribution Fund). Browsing proposals and viewing live results is available to everyone; creating a proposal and voting is enabled only when the active seed is a computor (with a note for everyone else). Each proposal in the browse list has a one-click **View current results**.
+- **Default tick offset is now 12** (was 7) for auto-tick targeting.
+- **Show only the pages you use.** A *Pages & sections* list (on the first-start Features screen and in *Settings → Features*) lets you hide pages you don't need — Send to Many, Assets, QX, QSwap, QEarn, MSVault, SC Auctions, Voting, Governance, CCF, Watchlist and Sign/Verify. Grouped by section with per-section and enable-all / disable-all switches; everything is shown by default. Hiding a page only removes it from the menu. In addition, account-specific pages (Assets, Watchlist, Tx History, Log Events, Sync Manager and the QX/QSwap/QEarn/MSVault actions) are now hidden from the menu until a seed is active.
+
+## Fixes
+- **Transactions were sometimes marked "Failed" even though they succeeded.** The tracker read Bob's receipt as yes/no, but Bob also reports **"pending"** while still log-verifying the tick. The wallet usually checks right after the target tick — before verification finishes — so a success was read as failed, and because only pending transactions are re-checked, the wrong status stuck. It now treats a pending (or not-yet-available) receipt as still pending and keeps checking until Bob gives a definite verdict.
+- **Language change now applies.** Changing the language relaunches the desktop app so the new culture is applied everywhere, instead of appearing to do nothing until the next start.
+- **Dark-mode contrast.** Proposal detail panels no longer render as white-on-white; Governance results bars use dark text on the cyan accent; checkboxes and radios are clearly visible and are now selectable by clicking their label text.
+- **QSwap now works against the current contract.** Every QSwap action (issue, create pool, transfer, add/remove liquidity, all four swaps) now attaches the QU the QSwap contract requires — the per-operation network fee (100,000 QU) and the issuance/pool/transfer fees — which were previously omitted, so the operations were rejected or under-delivered. The swap panel also shows the pool fee as a percentage and the network fee as a separate line.
+
+## Internals
+- Vault management is a single page/component set; activating a vault identity goes through one shared service (`VaultActivationService`); the Switch-vault dialog and the transaction-progress dialog are shared components.
+- Requires `Qubic.Services 1.6.3` (pulls `Qubic.Bob 1.6.1`), `Qubic.Core 1.301.9` and `Qubic.WalletConnect 1.0.1`.
+
+---
+
 # v0.7.1
 
 ## Security

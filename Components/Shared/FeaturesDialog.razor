@@ -1,5 +1,6 @@
 @using Qubic.Services.Features
 @inject FeatureService Features
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
 @* Shown on first launch and after an update that adds opt-in features. Nothing optional runs until saved. *@
 @if (_visible)
@@ -8,19 +9,22 @@
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h6 class="modal-title"><i class="bi bi-toggles me-2"></i>Choose optional features</h6>
+                    <h6 class="modal-title"><i class="bi bi-toggles me-2"></i>@Loc["FD_Title"]</h6>
                 </div>
                 <div class="modal-body">
                     <p class="small">
-                        These features are <strong>off</strong> unless you turn them on. Features that are off do not
-                        run at all — no connections, no listeners, no background downloads.
-                        You can change this any time in <em>Settings → Features</em>.
+                        @Loc["FD_Intro"]
+                        @Loc["FD_ChangeAnytime"] <em>@Loc["Common_SettingsFeatures"]</em>.
                     </p>
                     <FeaturesPanel @ref="_panel" Review="true" Desktop="Desktop" />
+
+                    <h6 class="mt-4"><i class="bi bi-window-stack me-1"></i>@Loc["Mod_PagesTitle"]</h6>
+                    <p class="small text-muted">@Loc["Mod_PagesIntro"]</p>
+                    <ModulesPanel @ref="_modules" Review="true" />
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-sm btn-primary" @onclick="Save">
-                        <i class="bi bi-check2 me-1"></i>Save choices
+                        <i class="bi bi-check2 me-1"></i>@Loc["FD_SaveChoices"]
                     </button>
                 </div>
             </div>
@@ -33,6 +37,7 @@
     [Parameter] public EventCallback OnSaved { get; set; }
 
     private FeaturesPanel? _panel;
+    private ModulesPanel? _modules;
     private bool _visible;
 
     protected override void OnInitialized() => _visible = Features.NeedsReview;
@@ -40,6 +45,7 @@
     private async Task Save()
     {
         _panel?.Save();
+        _modules?.Save();
         _visible = false;
         await OnSaved.InvokeAsync();
     }

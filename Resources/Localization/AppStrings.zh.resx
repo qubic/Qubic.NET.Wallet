@@ -1,0 +1,3524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="Nav_VaultOverview" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="Nav_Section_Transactions" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="Nav_Send" xml:space="preserve">
+    <value>发送</value>
+  </data>
+  <data name="Nav_SendToMany" xml:space="preserve">
+    <value>批量发送</value>
+  </data>
+  <data name="Nav_Receive" xml:space="preserve">
+    <value>接收</value>
+  </data>
+  <data name="Nav_UnlockToSend" xml:space="preserve">
+    <value>解锁后发送</value>
+  </data>
+  <data name="Nav_Section_Assets" xml:space="preserve">
+    <value>资产</value>
+  </data>
+  <data name="Nav_Assets" xml:space="preserve">
+    <value>资产</value>
+  </data>
+  <data name="Nav_Section_Defi" xml:space="preserve">
+    <value>DeFi</value>
+  </data>
+  <data name="Nav_QxTrading" xml:space="preserve">
+    <value>QX 交易</value>
+  </data>
+  <data name="Nav_ScAuctions" xml:space="preserve">
+    <value>智能合约拍卖</value>
+  </data>
+  <data name="Nav_Voting" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="Nav_Section_History" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="Nav_Watchlist" xml:space="preserve">
+    <value>关注列表</value>
+  </data>
+  <data name="Nav_TxHistory" xml:space="preserve">
+    <value>交易历史</value>
+  </data>
+  <data name="Nav_LogEvents" xml:space="preserve">
+    <value>日志事件</value>
+  </data>
+  <data name="Nav_Section_Tools" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="Nav_SignVerify" xml:space="preserve">
+    <value>签名 / 验证</value>
+  </data>
+  <data name="Nav_LocalEndpoint" xml:space="preserve">
+    <value>本地端点</value>
+  </data>
+  <data name="Nav_Section_Developer" xml:space="preserve">
+    <value>开发者</value>
+  </data>
+  <data name="Nav_DevTools" xml:space="preserve">
+    <value>开发工具</value>
+  </data>
+  <data name="Nav_ContractConsole" xml:space="preserve">
+    <value>合约控制台</value>
+  </data>
+  <data name="Nav_SyncManager" xml:space="preserve">
+    <value>同步管理器</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Language_Title" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Language_Description" xml:space="preserve">
+    <value>选择显示语言。钱包将重启以应用更改。</value>
+  </data>
+  <data name="Language_Label" xml:space="preserve">
+    <value>显示语言</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Common_Lock" xml:space="preserve">
+    <value>锁定</value>
+  </data>
+  <data name="Common_Unlock" xml:space="preserve">
+    <value>解锁</value>
+  </data>
+  <data name="Common_Clear" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Shell_Vault" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="Shell_CopyIdentity" xml:space="preserve">
+    <value>复制完整身份</value>
+  </data>
+  <data name="Shell_LockAndClear" xml:space="preserve">
+    <value>锁定保险库并清除种子</value>
+  </data>
+  <data name="Shell_VaultPasswordPlaceholder" xml:space="preserve">
+    <value>保险库密码…</value>
+  </data>
+  <data name="Shell_UnlockVault" xml:space="preserve">
+    <value>解锁保险库</value>
+  </data>
+  <data name="Shell_OpenAnotherVaultFile" xml:space="preserve">
+    <value>打开其他保险库文件</value>
+  </data>
+  <data name="Shell_EnterSeedWithoutVault" xml:space="preserve">
+    <value>不使用保险库输入种子</value>
+  </data>
+  <data name="Shell_UseSeedDirectly" xml:space="preserve">
+    <value>直接使用种子</value>
+  </data>
+  <data name="Shell_SeedActive" xml:space="preserve">
+    <value>种子已激活</value>
+  </data>
+  <data name="Shell_SaveToVault" xml:space="preserve">
+    <value>保存到保险库</value>
+  </data>
+  <data name="Shell_SaveToVaultTitle" xml:space="preserve">
+    <value>将此种子保存到保险库</value>
+  </data>
+  <data name="Shell_AddToVault" xml:space="preserve">
+    <value>添加到保险库</value>
+  </data>
+  <data name="Shell_AddToVaultTitle" xml:space="preserve">
+    <value>将此种子添加到现有保险库</value>
+  </data>
+  <data name="Shell_OpenVaultDots" xml:space="preserve">
+    <value>打开保险库…</value>
+  </data>
+  <data name="Shell_LockVaultTitle" xml:space="preserve">
+    <value>锁定保险库</value>
+  </data>
+  <data name="Shell_SeedPlaceholder" xml:space="preserve">
+    <value>输入 55 位种子以启用签名…</value>
+  </data>
+  <data name="Shell_SaveSeedToVaultTitle" xml:space="preserve">
+    <value>将种子保存到保险库</value>
+  </data>
+  <data name="Shell_VaultFileLocation" xml:space="preserve">
+    <value>保险库文件位置</value>
+  </data>
+  <data name="Shell_VaultPathPlaceholder" xml:space="preserve">
+    <value>保存保险库文件的路径…</value>
+  </data>
+  <data name="Shell_VaultPathHelp" xml:space="preserve">
+    <value>选择保存加密保险库文件的位置。</value>
+  </data>
+  <data name="Shell_LabelForSeed" xml:space="preserve">
+    <value>此种子的标签</value>
+  </data>
+  <data name="Shell_LabelPlaceholder" xml:space="preserve">
+    <value>例如 主账户、交易、储蓄</value>
+  </data>
+  <data name="Shell_VaultPassword" xml:space="preserve">
+    <value>保险库密码</value>
+  </data>
+  <data name="Shell_PasswordHelp" xml:space="preserve">
+    <value>至少 12 个字符。长密码短语胜过复杂密码——一串不相关的单词更易记且更难破解。</value>
+  </data>
+  <data name="Shell_ConfirmPassword" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="Shell_PasswordsNoMatch" xml:space="preserve">
+    <value>密码不匹配。</value>
+  </data>
+  <data name="Shell_CreateVault" xml:space="preserve">
+    <value>创建保险库</value>
+  </data>
+  <data name="Shell_AddSeedToVaultTitle" xml:space="preserve">
+    <value>将种子添加到保险库</value>
+  </data>
+  <data name="Shell_AddVaultPasswordPlaceholder" xml:space="preserve">
+    <value>输入保险库密码以解锁并添加…</value>
+  </data>
+  <data name="Common_Generate" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="Common_Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="Common_Reveal" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="Common_CopyToClipboard" xml:space="preserve">
+    <value>复制到剪贴板</value>
+  </data>
+  <data name="Common_Identity" xml:space="preserve">
+    <value>身份</value>
+  </data>
+  <data name="Common_Balance" xml:space="preserve">
+    <value>余额</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>加载中…</value>
+  </data>
+  <data name="Common_Epoch" xml:space="preserve">
+    <value>纪元</value>
+  </data>
+  <data name="Common_Tick" xml:space="preserve">
+    <value>Tick</value>
+  </data>
+  <data name="Common_NotConnected" xml:space="preserve">
+    <value>未连接</value>
+  </data>
+  <data name="Common_History" xml:space="preserve">
+    <value>历史</value>
+  </data>
+  <data name="Common_Syncing" xml:space="preserve">
+    <value>同步中…</value>
+  </data>
+  <data name="Common_Idle" xml:space="preserve">
+    <value>空闲</value>
+  </data>
+  <data name="Common_ViewAll" xml:space="preserve">
+    <value>查看全部</value>
+  </data>
+  <data name="Common_Asset" xml:space="preserve">
+    <value>资产</value>
+  </data>
+  <data name="Common_Shares" xml:space="preserve">
+    <value>份额</value>
+  </data>
+  <data name="Common_Contract" xml:space="preserve">
+    <value>合约</value>
+  </data>
+  <data name="Common_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="Common_Price" xml:space="preserve">
+    <value>价格</value>
+  </data>
+  <data name="Common_Ask" xml:space="preserve">
+    <value>卖出</value>
+  </data>
+  <data name="Common_Bid" xml:space="preserve">
+    <value>买入</value>
+  </data>
+  <data name="Common_Tip" xml:space="preserve">
+    <value>提示：</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>欢迎使用 Qubic.Net Wallet</value>
+  </data>
+  <data name="Home_SelectIdentity" xml:space="preserve">
+    <value>选择身份</value>
+  </data>
+  <data name="Home_SelectIdentityHint" xml:space="preserve">
+    <value>保险库已解锁。选择要激活的身份，或在以下位置查看所有身份及其余额：</value>
+  </data>
+  <data name="Home_Activate" xml:space="preserve">
+    <value>激活</value>
+  </data>
+  <data name="Home_GetStarted" xml:space="preserve">
+    <value>开始使用</value>
+  </data>
+  <data name="Home_GetStartedDesc" xml:space="preserve">
+    <value>在顶部栏输入您的 55 位种子以解锁钱包。</value>
+  </data>
+  <data name="Home_SeedMemoryNote" xml:space="preserve">
+    <value>您的种子仅保存在内存中，关闭应用时将被清除。</value>
+  </data>
+  <data name="Home_CreateNewWallet" xml:space="preserve">
+    <value>创建新钱包</value>
+  </data>
+  <data name="Home_NoSeedYet" xml:space="preserve">
+    <value>还没有种子？生成一个新种子来创建钱包。</value>
+  </data>
+  <data name="Home_GenerateNewSeed" xml:space="preserve">
+    <value>生成新种子</value>
+  </data>
+  <data name="Home_WriteDownSeed" xml:space="preserve">
+    <value>请写下您的种子并妥善保管！</value>
+  </data>
+  <data name="Home_SeedBullet1" xml:space="preserve">
+    <value>您的种子是访问钱包和资金的唯一密钥。</value>
+  </data>
+  <data name="Home_SeedBullet2" xml:space="preserve">
+    <value>如果丢失，将无法恢复——您的资金将永久丢失。</value>
+  </data>
+  <data name="Home_SeedBullet3" xml:space="preserve">
+    <value>切勿将种子告诉任何人。拥有您种子的人可完全控制您的资金。</value>
+  </data>
+  <data name="Home_SeedBullet4" xml:space="preserve">
+    <value>请离线保存（纸质、硬件），不要存放在文本文件、电子邮件或云存储中。</value>
+  </data>
+  <data name="Home_YourNewSeed" xml:space="preserve">
+    <value>您的新种子</value>
+  </data>
+  <data name="Home_SeedConfirmCheck" xml:space="preserve">
+    <value>我已写下种子并安全保存</value>
+  </data>
+  <data name="Home_UseThisSeed" xml:space="preserve">
+    <value>使用此种子</value>
+  </data>
+  <data name="Home_GenerateAnother" xml:space="preserve">
+    <value>再生成一个</value>
+  </data>
+  <data name="Home_TipSaveVault" xml:space="preserve">
+    <value>您可以通过上方工具栏将此种子保存到受密码保护的保险库中。</value>
+  </data>
+  <data name="Home_LoadBalance" xml:space="preserve">
+    <value>加载余额</value>
+  </data>
+  <data name="Home_TransactionsWord" xml:space="preserve">
+    <value>笔交易</value>
+  </data>
+  <data name="Home_LogEventsWord" xml:space="preserve">
+    <value>条日志事件</value>
+  </data>
+  <data name="Home_OpenOrCreateVault" xml:space="preserve">
+    <value>打开或创建保险库</value>
+  </data>
+  <data name="Home_SaveAsVault" xml:space="preserve">
+    <value>保存为保险库</value>
+  </data>
+  <data name="Home_Network" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="Home_Server" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="Home_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="Home_Offline" xml:space="preserve">
+    <value>离线</value>
+  </data>
+  <data name="Home_VaultCard" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="Home_VaultTotal" xml:space="preserve">
+    <value>保险库合计</value>
+  </data>
+  <data name="Home_PendingTitle" xml:space="preserve">
+    <value>待处理交易</value>
+  </data>
+  <data name="Home_NoPending" xml:space="preserve">
+    <value>没有待处理交易</value>
+  </data>
+  <data name="Home_AtTick" xml:space="preserve">
+    <value>于 tick</value>
+  </data>
+  <data name="Home_OwnedAssets" xml:space="preserve">
+    <value>持有资产</value>
+  </data>
+  <data name="Home_LoadingAssets" xml:space="preserve">
+    <value>加载资产中…</value>
+  </data>
+  <data name="Home_NoOwnedAssets" xml:space="preserve">
+    <value>没有持有的资产。</value>
+  </data>
+  <data name="Home_OpenQxOrders" xml:space="preserve">
+    <value>未完成的 QX 订单</value>
+  </data>
+  <data name="Home_LoadingOrders" xml:space="preserve">
+    <value>加载订单中…</value>
+  </data>
+  <data name="Home_NoOpenOrders" xml:space="preserve">
+    <value>没有未完成的订单。</value>
+  </data>
+  <data name="Common_Auto" xml:space="preserve">
+    <value>自动</value>
+  </data>
+  <data name="Common_LabelField" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="Send_Title" xml:space="preserve">
+    <value>发送 QU</value>
+  </data>
+  <data name="Send_NeedSeed" xml:space="preserve">
+    <value>在顶部栏输入您的种子以启用发送。</value>
+  </data>
+  <data name="Send_Transfer" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="Send_From" xml:space="preserve">
+    <value>从</value>
+  </data>
+  <data name="Send_LoadingBalance" xml:space="preserve">
+    <value>加载余额中…</value>
+  </data>
+  <data name="Send_PaymentPlaceholder" xml:space="preserve">
+    <value>粘贴付款请求（qubic:… 链接或二维码图片）以填写表单</value>
+  </data>
+  <data name="Send_Destination" xml:space="preserve">
+    <value>目标地址（60 位身份）</value>
+  </data>
+  <data name="Send_Amount" xml:space="preserve">
+    <value>金额 (QU)</value>
+  </data>
+  <data name="Send_TargetTick" xml:space="preserve">
+    <value>目标 Tick</value>
+  </data>
+  <data name="Send_Sending" xml:space="preserve">
+    <value>发送中…</value>
+  </data>
+  <data name="Send_ReviewSign" xml:space="preserve">
+    <value>查看并签名</value>
+  </data>
+  <data name="Send_ReviewNote" xml:space="preserve">
+    <value>在签名之前，您将看到完整的交易。</value>
+  </data>
+  <data name="Send_Broadcast" xml:space="preserve">
+    <value>交易已广播！交易 ID：</value>
+  </data>
+  <data name="Send_ViewInHistory" xml:space="preserve">
+    <value>在交易历史中查看</value>
+  </data>
+  <data name="Send_SaveContactPre" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Send_SaveContactPost" xml:space="preserve">
+    <value>到地址簿？</value>
+  </data>
+  <data name="Common_Copied" xml:space="preserve">
+    <value>已复制！</value>
+  </data>
+  <data name="Common_Message" xml:space="preserve">
+    <value>消息</value>
+  </data>
+  <data name="Receive_Title" xml:space="preserve">
+    <value>接收 QU</value>
+  </data>
+  <data name="Receive_NeedSeed" xml:space="preserve">
+    <value>在顶部栏输入您的种子以查看您的地址。</value>
+  </data>
+  <data name="Receive_YourIdentity" xml:space="preserve">
+    <value>您的身份</value>
+  </data>
+  <data name="Receive_ScanRequest" xml:space="preserve">
+    <value>扫码支付。二维码包含付款请求（qubic: 链接）。</value>
+  </data>
+  <data name="Receive_ShareAddress" xml:space="preserve">
+    <value>分享此地址以接收 QU 或资产。</value>
+  </data>
+  <data name="Receive_CopyLink" xml:space="preserve">
+    <value>复制付款链接</value>
+  </data>
+  <data name="Receive_CopyAddress" xml:space="preserve">
+    <value>复制地址</value>
+  </data>
+  <data name="Receive_CopyQr" xml:space="preserve">
+    <value>复制二维码</value>
+  </data>
+  <data name="Receive_PaymentRequest" xml:space="preserve">
+    <value>付款请求</value>
+  </data>
+  <data name="Receive_PaymentHelp" xml:space="preserve">
+    <value>可选：请求特定金额。支持</value>
+  </data>
+  <data name="Receive_PaymentHelpTail" xml:space="preserve">
+    <value>链接的钱包会预填付款。</value>
+  </data>
+  <data name="Receive_MessagePlaceholder" xml:space="preserve">
+    <value>例如 发票 42</value>
+  </data>
+  <data name="Receive_LinkMarkedPre" xml:space="preserve">
+    <value>该链接标记为</value>
+  </data>
+  <data name="Receive_LinkMarkedYouAreOn" xml:space="preserve">
+    <value>（您当前在</value>
+  </data>
+  <data name="Receive_ShowPlain" xml:space="preserve">
+    <value>显示纯地址</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Common_Label" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="TP_Title" xml:space="preserve">
+    <value>交易已发送</value>
+  </data>
+  <data name="TP_Pending" xml:space="preserve">
+    <value>正在广播 — 等待目标 tick</value>
+  </data>
+  <data name="TP_Confirmed" xml:space="preserve">
+    <value>交易已确认</value>
+  </data>
+  <data name="TP_Failed" xml:space="preserve">
+    <value>交易失败</value>
+  </data>
+  <data name="TP_Unknown" xml:space="preserve">
+    <value>状态未知 — 请稍后查看历史</value>
+  </data>
+  <data name="TP_TargetTick" xml:space="preserve">
+    <value>目标 tick</value>
+  </data>
+  <data name="TP_TicksRemaining" xml:space="preserve">
+    <value>个 tick 剩余</value>
+  </data>
+  <data name="TP_Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="TP_ViewHistory" xml:space="preserve">
+    <value>在历史中查看</value>
+  </data>
+  <data name="VSw_Switch" xml:space="preserve">
+    <value>切换保险库</value>
+  </data>
+  <data name="VSw_Recent" xml:space="preserve">
+    <value>打开最近的保险库</value>
+  </data>
+  <data name="VSw_Use" xml:space="preserve">
+    <value>使用</value>
+  </data>
+  <data name="VSw_Current" xml:space="preserve">
+    <value>当前</value>
+  </data>
+  <data name="VSw_Browse" xml:space="preserve">
+    <value>打开其他文件…</value>
+  </data>
+  <data name="VSw_LockNote" xml:space="preserve">
+    <value>创建或打开其他保险库会先锁定当前保险库。</value>
+  </data>
+  <data name="VSw_Create" xml:space="preserve">
+    <value>创建新保险库</value>
+  </data>
+  <data name="VO_AddSeed" xml:space="preserve">
+    <value>添加种子</value>
+  </data>
+  <data name="VO_Title" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="VO_SubtitlePre" xml:space="preserve">
+    <value>保险库中的每个身份及其来自</value>
+  </data>
+  <data name="VO_SubtitlePost" xml:space="preserve">
+    <value>的余额。无需激活种子。</value>
+  </data>
+  <data name="VO_NoVault" xml:space="preserve">
+    <value>尚未设置保险库。请在以下位置创建或打开：</value>
+  </data>
+  <data name="VO_Locked" xml:space="preserve">
+    <value>在顶部栏解锁保险库以查看其身份。</value>
+  </data>
+  <data name="VO_NoIdentities" xml:space="preserve">
+    <value>此保险库还没有身份。请在以下位置添加：</value>
+  </data>
+  <data name="VO_SettingsVault" xml:space="preserve">
+    <value>设置 → 保险库</value>
+  </data>
+  <data name="VO_Identities" xml:space="preserve">
+    <value>身份</value>
+  </data>
+  <data name="VO_TotalBalance" xml:space="preserve">
+    <value>总余额</value>
+  </data>
+  <data name="VO_NotAvailable" xml:space="preserve">
+    <value>此网络不可用</value>
+  </data>
+  <data name="VO_OfLoadedPre" xml:space="preserve">
+    <value>/</value>
+  </data>
+  <data name="VO_OfLoadedPost" xml:space="preserve">
+    <value>已加载</value>
+  </data>
+  <data name="VO_Updated" xml:space="preserve">
+    <value>更新于</value>
+  </data>
+  <data name="VO_Active" xml:space="preserve">
+    <value>已激活</value>
+  </data>
+  <data name="VO_More" xml:space="preserve">
+    <value>更多</value>
+  </data>
+  <data name="VO_None" xml:space="preserve">
+    <value>无</value>
+  </data>
+  <data name="Common_NeedSeedSigning" xml:space="preserve">
+    <value>在顶部栏输入您的种子以启用签名。</value>
+  </data>
+  <data name="Common_Fee" xml:space="preserve">
+    <value>手续费：</value>
+  </data>
+  <data name="Common_FeeWord" xml:space="preserve">
+    <value>手续费</value>
+  </data>
+  <data name="Common_AmountField" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="Common_Load" xml:space="preserve">
+    <value>加载</value>
+  </data>
+  <data name="Common_Overwrite" xml:space="preserve">
+    <value>覆盖</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Common_SaveAs" xml:space="preserve">
+    <value>另存为</value>
+  </data>
+  <data name="Common_Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="Common_SignBroadcast" xml:space="preserve">
+    <value>签名并广播</value>
+  </data>
+  <data name="Common_TransactionHistory" xml:space="preserve">
+    <value>交易历史</value>
+  </data>
+  <data name="Common_RecipientsWord" xml:space="preserve">
+    <value>位收款人</value>
+  </data>
+  <data name="S2M_Subtitle" xml:space="preserve">
+    <value>在一笔交易中向最多 25 位收款人发送 QU（QUTIL SendToManyV1）。</value>
+  </data>
+  <data name="S2M_Recipients" xml:space="preserve">
+    <value>收款人</value>
+  </data>
+  <data name="S2M_AddRecipient" xml:space="preserve">
+    <value>+ 添加收款人</value>
+  </data>
+  <data name="S2M_HideImport" xml:space="preserve">
+    <value>隐藏导入</value>
+  </data>
+  <data name="S2M_ImportFromText" xml:space="preserve">
+    <value>从文本导入</value>
+  </data>
+  <data name="S2M_TemplateOption" xml:space="preserve">
+    <value>-- 模板 --</value>
+  </data>
+  <data name="S2M_TemplateNamePlaceholder" xml:space="preserve">
+    <value>模板名称</value>
+  </data>
+  <data name="S2M_PasteHelpPre" xml:space="preserve">
+    <value>粘贴收款人（每行一个：</value>
+  </data>
+  <data name="S2M_PasteHelpOr" xml:space="preserve">
+    <value>或</value>
+  </data>
+  <data name="S2M_Total" xml:space="preserve">
+    <value>合计：</value>
+  </data>
+  <data name="Common_AssetName7" xml:space="preserve">
+    <value>资产名称（最多 7 个字符）</value>
+  </data>
+  <data name="Common_NumberOfShares" xml:space="preserve">
+    <value>份额数量</value>
+  </data>
+  <data name="Common_AmountOfShares" xml:space="preserve">
+    <value>份额数量</value>
+  </data>
+  <data name="Common_UnitOfMeasure7" xml:space="preserve">
+    <value>计量单位（最多 7 个字符）</value>
+  </data>
+  <data name="Common_DecimalPlaces" xml:space="preserve">
+    <value>小数位数（0-18）</value>
+  </data>
+  <data name="Common_NewOwnerIdentity" xml:space="preserve">
+    <value>新所有者身份</value>
+  </data>
+  <data name="Common_IssueAsset" xml:space="preserve">
+    <value>发行资产</value>
+  </data>
+  <data name="Common_Issuing" xml:space="preserve">
+    <value>发行中…</value>
+  </data>
+  <data name="Common_TransferAsset" xml:space="preserve">
+    <value>转移资产</value>
+  </data>
+  <data name="Common_Transfer" xml:space="preserve">
+    <value>转移</value>
+  </data>
+  <data name="Common_Transferring" xml:space="preserve">
+    <value>转移中…</value>
+  </data>
+  <data name="Common_Processing" xml:space="preserve">
+    <value>处理中…</value>
+  </data>
+  <data name="QSwap_Title" xml:space="preserve">
+    <value>QSwap AMM</value>
+  </data>
+  <data name="QSwap_Subtitle" xml:space="preserve">
+    <value>在 QSwap AMM 上发行/转移资产、创建资金池、增加/移除流动性并进行兑换。</value>
+  </data>
+  <data name="QSwap_Preview" xml:space="preserve">
+    <value>此功能为预览版，未来更新中可能会变化。</value>
+  </data>
+  <data name="QSwap_Tab_Issue" xml:space="preserve">
+    <value>发行</value>
+  </data>
+  <data name="QSwap_Tab_Transfer" xml:space="preserve">
+    <value>转移</value>
+  </data>
+  <data name="QSwap_Tab_Pool" xml:space="preserve">
+    <value>资金池</value>
+  </data>
+  <data name="QSwap_Tab_Liquidity" xml:space="preserve">
+    <value>流动性</value>
+  </data>
+  <data name="QSwap_Tab_Swap" xml:space="preserve">
+    <value>兑换</value>
+  </data>
+  <data name="QSwap_IssueHdr" xml:space="preserve">
+    <value>发行资产（QSwap）</value>
+  </data>
+  <data name="QSwap_TransferHdr" xml:space="preserve">
+    <value>转移资产（QSwap）</value>
+  </data>
+  <data name="Fmt_FeeQu" xml:space="preserve">
+    <value>费用：{0} QU</value>
+  </data>
+  <data name="Fmt_QSwapNetworkFee" xml:space="preserve">
+    <value>网络费用：{0} QU（额外收取）</value>
+  </data>
+  <data name="Fmt_QSwapPoolFee" xml:space="preserve">
+    <value>资金池费用：{0}%（从兑换中扣除）</value>
+  </data>
+  <data name="QSwap_FeesUnavailable" xml:space="preserve">
+    <value>费用信息尚未加载。请稍候再试。</value>
+  </data>
+  <data name="QSwap_CreatePool" xml:space="preserve">
+    <value>创建资金池</value>
+  </data>
+  <data name="QSwap_Creating" xml:space="preserve">
+    <value>创建中…</value>
+  </data>
+  <data name="QSwap_LiquidityHdr" xml:space="preserve">
+    <value>增加 / 移除流动性</value>
+  </data>
+  <data name="QSwap_AddLiquidity" xml:space="preserve">
+    <value>增加流动性</value>
+  </data>
+  <data name="QSwap_RemoveLiquidity" xml:space="preserve">
+    <value>移除流动性</value>
+  </data>
+  <data name="QSwap_QuAmountTx" xml:space="preserve">
+    <value>QU 数量（交易金额）</value>
+  </data>
+  <data name="QSwap_AssetAmountDesired" xml:space="preserve">
+    <value>期望资产数量</value>
+  </data>
+  <data name="QSwap_QuAmountMin" xml:space="preserve">
+    <value>最小 QU 数量</value>
+  </data>
+  <data name="QSwap_AssetAmountMin" xml:space="preserve">
+    <value>最小资产数量</value>
+  </data>
+  <data name="QSwap_BurnLiquidity" xml:space="preserve">
+    <value>销毁流动性数量</value>
+  </data>
+  <data name="QSwap_SwapType" xml:space="preserve">
+    <value>兑换类型</value>
+  </data>
+  <data name="QSwap_Opt_ExactQuForAsset" xml:space="preserve">
+    <value>精确 QU → 资产</value>
+  </data>
+  <data name="QSwap_Opt_QuForExactAsset" xml:space="preserve">
+    <value>QU → 精确资产</value>
+  </data>
+  <data name="QSwap_Opt_ExactAssetForQu" xml:space="preserve">
+    <value>精确资产 → QU</value>
+  </data>
+  <data name="QSwap_Opt_AssetForExactQu" xml:space="preserve">
+    <value>资产 → 精确 QU</value>
+  </data>
+  <data name="QSwap_QuAmountInTx" xml:space="preserve">
+    <value>输入 QU 数量（交易金额）</value>
+  </data>
+  <data name="QSwap_AssetOutMin" xml:space="preserve">
+    <value>最小输出资产数量</value>
+  </data>
+  <data name="QSwap_MaxQuInTx" xml:space="preserve">
+    <value>最大输入 QU 数量（交易金额）</value>
+  </data>
+  <data name="QSwap_ExactAssetOut" xml:space="preserve">
+    <value>精确输出资产数量</value>
+  </data>
+  <data name="QSwap_AssetAmountIn" xml:space="preserve">
+    <value>输入资产数量</value>
+  </data>
+  <data name="QSwap_QuOutMin" xml:space="preserve">
+    <value>最小输出 QU 数量</value>
+  </data>
+  <data name="QSwap_MaxAssetIn" xml:space="preserve">
+    <value>最大输入资产数量</value>
+  </data>
+  <data name="QSwap_ExactQuOut" xml:space="preserve">
+    <value>精确输出 QU 数量</value>
+  </data>
+  <data name="QSwap_Swapping" xml:space="preserve">
+    <value>兑换中…</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="Common_Issuer" xml:space="preserve">
+    <value>发行方</value>
+  </data>
+  <data name="QX_Title" xml:space="preserve">
+    <value>QX 资产操作</value>
+  </data>
+  <data name="QX_Subtitle" xml:space="preserve">
+    <value>在 QX 去中心化交易所发行资产、转移份额并管理订单。</value>
+  </data>
+  <data name="QX_YourOpenOrders" xml:space="preserve">
+    <value>您的未完成订单</value>
+  </data>
+  <data name="QX_Tab_Issue" xml:space="preserve">
+    <value>发行</value>
+  </data>
+  <data name="QX_Tab_Transfer" xml:space="preserve">
+    <value>转移</value>
+  </data>
+  <data name="QX_Tab_Ask" xml:space="preserve">
+    <value>卖出</value>
+  </data>
+  <data name="QX_Tab_Bid" xml:space="preserve">
+    <value>买入</value>
+  </data>
+  <data name="QX_Tab_Rights" xml:space="preserve">
+    <value>权限</value>
+  </data>
+  <data name="QX_OrdersWord" xml:space="preserve">
+    <value>订单</value>
+  </data>
+  <data name="QX_PricePerShare" xml:space="preserve">
+    <value>每份价格 (QU)</value>
+  </data>
+  <data name="QX_TradeFee" xml:space="preserve">
+    <value>交易手续费：</value>
+  </data>
+  <data name="QX_TransferMgmtRights" xml:space="preserve">
+    <value>转移管理权</value>
+  </data>
+  <data name="QX_NewManagingContract" xml:space="preserve">
+    <value>新管理合约</value>
+  </data>
+  <data name="QX_Submitting" xml:space="preserve">
+    <value>提交中…</value>
+  </data>
+  <data name="QX_AddAskOrder" xml:space="preserve">
+    <value>添加卖单</value>
+  </data>
+  <data name="QX_RemoveAskOrder" xml:space="preserve">
+    <value>移除卖单</value>
+  </data>
+  <data name="QX_AddBidOrder" xml:space="preserve">
+    <value>添加买单</value>
+  </data>
+  <data name="QX_RemoveBidOrder" xml:space="preserve">
+    <value>移除买单</value>
+  </data>
+  <data name="QX_MarketOverview" xml:space="preserve">
+    <value>QX 市场概览</value>
+  </data>
+  <data name="QX_BestAsk" xml:space="preserve">
+    <value>最佳卖价</value>
+  </data>
+  <data name="QX_AskDepth" xml:space="preserve">
+    <value>卖盘深度</value>
+  </data>
+  <data name="QX_BestBid" xml:space="preserve">
+    <value>最佳买价</value>
+  </data>
+  <data name="QX_BidDepth" xml:space="preserve">
+    <value>买盘深度</value>
+  </data>
+  <data name="QX_Spread" xml:space="preserve">
+    <value>价差</value>
+  </data>
+  <data name="QX_NoActiveOrders" xml:space="preserve">
+    <value>未找到活跃订单。</value>
+  </data>
+  <data name="QX_LoadHintPre" xml:space="preserve">
+    <value>点击</value>
+  </data>
+  <data name="QX_LoadHintPost" xml:space="preserve">
+    <value>以发现并查询所有在 QX 交易的资产。</value>
+  </data>
+  <data name="QX_PortfolioHintPre" xml:space="preserve">
+    <value>要出售或管理您自己的资产，请前往</value>
+  </data>
+  <data name="QX_AssetPortfolio" xml:space="preserve">
+    <value>资产组合</value>
+  </data>
+  <data name="QX_PortfolioHintPost" xml:space="preserve">
+    <value>页面。</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="QE_Title" xml:space="preserve">
+    <value>QEarn 质押</value>
+  </data>
+  <data name="QE_Subtitle" xml:space="preserve">
+    <value>锁定 QU 以赚取奖励、解锁并查询质押信息。</value>
+  </data>
+  <data name="QE_LoadingInfo" xml:space="preserve">
+    <value>加载您的质押信息中…</value>
+  </data>
+  <data name="QE_StakingSummary" xml:space="preserve">
+    <value>您的质押摘要</value>
+  </data>
+  <data name="QE_LockEpoch" xml:space="preserve">
+    <value>锁定纪元</value>
+  </data>
+  <data name="QE_LockedAmount" xml:space="preserve">
+    <value>锁定金额</value>
+  </data>
+  <data name="QE_EpochTotal" xml:space="preserve">
+    <value>纪元总额</value>
+  </data>
+  <data name="QE_EpochTotalTitle" xml:space="preserve">
+    <value>本纪元所有用户锁定的 QU 总额</value>
+  </data>
+  <data name="QE_Week" xml:space="preserve">
+    <value>周</value>
+  </data>
+  <data name="QE_Remaining" xml:space="preserve">
+    <value>剩余</value>
+  </data>
+  <data name="QE_Yield" xml:space="preserve">
+    <value>收益率</value>
+  </data>
+  <data name="QE_EstFullReward" xml:space="preserve">
+    <value>预计全额奖励</value>
+  </data>
+  <data name="QE_EarlyUnlock" xml:space="preserve">
+    <value>提前解锁</value>
+  </data>
+  <data name="QE_EarlyUnlockTitle" xml:space="preserve">
+    <value>根据提前解锁时间表，现在解锁的奖励</value>
+  </data>
+  <data name="QE_Unlocking" xml:space="preserve">
+    <value>解锁中…</value>
+  </data>
+  <data name="QE_FullyUnlocked" xml:space="preserve">
+    <value>已完全解锁：</value>
+  </data>
+  <data name="QE_EarlyUnlocked" xml:space="preserve">
+    <value>已提前解锁：</value>
+  </data>
+  <data name="QE_TotalLocked" xml:space="preserve">
+    <value>总锁定：</value>
+  </data>
+  <data name="QE_Across" xml:space="preserve">
+    <value>，跨</value>
+  </data>
+  <data name="QE_EpochWord" xml:space="preserve">
+    <value>个纪元</value>
+  </data>
+  <data name="QE_EstTotalReward" xml:space="preserve">
+    <value>| 完全解锁时预计总奖励：</value>
+  </data>
+  <data name="QE_Tab_Lock" xml:space="preserve">
+    <value>锁定</value>
+  </data>
+  <data name="QE_Tab_Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="QE_LockDesc" xml:space="preserve">
+    <value>将 QU 锁入 QEarn 智能合约以赚取质押奖励。</value>
+  </data>
+  <data name="QE_AmountToLock" xml:space="preserve">
+    <value>锁定金额 (QU)</value>
+  </data>
+  <data name="QE_LockHelp" xml:space="preserve">
+    <value>将锁定全部金额。无额外手续费。最低 10,000,000 QU。</value>
+  </data>
+  <data name="QE_Locking" xml:space="preserve">
+    <value>锁定中…</value>
+  </data>
+  <data name="QE_QueryFunction" xml:space="preserve">
+    <value>查询功能</value>
+  </data>
+  <data name="QE_Q1" xml:space="preserve">
+    <value>各纪元锁定信息</value>
+  </data>
+  <data name="QE_Q2" xml:space="preserve">
+    <value>用户锁定信息</value>
+  </data>
+  <data name="QE_Q3" xml:space="preserve">
+    <value>回合状态</value>
+  </data>
+  <data name="QE_Q4" xml:space="preserve">
+    <value>用户锁定状态（52 周位掩码）</value>
+  </data>
+  <data name="QE_Q5" xml:space="preserve">
+    <value>结束状态</value>
+  </data>
+  <data name="QE_Q6" xml:space="preserve">
+    <value>各纪元统计</value>
+  </data>
+  <data name="QE_Q7" xml:space="preserve">
+    <value>销毁与加成统计（全局）</value>
+  </data>
+  <data name="QE_Q8" xml:space="preserve">
+    <value>各纪元销毁与加成统计</value>
+  </data>
+  <data name="QE_UserIdentity" xml:space="preserve">
+    <value>用户身份</value>
+  </data>
+  <data name="QE_LockStatusLabel" xml:space="preserve">
+    <value>锁定状态（52 周，位 0 = 最早）</value>
+  </data>
+  <data name="QE_Querying" xml:space="preserve">
+    <value>查询中…</value>
+  </data>
+  <data name="Common_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Common_Verify" xml:space="preserve">
+    <value>验证</value>
+  </data>
+  <data name="Common_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Common_Amount" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="Common_Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Common_Updated" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Common_Actions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Common_Units" xml:space="preserve">
+    <value>单位</value>
+  </data>
+  <data name="Common_Possessor" xml:space="preserve">
+    <value>持有者</value>
+  </data>
+  <data name="Common_Decimals" xml:space="preserve">
+    <value>小数位</value>
+  </data>
+  <data name="SV_Title" xml:space="preserve">
+    <value>签名 / 验证消息</value>
+  </data>
+  <data name="SV_Subtitle" xml:space="preserve">
+    <value>用您的种子签名消息，或验证已签名的消息。</value>
+  </data>
+  <data name="SV_SignMessage" xml:space="preserve">
+    <value>签名消息</value>
+  </data>
+  <data name="SV_SignPlaceholder" xml:space="preserve">
+    <value>输入要签名的消息</value>
+  </data>
+  <data name="SV_Sign" xml:space="preserve">
+    <value>签名</value>
+  </data>
+  <data name="SV_SignedOutput" xml:space="preserve">
+    <value>签名输出 (JSON)</value>
+  </data>
+  <data name="SV_VerifyMessage" xml:space="preserve">
+    <value>验证消息</value>
+  </data>
+  <data name="SV_SignedJson" xml:space="preserve">
+    <value>已签名 JSON</value>
+  </data>
+  <data name="SV_ValidSig" xml:space="preserve">
+    <value>签名有效</value>
+  </data>
+  <data name="SV_InvalidSig" xml:space="preserve">
+    <value>签名无效</value>
+  </data>
+  <data name="SV_SignInValid" xml:space="preserve">
+    <value>消息格式正确且当前有效。</value>
+  </data>
+  <data name="WL_Subtitle" xml:space="preserve">
+    <value>监控外部地址的余额和资产。</value>
+  </data>
+  <data name="WL_LastUpdated" xml:space="preserve">
+    <value>最后更新：</value>
+  </data>
+  <data name="WL_Refreshing" xml:space="preserve">
+    <value>刷新中…</value>
+  </data>
+  <data name="WL_RefreshAll" xml:space="preserve">
+    <value>全部刷新</value>
+  </data>
+  <data name="WL_Empty" xml:space="preserve">
+    <value>关注列表中没有地址。请在下方添加。</value>
+  </data>
+  <data name="WL_InOut" xml:space="preserve">
+    <value>收入 / 支出</value>
+  </data>
+  <data name="WL_LastUpdatedLabel" xml:space="preserve">
+    <value>最后更新</value>
+  </data>
+  <data name="WL_ClickRefresh" xml:space="preserve">
+    <value>点击刷新以加载数据。</value>
+  </data>
+  <data name="WL_AddToWatchlist" xml:space="preserve">
+    <value>添加到关注列表</value>
+  </data>
+  <data name="WL_LabelPlaceholder" xml:space="preserve">
+    <value>例如 国库钱包</value>
+  </data>
+  <data name="WL_AddressLabel" xml:space="preserve">
+    <value>地址（60 位身份）</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Common_ClearAll" xml:space="preserve">
+    <value>全部清除</value>
+  </data>
+  <data name="Common_Time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="Common_From" xml:space="preserve">
+    <value>从</value>
+  </data>
+  <data name="Common_To" xml:space="preserve">
+    <value>至</value>
+  </data>
+  <data name="Common_Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Common_Created" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="Common_Connecting" xml:space="preserve">
+    <value>连接中…</value>
+  </data>
+  <data name="TH_Title" xml:space="preserve">
+    <value>交易历史</value>
+  </data>
+  <data name="TH_Subtitle" xml:space="preserve">
+    <value>跟踪已广播的交易并查看已同步的历史。数据按种子在本地加密。</value>
+  </data>
+  <data name="TH_ExportJson" xml:space="preserve">
+    <value>导出 JSON</value>
+  </data>
+  <data name="TH_HideImport" xml:space="preserve">
+    <value>隐藏导入</value>
+  </data>
+  <data name="TH_ImportJson" xml:space="preserve">
+    <value>导入 JSON</value>
+  </data>
+  <data name="TH_NoTracked" xml:space="preserve">
+    <value>尚未跟踪任何交易。广播后将显示在此处。</value>
+  </data>
+  <data name="TH_St_Pending" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+  <data name="TH_St_Confirmed" xml:space="preserve">
+    <value>已确认</value>
+  </data>
+  <data name="TH_St_Failed" xml:space="preserve">
+    <value>失败</value>
+  </data>
+  <data name="TH_LoadFile" xml:space="preserve">
+    <value>加载文件</value>
+  </data>
+  <data name="TH_PasteJson" xml:space="preserve">
+    <value>粘贴导出的 JSON 或从文件加载：</value>
+  </data>
+  <data name="LE_Title" xml:space="preserve">
+    <value>日志事件</value>
+  </data>
+  <data name="LE_Subtitle" xml:space="preserve">
+    <value>浏览为您的身份从网络同步的日志事件。</value>
+  </data>
+  <data name="LE_NeedSeed" xml:space="preserve">
+    <value>输入您的种子以打开钱包数据库并开始同步日志事件。</value>
+  </data>
+  <data name="LE_NoLogs" xml:space="preserve">
+    <value>未找到日志事件。同步会在从网络获取日志后填充此视图。</value>
+  </data>
+  <data name="LE_Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="LE_LogType" xml:space="preserve">
+    <value>日志类型</value>
+  </data>
+  <data name="LE_MinTick" xml:space="preserve">
+    <value>最小 Tick</value>
+  </data>
+  <data name="LE_MaxTick" xml:space="preserve">
+    <value>最大 Tick</value>
+  </data>
+  <data name="LE_TxHash" xml:space="preserve">
+    <value>交易哈希</value>
+  </data>
+  <data name="LE_AmountDetail" xml:space="preserve">
+    <value>金额 / 详情</value>
+  </data>
+  <data name="SM_Title" xml:space="preserve">
+    <value>同步管理器</value>
+  </data>
+  <data name="SM_Subtitle" xml:space="preserve">
+    <value>监控并控制来自 RPC 和 Bob WebSocket 的数据同步。</value>
+  </data>
+  <data name="SM_NeedSeed" xml:space="preserve">
+    <value>输入您的种子以打开钱包数据库并开始同步。</value>
+  </data>
+  <data name="SM_Connection" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="SM_OverallState" xml:space="preserve">
+    <value>整体状态</value>
+  </data>
+  <data name="SM_InitialSync" xml:space="preserve">
+    <value>初始同步</value>
+  </data>
+  <data name="SM_Complete" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="SM_InProgress" xml:space="preserve">
+    <value>进行中…</value>
+  </data>
+  <data name="SM_BackendTick" xml:space="preserve">
+    <value>后端 Tick 对比</value>
+  </data>
+  <data name="SM_Backend" xml:space="preserve">
+    <value>后端</value>
+  </data>
+  <data name="SM_LastCheck" xml:space="preserve">
+    <value>上次检查</value>
+  </data>
+  <data name="SM_Database" xml:space="preserve">
+    <value>数据库</value>
+  </data>
+  <data name="LEP_Title" xml:space="preserve">
+    <value>本地签名端点</value>
+  </data>
+  <data name="LEP_Off" xml:space="preserve">
+    <value>本地端点已关闭。请在以下位置开启：</value>
+  </data>
+  <data name="Common_SettingsFeatures" xml:space="preserve">
+    <value>设置 → 功能</value>
+  </data>
+  <data name="LEP_ConnectionFile" xml:space="preserve">
+    <value>连接文件</value>
+  </data>
+  <data name="LEP_Port" xml:space="preserve">
+    <value>端口（0 = 随机）</value>
+  </data>
+  <data name="LEP_ApplyRestart" xml:space="preserve">
+    <value>应用并重启</value>
+  </data>
+  <data name="LEP_NewToken" xml:space="preserve">
+    <value>新令牌</value>
+  </data>
+  <data name="LEP_AutoApprove" xml:space="preserve">
+    <value>自动批准开发账户</value>
+  </data>
+  <data name="WC_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="WC_Off" xml:space="preserve">
+    <value>WalletConnect 已关闭。请在以下位置开启：</value>
+  </data>
+  <data name="WC_NoProjectId" xml:space="preserve">
+    <value>此版本未配置 WalletConnect 项目 ID。</value>
+  </data>
+  <data name="WC_PairWithDapp" xml:space="preserve">
+    <value>与 dApp 配对</value>
+  </data>
+  <data name="WC_Pair" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="WC_ConnectedDapps" xml:space="preserve">
+    <value>已连接的 dApp</value>
+  </data>
+  <data name="WC_NoSessions" xml:space="preserve">
+    <value>没有活动会话。</value>
+  </data>
+  <data name="WC_Disconnect" xml:space="preserve">
+    <value>断开连接</value>
+  </data>
+  <data name="Common_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Common_Preview" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="Common_Link" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="SCA_Subtitle" xml:space="preserve">
+    <value>浏览活跃的合约份额拍卖、查看出价状态并出价。</value>
+  </data>
+  <data name="SCA_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="SCA_Tab_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="SCA_Tab_Bid" xml:space="preserve">
+    <value>出价</value>
+  </data>
+  <data name="SCA_ActiveAuctions" xml:space="preserve">
+    <value>活跃拍卖</value>
+  </data>
+  <data name="SCA_ContractIndex" xml:space="preserve">
+    <value>合约索引</value>
+  </data>
+  <data name="SCA_ContractIdentity" xml:space="preserve">
+    <value>合约身份</value>
+  </data>
+  <data name="SCA_ViewStatus" xml:space="preserve">
+    <value>查看状态 →</value>
+  </data>
+  <data name="SCA_NoAuctions" xml:space="preserve">
+    <value>未找到活跃拍卖。</value>
+  </data>
+  <data name="SCA_NetworkSettings" xml:space="preserve">
+    <value>网络设置</value>
+  </data>
+  <data name="SCA_SummaryContract" xml:space="preserve">
+    <value>摘要 — 合约</value>
+  </data>
+  <data name="SCA_FilledSlots" xml:space="preserve">
+    <value>已填充槽位</value>
+  </data>
+  <data name="SCA_MinBid" xml:space="preserve">
+    <value>最低出价</value>
+  </data>
+  <data name="SCA_MaxBid" xml:space="preserve">
+    <value>最高出价</value>
+  </data>
+  <data name="SCA_AvgBid" xml:space="preserve">
+    <value>平均出价</value>
+  </data>
+  <data name="SCA_TotalBid" xml:space="preserve">
+    <value>总出价 QU</value>
+  </data>
+  <data name="SCA_MyBids" xml:space="preserve">
+    <value>我的出价</value>
+  </data>
+  <data name="SCA_AtRisk" xml:space="preserve">
+    <value>有风险</value>
+  </data>
+  <data name="SCA_Slot" xml:space="preserve">
+    <value>槽位 #</value>
+  </data>
+  <data name="SCA_BidAmount" xml:space="preserve">
+    <value>出价金额</value>
+  </data>
+  <data name="SCA_Rank" xml:space="preserve">
+    <value>排名</value>
+  </data>
+  <data name="SCA_AllBids" xml:space="preserve">
+    <value>全部出价</value>
+  </data>
+  <data name="SCA_NoBids" xml:space="preserve">
+    <value>尚未出价。</value>
+  </data>
+  <data name="SCA_NoMyBids" xml:space="preserve">
+    <value>您在此拍卖中没有出价。</value>
+  </data>
+  <data name="SCA_NeedSeedBid" xml:space="preserve">
+    <value>在顶部栏输入您的种子以出价。</value>
+  </data>
+  <data name="SCA_PlaceBid" xml:space="preserve">
+    <value>出价拍卖</value>
+  </data>
+  <data name="SCA_ContractIndexPlaceholder" xml:space="preserve">
+    <value>或输入合约索引</value>
+  </data>
+  <data name="SCA_SharesRange" xml:space="preserve">
+    <value>份额数量（1-676）</value>
+  </data>
+  <data name="SCA_PreviewBid" xml:space="preserve">
+    <value>预览出价</value>
+  </data>
+  <data name="VOT_Title" xml:space="preserve">
+    <value>社区投票</value>
+  </data>
+  <data name="VOT_Subtitle" xml:space="preserve">
+    <value>通过 QUtil 合约浏览、投票并创建社区投票。</value>
+  </data>
+  <data name="VOT_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="VOT_Tab_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="VOT_Tab_Results" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="VOT_Tab_Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="VOT_ActivePolls" xml:space="preserve">
+    <value>活跃投票</value>
+  </data>
+  <data name="VOT_Creator" xml:space="preserve">
+    <value>创建者</value>
+  </data>
+  <data name="VOT_Active" xml:space="preserve">
+    <value>进行中</value>
+  </data>
+  <data name="VOT_Closed" xml:space="preserve">
+    <value>已关闭</value>
+  </data>
+  <data name="VOT_AllowedAssets" xml:space="preserve">
+    <value>允许的资产：</value>
+  </data>
+  <data name="VOT_CreatorLabel" xml:space="preserve">
+    <value>创建者：</value>
+  </data>
+  <data name="VOT_NoPolls" xml:space="preserve">
+    <value>未找到活跃投票。</value>
+  </data>
+  <data name="VOT_ClickLoadPre" xml:space="preserve">
+    <value>点击</value>
+  </data>
+  <data name="VOT_ClickLoadPost" xml:space="preserve">
+    <value>以从 QUtil 合约获取活跃的社区投票。</value>
+  </data>
+  <data name="VOT_NeedSeed" xml:space="preserve">
+    <value>在顶部栏输入您的种子以启用投票。</value>
+  </data>
+  <data name="VOT_PollId" xml:space="preserve">
+    <value>投票 ID</value>
+  </data>
+  <data name="VOT_LoadPoll" xml:space="preserve">
+    <value>加载投票</value>
+  </data>
+  <data name="VOT_ChosenOption" xml:space="preserve">
+    <value>所选选项</value>
+  </data>
+  <data name="VOT_OptionWord" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="VOT_NoChange" xml:space="preserve">
+    <value>（不变）</value>
+  </data>
+  <data name="VOT_VotingPowerNote" xml:space="preserve">
+    <value>投票权由合约根据您的余额自动计算。</value>
+  </data>
+  <data name="VOT_ConfirmVote" xml:space="preserve">
+    <value>确认投票</value>
+  </data>
+  <data name="VOT_PollResults" xml:space="preserve">
+    <value>投票结果</value>
+  </data>
+  <data name="VOT_LoadResults" xml:space="preserve">
+    <value>加载结果</value>
+  </data>
+  <data name="VOT_CreatePoll" xml:space="preserve">
+    <value>创建新投票</value>
+  </data>
+  <data name="VOT_PollName" xml:space="preserve">
+    <value>投票名称（最多 32 个字符）</value>
+  </data>
+  <data name="VOT_PollType" xml:space="preserve">
+    <value>投票类型</value>
+  </data>
+  <data name="VOT_QuBased" xml:space="preserve">
+    <value>基于 QU（1）</value>
+  </data>
+  <data name="VOT_AssetBased" xml:space="preserve">
+    <value>基于资产（2）</value>
+  </data>
+  <data name="VOT_MinAmount" xml:space="preserve">
+    <value>最低金额</value>
+  </data>
+  <data name="VOT_GithubLink" xml:space="preserve">
+    <value>GitHub 链接（最多 256 个字符）</value>
+  </data>
+  <data name="VOT_GithubHelp" xml:space="preserve">
+    <value>必须以 https://github.com/ 开头</value>
+  </data>
+  <data name="VOT_AllowedAssetsLabel" xml:space="preserve">
+    <value>允许的资产（最多 16 个）</value>
+  </data>
+  <data name="VOT_AssetNamePlaceholder" xml:space="preserve">
+    <value>资产名称</value>
+  </data>
+  <data name="VOT_AddAsset" xml:space="preserve">
+    <value>+ 添加资产</value>
+  </data>
+  <data name="VOT_PollClosed" xml:space="preserve">
+    <value>此投票已关闭。</value>
+  </data>
+  <data name="VOT_BadgeAsset" xml:space="preserve">
+    <value>资产</value>
+  </data>
+  <data name="Common_Sending" xml:space="preserve">
+    <value>发送中…</value>
+  </data>
+  <data name="Common_Orders" xml:space="preserve">
+    <value>订单</value>
+  </data>
+  <data name="Common_Placing" xml:space="preserve">
+    <value>下单中…</value>
+  </data>
+  <data name="AS_Title" xml:space="preserve">
+    <value>资产组合</value>
+  </data>
+  <data name="AS_Subtitle" xml:space="preserve">
+    <value>查看任意身份的拥有、发行和持有资产。转移资产并更改管理权。</value>
+  </data>
+  <data name="AS_IdentityPlaceholder" xml:space="preserve">
+    <value>输入 60 位身份</value>
+  </data>
+  <data name="AS_LookupAssets" xml:space="preserve">
+    <value>查询资产</value>
+  </data>
+  <data name="AS_YourOpenOrders" xml:space="preserve">
+    <value>您的未完成 QX 订单</value>
+  </data>
+  <data name="AS_PossessedAssets" xml:space="preserve">
+    <value>持有资产</value>
+  </data>
+  <data name="AS_NoPossessed" xml:space="preserve">
+    <value>没有持有的资产。</value>
+  </data>
+  <data name="AS_IssuedAssets" xml:space="preserve">
+    <value>已发行资产</value>
+  </data>
+  <data name="AS_NoIssued" xml:space="preserve">
+    <value>没有发行的资产。</value>
+  </data>
+  <data name="AS_TransferAsset" xml:space="preserve">
+    <value>转移资产</value>
+  </data>
+  <data name="AS_ChangeRights" xml:space="preserve">
+    <value>更改管理权</value>
+  </data>
+  <data name="AS_SellQx" xml:space="preserve">
+    <value>在 QX 出售</value>
+  </data>
+  <data name="AS_BuyQx" xml:space="preserve">
+    <value>在 QX 购买</value>
+  </data>
+  <data name="AS_OrderBook" xml:space="preserve">
+    <value>订单簿</value>
+  </data>
+  <data name="AS_LoadingOrderBook" xml:space="preserve">
+    <value>加载订单簿中…</value>
+  </data>
+  <data name="AS_ClickRow" xml:space="preserve">
+    <value>点击某行以预填买单或卖单。</value>
+  </data>
+  <data name="AS_AsksSellers" xml:space="preserve">
+    <value>卖单（卖方）</value>
+  </data>
+  <data name="AS_BidsBuyers" xml:space="preserve">
+    <value>买单（买方）</value>
+  </data>
+  <data name="AS_NoAsks" xml:space="preserve">
+    <value>无卖单。</value>
+  </data>
+  <data name="AS_NoBids" xml:space="preserve">
+    <value>无买单。</value>
+  </data>
+  <data name="AS_DestinationIdentity" xml:space="preserve">
+    <value>目标身份</value>
+  </data>
+  <data name="AS_SharesMaxPre" xml:space="preserve">
+    <value>份额数量（最多：</value>
+  </data>
+  <data name="AS_TransferViaQx" xml:space="preserve">
+    <value>通过 QX 转移</value>
+  </data>
+  <data name="AS_PlaceSellOrder" xml:space="preserve">
+    <value>下卖单</value>
+  </data>
+  <data name="AS_PlaceBuyOrder" xml:space="preserve">
+    <value>下买单</value>
+  </data>
+  <data name="AS_ChangeRightsVia" xml:space="preserve">
+    <value>更改权限通过</value>
+  </data>
+  <data name="AS_Each" xml:space="preserve">
+    <value>每份</value>
+  </data>
+  <data name="AS_OnMatch" xml:space="preserve">
+    <value>成交时</value>
+  </data>
+  <data name="Common_Remove2" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="DT_Title" xml:space="preserve">
+    <value>开发者工具</value>
+  </data>
+  <data name="DT_Subtitle" xml:space="preserve">
+    <value>用于本地 AIO / core-lite 测试网：公共开发账户、水龙头、资产发行和创世资金。</value>
+  </data>
+  <data name="DT_Identify" xml:space="preserve">
+    <value>识别网络</value>
+  </data>
+  <data name="DT_EnableAnywayPre" xml:space="preserve">
+    <value>仍为以下网络启用：</value>
+  </data>
+  <data name="DT_EnableAnywayPost" xml:space="preserve">
+    <value>（我自己的、使用不同种子的 core-lite 构建）</value>
+  </data>
+  <data name="DT_DevWarn1" xml:space="preserve">
+    <value>开发账户使用</value>
+  </data>
+  <data name="DT_DevWarnBold" xml:space="preserve">
+    <value>公开已知的种子</value>
+  </data>
+  <data name="DT_DevWarn2" xml:space="preserve">
+    <value>。它们仅用于此测试网——切勿向其发送主网资金。</value>
+  </data>
+  <data name="DT_Faucet" xml:space="preserve">
+    <value>水龙头</value>
+  </data>
+  <data name="DT_FundIdentity" xml:space="preserve">
+    <value>为身份充值</value>
+  </data>
+  <data name="DT_DestinationPlaceholder" xml:space="preserve">
+    <value>目标身份</value>
+  </data>
+  <data name="DT_FundBtn" xml:space="preserve">
+    <value>从开发账户充值</value>
+  </data>
+  <data name="DT_Sent" xml:space="preserve">
+    <value>已发送：</value>
+  </data>
+  <data name="DT_IssueCard" xml:space="preserve">
+    <value>从开发账户发行 QX 资产</value>
+  </data>
+  <data name="DT_DevAccountNum" xml:space="preserve">
+    <value>开发账户 #</value>
+  </data>
+  <data name="DT_IssueBtn" xml:space="preserve">
+    <value>发行（QX 手续费来自节点）</value>
+  </data>
+  <data name="DT_GenesisCard" xml:space="preserve">
+    <value>创世资金（AIO 套件）</value>
+  </data>
+  <data name="DT_GenesisNotePre" xml:space="preserve">
+    <value>余额和资产也可写入创世状态文件。请在</value>
+  </data>
+  <data name="DT_GenesisNotePost" xml:space="preserve">
+    <value>文件夹中运行——这会重启链。</value>
+  </data>
+  <data name="DT_AssetOpt" xml:space="preserve">
+    <value>资产（可选）</value>
+  </data>
+  <data name="DT_SharesPh" xml:space="preserve">
+    <value>份额</value>
+  </data>
+  <data name="DT_CopyCommands" xml:space="preserve">
+    <value>复制命令</value>
+  </data>
+  <data name="DT_DevAccounts" xml:space="preserve">
+    <value>开发账户</value>
+  </data>
+  <data name="DT_Use" xml:space="preserve">
+    <value>使用</value>
+  </data>
+  <data name="DT_UseTitle" xml:space="preserve">
+    <value>用作当前身份</value>
+  </data>
+  <data name="CC_Subtitle" xml:space="preserve">
+    <value>调用任何智能合约的函数或过程——包括从 C++ 头文件导入的您自己的合约。</value>
+  </data>
+  <data name="CC_FeatureOffPre" xml:space="preserve">
+    <value>合约控制台属于</value>
+  </data>
+  <data name="CC_DeveloperTools" xml:space="preserve">
+    <value>开发者工具</value>
+  </data>
+  <data name="CC_TurnOnIn" xml:space="preserve">
+    <value>请在以下位置开启：</value>
+  </data>
+  <data name="CC_Call" xml:space="preserve">
+    <value>调用</value>
+  </data>
+  <data name="CC_Kind" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="CC_FunctionRead" xml:space="preserve">
+    <value>函数（读取）</value>
+  </data>
+  <data name="CC_ProcedureTx" xml:space="preserve">
+    <value>过程（交易）</value>
+  </data>
+  <data name="CC_Function" xml:space="preserve">
+    <value>函数</value>
+  </data>
+  <data name="CC_Procedure" xml:space="preserve">
+    <value>过程</value>
+  </data>
+  <data name="CC_Input" xml:space="preserve">
+    <value>输入</value>
+  </data>
+  <data name="CC_RawInputHex" xml:space="preserve">
+    <value>原始输入（十六进制）</value>
+  </data>
+  <data name="CC_AmountCall" xml:space="preserve">
+    <value>金额（随调用发送的 QU）</value>
+  </data>
+  <data name="CC_Querying" xml:space="preserve">
+    <value>查询中…</value>
+  </data>
+  <data name="CC_Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="CC_UnlockProc" xml:space="preserve">
+    <value>解锁种子以发送过程。</value>
+  </data>
+  <data name="CC_Result" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="CC_CheckResult" xml:space="preserve">
+    <value>查看结果</value>
+  </data>
+  <data name="CC_StatusLabel" xml:space="preserve">
+    <value>状态：</value>
+  </data>
+  <data name="CC_Executed" xml:space="preserve">
+    <value>已执行</value>
+  </data>
+  <data name="CC_NotExecuted" xml:space="preserve">
+    <value>失败 / 未执行</value>
+  </data>
+  <data name="CC_ImportHeader" xml:space="preserve">
+    <value>导入合约头文件</value>
+  </data>
+  <data name="CC_Index" xml:space="preserve">
+    <value>索引</value>
+  </data>
+  <data name="CC_NameOptional" xml:space="preserve">
+    <value>名称（可选）</value>
+  </data>
+  <data name="CC_ImportedOnNetwork" xml:space="preserve">
+    <value>已在此网络导入</value>
+  </data>
+  <data name="CC_ContractsOnNode" xml:space="preserve">
+    <value>此节点上的合约</value>
+  </data>
+  <data name="CC_SinceEpoch" xml:space="preserve">
+    <value>自纪元</value>
+  </data>
+  <data name="CC_State" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Common_NetworkWord" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="SRH_More" xml:space="preserve">
+    <value>更多等待中</value>
+  </data>
+  <data name="SRH_PublicDevKey" xml:space="preserve">
+    <value>公共开发密钥</value>
+  </data>
+  <data name="SRH_TargetTick" xml:space="preserve">
+    <value>目标 Tick</value>
+  </data>
+  <data name="SRH_InputType" xml:space="preserve">
+    <value>输入类型</value>
+  </data>
+  <data name="SRH_Site" xml:space="preserve">
+    <value>网站</value>
+  </data>
+  <data name="SRH_Statement" xml:space="preserve">
+    <value>声明</value>
+  </data>
+  <data name="SRH_Issued" xml:space="preserve">
+    <value>签发</value>
+  </data>
+  <data name="SRH_Expires" xml:space="preserve">
+    <value>过期</value>
+  </data>
+  <data name="SRH_Nonce" xml:space="preserve">
+    <value>Nonce</value>
+  </data>
+  <data name="SRH_RawInputPre" xml:space="preserve">
+    <value>原始输入（</value>
+  </data>
+  <data name="SRH_Bytes" xml:space="preserve">
+    <value>字节）</value>
+  </data>
+  <data name="SRH_Acknowledge" xml:space="preserve">
+    <value>我已理解上述警告</value>
+  </data>
+  <data name="SRH_Reject" xml:space="preserve">
+    <value>拒绝</value>
+  </data>
+  <data name="SRH_O_LocalEndpoint" xml:space="preserve">
+    <value>本地端点</value>
+  </data>
+  <data name="SRH_O_DevTools" xml:space="preserve">
+    <value>开发工具</value>
+  </data>
+  <data name="SRH_O_Repeat" xml:space="preserve">
+    <value>重复</value>
+  </data>
+  <data name="SRH_O_InApp" xml:space="preserve">
+    <value>此钱包</value>
+  </data>
+  <data name="NB_Devnet" xml:space="preserve">
+    <value>本地开发网络</value>
+  </data>
+  <data name="NB_Testnet" xml:space="preserve">
+    <value>测试网络</value>
+  </data>
+  <data name="NB_Custom" xml:space="preserve">
+    <value>自定义网络</value>
+  </data>
+  <data name="NB_NotMainnet" xml:space="preserve">
+    <value>非主网。</value>
+  </data>
+  <data name="NB_NoNetworkId" xml:space="preserve">
+    <value>Qubic 交易不含网络 id：测试网络请使用单独的种子。</value>
+  </data>
+  <data name="NB_Mismatch" xml:space="preserve">
+    <value>网络不匹配：</value>
+  </data>
+  <data name="NB_IsSetupAs" xml:space="preserve">
+    <value>被设置为</value>
+  </data>
+  <data name="NB_ButChainIs" xml:space="preserve">
+    <value>，但所连接的链是</value>
+  </data>
+  <data name="NB_CoreliteDevnet" xml:space="preserve">
+    <value>core-lite 开发网</value>
+  </data>
+  <data name="NB_ArbitratorSigned" xml:space="preserve">
+    <value>由主网仲裁者签名</value>
+  </data>
+  <data name="NB_Unrecognized" xml:space="preserve">
+    <value>无法识别</value>
+  </data>
+  <data name="NB_CheckSettings" xml:space="preserve">
+    <value>检查网络设置</value>
+  </data>
+  <data name="NB_ChainReset" xml:space="preserve">
+    <value>检测到链重置：</value>
+  </data>
+  <data name="NB_HistoryCleared" xml:space="preserve">
+    <value>此网络的缓存历史已清除。</value>
+  </data>
+  <data name="NB_BlockedPre" xml:space="preserve">
+    <value>已阻止连接到</value>
+  </data>
+  <data name="NB_BlockedPost" xml:space="preserve">
+    <value>它不属于</value>
+  </data>
+  <data name="NS_Manage" xml:space="preserve">
+    <value>管理网络…</value>
+  </data>
+  <data name="FD_Title" xml:space="preserve">
+    <value>选择可选功能</value>
+  </data>
+  <data name="FD_Intro" xml:space="preserve">
+    <value>除非您开启，否则这些功能处于关闭状态。关闭的功能完全不运行——没有连接、没有监听、没有后台下载。</value>
+  </data>
+  <data name="FD_ChangeAnytime" xml:space="preserve">
+    <value>您可以随时在以下位置更改：</value>
+  </data>
+  <data name="FD_SaveChoices" xml:space="preserve">
+    <value>保存选择</value>
+  </data>
+  <data name="ST_Title" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="ST_Tab_General" xml:space="preserve">
+    <value>常规</value>
+  </data>
+  <data name="ST_Tab_Networks" xml:space="preserve">
+    <value>网络</value>
+  </data>
+  <data name="ST_Tab_Features" xml:space="preserve">
+    <value>功能</value>
+  </data>
+  <data name="ST_Tab_Transactions" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="ST_Tab_Labels" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="ST_Tab_Data" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="ST_Tab_Vault" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="ST_Theme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="ST_ThemeLight" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="ST_ThemeDark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="ST_AutoLock" xml:space="preserve">
+    <value>自动锁定</value>
+  </data>
+  <data name="ST_LockAfter" xml:space="preserve">
+    <value>闲置后锁定保险库（分钟）</value>
+  </data>
+  <data name="ST_LockAfterHelp" xml:space="preserve">
+    <value>设为 0 可禁用自动锁定。默认：15 分钟。</value>
+  </data>
+  <data name="ST_FeaturesIntro" xml:space="preserve">
+    <value>除非在此启用，否则可选功能处于关闭状态。关闭的功能完全不运行。</value>
+  </data>
+  <data name="ST_RefreshLabels" xml:space="preserve">
+    <value>刷新标签</value>
+  </data>
+  <data name="ST_RemoteLabels" xml:space="preserve">
+    <value>从远程注册表加载标签</value>
+  </data>
+  <data name="ST_AutoResend" xml:space="preserve">
+    <value>自动重发失败的交易</value>
+  </data>
+  <data name="ST_MaxResend" xml:space="preserve">
+    <value>最大重发次数</value>
+  </data>
+  <data name="ST_ExportDb" xml:space="preserve">
+    <value>导出数据库</value>
+  </data>
+  <data name="ST_ImportDb" xml:space="preserve">
+    <value>导入数据库</value>
+  </data>
+  <data name="Common_Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="MV_Subtitle" xml:space="preserve">
+    <value>管理多签保险库：注册、存入、释放并对费用变更投票。</value>
+  </data>
+  <data name="MV_YourVaults" xml:space="preserve">
+    <value>您的保险库</value>
+  </data>
+  <data name="MV_OwnersColon" xml:space="preserve">
+    <value>所有者：</value>
+  </data>
+  <data name="MV_RequiredApprovalsColon" xml:space="preserve">
+    <value>所需批准：</value>
+  </data>
+  <data name="MV_Approvals" xml:space="preserve">
+    <value>批准</value>
+  </data>
+  <data name="MV_ReleasePre" xml:space="preserve">
+    <value>释放</value>
+  </data>
+  <data name="MV_ReleaseToSuffix" xml:space="preserve">
+    <value>至</value>
+  </data>
+  <data name="MV_ReleasePending" xml:space="preserve">
+    <value>释放交易待处理…</value>
+  </data>
+  <data name="MV_ApproveRelease" xml:space="preserve">
+    <value>批准释放</value>
+  </data>
+  <data name="MV_ShowOwners" xml:space="preserve">
+    <value>显示所有者</value>
+  </data>
+  <data name="MV_DepositQu" xml:space="preserve">
+    <value>存入 QU</value>
+  </data>
+  <data name="MV_DepositAsset" xml:space="preserve">
+    <value>存入资产</value>
+  </data>
+  <data name="MV_ReleaseQu" xml:space="preserve">
+    <value>释放 QU</value>
+  </data>
+  <data name="MV_ReleaseAsset" xml:space="preserve">
+    <value>释放资产</value>
+  </data>
+  <data name="MV_Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="MV_Tab_Register" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="MV_Tab_Deposit" xml:space="preserve">
+    <value>存入</value>
+  </data>
+  <data name="MV_Tab_Release" xml:space="preserve">
+    <value>释放</value>
+  </data>
+  <data name="MV_Tab_Assets" xml:space="preserve">
+    <value>资产</value>
+  </data>
+  <data name="MV_Tab_Query" xml:space="preserve">
+    <value>查询</value>
+  </data>
+  <data name="MV_RegisterVault" xml:space="preserve">
+    <value>注册保险库</value>
+  </data>
+  <data name="MV_Registering" xml:space="preserve">
+    <value>注册中…</value>
+  </data>
+  <data name="MV_VaultName" xml:space="preserve">
+    <value>保险库名称</value>
+  </data>
+  <data name="MV_NameHelp" xml:space="preserve">
+    <value>任意名称，最多 32 个字符。</value>
+  </data>
+  <data name="MV_OwnersLabel" xml:space="preserve">
+    <value>所有者（最少 2，最多 16 个身份）</value>
+  </data>
+  <data name="MV_AddOwner" xml:space="preserve">
+    <value>+ 添加所有者</value>
+  </data>
+  <data name="MV_OwnerHint" xml:space="preserve">
+    <value>当前钱包身份可以作为其中一个所有者。</value>
+  </data>
+  <data name="MV_RequiredApprovals" xml:space="preserve">
+    <value>所需批准（最少 2）</value>
+  </data>
+  <data name="MV_DepositToVault" xml:space="preserve">
+    <value>存入保险库</value>
+  </data>
+  <data name="MV_Vault" xml:space="preserve">
+    <value>保险库</value>
+  </data>
+  <data name="MV_VaultIdPlaceholder" xml:space="preserve">
+    <value>或手动输入保险库 ID</value>
+  </data>
+  <data name="MV_Depositing" xml:space="preserve">
+    <value>存入中…</value>
+  </data>
+  <data name="MV_Deposit" xml:space="preserve">
+    <value>存入</value>
+  </data>
+  <data name="MV_ReleaseReset" xml:space="preserve">
+    <value>释放 / 重置</value>
+  </data>
+  <data name="MV_ReleaseToRadio" xml:space="preserve">
+    <value>释放至</value>
+  </data>
+  <data name="MV_ResetRelease" xml:space="preserve">
+    <value>重置释放</value>
+  </data>
+  <data name="MV_VaultId" xml:space="preserve">
+    <value>保险库 ID</value>
+  </data>
+  <data name="MV_AssetOps" xml:space="preserve">
+    <value>资产操作</value>
+  </data>
+  <data name="MV_AssetOp_Deposit" xml:space="preserve">
+    <value>存入资产</value>
+  </data>
+  <data name="MV_AssetOp_Release" xml:space="preserve">
+    <value>释放资产至</value>
+  </data>
+  <data name="MV_AssetOp_Reset" xml:space="preserve">
+    <value>重置资产释放</value>
+  </data>
+  <data name="MV_AssetOp_Revoke" xml:space="preserve">
+    <value>撤销资产管理权</value>
+  </data>
+  <data name="MV_VoteFeeChange" xml:space="preserve">
+    <value>投票变更费用</value>
+  </data>
+  <data name="MV_Voting" xml:space="preserve">
+    <value>投票中…</value>
+  </data>
+  <data name="MV_VoteDesc" xml:space="preserve">
+    <value>为保险库操作提出新的费用值。</value>
+  </data>
+  <data name="MV_FeeBurn" xml:space="preserve">
+    <value>销毁费</value>
+  </data>
+  <data name="MV_FeeDeposit" xml:space="preserve">
+    <value>新存入费</value>
+  </data>
+  <data name="MV_FeeHolding" xml:space="preserve">
+    <value>新持有费</value>
+  </data>
+  <data name="MV_FeeRegistering" xml:space="preserve">
+    <value>新注册费</value>
+  </data>
+  <data name="MV_FeeRelease" xml:space="preserve">
+    <value>新释放费</value>
+  </data>
+  <data name="MV_FeeReset" xml:space="preserve">
+    <value>新重置费</value>
+  </data>
+  <data name="MV_NoVoteFee" xml:space="preserve">
+    <value>投票无费用。</value>
+  </data>
+  <data name="MV_QueryMsvault" xml:space="preserve">
+    <value>查询 MSVault</value>
+  </data>
+  <data name="MV_Querying" xml:space="preserve">
+    <value>查询中…</value>
+  </data>
+  <data name="MV_Q5" xml:space="preserve">
+    <value>获取保险库（按所有者）</value>
+  </data>
+  <data name="MV_Q6" xml:space="preserve">
+    <value>获取释放状态</value>
+  </data>
+  <data name="MV_Q7" xml:space="preserve">
+    <value>获取余额</value>
+  </data>
+  <data name="MV_Q8" xml:space="preserve">
+    <value>获取保险库名称</value>
+  </data>
+  <data name="MV_Q10" xml:space="preserve">
+    <value>获取费用</value>
+  </data>
+  <data name="MV_Q11" xml:space="preserve">
+    <value>获取保险库所有者</value>
+  </data>
+  <data name="MV_Q12" xml:space="preserve">
+    <value>是否股东</value>
+  </data>
+  <data name="MV_NoEvents" xml:space="preserve">
+    <value>未找到 MSVault 事件。事件在后台从网络同步。</value>
+  </data>
+  <data name="MV_OpenToView" xml:space="preserve">
+    <value>打开钱包以查看历史（已同步的日志事件）。</value>
+  </data>
+  <data name="MV_ShowAll" xml:space="preserve">
+    <value>显示全部</value>
+  </data>
+  <data name="MV_VaultHash" xml:space="preserve">
+    <value>保险库 #</value>
+  </data>
+  <data name="CG_SettingsNetworks" xml:space="preserve">
+    <value>设置 → 网络</value>
+  </data>
+  <data name="WCP_FlaggedPre" xml:space="preserve">
+    <value>WalletConnect Verify 将此网站标记为</value>
+  </data>
+  <data name="WCP_FlaggedBold" xml:space="preserve">
+    <value>不匹配</value>
+  </data>
+  <data name="WCP_FlaggedPost" xml:space="preserve">
+    <value>其声称的域名。</value>
+  </data>
+  <data name="WCP_ChainMismatchPre" xml:space="preserve">
+    <value>它请求</value>
+  </data>
+  <data name="WCP_ButWalletOn" xml:space="preserve">
+    <value>，但钱包当前在</value>
+  </data>
+  <data name="WCP_SwitchOrReject" xml:space="preserve">
+    <value>请先切换网络，或拒绝。</value>
+  </data>
+  <data name="WCP_AccountsToShare" xml:space="preserve">
+    <value>要共享的账户</value>
+  </data>
+  <data name="WCP_NoAccount" xml:space="preserve">
+    <value>没有可用账户——请先解锁保险库或输入种子。</value>
+  </data>
+  <data name="WCP_DappSees" xml:space="preserve">
+    <value>该 dApp 可看到这些地址和余额。它可请求签名；每个请求都会先向您显示。</value>
+  </data>
+  <data name="WCP_Connect" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="CG_NotAvailable" xml:space="preserve">
+    <value>此网络不可用</value>
+  </data>
+  <data name="CG_NoMethodPre" xml:space="preserve">
+    <value>没有提供以下功能的方法：</value>
+  </data>
+  <data name="CG_AddPre" xml:space="preserve">
+    <value>请添加</value>
+  </data>
+  <data name="CG_AddPost" xml:space="preserve">
+    <value>方法到此网络，位置：</value>
+  </data>
+  <data name="TTP_TimeBased" xml:space="preserve">
+    <value>基于时间的目标（按网络设置）</value>
+  </data>
+  <data name="TTP_FixedOffset" xml:space="preserve">
+    <value>固定 Tick 偏移（按网络设置）</value>
+  </data>
+  <data name="ASel_Issuer" xml:space="preserve">
+    <value>资产发行方身份</value>
+  </data>
+  <data name="ASel_Name" xml:space="preserve">
+    <value>资产名称（最多 7 个字符）</value>
+  </data>
+  <data name="SE_NoInputs" xml:space="preserve">
+    <value>没有输入字段。</value>
+  </data>
+  <data name="SE_HexPost" xml:space="preserve">
+    <value>] 十六进制</value>
+  </data>
+  <data name="SE_ElementsPre" xml:space="preserve">
+    <value>元素</value>
+  </data>
+  <data name="SE_ElementsPost" xml:space="preserve">
+    <value>保持为零。</value>
+  </data>
+  <data name="NS_Discard" xml:space="preserve">
+    <value>放弃更改</value>
+  </data>
+  <data name="NS_Checking" xml:space="preserve">
+    <value>检查中…</value>
+  </data>
+  <data name="NS_PortPlaceholder" xml:space="preserve">
+    <value>端口</value>
+  </data>
+  <data name="NS_PeerDiscovery" xml:space="preserve">
+    <value>节点发现（自动切换到更优节点）</value>
+  </data>
+  <data name="NS_WebSocket" xml:space="preserve">
+    <value>WebSocket（实时 tick 和日志同步）</value>
+  </data>
+  <data name="NS_UseBundle" xml:space="preserve">
+    <value>使用主网数据包（标签、费用）</value>
+  </data>
+  <data name="NS_BadgeColour" xml:space="preserve">
+    <value>徽章颜色</value>
+  </data>
+  <data name="NS_ExpectedNetwork" xml:space="preserve">
+    <value>预期网络</value>
+  </data>
+  <data name="NS_ExpectedHint" xml:space="preserve">
+    <value>（根据 computor 列表检查）</value>
+  </data>
+  <data name="NS_ExplorerLink" xml:space="preserve">
+    <value>交易的浏览器链接</value>
+  </data>
+  <data name="NS_ExplorerHint" xml:space="preserve">
+    <value>（{hash} 占位符，留空 = 无链接）</value>
+  </data>
+  <data name="NS_Methods" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="NS_MethodsHint" xml:space="preserve">
+    <value>（优先级顺序——第一个支持该操作的已启用方法将处理它）</value>
+  </data>
+  <data name="NS_PendingWindow" xml:space="preserve">
+    <value>待处理窗口（tick）</value>
+  </data>
+  <data name="NS_EmptyEq" xml:space="preserve">
+    <value>留空 =</value>
+  </data>
+  <data name="NS_SecondsAhead" xml:space="preserve">
+    <value>提前秒数</value>
+  </data>
+  <data name="NS_DriftThreshold" xml:space="preserve">
+    <value>Tick 漂移阈值（此网络各方法之间的 tick 数）</value>
+  </data>
+  <data name="NS_TicksAhead" xml:space="preserve">
+    <value>提前 tick 数</value>
+  </data>
+  <data name="NS_AddNetwork" xml:space="preserve">
+    <value>+ 添加网络…</value>
+  </data>
+  <data name="NS_EmptyCustom" xml:space="preserve">
+    <value>空白自定义网络</value>
+  </data>
+  <data name="NS_Off" xml:space="preserve">
+    <value>（关闭）</value>
+  </data>
+  <data name="NS_ArbitratorSigned" xml:space="preserve">
+    <value>由主网仲裁者签名</value>
+  </data>
+  <data name="NS_CoreliteDevnet" xml:space="preserve">
+    <value>core-lite 开发网（公共开发 computor）</value>
+  </data>
+  <data name="NS_NoExpectation" xml:space="preserve">
+    <value>无预期</value>
+  </data>
+  <data name="NS_Kind_Mainnet" xml:space="preserve">
+    <value>主网</value>
+  </data>
+  <data name="NS_Kind_Testnet" xml:space="preserve">
+    <value>测试网</value>
+  </data>
+  <data name="NS_Kind_Devnet" xml:space="preserve">
+    <value>开发网（本地 / AIO）</value>
+  </data>
+  <data name="NS_Kind_Custom" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="NS_Preset_AioLocal" xml:space="preserve">
+    <value>AIO 开发套件（本机）</value>
+  </data>
+  <data name="NS_Preset_AioRemote" xml:space="preserve">
+    <value>AIO 开发套件（远程主机）</value>
+  </data>
+  <data name="NS_FixedOffset" xml:space="preserve">
+    <value>固定 Tick 偏移</value>
+  </data>
+  <data name="NS_TimeBased" xml:space="preserve">
+    <value>在约 N 秒内执行</value>
+  </data>
+  <data name="NS_RestorePresets" xml:space="preserve">
+    <value>恢复已删除的预设</value>
+  </data>
+  <data name="NS_ResetTitle" xml:space="preserve">
+    <value>重置为预设默认值</value>
+  </data>
+  <data name="NS_AndReconnect" xml:space="preserve">
+    <value>并重新连接</value>
+  </data>
+  <data name="NS_MethodPerOp" xml:space="preserve">
+    <value>每项操作的方法</value>
+  </data>
+  <data name="NS_AutoFollows" xml:space="preserve">
+    <value>— “自动”遵循上面的优先级顺序</value>
+  </data>
+  <data name="NS_Only" xml:space="preserve">
+    <value>仅</value>
+  </data>
+  <data name="NS_ActiveNetwork" xml:space="preserve">
+    <value>当前网络：</value>
+  </data>
+  <data name="NS_BlockedConnections" xml:space="preserve">
+    <value>已阻止的连接</value>
+  </data>
+  <data name="NS_AllowedHosts" xml:space="preserve">
+    <value>允许的主机：</value>
+  </data>
+  <data name="NS_ClearLower" xml:space="preserve">
+    <value>清除</value>
+  </data>
+  <data name="ST_CreateNewVault" xml:space="preserve">
+    <value>创建新保险库</value>
+  </data>
+  <data name="ST_OpenExistingVault" xml:space="preserve">
+    <value>打开现有保险库</value>
+  </data>
+  <data name="ST_StorageInfo" xml:space="preserve">
+    <value>存储信息</value>
+  </data>
+  <data name="ST_VaultFilePath" xml:space="preserve">
+    <value>保险库文件路径</value>
+  </data>
+  <data name="ST_Seed55" xml:space="preserve">
+    <value>种子（55 个字符）</value>
+  </data>
+  <data name="ST_Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="ST_OpenVault" xml:space="preserve">
+    <value>打开保险库</value>
+  </data>
+  <data name="ST_Disconnect" xml:space="preserve">
+    <value>断开</value>
+  </data>
+  <data name="ST_DeleteVault" xml:space="preserve">
+    <value>删除保险库</value>
+  </data>
+  <data name="ST_Generate" xml:space="preserve">
+    <value>生成</value>
+  </data>
+  <data name="ST_WriteDownBold" xml:space="preserve">
+    <value>请写下此种子并妥善保管！</value>
+  </data>
+  <data name="ST_WriteDownPost" xml:space="preserve">
+    <value>如果丢失，将无法恢复。</value>
+  </data>
+  <data name="ST_AreYouSureBold" xml:space="preserve">
+    <value>确定吗？</value>
+  </data>
+  <data name="ST_DeleteConfirmPost" xml:space="preserve">
+    <value>这将永久删除您的保险库和所有已存储的种子。</value>
+  </data>
+  <data name="ST_DatabasePath" xml:space="preserve">
+    <value>数据库路径：</value>
+  </data>
+  <data name="ST_TransactionsCount" xml:space="preserve">
+    <value>交易：</value>
+  </data>
+  <data name="ST_LogEventsCount" xml:space="preserve">
+    <value>日志事件：</value>
+  </data>
+  <data name="ST_NoSeeds" xml:space="preserve">
+    <value>未存储种子。</value>
+  </data>
+  <data name="ST_SeedShort" xml:space="preserve">
+    <value>种子</value>
+  </data>
+  <data name="FP_New" xml:space="preserve">
+    <value>新</value>
+  </data>
+  <data name="FP_ConnectsTo" xml:space="preserve">
+    <value>连接到：</value>
+  </data>
+  <data name="ST_Subtitle" xml:space="preserve">
+    <value>配置 Qubic.Net Wallet 的行为。</value>
+  </data>
+  <data name="Msg_AddAddress" xml:space="preserve">
+    <value>请至少添加一个地址。</value>
+  </data>
+  <data name="Msg_AddRecipientAmount" xml:space="preserve">
+    <value>请至少添加一个带金额的收款人。</value>
+  </data>
+  <data name="Msg_OwnersUnique" xml:space="preserve">
+    <value>所有所有者必须是唯一身份。</value>
+  </data>
+  <data name="Msg_AmountPositive" xml:space="preserve">
+    <value>金额必须为正。</value>
+  </data>
+  <data name="Msg_AssetNameRequired" xml:space="preserve">
+    <value>资产名称为必填项。</value>
+  </data>
+  <data name="Msg_AssetNameRequired2" xml:space="preserve">
+    <value>需要资产名称。</value>
+  </data>
+  <data name="Msg_AssetNotOwned" xml:space="preserve">
+    <value>在您持有的资产中未找到该资产。请确认您拥有指定资产。</value>
+  </data>
+  <data name="Msg_MinTwoOwners" xml:space="preserve">
+    <value>至少需要 2 个所有者。</value>
+  </data>
+  <data name="Msg_BroadcastCheck" xml:space="preserve">
+    <value>已广播。目标 tick 过后请使用“查看结果”。</value>
+  </data>
+  <data name="Msg_ContractIndexRange" xml:space="preserve">
+    <value>合约索引必须介于 1 和 1023 之间。</value>
+  </data>
+  <data name="Msg_LoadContractsFailed" xml:space="preserve">
+    <value>无法加载节点的合约列表。</value>
+  </data>
+  <data name="Msg_CouldNotReadFile" xml:space="preserve">
+    <value>无法读取文件：</value>
+  </data>
+  <data name="Msg_DestInvalid" xml:space="preserve">
+    <value>目标必须是有效的 60 位身份。</value>
+  </data>
+  <data name="Msg_ExportFailed" xml:space="preserve">
+    <value>导出失败：</value>
+  </data>
+  <data name="Msg_FeesNotLoaded" xml:space="preserve">
+    <value>费用尚未加载，请稍候。</value>
+  </data>
+  <data name="Msg_FileLocationRequired" xml:space="preserve">
+    <value>文件位置为必填项。</value>
+  </data>
+  <data name="Msg_FilePathRequired" xml:space="preserve">
+    <value>文件路径为必填项。</value>
+  </data>
+  <data name="Msg_GithubMax256" xml:space="preserve">
+    <value>GitHub 链接最多 256 个字符。</value>
+  </data>
+  <data name="Msg_GithubPrefix" xml:space="preserve">
+    <value>GitHub 链接必须以 https://github.com/ 开头。</value>
+  </data>
+  <data name="Msg_IpoNeedsDirect" xml:space="preserve">
+    <value>IPO 状态需要此网络中的 Direct（节点）方法。</value>
+  </data>
+  <data name="Msg_InvalidJsonExpected" xml:space="preserve">
+    <value>JSON 格式无效。应为：{"identity":"...","message":"...","signature":"..."}</value>
+  </data>
+  <data name="Msg_InvalidJson" xml:space="preserve">
+    <value>JSON 无效：</value>
+  </data>
+  <data name="Msg_InvalidShareCount" xml:space="preserve">
+    <value>份额数量无效。</value>
+  </data>
+  <data name="Msg_IssuerPrefix" xml:space="preserve">
+    <value>发行方：</value>
+  </data>
+  <data name="Msg_LabelRequired" xml:space="preserve">
+    <value>标签为必填项。</value>
+  </data>
+  <data name="Msg_LoadPollFirst" xml:space="preserve">
+    <value>请先加载投票。</value>
+  </data>
+  <data name="Msg_NameRequired" xml:space="preserve">
+    <value>名称为必填项。</value>
+  </data>
+  <data name="Msg_NewOwnerPrefix" xml:space="preserve">
+    <value>新所有者：</value>
+  </data>
+  <data name="Msg_NoAssetsRpc" xml:space="preserve">
+    <value>未找到资产。请检查您的 RPC 连接。</value>
+  </data>
+  <data name="Msg_NoReceiptYet" xml:space="preserve">
+    <value>暂无回执——交易（尚）未被打包。</value>
+  </data>
+  <data name="Msg_NoValidEntries" xml:space="preserve">
+    <value>未找到有效条目。</value>
+  </data>
+  <data name="Msg_NothingToImport" xml:space="preserve">
+    <value>没有可导入的内容。</value>
+  </data>
+  <data name="Msg_SharesRange676" xml:space="preserve">
+    <value>份额数量必须为 1-676。</value>
+  </data>
+  <data name="Msg_SharesPositive" xml:space="preserve">
+    <value>份额数量必须为正。</value>
+  </data>
+  <data name="Msg_PasswordRequired" xml:space="preserve">
+    <value>密码为必填项。</value>
+  </data>
+  <data name="Msg_PasswordsNoMatch" xml:space="preserve">
+    <value>密码不匹配。</value>
+  </data>
+  <data name="Msg_PasteSignedJson" xml:space="preserve">
+    <value>粘贴已签名的 JSON 以验证。</value>
+  </data>
+  <data name="Msg_PollNameRequired" xml:space="preserve">
+    <value>投票名称为必填项。</value>
+  </data>
+  <data name="Msg_PollNameMax32" xml:space="preserve">
+    <value>投票名称最多 32 个字符。</value>
+  </data>
+  <data name="Msg_PricePositive" xml:space="preserve">
+    <value>价格必须为正。</value>
+  </data>
+  <data name="Msg_PricePerSharePositive" xml:space="preserve">
+    <value>每份价格必须为正。</value>
+  </data>
+  <data name="Msg_Seed55" xml:space="preserve">
+    <value>种子必须为 55 个字符。</value>
+  </data>
+  <data name="Msg_Seed55Exact" xml:space="preserve">
+    <value>种子必须正好为 55 个字符。</value>
+  </data>
+  <data name="Msg_ShareCountPositive" xml:space="preserve">
+    <value>份额数量必须为正。</value>
+  </data>
+  <data name="Msg_SharesPositive2" xml:space="preserve">
+    <value>份额必须为正。</value>
+  </data>
+  <data name="Msg_SigningCancelled" xml:space="preserve">
+    <value>签名已取消。</value>
+  </data>
+  <data name="Msg_TemplateNotFound" xml:space="preserve">
+    <value>未找到模板。</value>
+  </data>
+  <data name="Msg_QrNoAddress" xml:space="preserve">
+    <value>二维码不包含 Qubic 地址。</value>
+  </data>
+  <data name="Msg_QrNotWalletConnect" xml:space="preserve">
+    <value>此二维码不是 WalletConnect 链接。</value>
+  </data>
+  <data name="Msg_SignInNeedsFeature" xml:space="preserve">
+    <value>这是一个 Sign-In with Qubic 请求。请在设置 → 功能中启用“Sign-In with Qubic”以签名。</value>
+  </data>
+  <data name="Msg_PollClosed" xml:space="preserve">
+    <value>此投票已关闭。</value>
+  </data>
+  <data name="Msg_VaultFileNotFound" xml:space="preserve">
+    <value>未找到保险库文件。</value>
+  </data>
+  <data name="Msg_VaultNameRequired" xml:space="preserve">
+    <value>保险库名称为必填项。</value>
+  </data>
+  <data name="Msg_VaultNameTooLong" xml:space="preserve">
+    <value>保险库名称过长（最多 32 字节 UTF-8）。</value>
+  </data>
+  <data name="Msg_RequestsAssetPre" xml:space="preserve">
+    <value>此请求索取</value>
+  </data>
+  <data name="Msg_RequestsAssetPost" xml:space="preserve">
+    <value>份额——请使用资产页面转移资产。</value>
+  </data>
+  <data name="Msg_ContractCallNote" xml:space="preserve">
+    <value>此请求是合约调用——此页面不支持。</value>
+  </data>
+  <data name="Msg_FilledFrom" xml:space="preserve">
+    <value>已根据付款请求填充</value>
+  </data>
+  <data name="Msg_MeantForPre" xml:space="preserve">
+    <value>它用于</value>
+  </data>
+  <data name="Msg_MeantForMid" xml:space="preserve">
+    <value>，但您当前在</value>
+  </data>
+  <data name="Msg_MissingIdentity" xml:space="preserve">
+    <value>缺少 'identity' 字段</value>
+  </data>
+  <data name="Msg_MissingMessage" xml:space="preserve">
+    <value>缺少 'message' 字段</value>
+  </data>
+  <data name="Msg_MissingSignature" xml:space="preserve">
+    <value>缺少 'signature' 字段</value>
+  </data>
+  <data name="Msg_SigLen64" xml:space="preserve">
+    <value>签名必须为 64 字节</value>
+  </data>
+  <data name="Msg_SigChecksum" xml:space="preserve">
+    <value>签名校验和无效。</value>
+  </data>
+  <data name="Fmt_AmountBetween" xml:space="preserve">
+    <value>金额必须介于 1 和 {0:N0} 之间。</value>
+  </data>
+  <data name="Fmt_AssetNIssuer" xml:space="preserve">
+    <value>资产 #{0} 发行方：{1}</value>
+  </data>
+  <data name="Fmt_AssetNNameReq" xml:space="preserve">
+    <value>资产 #{0}：资产名称为必填项。</value>
+  </data>
+  <data name="Fmt_AssetNIssuerReq" xml:space="preserve">
+    <value>资产 #{0}：发行方身份为必填项。</value>
+  </data>
+  <data name="Fmt_AssetIssuer" xml:space="preserve">
+    <value>资产发行方：{0}</value>
+  </data>
+  <data name="Fmt_AssetManagedBy" xml:space="preserve">
+    <value>该资产由 {0} 管理，不支持权限转移。</value>
+  </data>
+  <data name="Fmt_Destination" xml:space="preserve">
+    <value>目标：{0}</value>
+  </data>
+  <data name="Fmt_DevAccountHistory" xml:space="preserve">
+    <value>开发账户 #{0} 已激活，但无法打开其历史数据库：{1}</value>
+  </data>
+  <data name="Fmt_Exported" xml:space="preserve">
+    <value>已将 {0} 笔交易导出到 {1}</value>
+  </data>
+  <data name="Fmt_FailedLookupAsset" xml:space="preserve">
+    <value>查询资产失败：{0}</value>
+  </data>
+  <data name="Fmt_Imported" xml:space="preserve">
+    <value>已将 {0} 导入为 #{1}：{2} 个函数，{3} 个过程。</value>
+  </data>
+  <data name="Fmt_InsufficientBalance" xml:space="preserve">
+    <value>余额不足（{0} QU）。</value>
+  </data>
+  <data name="Fmt_LineInvalidFormat" xml:space="preserve">
+    <value>第 {0} 行：格式无效。应为 'IDENTITY,AMOUNT'。</value>
+  </data>
+  <data name="Fmt_LineErr" xml:space="preserve">
+    <value>第 {0} 行：{1}</value>
+  </data>
+  <data name="Fmt_OwnerNIdReq" xml:space="preserve">
+    <value>所有者 #{0}：需要身份。</value>
+  </data>
+  <data name="Fmt_OwnerNErr" xml:space="preserve">
+    <value>所有者 #{0}：{1}</value>
+  </data>
+  <data name="Fmt_PollNotFound" xml:space="preserve">
+    <value>未找到投票 {0}。</value>
+  </data>
+  <data name="Fmt_RecipientNErr" xml:space="preserve">
+    <value>收款人 {0}：{1}</value>
+  </data>
+  <data name="Fmt_RequiredApprovals" xml:space="preserve">
+    <value>所需批准数必须为 2-{0}。</value>
+  </data>
+  <data name="Fmt_SharesBetween" xml:space="preserve">
+    <value>份额必须介于 1 和 {0:N0} 之间。</value>
+  </data>
+  <data name="Fmt_TargetTickNotReached" xml:space="preserve">
+    <value>尚未达到目标 tick {0:N0}（当前 {1:N0}）。</value>
+  </data>
+  <data name="Fmt_TooManyRecipients" xml:space="preserve">
+    <value>收款人过多（{0}）。最多 25 个。</value>
+  </data>
+  <data name="Fmt_RespSize1032" xml:space="preserve">
+    <value>响应大小异常（{0} 字节，应为 1032）。</value>
+  </data>
+  <data name="Fmt_RespSize528" xml:space="preserve">
+    <value>响应大小异常（{0} 字节，应为 528）。</value>
+  </data>
+  <data name="CD_Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="S2M_DeleteTemplate" xml:space="preserve">
+    <value>删除模板</value>
+  </data>
+  <data name="Fmt_DeleteTemplate" xml:space="preserve">
+    <value>删除模板“{0}”？</value>
+  </data>
+  <data name="TH_RemoveAllConfirm" xml:space="preserve">
+    <value>移除所有已跟踪的交易？</value>
+  </data>
+  <data name="MV_Register" xml:space="preserve">
+    <value>注册</value>
+  </data>
+  <data name="MV_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="MV_Approve" xml:space="preserve">
+    <value>批准</value>
+  </data>
+  <data name="MV_ApproveAssetRelease" xml:space="preserve">
+    <value>批准资产释放</value>
+  </data>
+  <data name="Fmt_MvRegister" xml:space="preserve">
+    <value>注册保险库“{0}”，{1} 个所有者，{2} 个所需批准？
+
+手续费：{3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvDeposit" xml:space="preserve">
+    <value>向保险库 #{1} 存入 {0:N0} QU？</value>
+  </data>
+  <data name="Fmt_MvResetRelease" xml:space="preserve">
+    <value>重置保险库 #{0} 的所有待处理释放？
+
+手续费：{1:N0} QU</value>
+  </data>
+  <data name="Fmt_MvRelease" xml:space="preserve">
+    <value>从保险库 #{1} 向 {2}... 释放 {0:N0} QU？
+
+手续费：{3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvVote" xml:space="preserve">
+    <value>为新费用投票？
+
+注册：{0:N0}
+释放：{1:N0}
+重置：{2:N0}
+持有：{3:N0}
+存入：{4:N0}
+销毁：{5:N0}</value>
+  </data>
+  <data name="Fmt_MvApproveRelease" xml:space="preserve">
+    <value>批准从保险库 #{1} 向 {2}... 释放 {0:N0} QU？
+
+手续费：{3:N0} QU</value>
+  </data>
+  <data name="Fmt_MvApproveAssetRelease" xml:space="preserve">
+    <value>批准从保险库 #{2} 向 {3}... 释放 {0:N0} {1}？
+
+手续费：{4:N0} QU</value>
+  </data>
+  <data name="MV_RevokeMgmt" xml:space="preserve">
+    <value>撤销管理权</value>
+  </data>
+  <data name="MV_AssetOperation" xml:space="preserve">
+    <value>资产操作</value>
+  </data>
+  <data name="MV_ProceedAssetOp" xml:space="preserve">
+    <value>继续进行资产操作？</value>
+  </data>
+  <data name="Fmt_FeeFragment" xml:space="preserve">
+    <value>（手续费：{0:N0} QU）</value>
+  </data>
+  <data name="Fmt_AssetDepositRights" xml:space="preserve">
+    <value>向保险库 #{2} 存入 {0:N0} {1}？
+
+这将发送 2 笔交易：
+1. 将管理权从 {3} 转移到 MSVault{4}
+2. 将资产存入保险库（手续费：{5:N0} QU）</value>
+  </data>
+  <data name="Fmt_AssetDeposit" xml:space="preserve">
+    <value>向保险库 #{2} 存入 {0:N0} {1}？
+
+手续费：{3:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRelease" xml:space="preserve">
+    <value>从保险库 #{2} 向 {3}... 释放 {0:N0} {1}？
+
+手续费：{4:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetReset" xml:space="preserve">
+    <value>重置保险库 #{0} 的所有待处理资产释放？
+
+手续费：{1:N0} QU</value>
+  </data>
+  <data name="Fmt_AssetRevoke" xml:space="preserve">
+    <value>撤销 {0:N0} 份 {1} 的管理权？
+
+手续费：100 QU</value>
+  </data>
+  <data name="Cap_TickInfo" xml:space="preserve">
+    <value>Tick 信息</value>
+  </data>
+  <data name="Cap_Balance" xml:space="preserve">
+    <value>余额</value>
+  </data>
+  <data name="Cap_Broadcast" xml:space="preserve">
+    <value>广播</value>
+  </data>
+  <data name="Cap_SmartContractQuery" xml:space="preserve">
+    <value>合约查询</value>
+  </data>
+  <data name="Cap_Computors" xml:space="preserve">
+    <value>Computor 列表</value>
+  </data>
+  <data name="Cap_TransactionLookup" xml:space="preserve">
+    <value>交易查询</value>
+  </data>
+  <data name="Cap_TransactionReceipt" xml:space="preserve">
+    <value>交易回执</value>
+  </data>
+  <data name="Cap_TransferHistory" xml:space="preserve">
+    <value>转账历史</value>
+  </data>
+  <data name="Cap_TransactionArchive" xml:space="preserve">
+    <value>交易归档</value>
+  </data>
+  <data name="Cap_Logs" xml:space="preserve">
+    <value>日志事件</value>
+  </data>
+  <data name="Cap_AssetListings" xml:space="preserve">
+    <value>资产列表</value>
+  </data>
+  <data name="Cap_Issuances" xml:space="preserve">
+    <value>资产发行</value>
+  </data>
+  <data name="Cap_AssetBalance" xml:space="preserve">
+    <value>资产余额</value>
+  </data>
+  <data name="Cap_ActiveIpos" xml:space="preserve">
+    <value>活跃 IPO</value>
+  </data>
+  <data name="Cap_IpoStatus" xml:space="preserve">
+    <value>IPO 状态</value>
+  </data>
+  <data name="Cap_TickData" xml:space="preserve">
+    <value>Tick 数据</value>
+  </data>
+  <data name="Cap_ChainInfo" xml:space="preserve">
+    <value>链信息</value>
+  </data>
+  <data name="Cap_RawJsonRpc" xml:space="preserve">
+    <value>JSON-RPC 调试台</value>
+  </data>
+  <data name="Cap_Peers" xml:space="preserve">
+    <value>节点</value>
+  </data>
+  <data name="Cap_NodeCommands" xml:space="preserve">
+    <value>节点命令</value>
+  </data>
+  <data name="Cap_TickTransactionCheck" xml:space="preserve">
+    <value>Tick 包含检查</value>
+  </data>
+  <data name="Cap_Oracle" xml:space="preserve">
+    <value>预言机查询</value>
+  </data>
+  <data name="Cap_ContractRegistry" xml:space="preserve">
+    <value>合约注册表</value>
+  </data>
+  <data name="Feat_RemoteLabels_Title" xml:space="preserve">
+    <value>远程标签</value>
+  </data>
+  <data name="Feat_RemoteLabels_Desc" xml:space="preserve">
+    <value>使用公共 Qubic 数据包显示交易所、代币和智能合约的名称，并填入合约过程费用。仅在主网使用。</value>
+  </data>
+  <data name="Feat_RemoteLabels_Connects" xml:space="preserve">
+    <value>static.qubic.org</value>
+  </data>
+  <data name="Feat_RemoteLabels_Risk" xml:space="preserve">
+    <value>会向 static.qubic.org 透露您使用 Qubic 钱包（不发送任何地址）。</value>
+  </data>
+  <data name="Feat_DeveloperTools_Title" xml:space="preserve">
+    <value>开发者工具</value>
+  </data>
+  <data name="Feat_DeveloperTools_Desc" xml:space="preserve">
+    <value>在本地 AIO / core-lite 测试网上：公共开发账户、内置水龙头、资产助手，以及可调用任意合约（包括从 C++ 头文件导入的您自己的合约）的控制台。</value>
+  </data>
+  <data name="Feat_DeveloperTools_Connects" xml:space="preserve">
+    <value>仅当前开发网</value>
+  </data>
+  <data name="Feat_DeveloperTools_Risk" xml:space="preserve">
+    <value>开发账户使用公开已知的种子。切勿在主网上使用它们或向其发送资金。</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Title" xml:space="preserve">
+    <value>Sign-In with Qubic</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Desc" xml:space="preserve">
+    <value>允许网站要求您通过签名结构化登录消息（域名、nonce、有效期）来证明您拥有某个身份。不会向链上发送任何内容。</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Connects" xml:space="preserve">
+    <value>本身不连接任何内容</value>
+  </data>
+  <data name="Feat_SignInWithQubic_Risk" xml:space="preserve">
+    <value>签名登录会向该网站证明所有权。请始终核对请求中显示的域名。</value>
+  </data>
+  <data name="Feat_WalletConnect_Title" xml:space="preserve">
+    <value>WalletConnect</value>
+  </data>
+  <data name="Feat_WalletConnect_Desc" xml:space="preserve">
+    <value>通过扫描 WalletConnect 二维码连接到 dApp（例如使用 @qubic/react 构建的）。签名前每个请求都会显示以供批准。</value>
+  </data>
+  <data name="Feat_WalletConnect_Connects" xml:space="preserve">
+    <value>WalletConnect 中继（relay.walletconnect.org）以及您配对的 dApp</value>
+  </data>
+  <data name="Feat_WalletConnect_Risk" xml:space="preserve">
+    <value>已配对的 dApp 可请求签名；未经您批准它们绝不能签名。</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Title" xml:space="preserve">
+    <value>本地签名端点</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Desc" xml:space="preserve">
+    <value>在 127.0.0.1 上开启 JSON-RPC 端点（随机端口、密钥令牌），以便脚本和测试请求钱包签名。每个请求都需要您的批准。</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Connects" xml:space="preserve">
+    <value>无外部连接——仅监听 127.0.0.1</value>
+  </data>
+  <data name="Feat_LocalSigningEndpoint_Risk" xml:space="preserve">
+    <value>任何持有该令牌的本地程序都可请求签名。</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Title" xml:space="preserve">
+    <value>自动批准开发账户</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Desc" xml:space="preserve">
+    <value>让本地端点在 core-lite 开发网上使用公共开发账户无需询问即可签名——用于自动化合约测试。</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Connects" xml:space="preserve">
+    <value>仅当前开发网</value>
+  </data>
+  <data name="Feat_LocalEndpointAutoApproveDev_Risk" xml:space="preserve">
+    <value>仅适用于已验证的 core-lite 开发网上的公共开发密钥；绝不适用于您自己的种子。</value>
+  </data>
+  <data name="Warn_NetworkMismatch" xml:space="preserve">
+    <value>网络不匹配</value>
+  </data>
+  <data name="Warn_PublicDevSource" xml:space="preserve">
+    <value>主网上的公共开发密钥</value>
+  </data>
+  <data name="Warn_PublicDevDestination" xml:space="preserve">
+    <value>目标是公共开发密钥</value>
+  </data>
+  <data name="Warn_TickWindow" xml:space="preserve">
+    <value>目标 Tick 过于靠前</value>
+  </data>
+  <data name="Warn_TickPassed" xml:space="preserve">
+    <value>目标 Tick 已过</value>
+  </data>
+  <data name="Warn_NotDecoded" xml:space="preserve">
+    <value>调用未解码</value>
+  </data>
+  <data name="Warn_SizeMismatch" xml:space="preserve">
+    <value>输入大小不匹配</value>
+  </data>
+  <data name="Warn_Signin" xml:space="preserve">
+    <value>登录问题</value>
+  </data>
+  <data name="Warn_SigninIdentity" xml:space="preserve">
+    <value>身份错误</value>
+  </data>
+  <data name="Warn_WcPrefix" xml:space="preserve">
+    <value>WalletConnect 消息</value>
+  </data>
+  <data name="Warn_CrossNetwork" xml:space="preserve">
+    <value>种子已在其他网络使用</value>
+  </data>
+  <data name="CC_Pending" xml:space="preserve">
+    <value>待处理（tick 尚未验证）</value>
+  </data>
+  <data name="VI_Open" xml:space="preserve">
+    <value>导入保险库文件…</value>
+  </data>
+  <data name="VI_Title" xml:space="preserve">
+    <value>从网页 / 移动钱包导入</value>
+  </data>
+  <data name="VI_Desc" xml:space="preserve">
+    <value>从 Qubic 网页钱包或 Qubic 移动应用导出的保险库文件导入账户。选择文件并输入您在那里使用的密码。</value>
+  </data>
+  <data name="VI_FilePassword" xml:space="preserve">
+    <value>保险库文件密码</value>
+  </data>
+  <data name="VI_Read" xml:space="preserve">
+    <value>读取文件</value>
+  </data>
+  <data name="VI_Reading" xml:space="preserve">
+    <value>读取中…</value>
+  </data>
+  <data name="VI_ChooseAccounts" xml:space="preserve">
+    <value>选择要导入的账户：</value>
+  </data>
+  <data name="VI_WatchOnly" xml:space="preserve">
+    <value>仅观察（无种子）</value>
+  </data>
+  <data name="VI_AlreadyInVault" xml:space="preserve">
+    <value>已在保险库中</value>
+  </data>
+  <data name="VI_ImportSelected" xml:space="preserve">
+    <value>导入所选</value>
+  </data>
+  <data name="VI_NoneFound" xml:space="preserve">
+    <value>此文件中未找到可导入的账户。</value>
+  </data>
+  <data name="Fmt_VaultImported" xml:space="preserve">
+    <value>已导入 {0} 个账户。</value>
+  </data>
+  <data name="VI_Step1" xml:space="preserve">
+    <value>1. 选择导出的保险库文件</value>
+  </data>
+  <data name="VI_Step2" xml:space="preserve">
+    <value>2. 输入文件密码并读取</value>
+  </data>
+  <data name="VI_Step3" xml:space="preserve">
+    <value>3. 选择账户、调整名称并导入</value>
+  </data>
+  <data name="VI_AliasPlaceholder" xml:space="preserve">
+    <value>在您保险库中的名称</value>
+  </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>（无）</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Common_TxBroadcast" xml:space="preserve">
+    <value>交易已广播！交易 ID：</value>
+  </data>
+  <data name="Mod_PagesTitle" xml:space="preserve">
+    <value>页面与板块</value>
+  </data>
+  <data name="Mod_PagesIntro" xml:space="preserve">
+    <value>只显示你使用的页面。隐藏的页面会从菜单中移除——其他不受影响，你可以随时重新启用。</value>
+  </data>
+  <data name="Mod_EnableAll" xml:space="preserve">
+    <value>全部启用</value>
+  </data>
+  <data name="Mod_DisableAll" xml:space="preserve">
+    <value>全部禁用</value>
+  </data>
+  <data name="ModDesc_Assets" xml:space="preserve">
+    <value>你的代币和份额，含转账。</value>
+  </data>
+  <data name="ModDesc_Watchlist" xml:space="preserve">
+    <value>跟踪你关注地址的余额。</value>
+  </data>
+  <data name="ModDesc_SignVerify" xml:space="preserve">
+    <value>签名并验证任意消息。</value>
+  </data>
+  <data name="ModDesc_SendMany" xml:space="preserve">
+    <value>一次性批量发送给多个接收者。</value>
+  </data>
+  <data name="ModDesc_Qx" xml:space="preserve">
+    <value>在 QX 去中心化交易所交易资产。</value>
+  </data>
+  <data name="ModDesc_Qswap" xml:space="preserve">
+    <value>在 QSwap 自动做市商上兑换代币。</value>
+  </data>
+  <data name="ModDesc_Qearn" xml:space="preserve">
+    <value>锁定 QUBIC 以赚取质押奖励（QEarn）。</value>
+  </data>
+  <data name="ModDesc_Msvault" xml:space="preserve">
+    <value>共享的多重签名保险库（MSVault）。</value>
+  </data>
+  <data name="ModDesc_ScAuctions" xml:space="preserve">
+    <value>竞拍智能合约槽位。</value>
+  </data>
+  <data name="ModDesc_Voting" xml:space="preserve">
+    <value>社区投票（QUtil）：浏览、投票和创建。</value>
+  </data>
+  <data name="ModDesc_Governance" xml:space="preserve">
+    <value>计算者治理提案（GQMPROP）。</value>
+  </data>
+  <data name="ModDesc_Ccf" xml:space="preserve">
+    <value>社区贡献基金的提案与投票。</value>
+  </data>
+  <data name="Nav_Governance" xml:space="preserve">
+    <value>治理</value>
+  </data>
+  <data name="Nav_Ccf" xml:space="preserve">
+    <value>CCF</value>
+  </data>
+  <data name="GOV_Title" xml:space="preserve">
+    <value>治理</value>
+  </data>
+  <data name="GOV_Subtitle" xml:space="preserve">
+    <value>通用法定人数提案 (GQMProp) — 收入捐赠与治理投票。</value>
+  </data>
+  <data name="GOV_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="GOV_Tab_Propose" xml:space="preserve">
+    <value>提案</value>
+  </data>
+  <data name="GOV_Tab_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="GOV_Tab_Results" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="GOV_Tab_GetVote" xml:space="preserve">
+    <value>查询投票</value>
+  </data>
+  <data name="GOV_Tab_Revenue" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="GOV_BrowseActive" xml:space="preserve">
+    <value>活跃（当前纪元）</value>
+  </data>
+  <data name="GOV_BrowsePrior" xml:space="preserve">
+    <value>之前的纪元</value>
+  </data>
+  <data name="GOV_LoadProposals" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="GOV_NoProposals" xml:space="preserve">
+    <value>未找到提案。</value>
+  </data>
+  <data name="GOV_ColIndex" xml:space="preserve">
+    <value>索引</value>
+  </data>
+  <data name="GOV_Proposer" xml:space="preserve">
+    <value>提案人</value>
+  </data>
+  <data name="GOV_Url" xml:space="preserve">
+    <value>网址</value>
+  </data>
+  <data name="GOV_LoadMore" xml:space="preserve">
+    <value>加载更多</value>
+  </data>
+  <data name="GOV_Destination" xml:space="preserve">
+    <value>目标地址</value>
+  </data>
+  <data name="GOV_ProposalType" xml:space="preserve">
+    <value>提案类型</value>
+  </data>
+  <data name="GOV_Grp_General" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="GOV_Grp_Transfer" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="GOV_Grp_Variable" xml:space="preserve">
+    <value>变量</value>
+  </data>
+  <data name="GOV_Grp_MultiVar" xml:space="preserve">
+    <value>多变量</value>
+  </data>
+  <data name="GOV_Grp_TransferEpoch" xml:space="preserve">
+    <value>纪元内转账</value>
+  </data>
+  <data name="GOV_TL_0002" xml:space="preserve">
+    <value>通用：是/否</value>
+  </data>
+  <data name="GOV_TL_0003" xml:space="preserve">
+    <value>通用：3 个选项</value>
+  </data>
+  <data name="GOV_TL_0004" xml:space="preserve">
+    <value>通用：4 个选项</value>
+  </data>
+  <data name="GOV_TL_0005" xml:space="preserve">
+    <value>通用：5 个选项</value>
+  </data>
+  <data name="GOV_TL_0006" xml:space="preserve">
+    <value>通用：6 个选项</value>
+  </data>
+  <data name="GOV_TL_0007" xml:space="preserve">
+    <value>通用：7 个选项</value>
+  </data>
+  <data name="GOV_TL_0008" xml:space="preserve">
+    <value>通用：8 个选项</value>
+  </data>
+  <data name="GOV_TL_0102" xml:space="preserve">
+    <value>转账：是/否</value>
+  </data>
+  <data name="GOV_TL_0103" xml:space="preserve">
+    <value>转账：2 个金额</value>
+  </data>
+  <data name="GOV_TL_0104" xml:space="preserve">
+    <value>转账：3 个金额</value>
+  </data>
+  <data name="GOV_TL_0105" xml:space="preserve">
+    <value>转账：4 个金额</value>
+  </data>
+  <data name="GOV_TL_0200" xml:space="preserve">
+    <value>变量：标量均值</value>
+  </data>
+  <data name="GOV_TL_0202" xml:space="preserve">
+    <value>变量：是/否</value>
+  </data>
+  <data name="GOV_TL_0203" xml:space="preserve">
+    <value>变量：2 个值</value>
+  </data>
+  <data name="GOV_TL_0204" xml:space="preserve">
+    <value>变量：3 个值</value>
+  </data>
+  <data name="GOV_TL_0205" xml:space="preserve">
+    <value>变量：4 个值</value>
+  </data>
+  <data name="GOV_TL_0302" xml:space="preserve">
+    <value>多变量：是/否</value>
+  </data>
+  <data name="GOV_TL_0303" xml:space="preserve">
+    <value>多变量：3 个选项</value>
+  </data>
+  <data name="GOV_TL_0304" xml:space="preserve">
+    <value>多变量：4 个选项</value>
+  </data>
+  <data name="GOV_TL_0402" xml:space="preserve">
+    <value>纪元内转账：是/否</value>
+  </data>
+  <data name="GOV_TL_Unknown" xml:space="preserve">
+    <value>未知 (0x{0})</value>
+  </data>
+  <data name="GOV_ProposalUrl" xml:space="preserve">
+    <value>提案网址</value>
+  </data>
+  <data name="GOV_UrlHelp255" xml:space="preserve">
+    <value>（最多 255 个字符，用于描述提案）</value>
+  </data>
+  <data name="GOV_AutoDetected" xml:space="preserve">
+    <value>自动检测</value>
+  </data>
+  <data name="GOV_DestIdentity" xml:space="preserve">
+    <value>目标身份</value>
+  </data>
+  <data name="GOV_Amounts" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="GOV_AmountsHelp" xml:space="preserve">
+    <value>（收入的百万分之一；1,000,000 = 100%）</value>
+  </data>
+  <data name="GOV_OptionWord" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="GOV_Millionths" xml:space="preserve">
+    <value>（百万分之一）</value>
+  </data>
+  <data name="GOV_TargetEpoch" xml:space="preserve">
+    <value>目标纪元</value>
+  </data>
+  <data name="GOV_VariableId" xml:space="preserve">
+    <value>变量 ID</value>
+  </data>
+  <data name="GOV_MinValue" xml:space="preserve">
+    <value>最小值</value>
+  </data>
+  <data name="GOV_MaxValue" xml:space="preserve">
+    <value>最大值</value>
+  </data>
+  <data name="GOV_ProposedValue" xml:space="preserve">
+    <value>建议值</value>
+  </data>
+  <data name="GOV_Values" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="GOV_SetProposal" xml:space="preserve">
+    <value>设置提案</value>
+  </data>
+  <data name="GOV_ClearMyProposal" xml:space="preserve">
+    <value>清除我的提案</value>
+  </data>
+  <data name="GOV_ProposalIndex" xml:space="preserve">
+    <value>提案索引</value>
+  </data>
+  <data name="GOV_LoadProposal" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="GOV_VoteValue" xml:space="preserve">
+    <value>投票值</value>
+  </data>
+  <data name="GOV_ScalarValuePlaceholder" xml:space="preserve">
+    <value>标量值</value>
+  </data>
+  <data name="GOV_ScalarVoteHelp" xml:space="preserve">
+    <value>标量投票：请输入您建议的值。</value>
+  </data>
+  <data name="GOV_NoChange" xml:space="preserve">
+    <value>不变</value>
+  </data>
+  <data name="GOV_CastVote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="GOV_ClearVote" xml:space="preserve">
+    <value>清除投票</value>
+  </data>
+  <data name="GOV_ViewResults" xml:space="preserve">
+    <value>查看当前结果</value>
+  </data>
+  <data name="GOV_LoadResults" xml:space="preserve">
+    <value>加载结果</value>
+  </data>
+  <data name="GOV_AuthorizedVoters" xml:space="preserve">
+    <value>授权投票者</value>
+  </data>
+  <data name="GOV_VotesCast" xml:space="preserve">
+    <value>已投票数</value>
+  </data>
+  <data name="GOV_OptionVotes" xml:space="preserve">
+    <value>各选项票数</value>
+  </data>
+  <data name="GOV_ScalarResult" xml:space="preserve">
+    <value>标量结果</value>
+  </data>
+  <data name="GOV_VoterIdentity" xml:space="preserve">
+    <value>投票者身份</value>
+  </data>
+  <data name="GOV_BlankYourIdentity" xml:space="preserve">
+    <value>（留空 = 您的身份）</value>
+  </data>
+  <data name="GOV_LoadVote" xml:space="preserve">
+    <value>加载投票</value>
+  </data>
+  <data name="GOV_ProposalTick" xml:space="preserve">
+    <value>提案 Tick</value>
+  </data>
+  <data name="GOV_NoVoteCleared" xml:space="preserve">
+    <value>无投票 / 已清除</value>
+  </data>
+  <data name="GOV_ZeroNoChange" xml:space="preserve">
+    <value>0（不变）</value>
+  </data>
+  <data name="GOV_RevenueDesc" xml:space="preserve">
+    <value>收入捐赠条目定义了来自网络收入池的持续转账。</value>
+  </data>
+  <data name="GOV_LoadRevenue" xml:space="preserve">
+    <value>加载收入捐赠表</value>
+  </data>
+  <data name="GOV_NoRevenue" xml:space="preserve">
+    <value>没有活跃的收入捐赠。</value>
+  </data>
+  <data name="GOV_FirstEpoch" xml:space="preserve">
+    <value>首个纪元</value>
+  </data>
+  <data name="GOV_AmountN" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="GOV_ValueN" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="GOV_Min" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="GOV_Max" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="GOV_Proposed" xml:space="preserve">
+    <value>建议</value>
+  </data>
+  <data name="GOV_ComputorOnly" xml:space="preserve">
+    <value>只有 computor 可以创建提案或投票。浏览和结果对所有人开放。</value>
+  </data>
+  <data name="GOV_ErrUrlTooLong" xml:space="preserve">
+    <value>网址过长（最多 255 个字符）。</value>
+  </data>
+  <data name="GOV_ErrNoEpoch" xml:space="preserve">
+    <value>无法确定当前纪元。请连接到网络。</value>
+  </data>
+  <data name="GOV_ErrInvalidDest" xml:space="preserve">
+    <value>目标无效：{0}</value>
+  </data>
+  <data name="GOV_ErrParseDest" xml:space="preserve">
+    <value>无法解析目标身份。</value>
+  </data>
+  <data name="GOV_ErrProposalNotFound" xml:space="preserve">
+    <value>未找到提案或提案无效。</value>
+  </data>
+  <data name="GOV_ErrLoadProposalFirst" xml:space="preserve">
+    <value>请先加载提案。</value>
+  </data>
+  <data name="GOV_ErrInvalidVoteValue" xml:space="preserve">
+    <value>投票值无效。</value>
+  </data>
+  <data name="GOV_ErrNoResults" xml:space="preserve">
+    <value>未找到该提案的结果。</value>
+  </data>
+  <data name="GOV_ErrNoVote" xml:space="preserve">
+    <value>未找到投票。</value>
+  </data>
+  <data name="GOV_ErrEnterVoterOrSeed" xml:space="preserve">
+    <value>请输入投票者身份或连接您的种子。</value>
+  </data>
+  <data name="GOV_ErrInvalidVoter" xml:space="preserve">
+    <value>投票者身份无效。</value>
+  </data>
+  <data name="CCF_Title" xml:space="preserve">
+    <value>由 Computor 控制的基金 (CCF)</value>
+  </data>
+  <data name="CCF_Subtitle" xml:space="preserve">
+    <value>CCF 提案、投票、转账和订阅管理（合约 8）。</value>
+  </data>
+  <data name="CCF_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="CCF_Tab_Propose" xml:space="preserve">
+    <value>提案</value>
+  </data>
+  <data name="CCF_Tab_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="CCF_Tab_Results" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="CCF_Tab_GetVote" xml:space="preserve">
+    <value>查询投票</value>
+  </data>
+  <data name="CCF_Tab_Subscriptions" xml:space="preserve">
+    <value>订阅</value>
+  </data>
+  <data name="CCF_Tab_Transfers" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="CCF_Tab_Payments" xml:space="preserve">
+    <value>付款</value>
+  </data>
+  <data name="CCF_BrowseActive" xml:space="preserve">
+    <value>活跃（当前纪元）</value>
+  </data>
+  <data name="CCF_BrowseFinished" xml:space="preserve">
+    <value>已结束</value>
+  </data>
+  <data name="CCF_BrowseByIndex" xml:space="preserve">
+    <value>按索引</value>
+  </data>
+  <data name="CCF_ProposalIndexPlaceholder" xml:space="preserve">
+    <value>提案索引</value>
+  </data>
+  <data name="CCF_LoadProposal" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="CCF_LoadProposals" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="CCF_NoProposals" xml:space="preserve">
+    <value>未找到提案。</value>
+  </data>
+  <data name="CCF_AmountQu" xml:space="preserve">
+    <value>金额 (QU)</value>
+  </data>
+  <data name="CCF_SubscriptionProposal" xml:space="preserve">
+    <value>订阅提案</value>
+  </data>
+  <data name="CCF_SubProposer" xml:space="preserve">
+    <value>订阅提案人</value>
+  </data>
+  <data name="CCF_SubDestination" xml:space="preserve">
+    <value>订阅目标</value>
+  </data>
+  <data name="CCF_WeeksPerPeriod" xml:space="preserve">
+    <value>每期周数</value>
+  </data>
+  <data name="CCF_Periods" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_AmountPerPeriod" xml:space="preserve">
+    <value>每期金额</value>
+  </data>
+  <data name="CCF_StartEpoch" xml:space="preserve">
+    <value>起始纪元</value>
+  </data>
+  <data name="CCF_ActiveSubscription" xml:space="preserve">
+    <value>活跃订阅</value>
+  </data>
+  <data name="CCF_CurrentPeriod" xml:space="preserve">
+    <value>当前期数</value>
+  </data>
+  <data name="CCF_ProposalFeeInfo" xml:space="preserve">
+    <value>提案费用：{0} QU（自动获取，作为交易金额发送）</value>
+  </data>
+  <data name="CCF_LoadProposalFee" xml:space="preserve">
+    <value>加载提案费用</value>
+  </data>
+  <data name="CCF_OnlyYesNo" xml:space="preserve">
+    <value>CCF 仅支持转账：是/否 (0x0102) 类型的提案。</value>
+  </data>
+  <data name="CCF_UrlHelp255" xml:space="preserve">
+    <value>（最多 255 个字符）</value>
+  </data>
+  <data name="CCF_AmountPerPeriodQu" xml:space="preserve">
+    <value>每期金额 (QU)</value>
+  </data>
+  <data name="CCF_NumPeriods" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_DurationExceeds" xml:space="preserve">
+    <value>总时长 {0} 个纪元超过最大值 52。</value>
+  </data>
+  <data name="CCF_YesApprove" xml:space="preserve">
+    <value>是（批准）</value>
+  </data>
+  <data name="CCF_OneYesApprove" xml:space="preserve">
+    <value>1（是 / 批准）</value>
+  </data>
+  <data name="CCF_SubLookupDesc" xml:space="preserve">
+    <value>通过目标身份查找活跃订阅。</value>
+  </data>
+  <data name="CCF_Lookup" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="CCF_NoSubscription" xml:space="preserve">
+    <value>未找到该目标的活跃订阅。</value>
+  </data>
+  <data name="CCF_TransfersDesc" xml:space="preserve">
+    <value>最近经法定人数批准的一次性转账。</value>
+  </data>
+  <data name="CCF_LoadTransfers" xml:space="preserve">
+    <value>加载最新转账</value>
+  </data>
+  <data name="CCF_NoTransfers" xml:space="preserve">
+    <value>未找到转账。</value>
+  </data>
+  <data name="CCF_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="CCF_PaymentsDesc" xml:space="preserve">
+    <value>CCF 合约近期进行的（定期）订阅付款。</value>
+  </data>
+  <data name="CCF_LoadPayments" xml:space="preserve">
+    <value>加载定期付款</value>
+  </data>
+  <data name="CCF_NoPayments" xml:space="preserve">
+    <value>未找到定期付款。</value>
+  </data>
+  <data name="CCF_Period" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_TL_0102" xml:space="preserve">
+    <value>转账：是/否</value>
+  </data>
+  <data name="CCF_TL_Unknown" xml:space="preserve">
+    <value>类型 0x{0}</value>
+  </data>
+  <data name="CCF_ComputorOnly" xml:space="preserve">
+    <value>只有 computor 可以创建提案或投票。浏览和结果对所有人开放。</value>
+  </data>
+  <data name="CCF_UrlWarning" xml:space="preserve">
+    <value>此链接来自 CCF 提案，可能存在危险。
+
+{0}</value>
+  </data>
+  <data name="CCF_ErrNoFee" xml:space="preserve">
+    <value>无法确定提案费用。</value>
+  </data>
+  <data name="CCF_ErrInvalidDest" xml:space="preserve">
+    <value>目标身份无效。</value>
+  </data>
+</root>

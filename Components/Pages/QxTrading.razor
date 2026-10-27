@@ -7,9 +7,10 @@
 @inject QubicSettingsService Settings
 @inject AssetRegistryService AssetRegistry
 @inject VaultService Vault
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
-<h4>QX Asset Operations</h4>
-<p class="text-muted">Issue assets, transfer shares, and manage orders on the QX decentralized exchange.</p>
+<h4>@Loc["QX_Title"]</h4>
+<p class="text-muted">@Loc["QX_Subtitle"]</p>
 
 @if (_ordersLoading)
 {
@@ -18,12 +19,12 @@
 else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != null && _myBidOrders.Count > 0))
 {
     <div class="card mb-3 border-primary">
-        <div class="card-header card-header-accent">Your Open Orders</div>
+        <div class="card-header card-header-accent">@Loc["QX_YourOpenOrders"]</div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-hover mb-0">
                     <thead>
-                        <tr><th>Type</th><th>Asset</th><th>Price</th><th>Shares</th><th></th></tr>
+                        <tr><th>@Loc["Common_Type"]</th><th>@Loc["Common_Asset"]</th><th>@Loc["Common_Price"]</th><th>@Loc["Common_Shares"]</th><th></th></tr>
                     </thead>
                     <tbody>
                         @if (_myAskOrders != null)
@@ -34,7 +35,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                 var key = $"a:{o.AssetName}:{o.Price}:{o.NumberOfShares}";
                                 var isCancelling = IsCancelPending(key);
                                 <tr>
-                                    <td><span class="badge bg-danger">Ask</span></td>
+                                    <td><span class="badge bg-danger">@Loc["Common_Ask"]</span></td>
                                     <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                     <td class="mono">@o.Price.ToString("N0")</td>
                                     <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -54,7 +55,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
                                 var key = $"b:{o.AssetName}:{o.Price}:{o.NumberOfShares}";
                                 var isCancelling = IsCancelPending(key);
                                 <tr>
-                                    <td><span class="badge bg-success">Bid</span></td>
+                                    <td><span class="badge bg-success">@Loc["Common_Bid"]</span></td>
                                     <td class="mono">@(Qubic.Core.AssetNameHelper.FromUlong(o.AssetName) ?? "?")</td>
                                     <td class="mono">@o.Price.ToString("N0")</td>
                                     <td class="mono">@o.NumberOfShares.ToString("N0")</td>
@@ -75,7 +76,7 @@ else if ((_myAskOrders != null && _myAskOrders.Count > 0) || (_myBidOrders != nu
 
 @if (!Seed.HasSeed)
 {
-    <div class="alert alert-warning">Enter your seed in the top bar to enable signing.</div>
+    <div class="alert alert-warning">@Loc["Common_NeedSeedSigning"]</div>
 }
 else
 {
@@ -83,7 +84,7 @@ else
         @foreach (var tab in _tabs)
         {
             <li class="nav-item">
-                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@tab</a>
+                <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => _activeTab = tab" @onclick:preventDefault>@Loc[$"QX_Tab_{tab}"]</a>
             </li>
         }
     </ul>
@@ -94,26 +95,26 @@ else
             {
                 case "Issue":
                     <div class="card">
-                        <div class="card-header">Issue Asset</div>
+                        <div class="card-header">@Loc["Common_IssueAsset"]</div>
                         <div class="card-body">
                             <div class="mb-2">
-                                <label class="form-label-sm">Asset Name (max 7 chars)</label>
+                                <label class="form-label-sm">@Loc["Common_AssetName7"]</label>
                                 <input class="form-control form-control-sm" maxlength="7" @bind="_issueName" placeholder="e.g. CFB" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">Number of Shares</label>
+                                <label class="form-label-sm">@Loc["Common_NumberOfShares"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_issueShares" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">Unit of Measurement (max 7 chars)</label>
+                                <label class="form-label-sm">@Loc["Common_UnitOfMeasure7"]</label>
                                 <input class="form-control form-control-sm" maxlength="7" @bind="_issueUnit" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">Decimal Places (0-18)</label>
+                                <label class="form-label-sm">@Loc["Common_DecimalPlaces"]</label>
                                 <input type="number" class="form-control form-control-sm" min="0" max="18" @bind="_issueDecimals" />
                             </div>
                             <button class="btn btn-primary" @onclick="IssueAsset" disabled="@_sending">
-                                @(_sending ? "Issuing..." : "Issue Asset")
+                                @(_sending ? Loc["Common_Issuing"] : Loc["Common_IssueAsset"])
                             </button>
                             @if (_fees != null)
                             {
@@ -125,15 +126,15 @@ else
 
                 case "Transfer":
                     <div class="card">
-                        <div class="card-header">Transfer Asset</div>
+                        <div class="card-header">@Loc["Common_TransferAsset"]</div>
                         <div class="card-body">
                             <AssetSelector @bind-IssuerValue="_xferIssuer" @bind-NameValue="_xferName" />
                             <div class="mb-2">
-                                <label class="form-label-sm">New Owner Identity</label>
+                                <label class="form-label-sm">@Loc["Common_NewOwnerIdentity"]</label>
                                 <AddressInput @bind-Value="_xferNewOwner" Placeholder="60 chars" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">Number of Shares</label>
+                                <label class="form-label-sm">@Loc["Common_NumberOfShares"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_xferShares" />
                             </div>
                             <button class="btn btn-primary" @onclick="TransferAsset" disabled="@_sending">
@@ -150,31 +151,31 @@ else
                 case "Ask":
                 case "Bid":
                     <div class="card">
-                        <div class="card-header">@(_activeTab == "Ask" ? "Ask" : "Bid") Orders</div>
+                        <div class="card-header">@Loc[$"QX_Tab_{_activeTab}"] @Loc["QX_OrdersWord"]</div>
                         <div class="card-body">
                             <div class="mb-2 d-flex gap-2">
-                                <button class="btn btn-sm @(_orderAction == "add" ? "btn-primary" : "btn-outline-primary")" @onclick="SetOrderAdd">Add</button>
-                                <button class="btn btn-sm @(_orderAction == "remove" ? "btn-primary" : "btn-outline-primary")" @onclick="SetOrderRemove">Remove</button>
+                                <button class="btn btn-sm @(_orderAction == "add" ? "btn-primary" : "btn-outline-primary")" @onclick="SetOrderAdd">@Loc["Common_Add"]</button>
+                                <button class="btn btn-sm @(_orderAction == "remove" ? "btn-primary" : "btn-outline-primary")" @onclick="SetOrderRemove">@Loc["Common_Remove"]</button>
                             </div>
                             <AssetSelector @bind-IssuerValue="_orderIssuer" @bind-NameValue="_orderAssetName" />
                             <div class="mb-2">
-                                <label class="form-label-sm">Price per Share (QU)</label>
+                                <label class="form-label-sm">@Loc["QX_PricePerShare"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_orderPrice" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">Number of Shares</label>
+                                <label class="form-label-sm">@Loc["Common_NumberOfShares"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_orderShares" />
                             </div>
                             @if (_activeTab == "Bid" && _orderAction == "add" && _orderPrice > 0 && _orderShares > 0)
                             {
-                                <div class="small text-muted mb-2">Total: @((_orderPrice * _orderShares).ToString("N0")) QU</div>
+                                <div class="small text-muted mb-2">@Loc["S2M_Total"] @((_orderPrice * _orderShares).ToString("N0")) QU</div>
                             }
                             <button class="btn btn-primary" @onclick="SubmitOrder" disabled="@_sending">
-                                @(_sending ? "Submitting..." : $"{(_orderAction == "add" ? "Add" : "Remove")} {_activeTab} Order")
+                                @(_sending ? Loc["QX_Submitting"] : Loc[$"QX_{(_orderAction == "add" ? "Add" : "Remove")}{_activeTab}Order"])
                             </button>
                             @if (_fees != null && _orderAction == "add")
                             {
-                                <div class="small text-muted mt-1">Trade fee: @FormatTradeFee(_fees.Value.trade)</div>
+                                <div class="small text-muted mt-1">@Loc["QX_TradeFee"] @FormatTradeFee(_fees.Value.trade)</div>
                             }
                         </div>
                     </div>
@@ -182,15 +183,15 @@ else
 
                 case "Rights":
                     <div class="card">
-                        <div class="card-header">Transfer Management Rights</div>
+                        <div class="card-header">@Loc["QX_TransferMgmtRights"]</div>
                         <div class="card-body">
                             <AssetSelector @bind-IssuerValue="_rightsIssuer" @bind-NameValue="_rightsAssetName" />
                             <div class="mb-2">
-                                <label class="form-label-sm">Number of Shares</label>
+                                <label class="form-label-sm">@Loc["Common_NumberOfShares"]</label>
                                 <input type="number" class="form-control form-control-sm" @bind="_rightsShares" />
                             </div>
                             <div class="mb-2">
-                                <label class="form-label-sm">New Managing Contract</label>
+                                <label class="form-label-sm">@Loc["QX_NewManagingContract"]</label>
                                 <select class="form-select form-select-sm" @bind="_rightsContractIndex">
                                     @foreach (var c in Qubic.Core.QubicContracts.GetManagementRightsTargets())
                                     {
@@ -215,17 +216,17 @@ else
                 <div class="alert alert-success mt-3">
                     Transaction broadcast! Tx ID: <TxHashDisplay Hash="@_result" ShowFull="true" />
                     <div class="mt-1">
-                        <a href="/history">Transaction History</a>
+                        <a href="/history">@Loc["Common_TransactionHistory"]</a>
                     </div>
                 </div>
                 @if (_activeTab == "Transfer" && Vault.IsUnlocked && !_dismissSaveContact && !string.IsNullOrEmpty(_xferNewOwner) && !Vault.IsKnownAddress(_xferNewOwner))
                 {
                     <div class="alert alert-info mt-2 py-2 d-flex align-items-center gap-2 flex-wrap">
                         <i class="bi bi-person-plus"></i>
-                        <span class="small">Save <span class="mono">@_xferNewOwner[..12]...</span> to address book?</span>
+                        <span class="small">@Loc["Send_SaveContactPre"] <span class="mono">@_xferNewOwner[..12]...</span> @Loc["Send_SaveContactPost"]</span>
                         <input type="text" class="form-control form-control-sm" style="width:150px"
                                @bind="_saveContactLabel" placeholder="Label" />
-                        <button class="btn btn-sm btn-outline-primary" @onclick="SaveNewContact">Save</button>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="SaveNewContact">@Loc["Common_Save"]</button>
                         <button class="btn btn-sm btn-outline-secondary" @onclick="() => _dismissSaveContact = true">
                             <i class="bi bi-x"></i>
                         </button>
@@ -242,9 +243,9 @@ else
 
 <div class="card mb-3 mt-3">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>QX Market Overview</span>
+        <span>@Loc["QX_MarketOverview"]</span>
         <button class="btn btn-sm btn-outline-primary" @onclick="LoadMarketOverview" disabled="@_marketLoading">
-            @(_marketLoading ? "Loading..." : _marketAssets == null ? "Load" : "Refresh")
+            @(_marketLoading ? Loc["Common_Loading"] : _marketAssets == null ? Loc["Common_Load"] : Loc["Common_Refresh"])
         </button>
     </div>
     <div class="card-body">
@@ -259,13 +260,13 @@ else
                 <table class="table table-sm table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Asset</th>
-                            <th>Issuer</th>
-                            <th class="text-end">Best Ask</th>
-                            <th class="text-end">Ask Depth</th>
-                            <th class="text-end">Best Bid</th>
-                            <th class="text-end">Bid Depth</th>
-                            <th class="text-end">Spread</th>
+                            <th>@Loc["Common_Asset"]</th>
+                            <th>@Loc["Common_Issuer"]</th>
+                            <th class="text-end">@Loc["QX_BestAsk"]</th>
+                            <th class="text-end">@Loc["QX_AskDepth"]</th>
+                            <th class="text-end">@Loc["QX_BestBid"]</th>
+                            <th class="text-end">@Loc["QX_BidDepth"]</th>
+                            <th class="text-end">@Loc["QX_Spread"]</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -287,7 +288,7 @@ else
         }
         else if (_marketAssets != null)
         {
-            <div class="text-muted">No active orders found.</div>
+            <div class="text-muted">@Loc["QX_NoActiveOrders"]</div>
         }
         @if (_marketError != null)
         {
@@ -295,14 +296,14 @@ else
         }
         @if (_marketAssets == null && _marketError == null)
         {
-            <div class="text-muted small">Click <strong>Load</strong> to discover and query all QX-traded assets.</div>
+            <div class="text-muted small">@Loc["QX_LoadHintPre"] <strong>@Loc["Common_Load"]</strong> @Loc["QX_LoadHintPost"]</div>
         }
     </div>
 </div>
 
 <div class="small text-muted mt-2">
     <i class="bi bi-info-circle me-1"></i>
-    To sell or manage your own assets, go to the <a href="/assets">Asset Portfolio</a> page.
+    @Loc["QX_PortfolioHintPre"] <a href="/assets">@Loc["QX_AssetPortfolio"]</a> @Loc["QX_PortfolioHintPost"]
 </div>
 
 @code {
@@ -486,8 +487,8 @@ else
         _sending = true; _error = null; _result = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(_issueName)) { _error = "Asset name is required."; return; }
-            if (_issueShares <= 0) { _error = "Number of shares must be positive."; return; }
+            if (string.IsNullOrWhiteSpace(_issueName)) { _error = Loc["Msg_AssetNameRequired"]; return; }
+            if (_issueShares <= 0) { _error = Loc["Msg_SharesPositive"]; return; }
 
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qx.IssueAssetPayload
@@ -511,11 +512,11 @@ else
         try
         {
             var issuerErr = IdentityValidation.Validate(_xferIssuer);
-            if (issuerErr != null) { _error = "Issuer: " + issuerErr; return; }
+            if (issuerErr != null) { _error = Loc["Msg_IssuerPrefix"] + issuerErr; return; }
             var ownerErr = IdentityValidation.Validate(_xferNewOwner);
-            if (ownerErr != null) { _error = "New Owner: " + ownerErr; return; }
-            if (string.IsNullOrWhiteSpace(_xferName)) { _error = "Asset name is required."; return; }
-            if (_xferShares <= 0) { _error = "Number of shares must be positive."; return; }
+            if (ownerErr != null) { _error = Loc["Msg_NewOwnerPrefix"] + ownerErr; return; }
+            if (string.IsNullOrWhiteSpace(_xferName)) { _error = Loc["Msg_AssetNameRequired"]; return; }
+            if (_xferShares <= 0) { _error = Loc["Msg_SharesPositive"]; return; }
 
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qx.TransferShareOwnershipAndPossessionPayload
@@ -539,10 +540,10 @@ else
         try
         {
             var issuerErr = IdentityValidation.Validate(_orderIssuer);
-            if (issuerErr != null) { _error = "Issuer: " + issuerErr; return; }
-            if (string.IsNullOrWhiteSpace(_orderAssetName)) { _error = "Asset name is required."; return; }
-            if (_orderPrice <= 0) { _error = "Price must be positive."; return; }
-            if (_orderShares <= 0) { _error = "Number of shares must be positive."; return; }
+            if (issuerErr != null) { _error = Loc["Msg_IssuerPrefix"] + issuerErr; return; }
+            if (string.IsNullOrWhiteSpace(_orderAssetName)) { _error = Loc["Msg_AssetNameRequired"]; return; }
+            if (_orderPrice <= 0) { _error = Loc["Msg_PricePositive"]; return; }
+            if (_orderShares <= 0) { _error = Loc["Msg_SharesPositive"]; return; }
 
             var tick = await GetTick();
             var issuerPk = Qubic.Core.Entities.QubicIdentity.FromIdentity(_orderIssuer!.Trim()).PublicKey;
@@ -588,9 +589,9 @@ else
         try
         {
             var issuerErr = IdentityValidation.Validate(_rightsIssuer);
-            if (issuerErr != null) { _error = "Issuer: " + issuerErr; return; }
-            if (string.IsNullOrWhiteSpace(_rightsAssetName)) { _error = "Asset name is required."; return; }
-            if (_rightsShares <= 0) { _error = "Number of shares must be positive."; return; }
+            if (issuerErr != null) { _error = Loc["Msg_IssuerPrefix"] + issuerErr; return; }
+            if (string.IsNullOrWhiteSpace(_rightsAssetName)) { _error = Loc["Msg_AssetNameRequired"]; return; }
+            if (_rightsShares <= 0) { _error = Loc["Msg_SharesPositive"]; return; }
 
             var tick = await GetTick();
             var payload = new Qubic.Core.Contracts.Qx.TransferShareManagementRightsPayload
@@ -640,7 +641,7 @@ else
             if (assets.Count == 0)
             {
                 _marketAssets = [];
-                _marketError = "No assets found. Check your RPC connection.";
+                _marketError = Loc["Msg_NoAssetsRpc"];
                 return;
             }
 
