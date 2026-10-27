@@ -2991,6 +2991,54 @@ Comisión: 100 QU</value>
   <data name="Common_TxBroadcast" xml:space="preserve">
     <value>¡Transacción difundida! ID de tx:</value>
   </data>
+  <data name="Mod_PagesTitle" xml:space="preserve">
+    <value>Páginas y secciones</value>
+  </data>
+  <data name="Mod_PagesIntro" xml:space="preserve">
+    <value>Muestra solo las páginas que usas. Las páginas ocultas se quitan del menú; nada más cambia y puedes volver a activarlas cuando quieras.</value>
+  </data>
+  <data name="Mod_EnableAll" xml:space="preserve">
+    <value>Activar todo</value>
+  </data>
+  <data name="Mod_DisableAll" xml:space="preserve">
+    <value>Desactivar todo</value>
+  </data>
+  <data name="ModDesc_Assets" xml:space="preserve">
+    <value>Tus tokens y participaciones, con transferencias.</value>
+  </data>
+  <data name="ModDesc_Watchlist" xml:space="preserve">
+    <value>Sigue los saldos de las direcciones que vigilas.</value>
+  </data>
+  <data name="ModDesc_SignVerify" xml:space="preserve">
+    <value>Firma y verifica mensajes arbitrarios.</value>
+  </data>
+  <data name="ModDesc_SendMany" xml:space="preserve">
+    <value>Envía a muchos destinatarios en un lote.</value>
+  </data>
+  <data name="ModDesc_Qx" xml:space="preserve">
+    <value>Opera activos en el exchange descentralizado QX.</value>
+  </data>
+  <data name="ModDesc_Qswap" xml:space="preserve">
+    <value>Intercambia tokens en el AMM QSwap.</value>
+  </data>
+  <data name="ModDesc_Qearn" xml:space="preserve">
+    <value>Bloquea QUBIC para ganar recompensas de staking (QEarn).</value>
+  </data>
+  <data name="ModDesc_Msvault" xml:space="preserve">
+    <value>Baúles multifirma compartidos (MSVault).</value>
+  </data>
+  <data name="ModDesc_ScAuctions" xml:space="preserve">
+    <value>Puja por espacios de contratos inteligentes en subasta.</value>
+  </data>
+  <data name="ModDesc_Voting" xml:space="preserve">
+    <value>Encuestas de la comunidad (QUtil): explora, vota y crea.</value>
+  </data>
+  <data name="ModDesc_Governance" xml:space="preserve">
+    <value>Propuestas de gobernanza de computors (GQMPROP).</value>
+  </data>
+  <data name="ModDesc_Ccf" xml:space="preserve">
+    <value>Propuestas y votación del Community Contribution Fund.</value>
+  </data>
   <data name="Nav_Governance" xml:space="preserve">
     <value>Gobernanza</value>
   </data>

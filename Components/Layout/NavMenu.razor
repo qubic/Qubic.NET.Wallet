@@ -1,7 +1,9 @@
+@using Qubic.Net.Wallet.Services
 @inject SeedSessionService Seed
 @inject VaultService Vault
 @inject NavigationManager Nav
 @inject Qubic.Services.Features.FeatureService Features
+@inject ModuleVisibilityService Modules
 @implements IDisposable
 @inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
 
@@ -26,9 +28,12 @@
             <NavLink class="nav-link" href="/send">
                 <i class="bi bi-send me-2"></i>@Loc["Nav_Send"]
             </NavLink>
-            <NavLink class="nav-link" href="/send-many">
-                <i class="bi bi-send-plus me-2"></i>@Loc["Nav_SendToMany"]
-            </NavLink>
+            @if (Modules.IsEnabled(WalletModule.SendMany))
+            {
+                <NavLink class="nav-link" href="/send-many">
+                    <i class="bi bi-send-plus me-2"></i>@Loc["Nav_SendToMany"]
+                </NavLink>
+            }
             <NavLink class="nav-link" href="/receive">
                 <i class="bi bi-qr-code me-2"></i>@Loc["Nav_Receive"]
             </NavLink>
@@ -41,62 +46,104 @@
         }
 
         @* ── ASSETS ── *@
-        <div class="nav-section-header mt-2">
-            <span class="nav-section-label">@Loc["Nav_Section_Assets"]</span>
-        </div>
-        <NavLink class="nav-link" href="/assets">
-            <i class="bi bi-grid-3x3-gap me-2"></i>@Loc["Nav_Assets"]
-        </NavLink>
+        @if (Seed.HasSeed && Modules.IsEnabled(WalletModule.Assets))
+        {
+            <div class="nav-section-header mt-2">
+                <span class="nav-section-label">@Loc["Nav_Section_Assets"]</span>
+            </div>
+            <NavLink class="nav-link" href="/assets">
+                <i class="bi bi-grid-3x3-gap me-2"></i>@Loc["Nav_Assets"]
+            </NavLink>
+        }
 
         @* ── DEFI ── *@
-        <div class="nav-section-header mt-2">
-            <span class="nav-section-label">@Loc["Nav_Section_Defi"]</span>
-        </div>
-        <NavLink class="nav-link" href="/qx">
-            <i class="bi bi-shop me-2"></i>@Loc["Nav_QxTrading"]
-        </NavLink>
-        <NavLink class="nav-link" href="/qswap">
-            <i class="bi bi-arrow-left-right me-2"></i>QSwap
-        </NavLink>
-        <NavLink class="nav-link" href="/qearn">
-            <i class="bi bi-piggy-bank me-2"></i>QEarn
-        </NavLink>
-        <NavLink class="nav-link" href="/msvault">
-            <i class="bi bi-safe me-2"></i>MSVault
-        </NavLink>
-        <NavLink class="nav-link" href="/sc-auctions">
-            <i class="bi bi-graph-up-arrow me-2"></i>@Loc["Nav_ScAuctions"]
-        </NavLink>
-        <NavLink class="nav-link" href="/voting">
-            <i class="bi bi-chat-square-dots me-2"></i>@Loc["Nav_Voting"]
-        </NavLink>
-        <NavLink class="nav-link" href="/governance">
-            <i class="bi bi-bank me-2"></i>@Loc["Nav_Governance"]
-        </NavLink>
-        <NavLink class="nav-link" href="/ccf">
-            <i class="bi bi-cash-stack me-2"></i>@Loc["Nav_Ccf"]
-        </NavLink>
+        @if (_anyDefi)
+        {
+            <div class="nav-section-header mt-2">
+                <span class="nav-section-label">@Loc["Nav_Section_Defi"]</span>
+            </div>
+        }
+        @if (Seed.HasSeed && Modules.IsEnabled(WalletModule.Qx))
+        {
+            <NavLink class="nav-link" href="/qx">
+                <i class="bi bi-shop me-2"></i>@Loc["Nav_QxTrading"]
+            </NavLink>
+        }
+        @if (Seed.HasSeed && Modules.IsEnabled(WalletModule.Qswap))
+        {
+            <NavLink class="nav-link" href="/qswap">
+                <i class="bi bi-arrow-left-right me-2"></i>QSwap
+            </NavLink>
+        }
+        @if (Seed.HasSeed && Modules.IsEnabled(WalletModule.Qearn))
+        {
+            <NavLink class="nav-link" href="/qearn">
+                <i class="bi bi-piggy-bank me-2"></i>QEarn
+            </NavLink>
+        }
+        @if (Seed.HasSeed && Modules.IsEnabled(WalletModule.Msvault))
+        {
+            <NavLink class="nav-link" href="/msvault">
+                <i class="bi bi-safe me-2"></i>MSVault
+            </NavLink>
+        }
+        @if (Modules.IsEnabled(WalletModule.ScAuctions))
+        {
+            <NavLink class="nav-link" href="/sc-auctions">
+                <i class="bi bi-graph-up-arrow me-2"></i>@Loc["Nav_ScAuctions"]
+            </NavLink>
+        }
+        @if (Modules.IsEnabled(WalletModule.Voting))
+        {
+            <NavLink class="nav-link" href="/voting">
+                <i class="bi bi-chat-square-dots me-2"></i>@Loc["Nav_Voting"]
+            </NavLink>
+        }
+        @if (Modules.IsEnabled(WalletModule.Governance))
+        {
+            <NavLink class="nav-link" href="/governance">
+                <i class="bi bi-bank me-2"></i>@Loc["Nav_Governance"]
+            </NavLink>
+        }
+        @if (Modules.IsEnabled(WalletModule.Ccf))
+        {
+            <NavLink class="nav-link" href="/ccf">
+                <i class="bi bi-cash-stack me-2"></i>@Loc["Nav_Ccf"]
+            </NavLink>
+        }
 
-        @* ── HISTORY ── *@
-        <div class="nav-section-header mt-2">
-            <span class="nav-section-label">@Loc["Nav_Section_History"]</span>
-        </div>
-        <NavLink class="nav-link" href="/watchlist">
-            <i class="bi bi-eye me-2"></i>@Loc["Nav_Watchlist"]
-        </NavLink>
-        <NavLink class="nav-link" href="/history">
-            <i class="bi bi-list-ul me-2"></i>@Loc["Nav_TxHistory"]
-        </NavLink>
-        <NavLink class="nav-link" href="/logs">
-            <i class="bi bi-journal-text me-2"></i>@Loc["Nav_LogEvents"]
-        </NavLink>
+        @* ── HISTORY ── (per-seed data: only with an active seed) *@
+        @if (Seed.HasSeed)
+        {
+            <div class="nav-section-header mt-2">
+                <span class="nav-section-label">@Loc["Nav_Section_History"]</span>
+            </div>
+            @if (Modules.IsEnabled(WalletModule.Watchlist))
+            {
+                <NavLink class="nav-link" href="/watchlist">
+                    <i class="bi bi-eye me-2"></i>@Loc["Nav_Watchlist"]
+                </NavLink>
+            }
+            <NavLink class="nav-link" href="/history">
+                <i class="bi bi-list-ul me-2"></i>@Loc["Nav_TxHistory"]
+            </NavLink>
+            <NavLink class="nav-link" href="/logs">
+                <i class="bi bi-journal-text me-2"></i>@Loc["Nav_LogEvents"]
+            </NavLink>
+        }
         @* ── TOOLS ── *@
-        <div class="nav-section-header mt-2">
-            <span class="nav-section-label">@Loc["Nav_Section_Tools"]</span>
-        </div>
-        <NavLink class="nav-link" href="/sign-verify">
-            <i class="bi bi-pen me-2"></i>@Loc["Nav_SignVerify"]
-        </NavLink>
+        @if (_anyTools)
+        {
+            <div class="nav-section-header mt-2">
+                <span class="nav-section-label">@Loc["Nav_Section_Tools"]</span>
+            </div>
+        }
+        @if (Modules.IsEnabled(WalletModule.SignVerify))
+        {
+            <NavLink class="nav-link" href="/sign-verify">
+                <i class="bi bi-pen me-2"></i>@Loc["Nav_SignVerify"]
+            </NavLink>
+        }
         @if (Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect))
         {
             <NavLink class="nav-link" href="/walletconnect">
@@ -124,9 +171,12 @@
         }
 
         <hr class="my-2" />
-        <NavLink class="nav-link" href="/sync">
-            <i class="bi bi-arrow-repeat me-2"></i>@Loc["Nav_SyncManager"]
-        </NavLink>
+        @if (Seed.HasSeed)
+        {
+            <NavLink class="nav-link" href="/sync">
+                <i class="bi bi-arrow-repeat me-2"></i>@Loc["Nav_SyncManager"]
+            </NavLink>
+        }
         <NavLink class="nav-link" href="/settings">
             <i class="bi bi-gear me-2"></i>@Loc["Nav_Settings"]
         </NavLink>
@@ -141,12 +191,27 @@
     private static readonly string _version =
         typeof(NavMenu).Assembly.GetName().Version?.ToString(3) ?? "?";
 
+    // Browsable DeFi pages show without a seed; the action pages (QX/QSwap/QEarn/MSVault) only with one.
+    private bool _anyDefi =>
+        Modules.IsEnabled(WalletModule.ScAuctions) || Modules.IsEnabled(WalletModule.Voting)
+        || Modules.IsEnabled(WalletModule.Governance) || Modules.IsEnabled(WalletModule.Ccf)
+        || (Seed.HasSeed && (Modules.IsEnabled(WalletModule.Qx) || Modules.IsEnabled(WalletModule.Qswap)
+            || Modules.IsEnabled(WalletModule.Qearn) || Modules.IsEnabled(WalletModule.Msvault)));
+
+    private bool _anyTools =>
+        Modules.IsEnabled(WalletModule.SignVerify)
+        || Features.IsEnabled(Qubic.Services.Features.WalletFeature.WalletConnect)
+        || Features.IsEnabled(Qubic.Services.Features.WalletFeature.LocalSigningEndpoint);
+
     protected override void OnInitialized()
     {
         Seed.OnSeedChanged += OnSeedChanged;
         Features.OnChanged += OnFeatureChanged;
         Vault.OnVaultChanged += OnVaultChanged;
+        Modules.OnChanged += OnModulesChanged;
     }
+
+    private void OnModulesChanged() => InvokeAsync(StateHasChanged);
 
     private void OnVaultChanged() => InvokeAsync(StateHasChanged);
 
@@ -162,5 +227,6 @@
         Seed.OnSeedChanged -= OnSeedChanged;
         Features.OnChanged -= OnFeatureChanged;
         Vault.OnVaultChanged -= OnVaultChanged;
+        Modules.OnChanged -= OnModulesChanged;
     }
 }

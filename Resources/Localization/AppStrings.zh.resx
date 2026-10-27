@@ -2991,6 +2991,54 @@
   <data name="Common_TxBroadcast" xml:space="preserve">
     <value>交易已广播！交易 ID：</value>
   </data>
+  <data name="Mod_PagesTitle" xml:space="preserve">
+    <value>页面与板块</value>
+  </data>
+  <data name="Mod_PagesIntro" xml:space="preserve">
+    <value>只显示你使用的页面。隐藏的页面会从菜单中移除——其他不受影响，你可以随时重新启用。</value>
+  </data>
+  <data name="Mod_EnableAll" xml:space="preserve">
+    <value>全部启用</value>
+  </data>
+  <data name="Mod_DisableAll" xml:space="preserve">
+    <value>全部禁用</value>
+  </data>
+  <data name="ModDesc_Assets" xml:space="preserve">
+    <value>你的代币和份额，含转账。</value>
+  </data>
+  <data name="ModDesc_Watchlist" xml:space="preserve">
+    <value>跟踪你关注地址的余额。</value>
+  </data>
+  <data name="ModDesc_SignVerify" xml:space="preserve">
+    <value>签名并验证任意消息。</value>
+  </data>
+  <data name="ModDesc_SendMany" xml:space="preserve">
+    <value>一次性批量发送给多个接收者。</value>
+  </data>
+  <data name="ModDesc_Qx" xml:space="preserve">
+    <value>在 QX 去中心化交易所交易资产。</value>
+  </data>
+  <data name="ModDesc_Qswap" xml:space="preserve">
+    <value>在 QSwap 自动做市商上兑换代币。</value>
+  </data>
+  <data name="ModDesc_Qearn" xml:space="preserve">
+    <value>锁定 QUBIC 以赚取质押奖励（QEarn）。</value>
+  </data>
+  <data name="ModDesc_Msvault" xml:space="preserve">
+    <value>共享的多重签名保险库（MSVault）。</value>
+  </data>
+  <data name="ModDesc_ScAuctions" xml:space="preserve">
+    <value>竞拍智能合约槽位。</value>
+  </data>
+  <data name="ModDesc_Voting" xml:space="preserve">
+    <value>社区投票（QUtil）：浏览、投票和创建。</value>
+  </data>
+  <data name="ModDesc_Governance" xml:space="preserve">
+    <value>计算者治理提案（GQMPROP）。</value>
+  </data>
+  <data name="ModDesc_Ccf" xml:space="preserve">
+    <value>社区贡献基金的提案与投票。</value>
+  </data>
   <data name="Nav_Governance" xml:space="preserve">
     <value>治理</value>
   </data>

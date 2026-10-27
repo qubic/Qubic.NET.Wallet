@@ -91,6 +91,10 @@ else if (_activeTab == "features")
     <div class="row"><div class="col-lg-8">
         <p class="small text-muted">@Loc["ST_FeaturesIntro"]</p>
         <FeaturesPanel OnChanged="OnFeatureChanged" />
+
+        <h6 class="mt-4"><i class="bi bi-window-stack me-1"></i>@Loc["Mod_PagesTitle"]</h6>
+        <p class="small text-muted">@Loc["Mod_PagesIntro"]</p>
+        <ModulesPanel />
     </div></div>
 }
 else if (_activeTab == "transactions")

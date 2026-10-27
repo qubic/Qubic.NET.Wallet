@@ -2991,6 +2991,54 @@
   <data name="Common_TxBroadcast" xml:space="preserve">
     <value>Транзакция отправлена! ID транзакции:</value>
   </data>
+  <data name="Mod_PagesTitle" xml:space="preserve">
+    <value>Страницы и разделы</value>
+  </data>
+  <data name="Mod_PagesIntro" xml:space="preserve">
+    <value>Показывайте только нужные страницы. Скрытые страницы убираются из меню — больше ничего не меняется, и их можно включить снова в любой момент.</value>
+  </data>
+  <data name="Mod_EnableAll" xml:space="preserve">
+    <value>Включить все</value>
+  </data>
+  <data name="Mod_DisableAll" xml:space="preserve">
+    <value>Выключить все</value>
+  </data>
+  <data name="ModDesc_Assets" xml:space="preserve">
+    <value>Ваши токены и доли, с переводами.</value>
+  </data>
+  <data name="ModDesc_Watchlist" xml:space="preserve">
+    <value>Отслеживайте балансы адресов, за которыми следите.</value>
+  </data>
+  <data name="ModDesc_SignVerify" xml:space="preserve">
+    <value>Подписывайте и проверяйте произвольные сообщения.</value>
+  </data>
+  <data name="ModDesc_SendMany" xml:space="preserve">
+    <value>Отправка многим получателям одним пакетом.</value>
+  </data>
+  <data name="ModDesc_Qx" xml:space="preserve">
+    <value>Торговля активами на децентрализованной бирже QX.</value>
+  </data>
+  <data name="ModDesc_Qswap" xml:space="preserve">
+    <value>Обмен токенов на AMM QSwap.</value>
+  </data>
+  <data name="ModDesc_Qearn" xml:space="preserve">
+    <value>Блокируйте QUBIC для получения наград за стейкинг (QEarn).</value>
+  </data>
+  <data name="ModDesc_Msvault" xml:space="preserve">
+    <value>Общие мультиподписные хранилища (MSVault).</value>
+  </data>
+  <data name="ModDesc_ScAuctions" xml:space="preserve">
+    <value>Ставки на слоты смарт-контрактов на аукционе.</value>
+  </data>
+  <data name="ModDesc_Voting" xml:space="preserve">
+    <value>Опросы сообщества (QUtil): просмотр, голосование и создание.</value>
+  </data>
+  <data name="ModDesc_Governance" xml:space="preserve">
+    <value>Предложения управления компьютеров (GQMPROP).</value>
+  </data>
+  <data name="ModDesc_Ccf" xml:space="preserve">
+    <value>Предложения и голосование Community Contribution Fund.</value>
+  </data>
   <data name="Nav_Governance" xml:space="preserve">
     <value>Управление</value>
   </data>

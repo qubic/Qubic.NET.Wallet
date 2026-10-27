@@ -148,6 +148,7 @@ class Program
         services.AddLocalization(o => o.ResourcesPath = "Resources");
         services.AddSingleton<Qubic.Net.Wallet.Localization.LanguageService>();
         services.AddSingleton<Qubic.Net.Wallet.Services.AppRestartService>();
+        services.AddSingleton<Qubic.Net.Wallet.Services.ModuleVisibilityService>();
     }
 
     static void RunDesktop(string[] args)
