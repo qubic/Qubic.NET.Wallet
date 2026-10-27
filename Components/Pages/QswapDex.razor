@@ -40,7 +40,7 @@ else
                     <div class="mb-2"><label class="form-label-sm">@Loc["Common_DecimalPlaces"]</label>
                         <input type="number" class="form-control form-control-sm" min="0" max="18" @bind="_issueDecimals" /></div>
                     <button class="btn btn-primary" @onclick="IssueAsset" disabled="@_sending">@(_sending ? Loc["Common_Issuing"] : Loc["Common_IssueAsset"])</button>
-                    @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.issuance.ToString("N0") QU</div> }
+                    @if (_fees != null) { <div class="form-text">@string.Format(Loc["Fmt_FeeQu"], _fees.Value.issuance.ToString("N0"))</div> }
                 </div></div>
                 break;
 
@@ -52,7 +52,7 @@ else
                     <div class="mb-2"><label class="form-label-sm">@Loc["Common_AmountOfShares"]</label>
                         <input type="number" class="form-control form-control-sm" @bind="_xferAmount" /></div>
                     <button class="btn btn-primary" @onclick="TransferAsset" disabled="@_sending">@(_sending ? Loc["Common_Transferring"] : Loc["Common_Transfer"])</button>
-                    @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.transfer.ToString("N0") QU</div> }
+                    @if (_fees != null) { <div class="form-text">@string.Format(Loc["Fmt_FeeQu"], _fees.Value.transfer.ToString("N0"))</div> }
                 </div></div>
                 break;
 
@@ -60,7 +60,7 @@ else
                 <div class="card"><div class="card-header">@Loc["QSwap_CreatePool"]</div><div class="card-body">
                     <AssetSelector @bind-IssuerValue="_poolIssuer" @bind-NameValue="_poolName" />
                     <button class="btn btn-primary" @onclick="CreatePool" disabled="@_sending">@(_sending ? Loc["QSwap_Creating"] : Loc["QSwap_CreatePool"])</button>
-                    @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.pool.ToString("N0") QU</div> }
+                    @if (_fees != null) { <div class="form-text">@string.Format(Loc["Fmt_FeeQu"], _fees.Value.pool.ToString("N0"))</div> }
                 </div></div>
                 break;
 
@@ -91,6 +91,7 @@ else
                         <div class="mb-2"><label class="form-label-sm">@Loc["QSwap_AssetAmountMin"]</label>
                             <input type="number" class="form-control form-control-sm" @bind="_liqAssetMin" /></div>
                     }
+                    <div class="form-text mb-2">@string.Format(Loc["Fmt_QSwapNetworkFee"], QswapAdditionalFee.ToString("N0"))</div>
                     <button class="btn btn-primary" @onclick="ManageLiquidity" disabled="@_sending">
                         @(_sending ? Loc["Common_Processing"] : (_liqAdd ? Loc["QSwap_AddLiquidity"] : Loc["QSwap_RemoveLiquidity"]))
                     </button>
@@ -136,7 +137,8 @@ else
                             break;
                     }
                     <button class="btn btn-primary" @onclick="ExecuteSwap" disabled="@_sending">@(_sending ? Loc["QSwap_Swapping"] : Loc["QSwap_Tab_Swap"])</button>
-                    @if (_fees != null) { <div class="form-text">Fee: @_fees.Value.swap.ToString("N0") QU</div> }
+                    <div class="form-text">@string.Format(Loc["Fmt_QSwapNetworkFee"], QswapAdditionalFee.ToString("N0"))</div>
+                    @if (_fees != null) { <div class="form-text">@string.Format(Loc["Fmt_QSwapPoolFee"], (_fees.Value.swap / 100m).ToString("0.##"))</div> }
                 </div></div>
                 break;
         }
@@ -175,6 +177,7 @@ else
     private string? _result;
     private string? _error;
     private const int ContractIndex = 13;
+    private const long QswapAdditionalFee = 100_000; // flat per-op network fee required by the contract
     private (uint issuance, uint pool, uint transfer, uint swap, uint burn)? _fees;
 
     // Issue
@@ -234,7 +237,8 @@ else
                 UnitOfMeasurement = string.IsNullOrWhiteSpace(_issueUnit) ? 0 : AssetNameHelper.ToUlong(_issueUnit.Trim()),
                 NumberOfDecimalPlaces = (sbyte)_issueDecimals
             };
-            await Broadcast(0, tick, payload, $"QSwap Issue: {_issueName.Trim()} ({_issueShares:N0} shares)");
+            if (_fees is not { } f) { _error = Loc["QSwap_FeesUnavailable"]; return; }
+            await Broadcast((long)f.issuance, tick, payload, $"QSwap Issue: {_issueName.Trim()} ({_issueShares:N0} shares)");
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }
@@ -255,7 +259,8 @@ else
                 NewOwnerAndPossessor = ParseIssuer(_xferNewOwner),
                 Amount = _xferAmount
             };
-            await Broadcast(0, tick, payload, $"QSwap Transfer {_xferName.Trim()}: {_xferAmount:N0}");
+            if (_fees is not { } f) { _error = Loc["QSwap_FeesUnavailable"]; return; }
+            await Broadcast((long)f.transfer, tick, payload, $"QSwap Transfer {_xferName.Trim()}: {_xferAmount:N0}");
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }
@@ -273,7 +278,8 @@ else
                 AssetIssuer = ParseIssuer(_poolIssuer),
                 AssetName = AssetNameHelper.ToUlong(_poolName.Trim())
             };
-            await Broadcast(0, tick, payload, $"QSwap Create Pool: {_poolName.Trim()}");
+            if (_fees is not { } f) { _error = Loc["QSwap_FeesUnavailable"]; return; }
+            await Broadcast((long)f.pool, tick, payload, $"QSwap Create Pool: {_poolName.Trim()}");
         }
         catch (Exception ex) { _error = ex.Message; }
         finally { _sending = false; }
@@ -296,7 +302,7 @@ else
                     AssetIssuer = issuer, AssetName = assetName,
                     AssetAmountDesired = _liqAssetDesired, QuAmountMin = _liqQuMin, AssetAmountMin = _liqAssetMin
                 };
-                await Broadcast(_liqQuAmount, tick, payload, $"QSwap Add Liquidity: {_liqQuAmount:N0} QU + {_liqAssetDesired:N0} {_liqName.Trim()}");
+                await Broadcast(_liqQuAmount + QswapAdditionalFee, tick, payload, $"QSwap Add Liquidity: {_liqQuAmount:N0} QU + {_liqAssetDesired:N0} {_liqName.Trim()}");
             }
             else
             {
@@ -305,7 +311,7 @@ else
                     AssetIssuer = issuer, AssetName = assetName,
                     BurnLiquidity = _liqBurnAmount, QuAmountMin = _liqQuMin, AssetAmountMin = _liqAssetMin
                 };
-                await Broadcast(0, tick, payload, $"QSwap Remove Liquidity: burn {_liqBurnAmount:N0}");
+                await Broadcast(QswapAdditionalFee, tick, payload, $"QSwap Remove Liquidity: burn {_liqBurnAmount:N0}");
             }
         }
         catch (Exception ex) { _error = ex.Message; }
@@ -337,22 +343,22 @@ else
             switch (_swapType)
             {
                 case "exactQuForAsset":
-                    await Broadcast(_swapAmount1, tick,
+                    await Broadcast(_swapAmount1 + QswapAdditionalFee, tick,
                         new Qubic.Core.Contracts.Qswap.SwapExactQuForAssetPayload { AssetIssuer = issuer, AssetName = assetName, AssetAmountOutMin = _swapAmount2 },
                         $"QSwap: {_swapAmount1:N0} QU → {_swapName.Trim()} (min {_swapAmount2:N0})");
                     break;
                 case "quForExactAsset":
-                    await Broadcast(_swapAmount1, tick,
+                    await Broadcast(_swapAmount1 + QswapAdditionalFee, tick,
                         new Qubic.Core.Contracts.Qswap.SwapQuForExactAssetPayload { AssetIssuer = issuer, AssetName = assetName, AssetAmountOut = _swapAmount2 },
                         $"QSwap: max {_swapAmount1:N0} QU → exact {_swapAmount2:N0} {_swapName.Trim()}");
                     break;
                 case "exactAssetForQu":
-                    await Broadcast(0, tick,
+                    await Broadcast(QswapAdditionalFee, tick,
                         new Qubic.Core.Contracts.Qswap.SwapExactAssetForQuPayload { AssetIssuer = issuer, AssetName = assetName, AssetAmountIn = _swapAmount1, QuAmountOutMin = _swapAmount2 },
                         $"QSwap: {_swapAmount1:N0} {_swapName.Trim()} → QU (min {_swapAmount2:N0})");
                     break;
                 case "assetForExactQu":
-                    await Broadcast(0, tick,
+                    await Broadcast(QswapAdditionalFee, tick,
                         new Qubic.Core.Contracts.Qswap.SwapAssetForExactQuPayload { AssetIssuer = issuer, AssetName = assetName, AssetAmountInMax = _swapAmount1, QuAmountOut = _swapAmount2 },
                         $"QSwap: max {_swapAmount1:N0} {_swapName.Trim()} → exact {_swapAmount2:N0} QU");
                     break;

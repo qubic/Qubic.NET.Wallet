@@ -724,6 +724,18 @@
   <data name="QSwap_TransferHdr" xml:space="preserve">
     <value>Передать актив (QSwap)</value>
   </data>
+  <data name="Fmt_FeeQu" xml:space="preserve">
+    <value>Комиссия: {0} QU</value>
+  </data>
+  <data name="Fmt_QSwapNetworkFee" xml:space="preserve">
+    <value>Сетевая комиссия: {0} QU (добавляется сверху)</value>
+  </data>
+  <data name="Fmt_QSwapPoolFee" xml:space="preserve">
+    <value>Комиссия пула: {0}% (удерживается из обмена)</value>
+  </data>
+  <data name="QSwap_FeesUnavailable" xml:space="preserve">
+    <value>Информация о комиссиях ещё не загружена. Подождите немного и повторите попытку.</value>
+  </data>
   <data name="QSwap_CreatePool" xml:space="preserve">
     <value>Создать пул</value>
   </data>

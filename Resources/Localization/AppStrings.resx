@@ -724,6 +724,18 @@
   <data name="QSwap_TransferHdr" xml:space="preserve">
     <value>Transfer Asset (QSwap)</value>
   </data>
+  <data name="Fmt_FeeQu" xml:space="preserve">
+    <value>Fee: {0} QU</value>
+  </data>
+  <data name="Fmt_QSwapNetworkFee" xml:space="preserve">
+    <value>Network fee: {0} QU (added on top)</value>
+  </data>
+  <data name="Fmt_QSwapPoolFee" xml:space="preserve">
+    <value>Pool fee: {0}% (taken from the swap)</value>
+  </data>
+  <data name="QSwap_FeesUnavailable" xml:space="preserve">
+    <value>Fee information not loaded yet. Please wait a moment and try again.</value>
+  </data>
   <data name="QSwap_CreatePool" xml:space="preserve">
     <value>Create Pool</value>
   </data>

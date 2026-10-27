@@ -724,6 +724,18 @@
   <data name="QSwap_TransferHdr" xml:space="preserve">
     <value>Transférer l'actif (QSwap)</value>
   </data>
+  <data name="Fmt_FeeQu" xml:space="preserve">
+    <value>Frais : {0} QU</value>
+  </data>
+  <data name="Fmt_QSwapNetworkFee" xml:space="preserve">
+    <value>Frais de réseau : {0} QU (ajoutés en plus)</value>
+  </data>
+  <data name="Fmt_QSwapPoolFee" xml:space="preserve">
+    <value>Frais du pool : {0}% (prélevés sur le swap)</value>
+  </data>
+  <data name="QSwap_FeesUnavailable" xml:space="preserve">
+    <value>Les informations sur les frais ne sont pas encore chargées. Veuillez patienter et réessayer.</value>
+  </data>
   <data name="QSwap_CreatePool" xml:space="preserve">
     <value>Créer un pool</value>
   </data>
