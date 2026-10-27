@@ -37,9 +37,13 @@
             @if (Vault.IsUnlocked && Seed.HasSeed)
             {
                 @* ── Vault unlocked, seed active ── *@
-                <span class="badge-qb-gold">
-                    <i class="bi bi-shield-lock-fill me-1"></i>@(Seed.ActiveLabel ?? Loc["Shell_Vault"])
+                <span class="badge-qb-gold" title="@Vault.VaultPath">
+                    <i class="bi bi-shield-lock-fill me-1"></i>@VaultFileHistory.DisplayName(Vault.VaultPath ?? "")
                 </span>
+                <button class="btn btn-sm btn-qb-ghost p-0 ms-1" @onclick="() => _switchDlg?.Open()"
+                        title="@Loc["VSw_Switch"]">
+                    <i class="bi bi-arrow-left-right"></i>
+                </button>
                 @if (Vault.Entries.Count > 1)
                 {
                     <select class="form-select form-select-sm mono" style="width:auto;max-width:220px"
@@ -245,6 +249,7 @@
 <SigningReviewHost />
 <WalletConnectProposalHost />
 <TransactionProgressHost />
+<VaultSwitchDialog @ref="_switchDlg" OnChanged="OnVaultSwitched" />
 <FeaturesDialog OnSaved="OnFeaturesSaved" />
 
 @* ── Save-to-Vault Modal ── *@
@@ -365,6 +370,9 @@
 
     // Vault file switcher (recently used vault files, current one first)
     private List<string> _vaultFiles = [];
+    private VaultSwitchDialog? _switchDlg;
+
+    private void OnVaultSwitched() => InvokeAsync(StateHasChanged);
     private Dictionary<string, string> _vaultLabels = [];
     private int _vaultSelectVersion;
 

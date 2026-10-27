@@ -2979,4 +2979,486 @@
   <data name="VI_AliasPlaceholder" xml:space="preserve">
     <value>在您保险库中的名称</value>
   </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>（无）</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Common_TxBroadcast" xml:space="preserve">
+    <value>交易已广播！交易 ID：</value>
+  </data>
+  <data name="Nav_Governance" xml:space="preserve">
+    <value>治理</value>
+  </data>
+  <data name="Nav_Ccf" xml:space="preserve">
+    <value>CCF</value>
+  </data>
+  <data name="GOV_Title" xml:space="preserve">
+    <value>治理</value>
+  </data>
+  <data name="GOV_Subtitle" xml:space="preserve">
+    <value>通用法定人数提案 (GQMProp) — 收入捐赠与治理投票。</value>
+  </data>
+  <data name="GOV_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="GOV_Tab_Propose" xml:space="preserve">
+    <value>提案</value>
+  </data>
+  <data name="GOV_Tab_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="GOV_Tab_Results" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="GOV_Tab_GetVote" xml:space="preserve">
+    <value>查询投票</value>
+  </data>
+  <data name="GOV_Tab_Revenue" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="GOV_BrowseActive" xml:space="preserve">
+    <value>活跃（当前纪元）</value>
+  </data>
+  <data name="GOV_BrowsePrior" xml:space="preserve">
+    <value>之前的纪元</value>
+  </data>
+  <data name="GOV_LoadProposals" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="GOV_NoProposals" xml:space="preserve">
+    <value>未找到提案。</value>
+  </data>
+  <data name="GOV_ColIndex" xml:space="preserve">
+    <value>索引</value>
+  </data>
+  <data name="GOV_Proposer" xml:space="preserve">
+    <value>提案人</value>
+  </data>
+  <data name="GOV_Url" xml:space="preserve">
+    <value>网址</value>
+  </data>
+  <data name="GOV_LoadMore" xml:space="preserve">
+    <value>加载更多</value>
+  </data>
+  <data name="GOV_Destination" xml:space="preserve">
+    <value>目标地址</value>
+  </data>
+  <data name="GOV_ProposalType" xml:space="preserve">
+    <value>提案类型</value>
+  </data>
+  <data name="GOV_Grp_General" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="GOV_Grp_Transfer" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="GOV_Grp_Variable" xml:space="preserve">
+    <value>变量</value>
+  </data>
+  <data name="GOV_Grp_MultiVar" xml:space="preserve">
+    <value>多变量</value>
+  </data>
+  <data name="GOV_Grp_TransferEpoch" xml:space="preserve">
+    <value>纪元内转账</value>
+  </data>
+  <data name="GOV_TL_0002" xml:space="preserve">
+    <value>通用：是/否</value>
+  </data>
+  <data name="GOV_TL_0003" xml:space="preserve">
+    <value>通用：3 个选项</value>
+  </data>
+  <data name="GOV_TL_0004" xml:space="preserve">
+    <value>通用：4 个选项</value>
+  </data>
+  <data name="GOV_TL_0005" xml:space="preserve">
+    <value>通用：5 个选项</value>
+  </data>
+  <data name="GOV_TL_0006" xml:space="preserve">
+    <value>通用：6 个选项</value>
+  </data>
+  <data name="GOV_TL_0007" xml:space="preserve">
+    <value>通用：7 个选项</value>
+  </data>
+  <data name="GOV_TL_0008" xml:space="preserve">
+    <value>通用：8 个选项</value>
+  </data>
+  <data name="GOV_TL_0102" xml:space="preserve">
+    <value>转账：是/否</value>
+  </data>
+  <data name="GOV_TL_0103" xml:space="preserve">
+    <value>转账：2 个金额</value>
+  </data>
+  <data name="GOV_TL_0104" xml:space="preserve">
+    <value>转账：3 个金额</value>
+  </data>
+  <data name="GOV_TL_0105" xml:space="preserve">
+    <value>转账：4 个金额</value>
+  </data>
+  <data name="GOV_TL_0200" xml:space="preserve">
+    <value>变量：标量均值</value>
+  </data>
+  <data name="GOV_TL_0202" xml:space="preserve">
+    <value>变量：是/否</value>
+  </data>
+  <data name="GOV_TL_0203" xml:space="preserve">
+    <value>变量：2 个值</value>
+  </data>
+  <data name="GOV_TL_0204" xml:space="preserve">
+    <value>变量：3 个值</value>
+  </data>
+  <data name="GOV_TL_0205" xml:space="preserve">
+    <value>变量：4 个值</value>
+  </data>
+  <data name="GOV_TL_0302" xml:space="preserve">
+    <value>多变量：是/否</value>
+  </data>
+  <data name="GOV_TL_0303" xml:space="preserve">
+    <value>多变量：3 个选项</value>
+  </data>
+  <data name="GOV_TL_0304" xml:space="preserve">
+    <value>多变量：4 个选项</value>
+  </data>
+  <data name="GOV_TL_0402" xml:space="preserve">
+    <value>纪元内转账：是/否</value>
+  </data>
+  <data name="GOV_TL_Unknown" xml:space="preserve">
+    <value>未知 (0x{0})</value>
+  </data>
+  <data name="GOV_ProposalUrl" xml:space="preserve">
+    <value>提案网址</value>
+  </data>
+  <data name="GOV_UrlHelp255" xml:space="preserve">
+    <value>（最多 255 个字符，用于描述提案）</value>
+  </data>
+  <data name="GOV_AutoDetected" xml:space="preserve">
+    <value>自动检测</value>
+  </data>
+  <data name="GOV_DestIdentity" xml:space="preserve">
+    <value>目标身份</value>
+  </data>
+  <data name="GOV_Amounts" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="GOV_AmountsHelp" xml:space="preserve">
+    <value>（收入的百万分之一；1,000,000 = 100%）</value>
+  </data>
+  <data name="GOV_OptionWord" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="GOV_Millionths" xml:space="preserve">
+    <value>（百万分之一）</value>
+  </data>
+  <data name="GOV_TargetEpoch" xml:space="preserve">
+    <value>目标纪元</value>
+  </data>
+  <data name="GOV_VariableId" xml:space="preserve">
+    <value>变量 ID</value>
+  </data>
+  <data name="GOV_MinValue" xml:space="preserve">
+    <value>最小值</value>
+  </data>
+  <data name="GOV_MaxValue" xml:space="preserve">
+    <value>最大值</value>
+  </data>
+  <data name="GOV_ProposedValue" xml:space="preserve">
+    <value>建议值</value>
+  </data>
+  <data name="GOV_Values" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="GOV_SetProposal" xml:space="preserve">
+    <value>设置提案</value>
+  </data>
+  <data name="GOV_ClearMyProposal" xml:space="preserve">
+    <value>清除我的提案</value>
+  </data>
+  <data name="GOV_ProposalIndex" xml:space="preserve">
+    <value>提案索引</value>
+  </data>
+  <data name="GOV_LoadProposal" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="GOV_VoteValue" xml:space="preserve">
+    <value>投票值</value>
+  </data>
+  <data name="GOV_ScalarValuePlaceholder" xml:space="preserve">
+    <value>标量值</value>
+  </data>
+  <data name="GOV_ScalarVoteHelp" xml:space="preserve">
+    <value>标量投票：请输入您建议的值。</value>
+  </data>
+  <data name="GOV_NoChange" xml:space="preserve">
+    <value>不变</value>
+  </data>
+  <data name="GOV_CastVote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="GOV_ClearVote" xml:space="preserve">
+    <value>清除投票</value>
+  </data>
+  <data name="GOV_ViewResults" xml:space="preserve">
+    <value>查看当前结果</value>
+  </data>
+  <data name="GOV_LoadResults" xml:space="preserve">
+    <value>加载结果</value>
+  </data>
+  <data name="GOV_AuthorizedVoters" xml:space="preserve">
+    <value>授权投票者</value>
+  </data>
+  <data name="GOV_VotesCast" xml:space="preserve">
+    <value>已投票数</value>
+  </data>
+  <data name="GOV_OptionVotes" xml:space="preserve">
+    <value>各选项票数</value>
+  </data>
+  <data name="GOV_ScalarResult" xml:space="preserve">
+    <value>标量结果</value>
+  </data>
+  <data name="GOV_VoterIdentity" xml:space="preserve">
+    <value>投票者身份</value>
+  </data>
+  <data name="GOV_BlankYourIdentity" xml:space="preserve">
+    <value>（留空 = 您的身份）</value>
+  </data>
+  <data name="GOV_LoadVote" xml:space="preserve">
+    <value>加载投票</value>
+  </data>
+  <data name="GOV_ProposalTick" xml:space="preserve">
+    <value>提案 Tick</value>
+  </data>
+  <data name="GOV_NoVoteCleared" xml:space="preserve">
+    <value>无投票 / 已清除</value>
+  </data>
+  <data name="GOV_ZeroNoChange" xml:space="preserve">
+    <value>0（不变）</value>
+  </data>
+  <data name="GOV_RevenueDesc" xml:space="preserve">
+    <value>收入捐赠条目定义了来自网络收入池的持续转账。</value>
+  </data>
+  <data name="GOV_LoadRevenue" xml:space="preserve">
+    <value>加载收入捐赠表</value>
+  </data>
+  <data name="GOV_NoRevenue" xml:space="preserve">
+    <value>没有活跃的收入捐赠。</value>
+  </data>
+  <data name="GOV_FirstEpoch" xml:space="preserve">
+    <value>首个纪元</value>
+  </data>
+  <data name="GOV_AmountN" xml:space="preserve">
+    <value>金额</value>
+  </data>
+  <data name="GOV_ValueN" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="GOV_Min" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="GOV_Max" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="GOV_Proposed" xml:space="preserve">
+    <value>建议</value>
+  </data>
+  <data name="GOV_ComputorOnly" xml:space="preserve">
+    <value>只有 computor 可以创建提案或投票。浏览和结果对所有人开放。</value>
+  </data>
+  <data name="GOV_ErrUrlTooLong" xml:space="preserve">
+    <value>网址过长（最多 255 个字符）。</value>
+  </data>
+  <data name="GOV_ErrNoEpoch" xml:space="preserve">
+    <value>无法确定当前纪元。请连接到网络。</value>
+  </data>
+  <data name="GOV_ErrInvalidDest" xml:space="preserve">
+    <value>目标无效：{0}</value>
+  </data>
+  <data name="GOV_ErrParseDest" xml:space="preserve">
+    <value>无法解析目标身份。</value>
+  </data>
+  <data name="GOV_ErrProposalNotFound" xml:space="preserve">
+    <value>未找到提案或提案无效。</value>
+  </data>
+  <data name="GOV_ErrLoadProposalFirst" xml:space="preserve">
+    <value>请先加载提案。</value>
+  </data>
+  <data name="GOV_ErrInvalidVoteValue" xml:space="preserve">
+    <value>投票值无效。</value>
+  </data>
+  <data name="GOV_ErrNoResults" xml:space="preserve">
+    <value>未找到该提案的结果。</value>
+  </data>
+  <data name="GOV_ErrNoVote" xml:space="preserve">
+    <value>未找到投票。</value>
+  </data>
+  <data name="GOV_ErrEnterVoterOrSeed" xml:space="preserve">
+    <value>请输入投票者身份或连接您的种子。</value>
+  </data>
+  <data name="GOV_ErrInvalidVoter" xml:space="preserve">
+    <value>投票者身份无效。</value>
+  </data>
+  <data name="CCF_Title" xml:space="preserve">
+    <value>由 Computor 控制的基金 (CCF)</value>
+  </data>
+  <data name="CCF_Subtitle" xml:space="preserve">
+    <value>CCF 提案、投票、转账和订阅管理（合约 8）。</value>
+  </data>
+  <data name="CCF_Tab_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="CCF_Tab_Propose" xml:space="preserve">
+    <value>提案</value>
+  </data>
+  <data name="CCF_Tab_Vote" xml:space="preserve">
+    <value>投票</value>
+  </data>
+  <data name="CCF_Tab_Results" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="CCF_Tab_GetVote" xml:space="preserve">
+    <value>查询投票</value>
+  </data>
+  <data name="CCF_Tab_Subscriptions" xml:space="preserve">
+    <value>订阅</value>
+  </data>
+  <data name="CCF_Tab_Transfers" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="CCF_Tab_Payments" xml:space="preserve">
+    <value>付款</value>
+  </data>
+  <data name="CCF_BrowseActive" xml:space="preserve">
+    <value>活跃（当前纪元）</value>
+  </data>
+  <data name="CCF_BrowseFinished" xml:space="preserve">
+    <value>已结束</value>
+  </data>
+  <data name="CCF_BrowseByIndex" xml:space="preserve">
+    <value>按索引</value>
+  </data>
+  <data name="CCF_ProposalIndexPlaceholder" xml:space="preserve">
+    <value>提案索引</value>
+  </data>
+  <data name="CCF_LoadProposal" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="CCF_LoadProposals" xml:space="preserve">
+    <value>加载提案</value>
+  </data>
+  <data name="CCF_NoProposals" xml:space="preserve">
+    <value>未找到提案。</value>
+  </data>
+  <data name="CCF_AmountQu" xml:space="preserve">
+    <value>金额 (QU)</value>
+  </data>
+  <data name="CCF_SubscriptionProposal" xml:space="preserve">
+    <value>订阅提案</value>
+  </data>
+  <data name="CCF_SubProposer" xml:space="preserve">
+    <value>订阅提案人</value>
+  </data>
+  <data name="CCF_SubDestination" xml:space="preserve">
+    <value>订阅目标</value>
+  </data>
+  <data name="CCF_WeeksPerPeriod" xml:space="preserve">
+    <value>每期周数</value>
+  </data>
+  <data name="CCF_Periods" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_AmountPerPeriod" xml:space="preserve">
+    <value>每期金额</value>
+  </data>
+  <data name="CCF_StartEpoch" xml:space="preserve">
+    <value>起始纪元</value>
+  </data>
+  <data name="CCF_ActiveSubscription" xml:space="preserve">
+    <value>活跃订阅</value>
+  </data>
+  <data name="CCF_CurrentPeriod" xml:space="preserve">
+    <value>当前期数</value>
+  </data>
+  <data name="CCF_ProposalFeeInfo" xml:space="preserve">
+    <value>提案费用：{0} QU（自动获取，作为交易金额发送）</value>
+  </data>
+  <data name="CCF_LoadProposalFee" xml:space="preserve">
+    <value>加载提案费用</value>
+  </data>
+  <data name="CCF_OnlyYesNo" xml:space="preserve">
+    <value>CCF 仅支持转账：是/否 (0x0102) 类型的提案。</value>
+  </data>
+  <data name="CCF_UrlHelp255" xml:space="preserve">
+    <value>（最多 255 个字符）</value>
+  </data>
+  <data name="CCF_AmountPerPeriodQu" xml:space="preserve">
+    <value>每期金额 (QU)</value>
+  </data>
+  <data name="CCF_NumPeriods" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_DurationExceeds" xml:space="preserve">
+    <value>总时长 {0} 个纪元超过最大值 52。</value>
+  </data>
+  <data name="CCF_YesApprove" xml:space="preserve">
+    <value>是（批准）</value>
+  </data>
+  <data name="CCF_OneYesApprove" xml:space="preserve">
+    <value>1（是 / 批准）</value>
+  </data>
+  <data name="CCF_SubLookupDesc" xml:space="preserve">
+    <value>通过目标身份查找活跃订阅。</value>
+  </data>
+  <data name="CCF_Lookup" xml:space="preserve">
+    <value>查找</value>
+  </data>
+  <data name="CCF_NoSubscription" xml:space="preserve">
+    <value>未找到该目标的活跃订阅。</value>
+  </data>
+  <data name="CCF_TransfersDesc" xml:space="preserve">
+    <value>最近经法定人数批准的一次性转账。</value>
+  </data>
+  <data name="CCF_LoadTransfers" xml:space="preserve">
+    <value>加载最新转账</value>
+  </data>
+  <data name="CCF_NoTransfers" xml:space="preserve">
+    <value>未找到转账。</value>
+  </data>
+  <data name="CCF_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="CCF_PaymentsDesc" xml:space="preserve">
+    <value>CCF 合约近期进行的（定期）订阅付款。</value>
+  </data>
+  <data name="CCF_LoadPayments" xml:space="preserve">
+    <value>加载定期付款</value>
+  </data>
+  <data name="CCF_NoPayments" xml:space="preserve">
+    <value>未找到定期付款。</value>
+  </data>
+  <data name="CCF_Period" xml:space="preserve">
+    <value>期数</value>
+  </data>
+  <data name="CCF_TL_0102" xml:space="preserve">
+    <value>转账：是/否</value>
+  </data>
+  <data name="CCF_TL_Unknown" xml:space="preserve">
+    <value>类型 0x{0}</value>
+  </data>
+  <data name="CCF_ComputorOnly" xml:space="preserve">
+    <value>只有 computor 可以创建提案或投票。浏览和结果对所有人开放。</value>
+  </data>
+  <data name="CCF_UrlWarning" xml:space="preserve">
+    <value>此链接来自 CCF 提案，可能存在危险。
+
+{0}</value>
+  </data>
+  <data name="CCF_ErrNoFee" xml:space="preserve">
+    <value>无法确定提案费用。</value>
+  </data>
+  <data name="CCF_ErrInvalidDest" xml:space="preserve">
+    <value>目标身份无效。</value>
+  </data>
 </root>

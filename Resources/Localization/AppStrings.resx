@@ -2979,4 +2979,486 @@ Fee: 100 QU</value>
   <data name="VI_AliasPlaceholder" xml:space="preserve">
     <value>Name in your vault</value>
   </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>(none)</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common_TxBroadcast" xml:space="preserve">
+    <value>Transaction broadcast! Tx ID:</value>
+  </data>
+  <data name="Nav_Governance" xml:space="preserve">
+    <value>Governance</value>
+  </data>
+  <data name="Nav_Ccf" xml:space="preserve">
+    <value>CCF</value>
+  </data>
+  <data name="GOV_Title" xml:space="preserve">
+    <value>Governance</value>
+  </data>
+  <data name="GOV_Subtitle" xml:space="preserve">
+    <value>General Quorum Proposals (GQMProp) — revenue donation and governance voting.</value>
+  </data>
+  <data name="GOV_Tab_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="GOV_Tab_Propose" xml:space="preserve">
+    <value>Propose</value>
+  </data>
+  <data name="GOV_Tab_Vote" xml:space="preserve">
+    <value>Vote</value>
+  </data>
+  <data name="GOV_Tab_Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="GOV_Tab_GetVote" xml:space="preserve">
+    <value>Get Vote</value>
+  </data>
+  <data name="GOV_Tab_Revenue" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="GOV_BrowseActive" xml:space="preserve">
+    <value>Active (current epoch)</value>
+  </data>
+  <data name="GOV_BrowsePrior" xml:space="preserve">
+    <value>Prior epochs</value>
+  </data>
+  <data name="GOV_LoadProposals" xml:space="preserve">
+    <value>Load Proposals</value>
+  </data>
+  <data name="GOV_NoProposals" xml:space="preserve">
+    <value>No proposals found.</value>
+  </data>
+  <data name="GOV_ColIndex" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="GOV_Proposer" xml:space="preserve">
+    <value>Proposer</value>
+  </data>
+  <data name="GOV_Url" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="GOV_LoadMore" xml:space="preserve">
+    <value>Load More</value>
+  </data>
+  <data name="GOV_Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="GOV_ProposalType" xml:space="preserve">
+    <value>Proposal Type</value>
+  </data>
+  <data name="GOV_Grp_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GOV_Grp_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="GOV_Grp_Variable" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="GOV_Grp_MultiVar" xml:space="preserve">
+    <value>Multi-Variables</value>
+  </data>
+  <data name="GOV_Grp_TransferEpoch" xml:space="preserve">
+    <value>Transfer in Epoch</value>
+  </data>
+  <data name="GOV_TL_0002" xml:space="preserve">
+    <value>General: Yes/No</value>
+  </data>
+  <data name="GOV_TL_0003" xml:space="preserve">
+    <value>General: 3 Options</value>
+  </data>
+  <data name="GOV_TL_0004" xml:space="preserve">
+    <value>General: 4 Options</value>
+  </data>
+  <data name="GOV_TL_0005" xml:space="preserve">
+    <value>General: 5 Options</value>
+  </data>
+  <data name="GOV_TL_0006" xml:space="preserve">
+    <value>General: 6 Options</value>
+  </data>
+  <data name="GOV_TL_0007" xml:space="preserve">
+    <value>General: 7 Options</value>
+  </data>
+  <data name="GOV_TL_0008" xml:space="preserve">
+    <value>General: 8 Options</value>
+  </data>
+  <data name="GOV_TL_0102" xml:space="preserve">
+    <value>Transfer: Yes/No</value>
+  </data>
+  <data name="GOV_TL_0103" xml:space="preserve">
+    <value>Transfer: 2 Amounts</value>
+  </data>
+  <data name="GOV_TL_0104" xml:space="preserve">
+    <value>Transfer: 3 Amounts</value>
+  </data>
+  <data name="GOV_TL_0105" xml:space="preserve">
+    <value>Transfer: 4 Amounts</value>
+  </data>
+  <data name="GOV_TL_0200" xml:space="preserve">
+    <value>Variable: Scalar Mean</value>
+  </data>
+  <data name="GOV_TL_0202" xml:space="preserve">
+    <value>Variable: Yes/No</value>
+  </data>
+  <data name="GOV_TL_0203" xml:space="preserve">
+    <value>Variable: 2 Values</value>
+  </data>
+  <data name="GOV_TL_0204" xml:space="preserve">
+    <value>Variable: 3 Values</value>
+  </data>
+  <data name="GOV_TL_0205" xml:space="preserve">
+    <value>Variable: 4 Values</value>
+  </data>
+  <data name="GOV_TL_0302" xml:space="preserve">
+    <value>Multi-Var: Yes/No</value>
+  </data>
+  <data name="GOV_TL_0303" xml:space="preserve">
+    <value>Multi-Var: 3 Options</value>
+  </data>
+  <data name="GOV_TL_0304" xml:space="preserve">
+    <value>Multi-Var: 4 Options</value>
+  </data>
+  <data name="GOV_TL_0402" xml:space="preserve">
+    <value>Transfer in Epoch: Yes/No</value>
+  </data>
+  <data name="GOV_TL_Unknown" xml:space="preserve">
+    <value>Unknown (0x{0})</value>
+  </data>
+  <data name="GOV_ProposalUrl" xml:space="preserve">
+    <value>Proposal URL</value>
+  </data>
+  <data name="GOV_UrlHelp255" xml:space="preserve">
+    <value>(max 255 chars, describes the proposal)</value>
+  </data>
+  <data name="GOV_AutoDetected" xml:space="preserve">
+    <value>auto-detected</value>
+  </data>
+  <data name="GOV_DestIdentity" xml:space="preserve">
+    <value>Destination Identity</value>
+  </data>
+  <data name="GOV_Amounts" xml:space="preserve">
+    <value>Amounts</value>
+  </data>
+  <data name="GOV_AmountsHelp" xml:space="preserve">
+    <value>(millionths of revenue; 1,000,000 = 100%)</value>
+  </data>
+  <data name="GOV_OptionWord" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="GOV_Millionths" xml:space="preserve">
+    <value>(millionths)</value>
+  </data>
+  <data name="GOV_TargetEpoch" xml:space="preserve">
+    <value>Target Epoch</value>
+  </data>
+  <data name="GOV_VariableId" xml:space="preserve">
+    <value>Variable ID</value>
+  </data>
+  <data name="GOV_MinValue" xml:space="preserve">
+    <value>Min Value</value>
+  </data>
+  <data name="GOV_MaxValue" xml:space="preserve">
+    <value>Max Value</value>
+  </data>
+  <data name="GOV_ProposedValue" xml:space="preserve">
+    <value>Proposed Value</value>
+  </data>
+  <data name="GOV_Values" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="GOV_SetProposal" xml:space="preserve">
+    <value>Set Proposal</value>
+  </data>
+  <data name="GOV_ClearMyProposal" xml:space="preserve">
+    <value>Clear My Proposal</value>
+  </data>
+  <data name="GOV_ProposalIndex" xml:space="preserve">
+    <value>Proposal Index</value>
+  </data>
+  <data name="GOV_LoadProposal" xml:space="preserve">
+    <value>Load Proposal</value>
+  </data>
+  <data name="GOV_VoteValue" xml:space="preserve">
+    <value>Vote Value</value>
+  </data>
+  <data name="GOV_ScalarValuePlaceholder" xml:space="preserve">
+    <value>Scalar value</value>
+  </data>
+  <data name="GOV_ScalarVoteHelp" xml:space="preserve">
+    <value>Scalar voting: enter your proposed value.</value>
+  </data>
+  <data name="GOV_NoChange" xml:space="preserve">
+    <value>No Change</value>
+  </data>
+  <data name="GOV_CastVote" xml:space="preserve">
+    <value>Cast Vote</value>
+  </data>
+  <data name="GOV_ClearVote" xml:space="preserve">
+    <value>Clear Vote</value>
+  </data>
+  <data name="GOV_ViewResults" xml:space="preserve">
+    <value>View current results</value>
+  </data>
+  <data name="GOV_LoadResults" xml:space="preserve">
+    <value>Load Results</value>
+  </data>
+  <data name="GOV_AuthorizedVoters" xml:space="preserve">
+    <value>Authorized Voters</value>
+  </data>
+  <data name="GOV_VotesCast" xml:space="preserve">
+    <value>Votes Cast</value>
+  </data>
+  <data name="GOV_OptionVotes" xml:space="preserve">
+    <value>Option Votes</value>
+  </data>
+  <data name="GOV_ScalarResult" xml:space="preserve">
+    <value>Scalar Result</value>
+  </data>
+  <data name="GOV_VoterIdentity" xml:space="preserve">
+    <value>Voter Identity</value>
+  </data>
+  <data name="GOV_BlankYourIdentity" xml:space="preserve">
+    <value>(blank = your identity)</value>
+  </data>
+  <data name="GOV_LoadVote" xml:space="preserve">
+    <value>Load Vote</value>
+  </data>
+  <data name="GOV_ProposalTick" xml:space="preserve">
+    <value>Proposal Tick</value>
+  </data>
+  <data name="GOV_NoVoteCleared" xml:space="preserve">
+    <value>No vote / cleared</value>
+  </data>
+  <data name="GOV_ZeroNoChange" xml:space="preserve">
+    <value>0 (No Change)</value>
+  </data>
+  <data name="GOV_RevenueDesc" xml:space="preserve">
+    <value>Revenue donation entries define ongoing transfers from the network revenue pool.</value>
+  </data>
+  <data name="GOV_LoadRevenue" xml:space="preserve">
+    <value>Load Revenue Donation Table</value>
+  </data>
+  <data name="GOV_NoRevenue" xml:space="preserve">
+    <value>No active revenue donations.</value>
+  </data>
+  <data name="GOV_FirstEpoch" xml:space="preserve">
+    <value>First Epoch</value>
+  </data>
+  <data name="GOV_AmountN" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="GOV_ValueN" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="GOV_Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="GOV_Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="GOV_Proposed" xml:space="preserve">
+    <value>Proposed</value>
+  </data>
+  <data name="GOV_ComputorOnly" xml:space="preserve">
+    <value>Only computors can create proposals or vote. Browsing and results are available to everyone.</value>
+  </data>
+  <data name="GOV_ErrUrlTooLong" xml:space="preserve">
+    <value>URL too long (max 255 chars).</value>
+  </data>
+  <data name="GOV_ErrNoEpoch" xml:space="preserve">
+    <value>Cannot determine current epoch. Please connect to the network.</value>
+  </data>
+  <data name="GOV_ErrInvalidDest" xml:space="preserve">
+    <value>Invalid destination: {0}</value>
+  </data>
+  <data name="GOV_ErrParseDest" xml:space="preserve">
+    <value>Could not parse destination identity.</value>
+  </data>
+  <data name="GOV_ErrProposalNotFound" xml:space="preserve">
+    <value>Proposal not found or invalid.</value>
+  </data>
+  <data name="GOV_ErrLoadProposalFirst" xml:space="preserve">
+    <value>Load proposal first.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoteValue" xml:space="preserve">
+    <value>Invalid vote value.</value>
+  </data>
+  <data name="GOV_ErrNoResults" xml:space="preserve">
+    <value>No results found for this proposal.</value>
+  </data>
+  <data name="GOV_ErrNoVote" xml:space="preserve">
+    <value>No vote found.</value>
+  </data>
+  <data name="GOV_ErrEnterVoterOrSeed" xml:space="preserve">
+    <value>Enter voter identity or connect your seed.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoter" xml:space="preserve">
+    <value>Invalid voter identity.</value>
+  </data>
+  <data name="CCF_Title" xml:space="preserve">
+    <value>Computor-Controlled Fund (CCF)</value>
+  </data>
+  <data name="CCF_Subtitle" xml:space="preserve">
+    <value>CCF proposals, voting, transfers, and subscription management (Contract 8).</value>
+  </data>
+  <data name="CCF_Tab_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="CCF_Tab_Propose" xml:space="preserve">
+    <value>Propose</value>
+  </data>
+  <data name="CCF_Tab_Vote" xml:space="preserve">
+    <value>Vote</value>
+  </data>
+  <data name="CCF_Tab_Results" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="CCF_Tab_GetVote" xml:space="preserve">
+    <value>Get Vote</value>
+  </data>
+  <data name="CCF_Tab_Subscriptions" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="CCF_Tab_Transfers" xml:space="preserve">
+    <value>Transfers</value>
+  </data>
+  <data name="CCF_Tab_Payments" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="CCF_BrowseActive" xml:space="preserve">
+    <value>Active (current epoch)</value>
+  </data>
+  <data name="CCF_BrowseFinished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="CCF_BrowseByIndex" xml:space="preserve">
+    <value>By Index</value>
+  </data>
+  <data name="CCF_ProposalIndexPlaceholder" xml:space="preserve">
+    <value>Proposal index</value>
+  </data>
+  <data name="CCF_LoadProposal" xml:space="preserve">
+    <value>Load Proposal</value>
+  </data>
+  <data name="CCF_LoadProposals" xml:space="preserve">
+    <value>Load Proposals</value>
+  </data>
+  <data name="CCF_NoProposals" xml:space="preserve">
+    <value>No proposals found.</value>
+  </data>
+  <data name="CCF_AmountQu" xml:space="preserve">
+    <value>Amount (QU)</value>
+  </data>
+  <data name="CCF_SubscriptionProposal" xml:space="preserve">
+    <value>Subscription Proposal</value>
+  </data>
+  <data name="CCF_SubProposer" xml:space="preserve">
+    <value>Sub. Proposer</value>
+  </data>
+  <data name="CCF_SubDestination" xml:space="preserve">
+    <value>Sub. Destination</value>
+  </data>
+  <data name="CCF_WeeksPerPeriod" xml:space="preserve">
+    <value>Weeks/Period</value>
+  </data>
+  <data name="CCF_Periods" xml:space="preserve">
+    <value>Periods</value>
+  </data>
+  <data name="CCF_AmountPerPeriod" xml:space="preserve">
+    <value>Amount/Period</value>
+  </data>
+  <data name="CCF_StartEpoch" xml:space="preserve">
+    <value>Start Epoch</value>
+  </data>
+  <data name="CCF_ActiveSubscription" xml:space="preserve">
+    <value>Active Subscription</value>
+  </data>
+  <data name="CCF_CurrentPeriod" xml:space="preserve">
+    <value>Current Period</value>
+  </data>
+  <data name="CCF_ProposalFeeInfo" xml:space="preserve">
+    <value>Proposal fee: {0} QU (auto-fetched, sent as transaction amount)</value>
+  </data>
+  <data name="CCF_LoadProposalFee" xml:space="preserve">
+    <value>Load Proposal Fee</value>
+  </data>
+  <data name="CCF_OnlyYesNo" xml:space="preserve">
+    <value>CCF only supports Transfer: Yes/No (0x0102) proposals.</value>
+  </data>
+  <data name="CCF_UrlHelp255" xml:space="preserve">
+    <value>(max 255 chars)</value>
+  </data>
+  <data name="CCF_AmountPerPeriodQu" xml:space="preserve">
+    <value>Amount/Period (QU)</value>
+  </data>
+  <data name="CCF_NumPeriods" xml:space="preserve">
+    <value># of Periods</value>
+  </data>
+  <data name="CCF_DurationExceeds" xml:space="preserve">
+    <value>Total duration {0} epochs exceeds max 52.</value>
+  </data>
+  <data name="CCF_YesApprove" xml:space="preserve">
+    <value>Yes (Approve)</value>
+  </data>
+  <data name="CCF_OneYesApprove" xml:space="preserve">
+    <value>1 (Yes / Approve)</value>
+  </data>
+  <data name="CCF_SubLookupDesc" xml:space="preserve">
+    <value>Look up an active subscription by its destination identity.</value>
+  </data>
+  <data name="CCF_Lookup" xml:space="preserve">
+    <value>Lookup</value>
+  </data>
+  <data name="CCF_NoSubscription" xml:space="preserve">
+    <value>No active subscription found for this destination.</value>
+  </data>
+  <data name="CCF_TransfersDesc" xml:space="preserve">
+    <value>Recent one-time transfers approved by quorum.</value>
+  </data>
+  <data name="CCF_LoadTransfers" xml:space="preserve">
+    <value>Load Latest Transfers</value>
+  </data>
+  <data name="CCF_NoTransfers" xml:space="preserve">
+    <value>No transfers found.</value>
+  </data>
+  <data name="CCF_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="CCF_PaymentsDesc" xml:space="preserve">
+    <value>Recent subscription (regular) payments made by the CCF contract.</value>
+  </data>
+  <data name="CCF_LoadPayments" xml:space="preserve">
+    <value>Load Regular Payments</value>
+  </data>
+  <data name="CCF_NoPayments" xml:space="preserve">
+    <value>No regular payments found.</value>
+  </data>
+  <data name="CCF_Period" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="CCF_TL_0102" xml:space="preserve">
+    <value>Transfer: Yes/No</value>
+  </data>
+  <data name="CCF_TL_Unknown" xml:space="preserve">
+    <value>Type 0x{0}</value>
+  </data>
+  <data name="CCF_ComputorOnly" xml:space="preserve">
+    <value>Only computors can create proposals or vote. Browsing and results are available to everyone.</value>
+  </data>
+  <data name="CCF_UrlWarning" xml:space="preserve">
+    <value>This link was provided by a CCF proposal and may be potentially dangerous.
+
+{0}</value>
+  </data>
+  <data name="CCF_ErrNoFee" xml:space="preserve">
+    <value>Could not determine proposal fee.</value>
+  </data>
+  <data name="CCF_ErrInvalidDest" xml:space="preserve">
+    <value>Invalid destination identity.</value>
+  </data>
 </root>

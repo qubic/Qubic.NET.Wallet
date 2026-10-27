@@ -1,0 +1,1186 @@
+@page "/ccf"
+@using System.Buffers.Binary
+@using Qubic.Core.Contracts.Ccf
+@using Qubic.Core.Entities
+@using Qubic.Core.Payloads
+@inject QubicBackendService Backend
+@inject SeedSessionService Seed
+@inject TickMonitorService TickMonitor
+@inject TransactionTrackerService TxTracker
+@inject QubicSettingsService Settings
+@inject IJSRuntime JS
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AppStrings> Loc
+@implements IDisposable
+
+<h4><i class="bi bi-currency-exchange me-2"></i>@Loc["CCF_Title"]</h4>
+<p class="text-muted">@Loc["CCF_Subtitle"]</p>
+
+<ul class="nav nav-tabs mb-3">
+    @foreach (var tab in _tabs)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(tab == _activeTab ? "active" : "")" href="" @onclick="() => SetTab(tab)" @onclick:preventDefault>@Loc[$"CCF_Tab_{tab.Replace(" ", "")}"]</a>
+        </li>
+    }
+</ul>
+
+@switch (_activeTab)
+{
+    // ══════════════════════════════════════════════════════════
+    // BROWSE — list and inspect proposals
+    // ══════════════════════════════════════════════════════════
+    case "Browse":
+        <div class="mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="browseMode" id="ccfBrowseActive" checked="@(_browseMode == 0)" @onchange="() => { _browseMode = 0; _browseIndices = null; }" />
+                <label class="form-check-label" for="ccfBrowseActive">@Loc["CCF_BrowseActive"]</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="browseMode" id="ccfBrowseFinished" checked="@(_browseMode == 1)" @onchange="() => { _browseMode = 1; _browseIndices = null; }" />
+                <label class="form-check-label" for="ccfBrowseFinished">@Loc["CCF_BrowseFinished"]</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="browseMode" id="ccfBrowseByIndex" checked="@(_browseMode == 2)" @onchange="() => { _browseMode = 2; _browseIndices = null; }" />
+                <label class="form-check-label" for="ccfBrowseByIndex">@Loc["CCF_BrowseByIndex"]</label>
+            </div>
+        </div>
+        @if (_browseMode == 2)
+        {
+            <div class="row g-2 mb-3">
+                <div class="col-auto">
+                    <input type="number" class="form-control form-control-sm" @bind="_browseSingleIndex" min="0" placeholder="@Loc["CCF_ProposalIndexPlaceholder"]" />
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary btn-sm" @onclick="LoadSingleProposal" disabled="@_loading">
+                        @(_loading ? Loc["Common_Loading"] : Loc["CCF_LoadProposal"])
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <button class="btn btn-primary btn-sm" @onclick="LoadProposalIndices" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["CCF_LoadProposals"])
+            </button>
+        }
+
+        @if (_browseIndices != null)
+        {
+            <div class="mt-3">
+                @if (_browseIndices.Count == 0)
+                {
+                    <div class="text-muted">@Loc["CCF_NoProposals"]</div>
+                }
+                else
+                {
+                    <table class="table table-sm table-hover">
+                        <thead><tr><th style="width:60px">@Loc["GOV_ColIndex"]</th><th>@Loc["GOV_Proposer"]</th><th style="width:60px">@Loc["Common_Epoch"]</th><th>@Loc["GOV_Destination"]</th><th>@Loc["CCF_AmountQu"]</th><th>@Loc["GOV_Url"]</th><th style="width:72px"></th></tr></thead>
+                        <tbody>
+                            @foreach (var idx in _browseIndices)
+                            {
+                                var localIdx = idx;
+                                var p = _browseProposals.GetValueOrDefault(idx);
+                                <tr @onclick="() => ToggleExpand(localIdx)" style="cursor:pointer">
+                                    <td>@idx</td>
+                                    <td class="mono small">@(p != null ? TruncateId(p.Proposer) : "...")</td>
+                                    <td>@(p?.Epoch.ToString() ?? "...")</td>
+                                    <td class="mono small">@(p != null ? TruncateId(p.Destination) : "...")</td>
+                                    <td>@(p != null ? p.Amount.ToString("N0") : "...")</td>
+                                    <td class="small text-truncate" style="max-width:200px">@(p?.Url ?? "...")</td>
+                                    <td class="text-nowrap">
+                                        <button class="btn btn-sm btn-qb-ghost p-0 me-2" title="@Loc["GOV_ViewResults"]"
+                                                @onclick="() => ViewResults(localIdx)" @onclick:stopPropagation>
+                                            <i class="bi bi-bar-chart"></i>
+                                        </button>
+                                        <i class="bi @(_expandedIndex == idx ? "bi-chevron-up" : "bi-chevron-down")"></i>
+                                    </td>
+                                </tr>
+                                @if (_expandedIndex == idx && p != null)
+                                {
+                                    <tr><td colspan="7">
+                                        <div class="card card-body small">
+                                            <div class="row g-2">
+                                                <div class="col-12"><strong>@Loc["GOV_Proposer"]:</strong> <span class="mono">@p.Proposer</span></div>
+                                                <div class="col-md-6"><strong>@Loc["Common_Type"]:</strong> @GetTypeLabel(p.Type) (0x@(p.Type.ToString("X4")))</div>
+                                                <div class="col-md-3"><strong>@Loc["Common_Tick"]:</strong> @p.Tick</div>
+                                                <div class="col-md-3"><strong>@Loc["Common_Epoch"]:</strong> @p.Epoch</div>
+                                                <div class="col-12"><strong>@Loc["GOV_Destination"]:</strong> <span class="mono">@p.Destination</span></div>
+                                                <div class="col-md-6"><strong>@Loc["Common_Amount"]:</strong> @p.Amount.ToString("N0") QU</div>
+                                                <div class="col-12"><strong>@Loc["GOV_Url"]:</strong>
+                                                    @if (!string.IsNullOrEmpty(p.Url))
+                                                    {
+                                                        <a href="@p.Url" target="_blank" rel="noopener">@p.Url</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">@Loc["Common_None"]</span>
+                                                    }
+                                                </div>
+                                                @if (p.HasSubscriptionProposal)
+                                                {
+                                                    <div class="col-12 mt-2"><strong class="text-info">@Loc["CCF_SubscriptionProposal"]</strong></div>
+                                                    <div class="col-md-6"><strong>@Loc["CCF_SubProposer"]:</strong> <span class="mono small">@TruncateId(p.SubProposal!.ProposerId)</span></div>
+                                                    <div class="col-md-6"><strong>@Loc["CCF_SubDestination"]:</strong> <span class="mono small">@TruncateId(p.SubProposal!.Destination)</span></div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_WeeksPerPeriod"]:</strong> @p.SubProposal!.WeeksPerPeriod</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_Periods"]:</strong> @p.SubProposal!.NumberOfPeriods</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_AmountPerPeriod"]:</strong> @p.SubProposal!.AmountPerPeriod.ToString("N0") QU</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_StartEpoch"]:</strong> @p.SubProposal!.StartEpoch</div>
+                                                }
+                                                @if (p.HasActiveSubscription)
+                                                {
+                                                    <div class="col-12 mt-2"><strong class="text-success">@Loc["CCF_ActiveSubscription"]</strong></div>
+                                                    <div class="col-md-6"><strong>@Loc["CCF_SubDestination"]:</strong> <span class="mono small">@TruncateId(p.Subscription!.Destination)</span></div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_WeeksPerPeriod"]:</strong> @p.Subscription!.WeeksPerPeriod</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_Periods"]:</strong> @p.Subscription!.NumberOfPeriods</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_AmountPerPeriod"]:</strong> @p.Subscription!.AmountPerPeriod.ToString("N0") QU</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_StartEpoch"]:</strong> @p.Subscription!.StartEpoch</div>
+                                                    <div class="col-md-4"><strong>@Loc["CCF_CurrentPeriod"]:</strong> @p.Subscription!.CurrentPeriod</div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td></tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @if (_browseMode != 2 && _browseIndices.Count >= 64)
+                    {
+                        <button class="btn btn-outline-primary btn-sm" @onclick="LoadMoreProposals" disabled="@_loading">@Loc["GOV_LoadMore"]</button>
+                    }
+                }
+            </div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // PROPOSE — set or clear a CCF proposal
+    // ══════════════════════════════════════════════════════════
+    case "Propose":
+        @if (!Seed.HasSeed)
+        {
+            <div class="seed-warning">@Loc["Common_NeedSeedSigning"]</div>
+        }
+        else
+        {
+            <div class="row"><div class="col-md-8">
+                @if (!_isComputor)
+                {
+                    <div class="alert alert-warning small">@Loc["CCF_ComputorOnly"]</div>
+                }
+                <div class="card"><div class="card-body">
+                    @if (_proposalFee > 0)
+                    {
+                        <div class="alert alert-info small mb-3">@string.Format(Loc["CCF_ProposalFeeInfo"], _proposalFee.ToString("N0"))</div>
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="LoadProposalFee" disabled="@_loading">@Loc["CCF_LoadProposalFee"]</button>
+                    }
+                    <p class="small text-muted">@Loc["CCF_OnlyYesNo"]</p>
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_ProposalUrl"] <small class="text-muted">@Loc["CCF_UrlHelp255"]</small></label>
+                        <input class="form-control form-control-sm" @bind="_propUrl" maxlength="255" placeholder="https://..." />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_DestIdentity"]</label>
+                        <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_propDest)"
+                               @bind="_propDest" @bind:event="oninput" placeholder="IDENTITY..." />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["CCF_AmountQu"]</label>
+                        <input type="number" class="form-control form-control-sm" @bind="_propAmount" min="0" />
+                    </div>
+                    @if (TickMonitor.IsConnected)
+                    {
+                        <div class="mb-3 small text-muted">@Loc["Common_Epoch"]: @TickMonitor.Epoch (@Loc["GOV_AutoDetected"])</div>
+                    }
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @bind="_propIsSub" id="subCheck" />
+                            <label class="form-check-label" for="subCheck">@Loc["CCF_SubscriptionProposal"]</label>
+                        </div>
+                    </div>
+                    @if (_propIsSub)
+                    {
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">@Loc["CCF_WeeksPerPeriod"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propWeeksPerPeriod" min="1" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">@Loc["CCF_StartEpoch"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propStartEpoch" min="0" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">@Loc["CCF_AmountPerPeriodQu"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propAmountPerPeriod" min="0" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">@Loc["CCF_NumPeriods"]</label>
+                                <input type="number" class="form-control form-control-sm" @bind="_propNumPeriods" min="0" />
+                            </div>
+                        </div>
+                        @if ((uint)_propWeeksPerPeriod * (uint)_propNumPeriods > 52)
+                        {
+                            <div class="alert alert-warning small">@string.Format(Loc["CCF_DurationExceeds"], (uint)_propWeeksPerPeriod * (uint)_propNumPeriods)</div>
+                        }
+                    }
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" @onclick="SubmitProposal" disabled="@(_sending || !_isComputor)">
+                            @(_sending ? Loc["Common_Sending"] : Loc["GOV_SetProposal"])
+                        </button>
+                        <button class="btn btn-outline-danger" @onclick="ClearProposal" disabled="@(_sending || !_isComputor)">@Loc["GOV_ClearMyProposal"]</button>
+                    </div>
+                </div></div>
+            </div></div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // VOTE — cast or clear a vote
+    // ══════════════════════════════════════════════════════════
+    case "Vote":
+        @if (!Seed.HasSeed)
+        {
+            <div class="seed-warning">@Loc["Common_NeedSeedSigning"]</div>
+        }
+        else
+        {
+            <div class="row"><div class="col-md-8">
+                @if (!_isComputor)
+                {
+                    <div class="alert alert-warning small">@Loc["CCF_ComputorOnly"]</div>
+                }
+                <div class="card"><div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control" @bind="_voteProposalIndex" min="0" />
+                            <button class="btn btn-outline-primary" @onclick="LoadVoteProposal" disabled="@_loading">
+                                @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadProposal"])
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (_voteProposal != null)
+                    {
+                        <div class="alert alert-info small mb-3">
+                            <strong>@GetTypeLabel(_voteProposal.Type)</strong> (0x@(_voteProposal.Type.ToString("X4")))<br />
+                            @Loc["Common_Tick"]: @_voteProposal.Tick &bull; @Loc["Common_Epoch"]: @_voteProposal.Epoch<br />
+                            @Loc["GOV_Destination"]: <span class="mono">@TruncateId(_voteProposal.Destination)</span> &bull;
+                            @Loc["Common_Amount"]: @_voteProposal.Amount.ToString("N0") QU<br />
+                            @if (!string.IsNullOrEmpty(_voteProposal.Url))
+                            {
+                                <text>@Loc["GOV_Url"]: <a href="@_voteProposal.Url" target="_blank" rel="noopener">@_voteProposal.Url</a></text>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Loc["GOV_VoteValue"]</label>
+                            <select class="form-select form-select-sm" @bind="_voteValue">
+                                <option value="0">0 — @Loc["GOV_NoChange"]</option>
+                                <option value="1">1 — @Loc["CCF_YesApprove"]</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" @onclick="SubmitVote" disabled="@(_sending || !_isComputor)">
+                                @(_sending ? Loc["Common_Sending"] : Loc["GOV_CastVote"])
+                            </button>
+                            <button class="btn btn-outline-danger" @onclick="ClearVote" disabled="@(_sending || !_isComputor)">@Loc["GOV_ClearVote"]</button>
+                        </div>
+                    }
+                </div></div>
+            </div></div>
+        }
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // RESULTS — view voting results
+    // ══════════════════════════════════════════════════════════
+    case "Results":
+        <div class="row"><div class="col-md-8">
+            <div class="mb-3">
+                <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                <div class="input-group input-group-sm">
+                    <input type="number" class="form-control" @bind="_resultsIndex" min="0" />
+                    <button class="btn btn-outline-primary" @onclick="LoadResults" disabled="@_loading">
+                        @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadResults"])
+                    </button>
+                </div>
+            </div>
+
+            @if (_resultsData != null)
+            {
+                <div class="card card-body">
+                    <div class="row g-2 small mb-3">
+                        <div class="col-6"><strong>@Loc["GOV_ProposalIndex"]:</strong> @_resultsData.ProposalIndex</div>
+                        <div class="col-6"><strong>@Loc["Common_Tick"]:</strong> @_resultsData.Tick</div>
+                        <div class="col-6"><strong>@Loc["GOV_AuthorizedVoters"]:</strong> @_resultsData.TotalAuthorized</div>
+                        <div class="col-6"><strong>@Loc["GOV_VotesCast"]:</strong> @_resultsData.TotalCast</div>
+                    </div>
+
+                    @if (_resultsData.OptionCount > 0)
+                    {
+                        <h6>@Loc["GOV_OptionVotes"]</h6>
+                        @for (int i = 0; i < _resultsData.OptionCount && i < 8; i++)
+                        {
+                            var ri = i;
+                            var votes = _resultsData.OptionVotes[ri];
+                            var pct = _resultsData.TotalCast > 0 ? 100.0 * votes / _resultsData.TotalCast : 0;
+                            <div class="d-flex align-items-center gap-2 mb-1 small">
+                                <span style="width:100px">@(ri == 0 ? Loc["GOV_NoChange"] : ri == 1 ? Loc["CCF_YesApprove"] : $"{Loc["GOV_OptionWord"]} {ri}")</span>
+                                <div class="progress flex-grow-1" style="height:20px">
+                                    <div class="progress-bar @(ri == 0 ? "bg-secondary" : "bg-success")" style="width:@(Math.Max(pct, 0.5).ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%">
+                                        @votes (@(pct.ToString("F1"))%)
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h6>@Loc["GOV_ScalarResult"]</h6>
+                        <div class="fs-4">@_resultsData.ScalarResult</div>
+                    }
+                </div>
+            }
+        </div></div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // GET VOTE — check a specific voter's vote
+    // ══════════════════════════════════════════════════════════
+    case "Get Vote":
+        <div class="row"><div class="col-md-8">
+            <div class="row g-2 mb-3">
+                <div class="col-3">
+                    <label class="form-label">@Loc["GOV_ProposalIndex"]</label>
+                    <input type="number" class="form-control form-control-sm" @bind="_getVoteIndex" min="0" />
+                </div>
+                <div class="col">
+                    <label class="form-label">@Loc["GOV_VoterIdentity"] <small class="text-muted">@Loc["GOV_BlankYourIdentity"]</small></label>
+                    <input class="form-control form-control-sm mono @IdentityValidation.CssClass(_getVoteIdentity)"
+                           @bind="_getVoteIdentity" @bind:event="oninput" placeholder="IDENTITY..." />
+                </div>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" @onclick="LoadVote" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["GOV_LoadVote"])
+            </button>
+
+            @if (_getVoteData != null)
+            {
+                <div class="card card-body mt-3 small">
+                    <div class="row g-2">
+                        <div class="col-6"><strong>@Loc["GOV_ProposalIndex"]:</strong> @_getVoteData.ProposalIndex</div>
+                        <div class="col-6"><strong>@Loc["Common_Type"]:</strong> @GetTypeLabel(_getVoteData.ProposalType) (0x@(_getVoteData.ProposalType.ToString("X4")))</div>
+                        <div class="col-6"><strong>@Loc["GOV_ProposalTick"]:</strong> @_getVoteData.ProposalTick</div>
+                        <div class="col-6"><strong>@Loc["GOV_VoteValue"]:</strong>
+                            @if (_getVoteData.VoteValue == long.MinValue)
+                            {
+                                <span class="text-muted">@Loc["GOV_NoVoteCleared"]</span>
+                            }
+                            else if (_getVoteData.VoteValue == 0)
+                            {
+                                <span>@Loc["GOV_ZeroNoChange"]</span>
+                            }
+                            else if (_getVoteData.VoteValue == 1)
+                            {
+                                <span class="text-success">@Loc["CCF_OneYesApprove"]</span>
+                            }
+                            else
+                            {
+                                <span>@_getVoteData.VoteValue</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div></div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // SUBSCRIPTIONS — look up active subscription
+    // ══════════════════════════════════════════════════════════
+    case "Subscriptions":
+        <div class="row"><div class="col-md-8">
+            <p class="small text-muted">@Loc["CCF_SubLookupDesc"]</p>
+            <div class="mb-3">
+                <label class="form-label">@Loc["GOV_DestIdentity"]</label>
+                <div class="input-group input-group-sm">
+                    <input class="form-control mono @IdentityValidation.CssClass(_subLookupDest)"
+                           @bind="_subLookupDest" @bind:event="oninput" placeholder="IDENTITY..." />
+                    <button class="btn btn-outline-primary" @onclick="LoadSubscription" disabled="@_loading">
+                        @(_loading ? Loc["Common_Loading"] : Loc["CCF_Lookup"])
+                    </button>
+                </div>
+            </div>
+
+            @if (_subResult != null)
+            {
+                @if (!_subResult.Found)
+                {
+                    <div class="text-muted">@Loc["CCF_NoSubscription"]</div>
+                }
+                else
+                {
+                    <div class="card card-body small">
+                        <div class="row g-2">
+                            <div class="col-12"><strong>@Loc["GOV_Destination"]:</strong> <span class="mono">@_subResult.Destination</span></div>
+                            <div class="col-12"><strong>@Loc["GOV_Url"]:</strong>
+                                @if (!string.IsNullOrEmpty(_subResult.Url))
+                                {
+                                    <a href="@_subResult.Url" target="_blank" rel="noopener">@_subResult.Url</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">@Loc["Common_None"]</span>
+                                }
+                            </div>
+                            <div class="col-md-4"><strong>@Loc["CCF_WeeksPerPeriod"]:</strong> @_subResult.WeeksPerPeriod</div>
+                            <div class="col-md-4"><strong>@Loc["CCF_Periods"]:</strong> @_subResult.NumberOfPeriods</div>
+                            <div class="col-md-4"><strong>@Loc["CCF_AmountPerPeriod"]:</strong> @_subResult.AmountPerPeriod.ToString("N0") QU</div>
+                            <div class="col-md-4"><strong>@Loc["CCF_StartEpoch"]:</strong> @_subResult.StartEpoch</div>
+                            <div class="col-md-4"><strong>@Loc["CCF_CurrentPeriod"]:</strong> @_subResult.CurrentPeriod</div>
+                        </div>
+                    </div>
+                }
+            }
+        </div></div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // TRANSFERS — latest one-time transfers
+    // ══════════════════════════════════════════════════════════
+    case "Transfers":
+        <div>
+            <p class="small text-muted">@Loc["CCF_TransfersDesc"]</p>
+            <button class="btn btn-outline-primary btn-sm" @onclick="LoadTransfers" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["CCF_LoadTransfers"])
+            </button>
+
+            @if (_transfers != null)
+            {
+                <div class="mt-3">
+                    @if (_transfers.Count == 0)
+                    {
+                        <div class="text-muted">@Loc["CCF_NoTransfers"]</div>
+                    }
+                    else
+                    {
+                        <table class="table table-sm table-hover">
+                            <thead><tr><th style="width:40px">#</th><th>@Loc["GOV_Destination"]</th><th>@Loc["CCF_AmountQu"]</th><th>@Loc["Common_Tick"]</th><th>@Loc["CCF_Success"]</th><th>@Loc["GOV_Url"]</th></tr></thead>
+                            <tbody>
+                                @{ var tn = 0; }
+                                @foreach (var t in _transfers)
+                                {
+                                    tn++;
+                                    var tr = t;
+                                    <tr>
+                                        <td class="text-muted">@tn</td>
+                                        <td><AddressDisplay Address="@tr.Destination" /></td>
+                                        <td>@tr.Amount.ToString("N0")</td>
+                                        <td>@tr.Tick</td>
+                                        <td>@(tr.Success ? Loc["Common_Yes"] : Loc["Common_No"])</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(tr.Url))
+                                            {
+                                                <a href="#" class="small text-truncate d-inline-block" style="max-width:200px"
+                                                   @onclick="() => ConfirmOpenUrl(tr.Url)" @onclick:preventDefault
+                                                   title="@tr.Url">@tr.Url</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        </div>
+        break;
+
+    // ══════════════════════════════════════════════════════════
+    // PAYMENTS — regular subscription payments
+    // ══════════════════════════════════════════════════════════
+    case "Payments":
+        <div>
+            <p class="small text-muted">@Loc["CCF_PaymentsDesc"]</p>
+            <button class="btn btn-outline-primary btn-sm" @onclick="LoadPayments" disabled="@_loading">
+                @(_loading ? Loc["Common_Loading"] : Loc["CCF_LoadPayments"])
+            </button>
+
+            @if (_payments != null)
+            {
+                <div class="mt-3">
+                    @if (_payments.Count == 0)
+                    {
+                        <div class="text-muted">@Loc["CCF_NoPayments"]</div>
+                    }
+                    else
+                    {
+                        <table class="table table-sm table-hover">
+                            <thead><tr><th style="width:40px">#</th><th>@Loc["GOV_Destination"]</th><th>@Loc["CCF_AmountQu"]</th><th>@Loc["Common_Tick"]</th><th>@Loc["CCF_Period"]</th><th>@Loc["CCF_Success"]</th><th>@Loc["GOV_Url"]</th></tr></thead>
+                            <tbody>
+                                @{ var pn = 0; }
+                                @foreach (var pay in _payments)
+                                {
+                                    pn++;
+                                    var pp = pay;
+                                    <tr>
+                                        <td class="text-muted">@pn</td>
+                                        <td><AddressDisplay Address="@pp.Destination" /></td>
+                                        <td>@pp.Amount.ToString("N0")</td>
+                                        <td>@pp.Tick</td>
+                                        <td>@pp.PeriodIndex</td>
+                                        <td>@(pp.Success ? Loc["Common_Yes"] : Loc["Common_No"])</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(pp.Url))
+                                            {
+                                                <a href="#" class="small text-truncate d-inline-block" style="max-width:200px"
+                                                   @onclick="() => ConfirmOpenUrl(pp.Url)" @onclick:preventDefault
+                                                   title="@pp.Url">@pp.Url</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        </div>
+        break;
+}
+
+@if (_result != null)
+{
+    <div class="alert alert-success mt-3">
+        @Loc["Common_TxBroadcast"] <TxHashDisplay Hash="@_result" ShowFull="true" />
+        <div class="mt-1">
+            <a href="/history">@Loc["Common_TransactionHistory"]</a>
+        </div>
+    </div>
+}
+@if (_error != null)
+{
+    <div class="alert alert-danger mt-2">@_error</div>
+}
+
+@code {
+    // ── Constants ──
+    const uint CcfIndex = 8;
+    const long NO_VOTE_VALUE = long.MinValue;
+
+    // ── Tab state ──
+    static readonly string[] _tabs = ["Browse", "Propose", "Vote", "Results", "Get Vote", "Subscriptions", "Transfers", "Payments"];
+    string _activeTab = "Browse";
+    string? _error;
+    string? _result;
+    bool _sending;
+    bool _loading;
+
+    // ── Computor gate ──
+    private bool _isComputor;
+
+    // ── Browse ──
+    int _browseMode; // 0=active, 1=finished, 2=by index
+    int _browseSingleIndex;
+    List<ushort>? _browseIndices;
+    Dictionary<ushort, CcfParsedProposal> _browseProposals = new();
+    ushort? _expandedIndex;
+
+    // ── Propose ──
+    uint _proposalFee;
+    string _propUrl = "";
+    string _propDest = "";
+    long _propAmount;
+    bool _propIsSub;
+    int _propWeeksPerPeriod = 1;
+    uint _propStartEpoch;
+    ulong _propAmountPerPeriod;
+    uint _propNumPeriods;
+
+    // ── Vote ──
+    int _voteProposalIndex;
+    CcfParsedProposal? _voteProposal;
+    string _voteValue = "0";
+
+    // ── Results ──
+    int _resultsIndex;
+    ParsedResults? _resultsData;
+
+    // ── Get Vote ──
+    int _getVoteIndex;
+    string _getVoteIdentity = "";
+    ParsedVote? _getVoteData;
+
+    // ── Subscriptions ──
+    string _subLookupDest = "";
+    SubscriptionResult? _subResult;
+
+    // ── Transfers ──
+    List<TransferEntry>? _transfers;
+
+    // ── Payments ──
+    List<PaymentEntry>? _payments;
+
+    // ── Records ──
+    record CcfParsedProposal(ushort Index, string Proposer, string Url, ushort Epoch, ushort Type, uint Tick,
+        string Destination, long Amount, bool HasSubscriptionProposal, bool HasActiveSubscription,
+        SubProposalInfo? SubProposal, SubscriptionInfo? Subscription);
+    record SubProposalInfo(string ProposerId, string Destination, string Url, byte WeeksPerPeriod, uint NumberOfPeriods, ulong AmountPerPeriod, uint StartEpoch);
+    record SubscriptionInfo(string Destination, string Url, byte WeeksPerPeriod, uint NumberOfPeriods, ulong AmountPerPeriod, uint StartEpoch, int CurrentPeriod);
+    record SubscriptionResult(bool Found, string Destination, string Url, byte WeeksPerPeriod, uint NumberOfPeriods, ulong AmountPerPeriod, uint StartEpoch, int CurrentPeriod);
+    record ParsedResults(ushort ProposalIndex, ushort OptionCount, uint Tick, uint TotalAuthorized, uint TotalCast, uint[] OptionVotes, long ScalarResult);
+    record ParsedVote(ushort ProposalIndex, ushort ProposalType, uint ProposalTick, long VoteValue);
+    record TransferEntry(string Destination, string Url, long Amount, uint Tick, bool Success);
+    record PaymentEntry(string Destination, string Url, long Amount, uint Tick, int PeriodIndex, bool Success);
+
+    // ══════════════════════════════════════════════════════════
+    // Lifecycle + computor gate
+    // ══════════════════════════════════════════════════════════
+
+    protected override async Task OnInitializedAsync()
+    {
+        Seed.OnSeedChanged += OnSeedChanged;
+        await RefreshComputorStatus();
+    }
+
+    private void OnSeedChanged()
+    {
+        InvokeAsync(async () =>
+        {
+            await RefreshComputorStatus();
+            StateHasChanged();
+        });
+    }
+
+    private async Task RefreshComputorStatus()
+    {
+        try
+        {
+            if (Backend.IsAvailable(Qubic.Services.Networks.Capability.Computors) && Seed.Identity != null)
+            {
+                var snap = await Backend.GetComputorsAsync();
+                _isComputor = snap.Identities.Any(id => string.Equals(id, Seed.Identity!.Value.ToString(), StringComparison.OrdinalIgnoreCase));
+            }
+            else _isComputor = false;
+        }
+        catch { _isComputor = false; }
+    }
+
+    public void Dispose()
+    {
+        Seed.OnSeedChanged -= OnSeedChanged;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Helpers
+    // ══════════════════════════════════════════════════════════
+
+    void SetTab(string tab) { _activeTab = tab; _error = null; _result = null; }
+
+    async Task ViewResults(ushort index)
+    {
+        _resultsIndex = index;
+        _activeTab = "Results";
+        _error = null; _result = null;
+        await LoadResults();
+    }
+
+    string GetTypeLabel(int type) => type switch
+    {
+        0x0102 => Loc["CCF_TL_0102"],
+        _ => string.Format(Loc["CCF_TL_Unknown"], type.ToString("X4"))
+    };
+
+    static string TruncateId(string id) => id.Length > 16 ? id[..8] + "..." + id[^8..] : id;
+
+    static string SafeIdentityFromPk(byte[] pk)
+    {
+        try { return QubicIdentity.FromPublicKey(pk).ToString(); }
+        catch { return Convert.ToHexString(pk)[..16] + "..."; }
+    }
+
+    static string SafeUrlFromBytes(ReadOnlySpan<byte> urlBytes)
+    {
+        int end = urlBytes.IndexOf((byte)0);
+        if (end < 0) end = urlBytes.Length;
+        return System.Text.Encoding.ASCII.GetString(urlBytes[..end]);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Browse
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadProposalIndices()
+    {
+        _loading = true; _error = null; _browseProposals.Clear(); _expandedIndex = null;
+        try
+        {
+            var input = new GetProposalIndicesInput { ActiveProposals = _browseMode == 0, PrevProposalIndex = -1 };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 1, input.ToBytes());
+            var output = GetProposalIndicesOutput.FromBytes(result);
+            _browseIndices = output.Indices.Take(output.NumOfIndices).ToList();
+            StateHasChanged();
+
+            foreach (var idx in _browseIndices)
+            {
+                try { await LoadProposalDetail(idx, new byte[32]); StateHasChanged(); }
+                catch { /* skip */ }
+            }
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task LoadMoreProposals()
+    {
+        if (_browseIndices == null || _browseIndices.Count == 0) return;
+        _loading = true; _error = null;
+        try
+        {
+            var prevMax = _browseIndices.Max();
+            var input = new GetProposalIndicesInput { ActiveProposals = _browseMode == 0, PrevProposalIndex = prevMax };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 1, input.ToBytes());
+            var output = GetProposalIndicesOutput.FromBytes(result);
+            var newIndices = output.Indices.Take(output.NumOfIndices).ToList();
+            _browseIndices.AddRange(newIndices);
+            StateHasChanged();
+
+            foreach (var idx in newIndices)
+            {
+                try { await LoadProposalDetail(idx, new byte[32]); StateHasChanged(); }
+                catch { /* skip */ }
+            }
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task LoadSingleProposal()
+    {
+        _loading = true; _error = null; _browseProposals.Clear(); _expandedIndex = null;
+        try
+        {
+            var idx = (ushort)_browseSingleIndex;
+            await LoadProposalDetail(idx, new byte[32]);
+            _browseIndices = [idx];
+            _expandedIndex = idx;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task LoadProposalDetail(ushort index, byte[] subscriptionDest)
+    {
+        var input = new GetProposalInput { SubscriptionDestination = subscriptionDest, ProposalIndex = index };
+        var result = await Backend.QuerySmartContractAsync(CcfIndex, 2, input.ToBytes());
+        var p = ParseCcfProposalResponse(index, result);
+        if (p != null)
+            _browseProposals[index] = p;
+    }
+
+    CcfParsedProposal? ParseCcfProposalResponse(ushort index, byte[] data)
+    {
+        // GetProposal output: okay(1) + hasSub(1) + hasActive(1) + pad(5) + proposer(32) + ProposalDataYesNo(304) + SubscriptionData(312) + SubscriptionProposalData(340) = 996
+        if (data.Length < 344 || data[0] == 0) return null;
+
+        bool hasSP = data[1] != 0;
+        bool hasAS = data[2] != 0;
+
+        var proposerPk = data.AsSpan(8, 32).ToArray();
+        var proposer = SafeIdentityFromPk(proposerPk);
+
+        // ProposalDataYesNo (304 bytes) at offset 40
+        var proposal = data.AsSpan(40, 304);
+        var url = SafeUrlFromBytes(proposal[..256]);
+        var epoch = BinaryPrimitives.ReadUInt16LittleEndian(proposal[256..]);
+        var type = BinaryPrimitives.ReadUInt16LittleEndian(proposal[258..]);
+        var tick = BinaryPrimitives.ReadUInt32LittleEndian(proposal[260..]);
+        // Data union: destination(32) at 264, amount(8) at 296
+        var destPk = proposal.Slice(264, 32).ToArray();
+        var destination = SafeIdentityFromPk(destPk);
+        var amount = BinaryPrimitives.ReadInt64LittleEndian(proposal[296..]);
+
+        SubProposalInfo? subProp = null;
+        SubscriptionInfo? activeSub = null;
+
+        // SubscriptionData (312 bytes) at offset 344
+        if (hasAS && data.Length >= 344 + 312)
+        {
+            var sd = data.AsSpan(344, 312);
+            var sdDest = SafeIdentityFromPk(sd[..32].ToArray());
+            var sdUrl = SafeUrlFromBytes(sd.Slice(32, 256));
+            activeSub = new SubscriptionInfo(sdDest, sdUrl, sd[288],
+                BinaryPrimitives.ReadUInt32LittleEndian(sd[292..]),
+                BinaryPrimitives.ReadUInt64LittleEndian(sd[296..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(sd[304..]),
+                BinaryPrimitives.ReadInt32LittleEndian(sd[308..]));
+        }
+
+        // SubscriptionProposalData (340 bytes) at offset 656
+        if (hasSP && data.Length >= 656 + 340)
+        {
+            var sp = data.AsSpan(656, 340);
+            var spProposer = SafeIdentityFromPk(sp[..32].ToArray());
+            var spDest = SafeIdentityFromPk(sp.Slice(32, 32).ToArray());
+            var spUrl = SafeUrlFromBytes(sp.Slice(64, 256));
+            subProp = new SubProposalInfo(spProposer, spDest, spUrl, sp[320],
+                BinaryPrimitives.ReadUInt32LittleEndian(sp[324..]),
+                BinaryPrimitives.ReadUInt64LittleEndian(sp[328..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(sp[336..]));
+        }
+
+        return new CcfParsedProposal(index, proposer, url, epoch, type, tick, destination, amount, hasSP, hasAS, subProp, activeSub);
+    }
+
+    async Task ToggleExpand(ushort index)
+    {
+        if (_expandedIndex == index) { _expandedIndex = null; return; }
+        _expandedIndex = index;
+        if (!_browseProposals.ContainsKey(index))
+        {
+            try { await LoadProposalDetail(index, new byte[32]); }
+            catch (Exception ex) { _error = ex.Message; }
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Propose
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadProposalFee()
+    {
+        _loading = true; _error = null;
+        try
+        {
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 6, []);
+            _proposalFee = GetProposalFeeOutput.FromBytes(result).ProposalFee;
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task SubmitProposal()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            if (_proposalFee == 0) await LoadProposalFee();
+            if (_proposalFee == 0) throw new InvalidOperationException(Loc["CCF_ErrNoFee"]);
+
+            var payload = BuildProposalPayload();
+            await BroadcastCcf(1, _proposalFee, payload,
+                _propIsSub ? "CCF Set Proposal (subscription)" : "CCF Set Proposal");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    async Task ClearProposal()
+    {
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            if (_proposalFee == 0) await LoadProposalFee();
+            if (_proposalFee == 0) throw new InvalidOperationException(Loc["CCF_ErrNoFee"]);
+
+            // ProposalDataYesNo with epoch=0 (304 bytes) + subscription fields (20 bytes) = 324 bytes, all zeros
+            var data = new byte[324];
+            await BroadcastCcf(1, _proposalFee, data, "CCF Clear Proposal");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    byte[] BuildProposalPayload()
+    {
+        // ProposalDataYesNo (304 bytes) + subscription fields (20 bytes) = 324 bytes
+        var data = new byte[324];
+
+        // URL (256 bytes, ASCII, null-terminated)
+        var urlBytes = System.Text.Encoding.ASCII.GetBytes(_propUrl.Trim());
+        if (urlBytes.Length > 255) throw new InvalidOperationException(Loc["GOV_ErrUrlTooLong"]);
+        Array.Copy(urlBytes, data, urlBytes.Length);
+
+        // Epoch
+        var epoch = TickMonitor.IsConnected ? TickMonitor.Epoch : (ushort)0;
+        if (epoch == 0) throw new InvalidOperationException(Loc["GOV_ErrNoEpoch"]);
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(256), epoch);
+
+        // Type = Transfer: Yes/No (0x0102) — only type allowed for CCF
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(258), 0x0102);
+
+        // Tick = 0 (system fills at offset 260-263, already zero)
+
+        // Data union: destination(32) at offset 264, amount(8) at offset 296
+        var err = IdentityValidation.Validate(_propDest);
+        if (err != null) throw new InvalidOperationException(string.Format(Loc["GOV_ErrInvalidDest"], err));
+        if (!QubicIdentity.TryParse(_propDest.Trim(), out var destId))
+            throw new InvalidOperationException(Loc["GOV_ErrParseDest"]);
+        destId.PublicKey.CopyTo(data.AsSpan(264));
+        BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(296), _propAmount);
+
+        // Subscription fields (at offset 304)
+        data[304] = (byte)(_propIsSub ? 1 : 0);
+        if (_propIsSub)
+        {
+            data[305] = (byte)_propWeeksPerPeriod;
+            // _padding0 at 306-307 already zero
+            BinaryPrimitives.WriteUInt32LittleEndian(data.AsSpan(308), _propStartEpoch);
+            BinaryPrimitives.WriteUInt64LittleEndian(data.AsSpan(312), _propAmountPerPeriod);
+            BinaryPrimitives.WriteUInt32LittleEndian(data.AsSpan(320), _propNumPeriods);
+        }
+
+        return data;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Vote
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadVoteProposal()
+    {
+        _loading = true; _error = null; _voteProposal = null;
+        try
+        {
+            var input = new GetProposalInput { SubscriptionDestination = new byte[32], ProposalIndex = (ushort)_voteProposalIndex };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 2, input.ToBytes());
+            _voteProposal = ParseCcfProposalResponse((ushort)_voteProposalIndex, result);
+            if (_voteProposal == null) _error = Loc["GOV_ErrProposalNotFound"];
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    async Task SubmitVote()
+    {
+        if (_voteProposal == null) { _error = Loc["GOV_ErrLoadProposalFirst"]; return; }
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            if (!long.TryParse(_voteValue, out var voteVal)) { _error = Loc["GOV_ErrInvalidVoteValue"]; _sending = false; return; }
+            var data = BuildVotePayload(_voteProposal, voteVal);
+            await BroadcastCcf(2, 0, data, $"CCF Vote (index={_voteProposalIndex}, value={voteVal})");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    async Task ClearVote()
+    {
+        if (_voteProposal == null) { _error = Loc["GOV_ErrLoadProposalFirst"]; return; }
+        _sending = true; _error = null; _result = null;
+        try
+        {
+            var data = BuildVotePayload(_voteProposal, NO_VOTE_VALUE);
+            await BroadcastCcf(2, 0, data, $"CCF Clear Vote (index={_voteProposalIndex})");
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _sending = false; }
+    }
+
+    static byte[] BuildVotePayload(CcfParsedProposal proposal, long voteValue)
+    {
+        var data = new byte[16];
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(0), proposal.Index);
+        BinaryPrimitives.WriteUInt16LittleEndian(data.AsSpan(2), proposal.Type);
+        BinaryPrimitives.WriteUInt32LittleEndian(data.AsSpan(4), proposal.Tick);
+        BinaryPrimitives.WriteInt64LittleEndian(data.AsSpan(8), voteValue);
+        return data;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Results
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadResults()
+    {
+        _loading = true; _error = null; _resultsData = null;
+        try
+        {
+            var input = new GetVotingResultsInput { ProposalIndex = (ushort)_resultsIndex };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 4, input.ToBytes());
+
+            if (result.Length < 2 || result[0] == 0) { _error = Loc["GOV_ErrNoResults"]; return; }
+
+            int off = result.Length >= 56 ? 8 : 1;
+            var d = result.AsSpan(off);
+
+            var optVotes = new uint[8];
+            for (int i = 0; i < 8; i++)
+                optVotes[i] = BinaryPrimitives.ReadUInt32LittleEndian(d[(16 + i * 4)..]);
+
+            _resultsData = new ParsedResults(
+                BinaryPrimitives.ReadUInt16LittleEndian(d),
+                BinaryPrimitives.ReadUInt16LittleEndian(d[2..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[4..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[8..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[12..]),
+                optVotes,
+                BinaryPrimitives.ReadInt64LittleEndian(d[16..])
+            );
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Get Vote
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadVote()
+    {
+        _loading = true; _error = null; _getVoteData = null;
+        try
+        {
+            byte[] voterPk;
+            if (string.IsNullOrWhiteSpace(_getVoteIdentity))
+            {
+                if (!Seed.HasSeed) { _error = Loc["GOV_ErrEnterVoterOrSeed"]; _loading = false; return; }
+                voterPk = Seed.GetPublicKey();
+            }
+            else
+            {
+                var err = IdentityValidation.Validate(_getVoteIdentity);
+                if (err != null) { _error = err; _loading = false; return; }
+                if (!QubicIdentity.TryParse(_getVoteIdentity.Trim(), out var voterId))
+                { _error = Loc["GOV_ErrInvalidVoter"]; _loading = false; return; }
+                voterPk = voterId.PublicKey;
+            }
+
+            var input = new GetVoteInput { Voter = voterPk, ProposalIndex = (ushort)_getVoteIndex };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 3, input.ToBytes());
+
+            if (result.Length < 2 || result[0] == 0) { _error = Loc["GOV_ErrNoVote"]; return; }
+
+            int off = result.Length >= 24 ? 8 : 1;
+            var d = result.AsSpan(off);
+
+            _getVoteData = new ParsedVote(
+                BinaryPrimitives.ReadUInt16LittleEndian(d),
+                BinaryPrimitives.ReadUInt16LittleEndian(d[2..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(d[4..]),
+                BinaryPrimitives.ReadInt64LittleEndian(d[8..])
+            );
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Subscriptions
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadSubscription()
+    {
+        _loading = true; _error = null; _subResult = null;
+        try
+        {
+            var err = IdentityValidation.Validate(_subLookupDest);
+            if (err != null) { _error = err; _loading = false; return; }
+            if (!QubicIdentity.TryParse(_subLookupDest.Trim(), out var destId))
+            { _error = Loc["CCF_ErrInvalidDest"]; _loading = false; return; }
+
+            // Use GetProposal (function 2) with proposalIndex=0 and subscriptionDestination set
+            var input = new GetProposalInput { SubscriptionDestination = destId.PublicKey, ProposalIndex = 0 };
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 2, input.ToBytes());
+
+            if (result.Length < 8) { _subResult = new SubscriptionResult(false, "", "", 0, 0, 0, 0, 0); return; }
+
+            bool hasActive = result[2] != 0;
+            if (!hasActive || result.Length < 344 + 312)
+            {
+                _subResult = new SubscriptionResult(false, "", "", 0, 0, 0, 0, 0);
+                return;
+            }
+
+            // Parse SubscriptionData at offset 344
+            var sd = result.AsSpan(344, 312);
+            var sdDest = SafeIdentityFromPk(sd[..32].ToArray());
+            var sdUrl = SafeUrlFromBytes(sd.Slice(32, 256));
+            _subResult = new SubscriptionResult(true, sdDest, sdUrl, sd[288],
+                BinaryPrimitives.ReadUInt32LittleEndian(sd[292..]),
+                BinaryPrimitives.ReadUInt64LittleEndian(sd[296..]),
+                BinaryPrimitives.ReadUInt32LittleEndian(sd[304..]),
+                BinaryPrimitives.ReadInt32LittleEndian(sd[308..]));
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Transfers
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadTransfers()
+    {
+        _loading = true; _error = null; _transfers = null;
+        try
+        {
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 5, []);
+            var output = GetLatestTransfersOutput.FromBytes(result);
+            _transfers = output.Entries
+                .Where(e => e.Destination.Any(b => b != 0))
+                .Select(e => new TransferEntry(
+                    SafeIdentityFromPk(e.Destination),
+                    SafeUrlFromBytes(e.Url),
+                    e.Amount, e.Tick, e.Success))
+                .ToList();
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Payments
+    // ══════════════════════════════════════════════════════════
+
+    async Task LoadPayments()
+    {
+        _loading = true; _error = null; _payments = null;
+        try
+        {
+            var result = await Backend.QuerySmartContractAsync(CcfIndex, 7, []);
+            var output = GetRegularPaymentsOutput.FromBytes(result);
+            _payments = output.Entries
+                .Where(e => e.Destination.Any(b => b != 0))
+                .Select(e => new PaymentEntry(
+                    SafeIdentityFromPk(e.Destination),
+                    SafeUrlFromBytes(e.Url),
+                    e.Amount, e.Tick, e.PeriodIndex, e.Success))
+                .ToList();
+        }
+        catch (Exception ex) { _error = ex.Message; }
+        finally { _loading = false; }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // URL confirm
+    // ══════════════════════════════════════════════════════════
+
+    async Task ConfirmOpenUrl(string url)
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", string.Format(Loc["CCF_UrlWarning"], url));
+        if (confirmed)
+            await JS.InvokeVoidAsync("open", url, "_blank");
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Broadcast helpers
+    // ══════════════════════════════════════════════════════════
+
+    async Task BroadcastCcf(ushort inputType, long amount, byte[] data, string desc)
+        => await Broadcast(CcfIndex, amount, new GenericContractPayload(inputType, data), desc);
+
+    async Task Broadcast(uint contractIndex, long amount, ITransactionPayload payload, string desc)
+    {
+        var dest = QubicIdentity.FromPublicKey(Qubic.Core.QubicContracts.GetContractPublicKey((int)contractIndex));
+        var tick = await TransactionHelper.ResolveTargetTickAsync(Backend, TickMonitor, Settings);
+        _result = await TransactionHelper.BroadcastContractCallAsync(Backend, TxTracker, Seed, dest, amount, tick, payload, desc);
+    }
+}

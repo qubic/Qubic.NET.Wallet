@@ -2979,4 +2979,486 @@
   <data name="VI_AliasPlaceholder" xml:space="preserve">
     <value>Имя в вашем хранилище</value>
   </data>
+  <data name="Common_None" xml:space="preserve">
+    <value>(нет)</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Common_TxBroadcast" xml:space="preserve">
+    <value>Транзакция отправлена! ID транзакции:</value>
+  </data>
+  <data name="Nav_Governance" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="Nav_Ccf" xml:space="preserve">
+    <value>CCF</value>
+  </data>
+  <data name="GOV_Title" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="GOV_Subtitle" xml:space="preserve">
+    <value>Общие кворумные предложения (GQMProp) — пожертвование дохода и голосование по управлению.</value>
+  </data>
+  <data name="GOV_Tab_Browse" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="GOV_Tab_Propose" xml:space="preserve">
+    <value>Предложить</value>
+  </data>
+  <data name="GOV_Tab_Vote" xml:space="preserve">
+    <value>Голосовать</value>
+  </data>
+  <data name="GOV_Tab_Results" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="GOV_Tab_GetVote" xml:space="preserve">
+    <value>Получить голос</value>
+  </data>
+  <data name="GOV_Tab_Revenue" xml:space="preserve">
+    <value>Доход</value>
+  </data>
+  <data name="GOV_BrowseActive" xml:space="preserve">
+    <value>Активные (текущая эпоха)</value>
+  </data>
+  <data name="GOV_BrowsePrior" xml:space="preserve">
+    <value>Прошлые эпохи</value>
+  </data>
+  <data name="GOV_LoadProposals" xml:space="preserve">
+    <value>Загрузить предложения</value>
+  </data>
+  <data name="GOV_NoProposals" xml:space="preserve">
+    <value>Предложения не найдены.</value>
+  </data>
+  <data name="GOV_ColIndex" xml:space="preserve">
+    <value>Индекс</value>
+  </data>
+  <data name="GOV_Proposer" xml:space="preserve">
+    <value>Инициатор</value>
+  </data>
+  <data name="GOV_Url" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="GOV_LoadMore" xml:space="preserve">
+    <value>Загрузить ещё</value>
+  </data>
+  <data name="GOV_Destination" xml:space="preserve">
+    <value>Назначение</value>
+  </data>
+  <data name="GOV_ProposalType" xml:space="preserve">
+    <value>Тип предложения</value>
+  </data>
+  <data name="GOV_Grp_General" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="GOV_Grp_Transfer" xml:space="preserve">
+    <value>Перевод</value>
+  </data>
+  <data name="GOV_Grp_Variable" xml:space="preserve">
+    <value>Переменная</value>
+  </data>
+  <data name="GOV_Grp_MultiVar" xml:space="preserve">
+    <value>Мультипеременные</value>
+  </data>
+  <data name="GOV_Grp_TransferEpoch" xml:space="preserve">
+    <value>Перевод в эпоху</value>
+  </data>
+  <data name="GOV_TL_0002" xml:space="preserve">
+    <value>Общее: Да/Нет</value>
+  </data>
+  <data name="GOV_TL_0003" xml:space="preserve">
+    <value>Общее: 3 варианта</value>
+  </data>
+  <data name="GOV_TL_0004" xml:space="preserve">
+    <value>Общее: 4 варианта</value>
+  </data>
+  <data name="GOV_TL_0005" xml:space="preserve">
+    <value>Общее: 5 вариантов</value>
+  </data>
+  <data name="GOV_TL_0006" xml:space="preserve">
+    <value>Общее: 6 вариантов</value>
+  </data>
+  <data name="GOV_TL_0007" xml:space="preserve">
+    <value>Общее: 7 вариантов</value>
+  </data>
+  <data name="GOV_TL_0008" xml:space="preserve">
+    <value>Общее: 8 вариантов</value>
+  </data>
+  <data name="GOV_TL_0102" xml:space="preserve">
+    <value>Перевод: Да/Нет</value>
+  </data>
+  <data name="GOV_TL_0103" xml:space="preserve">
+    <value>Перевод: 2 суммы</value>
+  </data>
+  <data name="GOV_TL_0104" xml:space="preserve">
+    <value>Перевод: 3 суммы</value>
+  </data>
+  <data name="GOV_TL_0105" xml:space="preserve">
+    <value>Перевод: 4 суммы</value>
+  </data>
+  <data name="GOV_TL_0200" xml:space="preserve">
+    <value>Переменная: скалярное среднее</value>
+  </data>
+  <data name="GOV_TL_0202" xml:space="preserve">
+    <value>Переменная: Да/Нет</value>
+  </data>
+  <data name="GOV_TL_0203" xml:space="preserve">
+    <value>Переменная: 2 значения</value>
+  </data>
+  <data name="GOV_TL_0204" xml:space="preserve">
+    <value>Переменная: 3 значения</value>
+  </data>
+  <data name="GOV_TL_0205" xml:space="preserve">
+    <value>Переменная: 4 значения</value>
+  </data>
+  <data name="GOV_TL_0302" xml:space="preserve">
+    <value>Мультипер.: Да/Нет</value>
+  </data>
+  <data name="GOV_TL_0303" xml:space="preserve">
+    <value>Мультипер.: 3 варианта</value>
+  </data>
+  <data name="GOV_TL_0304" xml:space="preserve">
+    <value>Мультипер.: 4 варианта</value>
+  </data>
+  <data name="GOV_TL_0402" xml:space="preserve">
+    <value>Перевод в эпоху: Да/Нет</value>
+  </data>
+  <data name="GOV_TL_Unknown" xml:space="preserve">
+    <value>Неизвестно (0x{0})</value>
+  </data>
+  <data name="GOV_ProposalUrl" xml:space="preserve">
+    <value>URL предложения</value>
+  </data>
+  <data name="GOV_UrlHelp255" xml:space="preserve">
+    <value>(макс. 255 символов, описывает предложение)</value>
+  </data>
+  <data name="GOV_AutoDetected" xml:space="preserve">
+    <value>определено автоматически</value>
+  </data>
+  <data name="GOV_DestIdentity" xml:space="preserve">
+    <value>Идентификатор назначения</value>
+  </data>
+  <data name="GOV_Amounts" xml:space="preserve">
+    <value>Суммы</value>
+  </data>
+  <data name="GOV_AmountsHelp" xml:space="preserve">
+    <value>(миллионные доли дохода; 1 000 000 = 100 %)</value>
+  </data>
+  <data name="GOV_OptionWord" xml:space="preserve">
+    <value>Вариант</value>
+  </data>
+  <data name="GOV_Millionths" xml:space="preserve">
+    <value>(миллионные доли)</value>
+  </data>
+  <data name="GOV_TargetEpoch" xml:space="preserve">
+    <value>Целевая эпоха</value>
+  </data>
+  <data name="GOV_VariableId" xml:space="preserve">
+    <value>ID переменной</value>
+  </data>
+  <data name="GOV_MinValue" xml:space="preserve">
+    <value>Мин. значение</value>
+  </data>
+  <data name="GOV_MaxValue" xml:space="preserve">
+    <value>Макс. значение</value>
+  </data>
+  <data name="GOV_ProposedValue" xml:space="preserve">
+    <value>Предложенное значение</value>
+  </data>
+  <data name="GOV_Values" xml:space="preserve">
+    <value>Значения</value>
+  </data>
+  <data name="GOV_SetProposal" xml:space="preserve">
+    <value>Задать предложение</value>
+  </data>
+  <data name="GOV_ClearMyProposal" xml:space="preserve">
+    <value>Очистить моё предложение</value>
+  </data>
+  <data name="GOV_ProposalIndex" xml:space="preserve">
+    <value>Индекс предложения</value>
+  </data>
+  <data name="GOV_LoadProposal" xml:space="preserve">
+    <value>Загрузить предложение</value>
+  </data>
+  <data name="GOV_VoteValue" xml:space="preserve">
+    <value>Значение голоса</value>
+  </data>
+  <data name="GOV_ScalarValuePlaceholder" xml:space="preserve">
+    <value>Скалярное значение</value>
+  </data>
+  <data name="GOV_ScalarVoteHelp" xml:space="preserve">
+    <value>Скалярное голосование: введите предлагаемое значение.</value>
+  </data>
+  <data name="GOV_NoChange" xml:space="preserve">
+    <value>Без изменений</value>
+  </data>
+  <data name="GOV_CastVote" xml:space="preserve">
+    <value>Проголосовать</value>
+  </data>
+  <data name="GOV_ClearVote" xml:space="preserve">
+    <value>Очистить голос</value>
+  </data>
+  <data name="GOV_ViewResults" xml:space="preserve">
+    <value>Показать текущие результаты</value>
+  </data>
+  <data name="GOV_LoadResults" xml:space="preserve">
+    <value>Загрузить результаты</value>
+  </data>
+  <data name="GOV_AuthorizedVoters" xml:space="preserve">
+    <value>Уполномоченные избиратели</value>
+  </data>
+  <data name="GOV_VotesCast" xml:space="preserve">
+    <value>Поданные голоса</value>
+  </data>
+  <data name="GOV_OptionVotes" xml:space="preserve">
+    <value>Голоса по вариантам</value>
+  </data>
+  <data name="GOV_ScalarResult" xml:space="preserve">
+    <value>Скалярный результат</value>
+  </data>
+  <data name="GOV_VoterIdentity" xml:space="preserve">
+    <value>Идентификатор избирателя</value>
+  </data>
+  <data name="GOV_BlankYourIdentity" xml:space="preserve">
+    <value>(пусто = ваш идентификатор)</value>
+  </data>
+  <data name="GOV_LoadVote" xml:space="preserve">
+    <value>Загрузить голос</value>
+  </data>
+  <data name="GOV_ProposalTick" xml:space="preserve">
+    <value>Тик предложения</value>
+  </data>
+  <data name="GOV_NoVoteCleared" xml:space="preserve">
+    <value>Нет голоса / очищено</value>
+  </data>
+  <data name="GOV_ZeroNoChange" xml:space="preserve">
+    <value>0 (без изменений)</value>
+  </data>
+  <data name="GOV_RevenueDesc" xml:space="preserve">
+    <value>Записи о пожертвовании дохода определяют постоянные переводы из пула доходов сети.</value>
+  </data>
+  <data name="GOV_LoadRevenue" xml:space="preserve">
+    <value>Загрузить таблицу пожертвований дохода</value>
+  </data>
+  <data name="GOV_NoRevenue" xml:space="preserve">
+    <value>Нет активных пожертвований дохода.</value>
+  </data>
+  <data name="GOV_FirstEpoch" xml:space="preserve">
+    <value>Первая эпоха</value>
+  </data>
+  <data name="GOV_AmountN" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="GOV_ValueN" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="GOV_Min" xml:space="preserve">
+    <value>Мин</value>
+  </data>
+  <data name="GOV_Max" xml:space="preserve">
+    <value>Макс</value>
+  </data>
+  <data name="GOV_Proposed" xml:space="preserve">
+    <value>Предложено</value>
+  </data>
+  <data name="GOV_ComputorOnly" xml:space="preserve">
+    <value>Только computor'ы могут создавать предложения или голосовать. Просмотр и результаты доступны всем.</value>
+  </data>
+  <data name="GOV_ErrUrlTooLong" xml:space="preserve">
+    <value>URL слишком длинный (макс. 255 символов).</value>
+  </data>
+  <data name="GOV_ErrNoEpoch" xml:space="preserve">
+    <value>Не удаётся определить текущую эпоху. Пожалуйста, подключитесь к сети.</value>
+  </data>
+  <data name="GOV_ErrInvalidDest" xml:space="preserve">
+    <value>Недопустимое назначение: {0}</value>
+  </data>
+  <data name="GOV_ErrParseDest" xml:space="preserve">
+    <value>Не удалось разобрать идентификатор назначения.</value>
+  </data>
+  <data name="GOV_ErrProposalNotFound" xml:space="preserve">
+    <value>Предложение не найдено или недействительно.</value>
+  </data>
+  <data name="GOV_ErrLoadProposalFirst" xml:space="preserve">
+    <value>Сначала загрузите предложение.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoteValue" xml:space="preserve">
+    <value>Недопустимое значение голоса.</value>
+  </data>
+  <data name="GOV_ErrNoResults" xml:space="preserve">
+    <value>Результаты для этого предложения не найдены.</value>
+  </data>
+  <data name="GOV_ErrNoVote" xml:space="preserve">
+    <value>Голос не найден.</value>
+  </data>
+  <data name="GOV_ErrEnterVoterOrSeed" xml:space="preserve">
+    <value>Введите идентификатор избирателя или подключите seed.</value>
+  </data>
+  <data name="GOV_ErrInvalidVoter" xml:space="preserve">
+    <value>Недопустимый идентификатор избирателя.</value>
+  </data>
+  <data name="CCF_Title" xml:space="preserve">
+    <value>Фонд под управлением computor'ов (CCF)</value>
+  </data>
+  <data name="CCF_Subtitle" xml:space="preserve">
+    <value>Предложения, голосование, переводы и управление подписками CCF (контракт 8).</value>
+  </data>
+  <data name="CCF_Tab_Browse" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="CCF_Tab_Propose" xml:space="preserve">
+    <value>Предложить</value>
+  </data>
+  <data name="CCF_Tab_Vote" xml:space="preserve">
+    <value>Голосовать</value>
+  </data>
+  <data name="CCF_Tab_Results" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="CCF_Tab_GetVote" xml:space="preserve">
+    <value>Получить голос</value>
+  </data>
+  <data name="CCF_Tab_Subscriptions" xml:space="preserve">
+    <value>Подписки</value>
+  </data>
+  <data name="CCF_Tab_Transfers" xml:space="preserve">
+    <value>Переводы</value>
+  </data>
+  <data name="CCF_Tab_Payments" xml:space="preserve">
+    <value>Платежи</value>
+  </data>
+  <data name="CCF_BrowseActive" xml:space="preserve">
+    <value>Активные (текущая эпоха)</value>
+  </data>
+  <data name="CCF_BrowseFinished" xml:space="preserve">
+    <value>Завершённые</value>
+  </data>
+  <data name="CCF_BrowseByIndex" xml:space="preserve">
+    <value>По индексу</value>
+  </data>
+  <data name="CCF_ProposalIndexPlaceholder" xml:space="preserve">
+    <value>Индекс предложения</value>
+  </data>
+  <data name="CCF_LoadProposal" xml:space="preserve">
+    <value>Загрузить предложение</value>
+  </data>
+  <data name="CCF_LoadProposals" xml:space="preserve">
+    <value>Загрузить предложения</value>
+  </data>
+  <data name="CCF_NoProposals" xml:space="preserve">
+    <value>Предложения не найдены.</value>
+  </data>
+  <data name="CCF_AmountQu" xml:space="preserve">
+    <value>Сумма (QU)</value>
+  </data>
+  <data name="CCF_SubscriptionProposal" xml:space="preserve">
+    <value>Предложение подписки</value>
+  </data>
+  <data name="CCF_SubProposer" xml:space="preserve">
+    <value>Инициатор подписки</value>
+  </data>
+  <data name="CCF_SubDestination" xml:space="preserve">
+    <value>Назначение подписки</value>
+  </data>
+  <data name="CCF_WeeksPerPeriod" xml:space="preserve">
+    <value>Недель/период</value>
+  </data>
+  <data name="CCF_Periods" xml:space="preserve">
+    <value>Периоды</value>
+  </data>
+  <data name="CCF_AmountPerPeriod" xml:space="preserve">
+    <value>Сумма/период</value>
+  </data>
+  <data name="CCF_StartEpoch" xml:space="preserve">
+    <value>Начальная эпоха</value>
+  </data>
+  <data name="CCF_ActiveSubscription" xml:space="preserve">
+    <value>Активная подписка</value>
+  </data>
+  <data name="CCF_CurrentPeriod" xml:space="preserve">
+    <value>Текущий период</value>
+  </data>
+  <data name="CCF_ProposalFeeInfo" xml:space="preserve">
+    <value>Комиссия за предложение: {0} QU (получена автоматически, отправляется как сумма транзакции)</value>
+  </data>
+  <data name="CCF_LoadProposalFee" xml:space="preserve">
+    <value>Загрузить комиссию за предложение</value>
+  </data>
+  <data name="CCF_OnlyYesNo" xml:space="preserve">
+    <value>CCF поддерживает только предложения Перевод: Да/Нет (0x0102).</value>
+  </data>
+  <data name="CCF_UrlHelp255" xml:space="preserve">
+    <value>(макс. 255 символов)</value>
+  </data>
+  <data name="CCF_AmountPerPeriodQu" xml:space="preserve">
+    <value>Сумма/период (QU)</value>
+  </data>
+  <data name="CCF_NumPeriods" xml:space="preserve">
+    <value>Кол-во периодов</value>
+  </data>
+  <data name="CCF_DurationExceeds" xml:space="preserve">
+    <value>Общая длительность {0} эпох превышает максимум 52.</value>
+  </data>
+  <data name="CCF_YesApprove" xml:space="preserve">
+    <value>Да (Одобрить)</value>
+  </data>
+  <data name="CCF_OneYesApprove" xml:space="preserve">
+    <value>1 (Да / Одобрить)</value>
+  </data>
+  <data name="CCF_SubLookupDesc" xml:space="preserve">
+    <value>Найдите активную подписку по идентификатору назначения.</value>
+  </data>
+  <data name="CCF_Lookup" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="CCF_NoSubscription" xml:space="preserve">
+    <value>Для этого назначения активная подписка не найдена.</value>
+  </data>
+  <data name="CCF_TransfersDesc" xml:space="preserve">
+    <value>Недавние разовые переводы, одобренные кворумом.</value>
+  </data>
+  <data name="CCF_LoadTransfers" xml:space="preserve">
+    <value>Загрузить последние переводы</value>
+  </data>
+  <data name="CCF_NoTransfers" xml:space="preserve">
+    <value>Переводы не найдены.</value>
+  </data>
+  <data name="CCF_Success" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="CCF_PaymentsDesc" xml:space="preserve">
+    <value>Недавние (регулярные) платежи по подпискам, выполненные контрактом CCF.</value>
+  </data>
+  <data name="CCF_LoadPayments" xml:space="preserve">
+    <value>Загрузить регулярные платежи</value>
+  </data>
+  <data name="CCF_NoPayments" xml:space="preserve">
+    <value>Регулярные платежи не найдены.</value>
+  </data>
+  <data name="CCF_Period" xml:space="preserve">
+    <value>Период</value>
+  </data>
+  <data name="CCF_TL_0102" xml:space="preserve">
+    <value>Перевод: Да/Нет</value>
+  </data>
+  <data name="CCF_TL_Unknown" xml:space="preserve">
+    <value>Тип 0x{0}</value>
+  </data>
+  <data name="CCF_ComputorOnly" xml:space="preserve">
+    <value>Только computor'ы могут создавать предложения или голосовать. Просмотр и результаты доступны всем.</value>
+  </data>
+  <data name="CCF_UrlWarning" xml:space="preserve">
+    <value>Эта ссылка получена из предложения CCF и может быть опасной.
+
+{0}</value>
+  </data>
+  <data name="CCF_ErrNoFee" xml:space="preserve">
+    <value>Не удалось определить комиссию за предложение.</value>
+  </data>
+  <data name="CCF_ErrInvalidDest" xml:space="preserve">
+    <value>Недопустимый идентификатор назначения.</value>
+  </data>
 </root>
